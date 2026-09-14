@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cuaderno · Examen de Español</title>
+<title>Cuaderno · Español</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -71,6 +71,66 @@ button{font-family:inherit;}
   border-bottom:1px solid var(--line);margin-bottom:12px;
 }
 .rail-brand span{display:block;font-family:'Inter';font-weight:500;font-size:.72rem;color:var(--ink-soft);margin-top:3px;}
+.rail-brand-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.version-badge{
+  display:inline-flex;align-items:center;
+  font-family:'Inter',system-ui,sans-serif;
+  font-size:.62rem;font-weight:700;line-height:1;
+  padding:4px 6px;border-radius:999px;
+  background:var(--card);border:1px solid var(--line);color:var(--ink-soft);
+}
+.subject-overview{margin-top:20px;}
+.subject-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.subject-block{border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--card);}
+.subject-block h3{font-size:1rem;margin:0 0 8px;}
+.subject-tags{display:flex;gap:7px;flex-wrap:wrap;}
+.subject-tag{font-size:.76rem;font-weight:600;padding:5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--bg-soft);}
+.subject-empty{font-size:.82rem;color:var(--ink-soft);margin:0;}
+.system-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
+.online-badge{
+  position:fixed;top:12px;right:14px;z-index:80;
+  display:flex;align-items:center;gap:6px;
+  padding:7px 10px;border:1px solid var(--line);border-radius:999px;
+  background:color-mix(in srgb,var(--card) 94%,transparent);
+  color:var(--ink-soft);font-size:.72rem;font-weight:700;
+  box-shadow:var(--shadow);backdrop-filter:blur(8px);
+}
+.online-dot{width:7px;height:7px;border-radius:50%;background:var(--good);box-shadow:0 0 0 3px var(--good-soft);}
+.experimental-card{border-color:var(--amber);background:linear-gradient(180deg,var(--card),var(--amber-soft));}
+.experimental-warning{
+  border:1px solid var(--amber);background:var(--amber-soft);border-radius:12px;
+  padding:14px 16px;color:var(--ink);font-size:.88rem;line-height:1.5;
+}
+.experimental-warning b{display:block;margin-bottom:3px;}
+.experimental-controls{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.experimental-label{display:block;font-size:.78rem;font-weight:700;color:var(--ink-soft);margin-bottom:7px;}
+.experimental-select{
+  width:100%;min-height:44px;border:1px solid var(--line);border-radius:10px;
+  background:var(--card);color:var(--ink);padding:9px 10px;font:inherit;
+}
+.experimental-chip{
+  display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:999px;
+  border:1px solid var(--amber);background:var(--amber-soft);font-size:.69rem;font-weight:800;
+}
+.resume-card{
+  border:1px solid var(--accent);
+  background:linear-gradient(180deg,var(--card),var(--accent-soft));
+  margin-bottom:20px;
+}
+.resume-meta{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;
+  color:var(--ink-soft);font-size:.78rem;
+}
+.resume-pill{
+  display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;
+  border:1px solid var(--line);background:var(--card);font-weight:700;
+}
+.save-exit-btn{border-color:var(--accent);color:var(--accent);}
+
+@media(max-width:820px){.online-badge{top:8px;right:8px;font-size:.66rem;padding:6px 8px;}.experimental-controls{grid-template-columns:1fr;}}
+
+@media (max-width:620px){.subject-columns{grid-template-columns:1fr;}}
+
 .nav-btn{
   display:flex;align-items:center;gap:10px;
   background:none;border:none;text-align:left;
@@ -217,6 +277,35 @@ main{flex:1;padding:34px 40px;max-width:980px;margin:0 auto;width:100%;}
 .feedback .detail-answer{font-weight:800;}
 .feedback .detail-tip{margin-top:8px;color:var(--ink-soft);}
 .feedback .detail-tip b{display:inline;color:inherit;font-size:inherit;margin:0;}
+.feedback .learning-ref{
+  margin-top:12px;
+  display:grid;
+  gap:9px;
+}
+.feedback .learning-box{
+  padding:10px 12px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:var(--bg-soft);
+  line-height:1.55;
+}
+.feedback .learning-box .learning-label{
+  display:block;
+  font-size:.7rem;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.045em;
+  color:var(--ink-soft);
+  margin-bottom:3px;
+}
+.feedback .learning-box.example-box{
+  border-left:3px solid var(--accent);
+}
+.feedback .why-box{
+  margin-top:10px;
+  line-height:1.6;
+}
+
 
 .hint-box{margin-top:14px;background:var(--amber-soft);border-radius:10px;padding:12px 15px;font-size:.87rem;color:var(--ink);}
 .hint-box b{color:var(--amber);}
@@ -448,14 +537,31 @@ body{line-height:1.55;}
 .practice-count-box input{width:18px;height:18px;accent-color:var(--accent);}
 @media(max-width:640px){.setting-row{flex-direction:column;gap:10px}.setting-control{width:100%}.setting-control select{width:100%}.check-list{grid-template-columns:1fr}}
 
+.account-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.account-form{display:grid;gap:12px;}
+.account-form label{display:grid;gap:6px;font-size:.86rem;color:var(--ink-soft);}
+.account-form input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit;}
+.account-status{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--bg);}
+.account-user{font-weight:700;}
+.account-sub{font-size:.78rem;color:var(--ink-soft);}
+.account-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.recovery-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;letter-spacing:.08em;padding:12px;border:1px dashed var(--accent);border-radius:9px;background:var(--accent-soft);word-break:break-all;}
+.account-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}.account-choice button{text-align:left;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer}.account-choice button.active{border-color:var(--accent);background:var(--accent-soft)}.account-choice b{display:block;margin-bottom:3px}.account-choice span{display:block;color:var(--ink-soft);font-size:.84rem;line-height:1.35}.password-wrap{position:relative}.password-wrap input{padding-right:78px!important}.show-pass{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--accent);font-weight:700;cursor:pointer;padding:6px}.password-meter{font-size:.82rem;color:var(--ink-soft);margin-top:4px}.remember-row{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-size:.9rem}.account-benefit{margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:7px;color:var(--ink-soft);font-size:.9rem}
+.cloud-note{font-size:.78rem;color:var(--ink-soft);margin-top:6px;}
+.leader-meta{display:block;margin-top:3px;font-size:.72rem;color:var(--ink-soft);font-weight:500;}
+.leader-score{text-align:right;white-space:nowrap;}
+.sync-pill{font-size:.68rem;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-weight:700;}
+@media(max-width:640px){.account-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}}
+
 </style>
 </head>
 <body data-theme="light">
+<div id="onlineBadge" class="online-badge" title="Usuarios activos en los últimos 90 segundos"><span class="online-dot"></span><span id="onlineCount">… conectados</span></div>
 <div class="app">
   <nav class="rail" id="rail"></nav>
   <main id="main">
       <div class="card" style="margin:30px auto;max-width:680px;">
-        <h2 style="margin-top:0;">Cuaderno · Examen de Español</h2>
+        <h2 style="margin-top:0;">Cuaderno · Español</h2>
         <p>La aplicación está cargando.</p>
         <p style="color:var(--ink-soft);font-size:.9rem;">Si este mensaje no desaparece, el visor donde abriste el archivo no permite ejecutar JavaScript. Abre el archivo directamente en Safari, Chrome, Edge o Firefox.</p>
       </div>
@@ -474,6 +580,15 @@ const TOPICS = [
   {id:'cronica', name:'Crónica', icon:'📰'},
   {id:'figuras', name:'Figuras literarias', icon:'✦'},
 ];
+
+// Metadatos del área actual. Esta estructura queda preparada para
+// convertir el proyecto en un hub universal con más materias más adelante.
+const SUBJECT = {
+  id:'espanol',
+  name:'Español',
+  currentTopics:TOPICS.map(t=>t.id),
+  pastExams:[] // Se añaden aquí solo cuando el usuario provea exámenes anteriores reales.
+};
 
 /* =========================================================
    DATOS: preguntas
@@ -608,7 +723,7 @@ function segQ(word, parts, dif, note){
       'Revisa si hay algo antes del lexema (prefijo) o después (sufijo/flexivo).',
       note || 'Recuerda: MDP = prefijo, LEX = lexema, INF = infijo, MDS = sufijo, MF = morfema flexivo.'
     ],
-    exp: 'PAN | EC | ILLO'.length ? explainSeg(word, parts) : ''
+    exp: explainSeg(word, parts)
   };
 }
 function explainSeg(word, parts){
@@ -1036,7 +1151,7 @@ Q.push(
 /* =========================================================
    ESTADO Y PERSISTENCIA
 ========================================================= */
-const APP_VERSION = '1.7.0';
+const APP_VERSION = '2.0';
 // Clave estable: NO cambiar entre actualizaciones. Así el progreso sobrevive a nuevas versiones.
 const STABLE_STORAGE_KEY = 'cuaderno_espanol_hub_progress_v1';
 const STORAGE_KEY = 'cuaderno_espanol_v12'; // compatibilidad con versiones anteriores
@@ -1045,6 +1160,12 @@ const IDB_NAME = 'cuaderno_espanol_db';
 const IDB_STORE = 'progress';
 let hasLocalSavedState = false;
 let lastSaveAt = 0;
+let accountSession = {status:'checking', user:null};
+let suppressCloudSync = false;
+let cloudSyncTimer = null;
+let cloudSyncInFlight = false;
+let lastCloudHash = '';
+
 const state = {
   theme:'light',
   view:'dashboard',
@@ -1079,7 +1200,7 @@ function snapshotState(){
     studySeconds:state.studySeconds,errors:state.errors,
     saved:[...state.saved],history:state.history,lastResult:state.lastResult||null,
     settings:state.settings,
-    session:state.session?{...state.session,queueIds:state.session.queue.map(q=>q.id),queue:undefined}:null
+    session:state.session && !state.session.experimental?{...state.session,queueIds:state.session.queue.map(q=>q.id),queue:undefined}:null
   };
 }
 function applySavedData(d){
@@ -1145,6 +1266,7 @@ function saveState(){
   lastSaveAt=data.savedAt;
   if(localSaved) hasLocalSavedState=true;
   saveToIndexedDB(data);
+  if(!suppressCloudSync && accountSession.user) scheduleCloudSync();
 }
 function loadState(){
   let candidates=[];
@@ -1191,6 +1313,76 @@ function applyThemeMode(){
 const loadedExistingState=loadState();
 applyThemeMode();
 if(loadedExistingState) saveState(); // migra automáticamente a la clave estable sin borrar nada
+
+async function accountRequest(method='GET', body=null){
+  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch('/.netlify/functions/account',opts);
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){ const err=new Error(data.error||`Cuenta ${res.status}`); err.status=res.status; throw err; }
+  return data;
+}
+function stableCloudPayload(){
+  const snap=snapshotState();
+  // El progreso general siempre se sincroniza. Una práctica normal pausada también
+  // viaja con la cuenta para poder continuarla en otro dispositivo.
+  // Exámenes incompletos y sesiones experimentales permanecen locales.
+  snap.view='dashboard';
+  if(!(state.session && state.session.mode==='practica' && !state.session.experimental)){
+    snap.session=null;
+  }
+  return snap;
+}
+function cloudPayloadHash(data){
+  try{const comparable={...data};delete comparable.savedAt;return JSON.stringify(comparable);}catch{return '';}
+}
+function scheduleCloudSync(){
+  if(!accountSession.user || suppressCloudSync) return;
+  clearTimeout(cloudSyncTimer);
+  cloudSyncTimer=setTimeout(syncCloudState,1200);
+}
+async function syncCloudState(){
+  if(!accountSession.user || cloudSyncInFlight || suppressCloudSync) return;
+  const payload=stableCloudPayload();
+  const hash=cloudPayloadHash(payload);
+  if(hash===lastCloudHash) return;
+  cloudSyncInFlight=true;
+  try{
+    await accountRequest('POST',{action:'sync',state:payload});
+    lastCloudHash=hash;
+    const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent='Sincronizado ✓';
+  }catch(e){
+    if(e.status===401){ accountSession={status:'ready',user:null}; renderNav(); }
+    const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent='Pendiente de sincronizar';
+  }finally{cloudSyncInFlight=false;}
+}
+function applyCloudCanonical(cloudState){
+  if(!cloudState || typeof cloudState!=='object') return false;
+  suppressCloudSync=true;
+  try{
+    // Mantiene la vista actual, pero reemplaza los datos de estudio/configuración con la cuenta.
+    const currentView=state.view;
+    const currentSession=state.session;
+    applySavedData(cloudState);
+    state.view=currentView;
+    // Una sesión local tiene prioridad. Si no existe, conserva la práctica recuperada de la cuenta.
+    if(currentSession) state.session=currentSession;
+    applyThemeMode();
+    saveState();
+    lastCloudHash=cloudPayloadHash(stableCloudPayload());
+    return true;
+  }finally{suppressCloudSync=false;}
+}
+async function restoreAccountSession(){
+  try{
+    const data=await accountRequest('GET');
+    accountSession={status:'ready',user:data.authenticated?data.user:null};
+    if(data.authenticated && data.cloudState) applyCloudCanonical(data.cloudState);
+    renderNav();
+    if(state.view==='cuenta' || state.view==='leaderboard' || state.view==='ajustes') render();
+  }catch(e){accountSession={status:'ready',user:null}; renderNav();}
+}
+function accountLabel(){ return accountSession.user?accountSession.user.username:'Cuenta'; }
 
 function computeMastery(topicId){
   const s = state.stats[topicId];
@@ -1243,6 +1435,7 @@ function recordAnswer(q, correct){
 ========================================================= */
 const NAV_ITEMS = [
   {id:'dashboard', label:'Panel', icon:'⌂'},
+  {id:'cuenta', label:'Cuenta', icon:'●'},
   {id:'repaso', label:'Repasar', icon:'▤'},
   {id:'practica', label:'Practicar', icon:'✎'},
   {id:'examen', label:'Examen', icon:'▦'},
@@ -1257,8 +1450,8 @@ const NAV_ITEMS = [
 function renderNav(){
   const rail = document.getElementById('rail');
   rail.innerHTML = `
-    <div class="rail-brand">Cuaderno<span>Examen de Español</span></div>
-    ${NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
+    <div class="rail-brand"><div class="rail-brand-line">Cuaderno <span class="version-badge">v${APP_VERSION}</span></div><span>${SUBJECT.name}</span></div>
+    ${NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?accountLabel():n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
     <div class="rail-foot">
       <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
@@ -1266,7 +1459,7 @@ function renderNav(){
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
   const mob = document.getElementById('mobileNav');
-  mob.innerHTML = NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
+  mob.innerHTML = NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?'Cuenta':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
   mob.querySelectorAll('[data-navm]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.navm)));
 }
 function navigateFromNav(view){
@@ -1284,14 +1477,42 @@ function toggleTheme(){
   saveState();
   renderNav();
 }
+function hasResumablePractice(){
+  return !!(state.session && state.session.mode==='practica' && !state.session.experimental && Array.isArray(state.session.queue) && state.session.queue.length);
+}
+function resumablePracticeProgress(){
+  if(!hasResumablePractice()) return null;
+  const s=state.session;
+  const current=Math.min((Number.isFinite(s.idx)?s.idx:0)+1,s.queue.length);
+  const answered=Array.isArray(s.answers)?s.answers.length:0;
+  const q=s.queue[Math.min(s.idx||0,s.queue.length-1)];
+  const topic=q?TOPICS.find(t=>t.id===q.topic):null;
+  return {current,total:s.queue.length,answered,topic:topic?topic.name:'Práctica'};
+}
+function saveAndExitPractice(){
+  const s=state.session;
+  if(!s || s.mode!=='practica' || s.experimental){ goto('practica'); return; }
+  s.pausedAt=Date.now();
+  s.hintLevel=Number.isFinite(s.hintLevel)?s.hintLevel:0;
+  s.answered=!!s.answered;
+  state.view='practica';
+  saveState();
+  render();
+  window.scrollTo(0,0);
+}
+function discardPausedPractice(){
+  if(!hasResumablePractice()) return;
+  state.session=null;
+  saveState();
+}
 function goto(view){ state.view=view; saveState(); render(); window.scrollTo(0,0); }
 function render(){
   renderNav();
   const main = document.getElementById('main');
   main.innerHTML='';
   const renderers = {
-    dashboard: renderDashboard, repaso: renderRepasoHome, practica: renderPracticaHome,
-    examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
+    dashboard: renderDashboard, cuenta: renderCuenta, repaso: renderRepasoHome, practica: renderPracticaHome,
+    experimental: renderExperimentalHome, examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
     historial: renderHistorial, leaderboard: renderLeaderboard, novedades: renderNovedades, ajustes: renderAjustes,
     session: renderSession, results: renderResults, repasoCards: renderRepasoCards,
   };
@@ -1321,7 +1542,9 @@ function renderDashboard(main){
   const weak = weakestTopic();
   const lastErrors = state.errors.slice(-3).reverse();
   main.innerHTML = `
-    <div class="pagehead"><h1>Panel de estudio</h1><p>Tu progreso general para el examen de Español.</p></div>
+    <div class="pagehead"><h1>Panel de estudio</h1><p>Tu progreso general en ${SUBJECT.name}.</p></div>
+    ${!accountSession.user?`<div class="card" style="margin-bottom:20px;"><div class="account-status"><div><b>Guarda todo en tu cuenta</b><div class="account-sub">Sincroniza progreso, historial, guardadas y configuración entre dispositivos.</div></div><button class="btn" id="goAccount">Registrarme / Login</button></div></div>`:`<div class="cloud-note" style="margin:-14px 0 18px 0;">● Conectado como <b>${escHtml(accountSession.user.username)}</b> · <span id="cloudSyncStatus">Sincronización activa</span></div>`}
+    ${hasResumablePractice()?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><b>▶ Tienes una práctica sin terminar</b><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} de ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><button class="btn" id="resumeFromDash">Continuar práctica</button></div></div>`})():''}
     <div class="card dash-top" style="margin-bottom:20px;">
       <div class="ring-wrap">${ringSvg(pct)}<div class="ring-num"><b>${pct}%</b><span>dominado</span></div></div>
       <div class="grid grid-4" style="flex:1;">
@@ -1335,7 +1558,28 @@ function renderDashboard(main){
         <div class="stat-box"><b>${state.errors.length}</b><span>Errores guardados</span></div>
       </div>
     </div>
-    <div class="grid grid-2" style="align-items:start;">
+    <div class="card subject-overview">
+      <div class="system-row">
+        <div>
+          <p class="section-title" style="margin-bottom:4px;">${SUBJECT.name}</p>
+          <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Organización de la materia para el hub.</p>
+        </div>
+        <span class="version-badge">v${APP_VERSION}</span>
+      </div>
+      <div class="subject-columns" style="margin-top:14px;">
+        <div class="subject-block">
+          <h3>Temas actuales</h3>
+          <div class="subject-tags">${TOPICS.filter(t=>SUBJECT.currentTopics.includes(t.id)).map(t=>`<span class="subject-tag">${t.icon} ${t.name}</span>`).join('')}</div>
+        </div>
+        <div class="subject-block">
+          <h3>Exámenes pasados</h3>
+          ${SUBJECT.pastExams.length
+            ? `<div class="subject-tags">${SUBJECT.pastExams.map(x=>`<span class="subject-tag">${escHtml(x.name||String(x))}</span>`).join('')}</div>`
+            : `<p class="subject-empty">Todavía no hay exámenes anteriores añadidos. Cuando se incorporen, aparecerán aquí sin mezclar el material actual.</p>`}
+        </div>
+      </div>
+    </div>
+    <div class="grid grid-2" style="align-items:start;margin-top:20px;">
       <div class="card">
         <p class="section-title">Progreso por tema</p>
         ${TOPICS.map(t=>{ const m=computeMastery(t.id);
@@ -1355,6 +1599,7 @@ function renderDashboard(main){
     </div>
   `;
   if(weak) document.getElementById('goWeak').addEventListener('click', ()=> startSession({mode:'practica', topic:weak.id}));
+  const ga=document.getElementById('goAccount'); if(ga) ga.addEventListener('click',()=>goto('cuenta')); 
 }
 function fmtTime(sec){
   const m = Math.floor(sec/60), s=sec%60;
@@ -1599,6 +1844,7 @@ function renderPracticaHome(main){
   let countPractice = state.settings.practiceCountsByDefault!==false;
   main.innerHTML = `
     <div class="pagehead"><h1>Modo práctica</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
+    ${hasResumablePractice()?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><h3 style="margin:0 0 5px;">Práctica guardada</h3><p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Continúa exactamente donde la dejaste.</p><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></div>`})():''}
     <label class="practice-count-box"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label>
     <p class="section-title">Por tema</p>
     <div class="grid grid-3" style="margin-bottom:24px;">
@@ -1613,8 +1859,18 @@ function renderPracticaHome(main){
       <div class="card mode-card" data-special="morfologia"><span class="ic">🧩</span><h3>Solo morfología</h3><p>Análisis y segmentación de palabras.</p></div>
       <div class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></div>
       <div class="card mode-card" data-special="adaptativo"><span class="ic">◈</span><h3>Adaptativo</h3><p>Se ajusta según lo que fallas o dominas.</p></div>
+      <div class="card mode-card experimental-card" data-special="experimental"><span class="ic">🧪</span><h3>Modo experimental <span class="new-pill">NUEVO</span></h3><p>Genera variaciones nuevas de ejemplos y preguntas. Puede contener errores.</p></div>
     </div>`;
   const getCount=()=>document.getElementById('countPractice').checked;
+  const resumePractice=document.getElementById('resumePractice');
+  if(resumePractice) resumePractice.addEventListener('click',()=>goto('session'));
+  const discardPractice=document.getElementById('discardPractice');
+  if(discardPractice) discardPractice.addEventListener('click',()=>{
+    if(confirm('¿Descartar esta práctica guardada? No podrás recuperarla.')){
+      discardPausedPractice();
+      render();
+    }
+  });
   main.querySelectorAll('[data-topic]').forEach(c=>c.addEventListener('click', ()=>startSession({mode:'practica', topic:c.dataset.topic, countStats:getCount()})));
   main.querySelectorAll('[data-special]').forEach(c=>c.addEventListener('click', ()=>{
     const sp = c.dataset.special, countStats=getCount();
@@ -1625,7 +1881,156 @@ function renderPracticaHome(main){
     else if(sp==='morfologia') startSession({mode:'practica', topic:'morfologia', countStats});
     else if(sp==='cronica') startSession({mode:'practica', topic:'cronica', countStats});
     else if(sp==='adaptativo') startSession({mode:'practica', special:'adaptativo', countStats});
+    else if(sp==='experimental') goto('experimental');
   }));
+}
+
+
+
+/* =========================================================
+   MODO EXPERIMENTAL
+   Generación local mediante plantillas controladas.
+   No modifica estadísticas ni leaderboard.
+========================================================= */
+function shuffleCopy(arr){ return [...arr].sort(()=>Math.random()-.5); }
+function makeExperimentalMC(topic,prompt,correctText,distractors,explanation,hints=[]){
+  const options=shuffleCopy([correctText,...distractors].slice(0,4));
+  return {
+    id:`xq_${Date.now()}_${Math.random().toString(36).slice(2,9)}`,
+    topic,type:'mc',dif:'experimental',prompt,options,
+    correct:options.indexOf(correctText),
+    hints:hints.length?hints:['Busca la evidencia exacta en el ejemplo.','Compara la definición con cada opción.'],
+    exp:explanation,
+    experimental:true
+  };
+}
+function experimentalBank(topic){
+  const bank=[];
+  const add=(...args)=>bank.push(makeExperimentalMC(topic,...args));
+
+  if(topic==='figuras'){
+    [
+      ['“Tus palabras son como flechas.”','Símil',['Metáfora','Hipérbole','Anáfora'],'Es símil porque compara explícitamente usando “como”.'],
+      ['“La ciudad despertó de mal humor.”','Personificación',['Metáfora','Asíndeton','Aliteración'],'Se atribuye una conducta humana —despertar de mal humor— a la ciudad.'],
+      ['“Tengo un millón de tareas.”','Hipérbole',['Símil','Oxímoron','Retruécano'],'La cantidad se exagera intencionalmente para enfatizar que hay muchas tareas.'],
+      ['“La noche es un manto negro.”','Metáfora',['Símil','Personificación','Onomatopeya'],'Identifica directamente la noche con un manto sin utilizar una comparación explícita.'],
+      ['“Corre, salta, gira, cae.”','Asíndeton',['Polisíndeton','Anáfora','Hipérbaton'],'Se omiten conjunciones entre una serie de acciones.'],
+      ['“Y canta, y ríe, y baila, y sueña.”','Polisíndeton',['Asíndeton','Retruécano','Metáfora'],'La conjunción “y” se repite deliberadamente.'],
+      ['“Poco a poco Pablo pasa por el parque.”','Aliteración',['Anáfora','Paradoja','Hipérbole'],'Se repite de forma marcada el sonido de la letra p.'],
+      ['“Oscura claridad.”','Oxímoron',['Antítesis','Símil','Onomatopeya'],'Dos términos de significado aparentemente contradictorio aparecen unidos en una expresión breve.'],
+      ['“Vivo sin vivir en mí.”','Paradoja',['Hipérbole','Aliteración','Asíndeton'],'La idea parece contradictoria, pero busca expresar un sentido más profundo.'],
+      ['“Hoy quiero paz. Hoy quiero silencio. Hoy quiero descansar.”','Anáfora',['Aliteración','Retruécano','Polisíndeton'],'“Hoy quiero” se repite al comienzo de varias expresiones.']
+    ].forEach(x=>add(`¿Qué figura literaria predomina en ${x[0]}`,x[1],x[2],x[3],['Fíjate en la forma del lenguaje, no solo en el significado general.']));
+  }
+
+  if(topic==='morfologia'){
+    [
+      ['En “panecillo”, ¿qué función cumple “ec”?','Infijo',['Lexema','Prefijo','Morfema flexivo'],'pan + ec + illo: “ec” aparece entre el lexema y el sufijo, por eso funciona como infijo.'],
+      ['En “casita”, ¿qué parte es un morfema derivativo sufijo?','ita',['cas','a','s'],'cas es el lexema y -ita se añade después para formar una palabra derivada.'],
+      ['En “niñas”, ¿qué elemento indica número plural?','s',['niñ','a','niñas'],'La -s final es un morfema flexivo que marca el plural.'],
+      ['En “ilegal”, ¿dónde está el prefijo?','i-',['legal','-al','-gal'],'El elemento i- aparece antes de la base y modifica el significado.'],
+      ['¿Cuál es el lexema más evidente en “panadero”?','pan',['adero','ero','panadero'],'“pan” aporta el significado principal y aparece en otras palabras de la misma familia.'],
+      ['En “destornillador”, ¿qué elemento aparece al principio como prefijo?','des-',['tornill','-ador','-dor'],'des- aparece antes de la base; -ador aparece después.'],
+      ['En “calentadores”, ¿qué elemento funciona como sufijo derivativo?','ador',['calent','es','s'],'En el análisis de estudio usado en este cuaderno: calent + ador + es; -ador forma el derivado.']
+    ].forEach(x=>add(x[0],x[1],x[2],x[3],['Ubica primero la base o lexema y luego observa qué aparece antes, en medio o después.']));
+  }
+
+  if(topic==='gramatica'){
+    [
+      ['Si analizas cómo se forma internamente una palabra, ¿qué disciplina estás usando?','Morfología',['Sintaxis','Crónica','Narrador'],'La morfología estudia la estructura interna y formación de las palabras.'],
+      ['Si estudias cómo se organizan palabras para formar una oración, ¿qué disciplina estás usando?','Sintaxis',['Morfología','Crónica','Lexema'],'La sintaxis estudia cómo se combinan las palabras dentro de frases y oraciones.'],
+      ['¿Cuál término engloba tanto morfología como sintaxis?','Gramática',['Crónica','Lexema','Narrador'],'La gramática es la disciplina general; morfología y sintaxis son áreas dentro de ella.'],
+      ['Identificar sujeto y predicado es principalmente un ejercicio de:','Sintaxis',['Morfología','Lexema','Crónica'],'Sujeto y predicado se refieren a la organización de la oración, por lo que corresponde a sintaxis.']
+    ].forEach(x=>add(x[0],x[1],x[2],x[3]));
+  }
+
+  if(topic==='narrativa'){
+    [
+      ['“Yo corrí hasta la puerta porque sabía que la carta era para mí.” ¿Qué tipo de narrador sugiere el fragmento?','Narrador protagonista',['Narrador testigo','Crónica','Narrador externo'],'La voz cuenta en primera persona una acción que vive directamente como personaje central.'],
+      ['“Vi a Marcos entrar, dejar la mochila y marcharse; nunca supe qué había dentro.” ¿Qué tipo de narrador es más probable?','Narrador testigo',['Narrador protagonista','Narrador omnisciente','Autor de crónica'],'El narrador presencia lo ocurrido, pero el foco de la acción está en Marcos.'],
+      ['¿Qué distingue mejor al narrador testigo del protagonista?','Presencia los hechos sin ser necesariamente el personaje principal',['Siempre conoce todos los pensamientos','Nunca usa primera persona','Es el autor real del texto'],'El testigo puede narrar lo que observa sin ocupar el centro de la historia.']
+    ].forEach(x=>add(x[0],x[1],x[2],x[3]));
+  }
+
+  if(topic==='cronica'){
+    [
+      ['“A las 8:15 de la mañana del lunes, frente al gimnasio escolar…” ¿Qué característica de la crónica se destaca?','Exactitud y veracidad',['Afán descriptivo','Recursos retóricos y literarios','Intención narrativa'],'La hora, el día y el lugar aportan datos específicos y verificables.'],
+      ['“El pasillo estaba húmedo, oscuro y cubierto de papeles.” ¿Qué característica se destaca?','Afán descriptivo',['Autor testigo','Exactitud y veracidad','Intención narrativa'],'El fragmento se concentra en describir el ambiente y sus detalles.'],
+      ['Organizar un hecho desde lo que ocurrió primero hasta sus consecuencias demuestra principalmente:','Intención narrativa',['Exactitud y veracidad','Autor testigo','Recursos retóricos y literarios'],'La intención narrativa organiza los acontecimientos con secuencia y desarrollo.'],
+      ['“El humo se extendía como una sábana gris.” ¿Qué característica se observa por el uso del símil?','Recursos retóricos y literarios',['Exactitud y veracidad','Autor testigo','Afán descriptivo solamente'],'El símil es un recurso literario usado para dar expresividad al relato.'],
+      ['Cuando el cronista indica que estuvo presente y vio directamente el acontecimiento, se relaciona con:','Autor testigo',['Intención narrativa','Afán descriptivo','Exactitud y veracidad'],'El autor testigo relata desde la experiencia de haber presenciado los hechos.']
+    ].forEach(x=>add(x[0],x[1],x[2],x[3]));
+  }
+  return bank;
+}
+function generateExperimentalQuestions(topics,count){
+  // Quita las preguntas experimentales de la sesión anterior para evitar acumulación en memoria.
+  for(let i=Q.length-1;i>=0;i--) if(Q[i].experimental) Q.splice(i,1);
+  let bank=[];
+  topics.forEach(t=>{ bank=bank.concat(experimentalBank(t)); });
+  if(!bank.length) bank=experimentalBank('figuras');
+  let generated=[];
+  // Si piden más preguntas que plantillas, se regeneran variaciones reordenando opciones.
+  while(generated.length<count){
+    for(const base of shuffleCopy(bank)){
+      const copy={...base,id:`xq_${Date.now()}_${generated.length}_${Math.random().toString(36).slice(2,7)}`};
+      if(Array.isArray(base.options)){
+        const correctText=base.options[base.correct];
+        copy.options=shuffleCopy(base.options);
+        copy.correct=copy.options.indexOf(correctText);
+      }
+      copy.experimental=true;
+      generated.push(copy);
+      if(generated.length>=count) break;
+    }
+  }
+  Q.push(...generated);
+  return generated;
+}
+function renderExperimentalHome(main){
+  main.innerHTML=`
+    <div class="pagehead"><h1>🧪 Modo experimental <span class="new-pill">NUEVO</span></h1><p>Variaciones nuevas para ampliar tu práctica sin modificar tu progreso oficial.</p></div>
+    <div class="experimental-warning" style="margin-bottom:20px;">
+      <b>⚠ Contenido experimental: puede contener errores.</b>
+      Estas preguntas se generan localmente a partir de plantillas de estudio. No sustituyen las definiciones, ejemplos ni instrucciones de tu maestro. Esta sesión no afecta tu Panel, errores ni leaderboard.
+    </div>
+    <div class="card">
+      <div class="experimental-controls">
+        <div>
+          <label class="experimental-label" for="experimentalTopic">Tema</label>
+          <select class="experimental-select" id="experimentalTopic">
+            <option value="all">Todos los temas</option>
+            ${TOPICS.map(t=>`<option value="${t.id}">${t.icon} ${t.name}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label class="experimental-label" for="experimentalCount">Cantidad</label>
+          <select class="experimental-select" id="experimentalCount">
+            <option value="10">10 preguntas</option>
+            <option value="15" selected>15 preguntas</option>
+            <option value="25">25 preguntas</option>
+          </select>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:18px;">
+        <button class="btn" id="startExperimental">Generar nueva práctica</button>
+        <button class="btn ghost" id="leaveExperimental">← Volver a Practicar</button>
+      </div>
+      <p style="margin:14px 0 0;color:var(--ink-soft);font-size:.8rem;">Cada vez que generas una sesión se mezclan ejemplos, orden de respuestas y formulaciones disponibles. <span class="experimental-chip">EXPERIMENTAL</span></p>
+    </div>`;
+  document.getElementById('leaveExperimental').addEventListener('click',()=>goto('practica'));
+  document.getElementById('startExperimental').addEventListener('click',()=>{
+    const topic=document.getElementById('experimentalTopic').value;
+    const count=Math.max(5,Math.min(25,Number(document.getElementById('experimentalCount').value)||15));
+    const topics=topic==='all'?TOPICS.map(t=>t.id):[topic];
+    const queue=generateExperimentalQuestions(topics,count);
+    state.session={
+      mode:'practica',queue,idx:0,answers:[],hintsUsed:0,hintLevel:0,answered:false,
+      startedAt:Date.now(),miniReviewShown:false,countStats:false,returnView:'experimental',
+      examTopics:[],examFull:false,experimental:true
+    };
+    goto('session');
+  });
 }
 
 
@@ -1663,7 +2068,7 @@ function renderExamenHome(main){
   document.getElementById('startExam').addEventListener('click', ()=>{
     const topics=selectedTopics(); if(!chosen || !topics.length) return;
     const available=Q.filter(q=>topics.includes(q.topic)).length;
-    startSession({mode:'examen', topics, limit: chosen==='all'? available : parseInt(chosen)});
+    startSession({mode:'examen', topics, limit: chosen==='all'? available : parseInt(chosen), fullExam:chosen==='all'});
   });
 }
 
@@ -1674,6 +2079,11 @@ function renderExamenHome(main){
 function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]); }
 
 function startSession(opts){
+  if(opts.mode==='practica' && hasResumablePractice() && state.view!=='session' && !opts.forceNew){
+    const ok=confirm('Tienes una práctica guardada. ¿Quieres descartarla y comenzar una nueva?');
+    if(!ok) return;
+    state.session=null;
+  }
   attemptStage = 0;
   let pool;
   if(opts.special==='debiles'){
@@ -1715,6 +2125,8 @@ function startSession(opts){
     miniReviewShown:false,
     countStats: opts.mode==='examen' ? true : opts.countStats!==false,
     returnView: opts.mode==='examen' ? 'examen' : 'practica',
+    examTopics: opts.mode==='examen' ? (opts.topics||[]).slice() : [],
+    examFull: opts.mode==='examen' ? !!opts.fullExam : false,
   };
   saveState();
   goto('session');
@@ -1742,21 +2154,23 @@ function renderSession(main){
       <p style="margin:0;color:var(--ink-soft);font-size:.87rem;">Ejemplo: ${card.example}</p>
       <button class="btn amber" id="miniOk" style="margin-top:12px;">Entendido, continuar</button>
     </div>`;
-    main.innerHTML = `<div class="q-wrap"><div class="q-topbar"><button class="icon-btn" id="quitSession">✕ Salir</button><span>${s.idx+1} / ${total}</span></div>${bodyHtml}</div>`;
-    document.getElementById('quitSession').addEventListener('click', confirmQuit);
+    main.innerHTML = `<div class="q-wrap"><div class="q-topbar"><button class="icon-btn save-exit-btn" id="quitSession">💾 Guardar y salir</button><span>${s.idx+1} / ${total}</span></div>${bodyHtml}</div>`;
+    document.getElementById('quitSession').addEventListener('click', saveAndExitPractice);
     document.getElementById('miniOk').addEventListener('click', ()=>{ s.miniReviewShown=true; render(); });
     return;
   }
   s.miniReviewShown=false;
 
   const isExam = s.mode==='examen';
-  const starred = state.saved.has(q.id);
+  const isExperimental = !!s.experimental;
+  const starred = !isExperimental && state.saved.has(q.id);
 
   main.innerHTML = `
     <div class="q-wrap">
+      ${isExperimental?`<div class="experimental-warning" style="margin-bottom:14px;"><b>🧪 Experimental</b>Esta pregunta puede contener errores y no cuenta para tu progreso oficial.</div>`:''}
       <div class="q-topbar">
         <div class="btn-row">
-          <button class="icon-btn" id="quitSession">✕ ${isExam?'Abandonar examen':'Salir'}</button>
+          <button class="icon-btn ${!isExam&&!isExperimental?'save-exit-btn':''}" id="quitSession">${isExam?'✕ Abandonar examen':isExperimental?'✕ Salir':'💾 Guardar y salir'}</button>
           ${s.answers.length?'<button class="icon-btn" id="reviewPreviousBtn">← Ver anterior</button>':''}
         </div>
         <span>${t.icon} ${t.name} · ${s.idx+1} / ${total} ${isExam?'':''}</span>
@@ -1770,7 +2184,7 @@ function renderSession(main){
       </div>
       <div class="q-actions">
         <div class="btn-row">
-          <button class="icon-btn ${starred?'starred':''}" id="starBtn">${starred?'★ Guardada':'☆ Guardar'}</button>
+          ${isExperimental?'<span class="experimental-chip">No se guarda</span>':`<button class="icon-btn ${starred?'starred':''}" id="starBtn">${starred?'★ Guardada':'☆ Guardar'}</button>`}
           <button class="icon-btn" id="skipBtn">Saltar</button>
           <button class="icon-btn" id="restartQBtn">↺ Reiniciar</button>
         </div>
@@ -1782,10 +2196,14 @@ function renderSession(main){
       <p class="kbd-hint">Atajo: presiona <kbd>Enter</kbd> para responder/continuar</p>
     </div>`;
 
-  document.getElementById('quitSession').addEventListener('click', confirmQuit);
+  document.getElementById('quitSession').addEventListener('click', ()=>{
+    if(isExam || isExperimental) confirmQuit();
+    else saveAndExitPractice();
+  });
   const reviewPrevBtn=document.getElementById('reviewPreviousBtn');
   if(reviewPrevBtn) reviewPrevBtn.addEventListener('click', ()=>renderAnsweredReview(s.answers.length-1));
-  document.getElementById('starBtn').addEventListener('click', ()=>{
+  const starBtn=document.getElementById('starBtn');
+  if(starBtn) starBtn.addEventListener('click', ()=>{
     if(state.saved.has(q.id)) state.saved.delete(q.id); else state.saved.add(q.id);
     saveState();
     render();
@@ -1818,7 +2236,7 @@ function renderAnsweredReview(answerIndex){
         <div class="feedback ${a.correct?'good':'bad'}">
           <b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>
           ${a.skipped
-            ? `<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="detail-tip"><b>Explicación:</b> ${escHtml(q.exp||recognitionTip(q))}</div></div>`
+            ? `<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`
             : detailedExplanation(q,a.userAnswer,a.correct)}
         </div>
         <div class="btn-row" style="margin-top:16px;justify-content:space-between;">
@@ -1834,8 +2252,14 @@ function renderAnsweredReview(answerIndex){
 
 function confirmQuit(){
   const s=state.session;
-  if(confirm('¿Seguro que quieres salir de esta sesión?')){
-    const back=s&&s.returnView ? s.returnView : (s&&s.mode==='examen'?'examen':'practica');
+  if(!s){ goto('dashboard'); return; }
+  if(s.mode==='practica' && !s.experimental){
+    saveAndExitPractice();
+    return;
+  }
+  const label=s.mode==='examen'?'¿Abandonar este examen? El examen incompleto no contará.':'¿Salir de esta sesión experimental?';
+  if(confirm(label)){
+    const back=s.returnView || (s.mode==='examen'?'examen':'practica');
     state.session=null;
     saveState();
     goto(back);
@@ -1971,17 +2395,136 @@ function recognitionTip(q){
   const topic=TOPICS.find(t=>t.id===q.topic)?.name || 'este tema';
   return `Relaciona la definición con la característica clave de ${topic}.`;
 }
+function normalizeConceptText(v){
+  return String(v??'')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .replace(/[“”"'()[\]{}:;,.!?¿¡/\\|+_=*-]/g,' ')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+const CONCEPT_ALIASES = {
+  gramatica:['gramatica'],
+  morfologia:['morfologia'],
+  sintaxis:['sintaxis'],
+  'lexema o raiz':['lexema','raiz','lexema o raiz'],
+  'morfema derivativo':['morfema derivativo'],
+  'morfema flexivo':['morfema flexivo','mf'],
+  'mdp prefijo':['mdp','prefijo','morfema derivativo prefijo'],
+  'mds sufijo':['mds','sufijo','morfema derivativo sufijo'],
+  infijo:['infijo','inf'],
+  'palabra derivada':['palabra derivada','derivada'],
+  parasintesis:['parasintesis'],
+  'genero narrativo':['genero narrativo'],
+  'narrador protagonista':['narrador protagonista','protagonista'],
+  'narrador testigo':['narrador testigo','testigo'],
+  cronica:['cronica'],
+  'autor testigo':['autor testigo'],
+  'exactitud y veracidad':['exactitud y veracidad','exactitud','veracidad'],
+  'afan descriptivo':['afan descriptivo','descriptivo'],
+  'intencion narrativa':['intencion narrativa'],
+  'recursos retoricos y literarios':['recursos retoricos y literarios','recursos literarios','recursos retoricos'],
+  simil:['simil','comparacion explicita'],
+  metafora:['metafora'],
+  personificacion:['personificacion'],
+  hiperbole:['hiperbole'],
+  antitesis:['antitesis'],
+  anafora:['anafora'],
+  retruecano:['retruecano'],
+  aliteracion:['aliteracion'],
+  asindeton:['asindeton'],
+  polisindeton:['polisindeton'],
+  onomatopeya:['onomatopeya'],
+  hiperbaton:['hiperbaton'],
+  redundancia:['redundancia'],
+  encabalgamiento:['encabalgamiento'],
+  oximoron:['oximoron'],
+  paradoja:['paradoja'],
+  alegoria:['alegoria']
+};
+function conceptCardMatches(card, source, topic){
+  if(!card || !source) return false;
+  if(topic && card.topic!==topic) return false;
+  const src=normalizeConceptText(source);
+  const key=normalizeConceptText(card.title);
+  const aliases=CONCEPT_ALIASES[key]||[key];
+  return aliases.some(alias=>{
+    const a=normalizeConceptText(alias);
+    return a && (src===a || src.includes(a));
+  });
+}
+function findConceptCard(q, ans, correct){
+  if(q.type==='seg'){
+    return REVIEW_CARDS.find(c=>c.topic==='gramatica' && c.title==='Morfología')
+      || REVIEW_CARDS.find(c=>c.title==='Lexema o raíz')
+      || null;
+  }
+
+  const right=correctAnswerLabel(q);
+  const selected=answerLabel(q,ans);
+  const followupCorrect = q.type==='eviden' && q.followup
+    ? q.followup.options?.[q.followup.correct]
+    : '';
+  const sources = correct
+    ? [selected, followupCorrect, right, q.prompt, q.exp]
+    : [right, followupCorrect, q.prompt, q.exp];
+
+  // Primero busca dentro del tema de la pregunta para evitar ambigüedades
+  // como "testigo" en Narrador y "autor testigo" en Crónica.
+  for(const source of sources){
+    const card=REVIEW_CARDS.find(c=>conceptCardMatches(c,source,q.topic));
+    if(card) return card;
+  }
+  for(const source of sources){
+    const card=REVIEW_CARDS.find(c=>conceptCardMatches(c,source,null));
+    if(card) return card;
+  }
+
+  // Fallbacks generales, todavía basados en el material del propio cuaderno.
+  const fallbackTitle={
+    gramatica:'Gramática',
+    morfologia:'Morfología',
+    narrativa:'Género narrativo',
+    cronica:'Crónica'
+  }[q.topic];
+  return fallbackTitle ? REVIEW_CARDS.find(c=>c.title===fallbackTitle) || null : null;
+}
+function segmentationExample(q){
+  if(q.type!=='seg' || !Array.isArray(q.parts)) return '';
+  return `${q.word}: ` + q.parts.map(p=>`${p.text} (${p.role})`).join(' + ');
+}
+function learningReferenceHtml(q, ans, correct){
+  const card=findConceptCard(q,ans,correct);
+  const definition=card?.def || '';
+  const example=q.type==='seg'
+    ? segmentationExample(q)
+    : (card?.example || '');
+
+  if(!definition && !example) return '';
+
+  return `<div class="learning-ref">
+    ${card?.title?`<div class="learning-box"><span class="learning-label">Concepto</span><b>${escHtml(card.title)}</b></div>`:''}
+    ${definition?`<div class="learning-box"><span class="learning-label">Definición</span>${escHtml(definition)}</div>`:''}
+    ${example?`<div class="learning-box example-box"><span class="learning-label">Ejemplo para entenderlo</span>${escHtml(example)}</div>`:''}
+  </div>`;
+}
 function detailedExplanation(q, ans, correct){
   const selected=answerLabel(q, ans);
   const right=correctAnswerLabel(q);
-  let html='';
+  const why=escHtml(q.exp || recognitionTip(q));
+  let out='<div class="detail-block">';
+
   if(correct){
-    html += `<div class="detail-block"><div class="detail-title">¿Por qué está bien?</div><div>Escogiste <span class="detail-answer">${escHtml(selected)}</span>. Esa respuesta es correcta porque ${q.exp}</div>`;
+    out += `<div class="detail-title">¿Por qué está bien?</div>
+      <div class="why-box">Escogiste <span class="detail-answer">${escHtml(selected)}</span>. <b>Está bien</b> porque ${why}</div>`;
   } else {
-    html += `<div class="detail-block"><div class="detail-title">¿Por qué estaba mal?</div><div>Escogiste <span class="detail-answer">${escHtml(selected)}</span>, pero la respuesta correcta es <span class="detail-answer">${escHtml(right)}</span>. ${q.exp}</div>`;
+    out += `<div class="detail-title">¿Por qué estaba mal?</div>
+      <div class="why-box">Escogiste <span class="detail-answer">${escHtml(selected)}</span>, pero la respuesta correcta es <span class="detail-answer">${escHtml(right)}</span>. ${why}</div>`;
   }
-  html += `<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`;
-  return html;
+
+  out += learningReferenceHtml(q,ans,correct);
+  out += `<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`;
+  return out;
 }
 
 let attemptStage = 0; // for practice mode two-try flow
@@ -1989,7 +2532,6 @@ function submitAnswer(){
   const q=currentQ(); const s=state.session;
   const isExam = s.mode==='examen';
   const correct = checkCorrectness(q, sessionSelection);
-  const box=document.getElementById('qBody');
   const fb=document.getElementById('feedbackZone');
 
   if(isExam){
@@ -2008,7 +2550,7 @@ function submitAnswer(){
     fb.innerHTML = `<div class="feedback good"><b>✓ Correcto</b>${detailedExplanation(q, sessionSelection, true)}</div>`;
     s.answers.push({qid:q.id, correct:true, hintsUsed:s.hintLevel, userAnswer:sessionSelection});
     recordAnswer(q, true);
-    finalizeStep(true);
+    finalizeStep();
   } else if(attemptStage===0){
     attemptStage=1;
     fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>Inténtalo otra vez. ${q.hints?'Puedes usar una pista.':''}</div>`;
@@ -2020,7 +2562,7 @@ function submitAnswer(){
     fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>${detailedExplanation(q, sessionSelection, false)}</div>`;
     s.answers.push({qid:q.id, correct:false, hintsUsed:s.hintLevel, userAnswer:sessionSelection});
     recordAnswer(q, false);
-    finalizeStep(false);
+    finalizeStep();
   }
 }
 function reenableInputs(q){
@@ -2068,7 +2610,7 @@ function markAnswerVisual(q, ans, correct){
     });
   }
 }
-function finalizeStep(correct){
+function finalizeStep(){
   document.getElementById('submitBtn').textContent = state.session.idx===state.session.queue.length-1? 'Ver resultados':'Siguiente pregunta';
   document.getElementById('submitBtn').disabled=false;
   document.getElementById('submitBtn').onclick = ()=>advance();
@@ -2109,18 +2651,18 @@ function finishSession(){
     byTopic[q.topic].t++; if(a.correct) byTopic[q.topic].c++;
   });
 
-  // El historial guarda TODAS las sesiones para poder revisarlas después.
-  // countsTowardProgress solo controla si afecta las estadísticas del Panel.
-  state.history.push({
+  // Las sesiones experimentales no entran al historial oficial porque sus preguntas son temporales.
+  if(!s.experimental) state.history.push({
     id:`${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
     date:new Date().toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit',year:'numeric'}),
     time: new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}),
     mode:s.mode, total, correct:correctCount, pct, seconds:elapsed,
     byTopic, countsTowardProgress,
+    examTopics:s.examTopics||[], examFull:!!s.examFull,
     answers:s.answers.map(a=>({qid:a.qid,correct:!!a.correct,skipped:!!a.skipped,hintsUsed:a.hintsUsed||0,userAnswer:a.userAnswer??null}))
   });
 
-  state.lastResult = {total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, countsTowardProgress};
+  state.lastResult = {total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, countsTowardProgress, examTopics:s.examTopics||[], examFull:!!s.examFull, experimental:!!s.experimental};
   const completedResult=state.lastResult;
   state.session=null;
   saveState();
@@ -2139,13 +2681,14 @@ function renderResults(main){
   const topicNames = Object.keys(r.byTopic);
 
   main.innerHTML = `
-    <div class="pagehead"><h1>Resultados</h1><p>${r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
+    <div class="pagehead"><h1>Resultados</h1><p>${r.experimental?'Sesión experimental completada':r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
+    ${r.experimental?`<div class="experimental-warning" style="margin-bottom:20px;"><b>🧪 Resultado experimental</b>Esta nota no se añadió a tus estadísticas, errores, historial ni leaderboard porque el contenido puede contener errores.</div>`:''}
     <div class="card results-hero" style="margin-bottom:20px;">
       <div class="big">${r.pct}%</div>
       <p style="color:var(--ink-soft);margin:4px 0 16px 0;">${r.correctCount} de ${r.total} correctas · ${fmtTime(r.elapsed)}</p>
       <div class="btn-row" style="justify-content:center;">
         <button class="btn" id="backDash">Ir al panel</button>
-        <button class="btn ghost" id="retryWrong" ${wrong.length===0?'disabled':''}>Practicar lo fallado (${wrong.length})</button>
+        ${r.experimental?'<button class="btn ghost" id="newExperimental">Generar otra práctica</button>':`<button class="btn ghost" id="retryWrong" ${wrong.length===0?'disabled':''}>Practicar lo fallado (${wrong.length})</button>`}
       </div>
     </div>
     <div class="grid grid-2" style="align-items:start;">
@@ -2174,6 +2717,8 @@ function renderResults(main){
     </div>`:''}
   `;
   document.getElementById('backDash').addEventListener('click', ()=>goto('dashboard'));
+  const newExperimental=document.getElementById('newExperimental');
+  if(newExperimental) newExperimental.addEventListener('click', ()=>goto('experimental'));
   document.getElementById('retryWrong').addEventListener('click', ()=>{
     const ids = wrong.map(q=>q.id);
     state.session=null;
@@ -2244,7 +2789,7 @@ function renderHistoryDetail(entry){
     <div class="pagehead"><h1>Revisión de sesión</h1><p>${entry.mode==='examen'?'Examen':'Práctica'} · ${entry.date} ${entry.time} · ${entry.correct}/${entry.total} (${entry.pct}%)</p></div>
     <div class="btn-row" style="margin-bottom:18px;"><button class="icon-btn" id="backHistory">← Volver al historial</button></div>
     ${answers.length? `<div class="card">
-      ${answers.map((a,i)=>{const q=Q.find(x=>x.id===a.qid);if(!q)return'';const t=TOPICS.find(x=>x.id===q.topic);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="detail-tip"><b>Explicación:</b> ${escHtml(q.exp||recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
+      ${answers.map((a,i)=>{const q=Q.find(x=>x.id===a.qid);if(!q)return'';const t=TOPICS.find(x=>x.id===q.topic);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
     </div>` : `<div class="empty-state"><span class="ic">▥</span>Esta sesión es de una versión anterior y solo guardó el resultado general. Las sesiones nuevas sí guardarán cada pregunta y tu respuesta.</div>`}
   `;
   document.getElementById('backHistory').addEventListener('click',()=>goto('historial'));
@@ -2252,51 +2797,97 @@ function renderHistoryDetail(entry){
 
 
 /* =========================================================
+   CUENTA / LOGIN / SINCRONIZACIÓN
+========================================================= */
+function renderCuenta(main){
+  if(accountSession.status==='checking'){
+    main.innerHTML=`<div class="pagehead"><h1>Cuenta</h1><p>Comprobando tu sesión…</p></div><div class="card">Cargando…</div>`;
+    return;
+  }
+  if(accountSession.user){
+    main.innerHTML=`
+      <div class="pagehead"><h1>Tu cuenta</h1><p>Todo tu progreso y configuración se sincronizan con esta cuenta.</p></div>
+      <div class="card" style="margin-bottom:20px;"><div class="account-status"><div><div class="account-user">${escHtml(accountSession.user.username)}</div><div class="account-sub">${accountSession.user.email?escHtml(accountSession.user.email)+' · login por username o email':'Sin email añadido · login por username'} · sesión recordada</div></div><span class="sync-pill" id="cloudSyncStatus">Sincronización activa</span></div>
+      <div class="btn-row" style="margin-top:16px;"><button class="btn" id="syncNow">Sincronizar ahora</button><button class="icon-btn" id="logoutBtn">Cerrar sesión</button></div></div>
+      <div class="card"><p class="section-title">Qué se guarda en tu cuenta</p><p style="margin:0;color:var(--ink-soft);">Progreso por tema, estadísticas, historial, errores, preguntas guardadas, preferencias de práctica y examen, modo claro/oscuro, color de interfaz y futuras materias del hub.</p></div>`;
+    document.getElementById('syncNow').addEventListener('click',async()=>{lastCloudHash='';await syncCloudState();const e=document.getElementById('cloudSyncStatus');if(e)e.textContent='Sincronizado ✓';});
+    document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('¿Cerrar sesión? Tu copia local seguirá en este dispositivo.'))return;try{await accountRequest('POST',{action:'logout'});}catch{}accountSession={status:'ready',user:null};lastCloudHash='';render();});
+    return;
+  }
+  main.innerHTML=`
+    <div class="pagehead"><h1>Cuenta</h1><p>Regístrate para guardar todo el hub en una cuenta y continuar desde otros dispositivos.</p></div>
+    <div class="account-tabs"><button class="chip active" data-account-tab="login">Login</button><button class="chip" data-account-tab="register">Registrarme</button><button class="chip" data-account-tab="recover">Olvidé mi contraseña</button></div>
+    <div id="accountPanel"></div>`;
+  const tabs=[...main.querySelectorAll('[data-account-tab]')];
+  tabs.forEach(b=>b.addEventListener('click',()=>{tabs.forEach(x=>x.classList.toggle('active',x===b));renderAccountPanel(b.dataset.accountTab);}));
+  renderAccountPanel('login');
+}
+function accountMessage(text,bad=false){const el=document.getElementById('accountMsg');if(el){el.textContent=text;el.style.color=bad?'var(--bad)':'var(--good)';}}
+function bindPasswordToggle(buttonId,inputId){
+  const b=document.getElementById(buttonId), i=document.getElementById(inputId); if(!b||!i)return;
+  b.addEventListener('click',()=>{const show=i.type==='password';i.type=show?'text':'password';b.textContent=show?'Ocultar':'Ver';b.setAttribute('aria-pressed',show?'true':'false');});
+}
+function passwordStrengthText(value){
+  let n=0;if(value.length>=8)n++;if(value.length>=12)n++;if(/[A-Z]/.test(value)&&/[a-z]/.test(value))n++;if(/\d/.test(value))n++;if(/[^A-Za-z0-9]/.test(value))n++;
+  return n<=1?'Básica':n<=3?'Buena':'Fuerte';
+}
+function renderAccountPanel(mode){
+  const box=document.getElementById('accountPanel'); if(!box)return;
+  if(mode==='login'){
+    box.innerHTML=`<div class="card"><form class="account-form" id="loginForm"><label>Username o email<input id="loginId" autocomplete="username" maxlength="120" placeholder="Tu username o email" required></label><label>Contraseña<div class="password-wrap"><input id="loginPass" type="password" autocomplete="current-password" minlength="8" required><button class="show-pass" id="showLoginPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberLogin" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Entrar</button><span class="save-note" id="accountMsg"></span></div><div class="account-benefit">Puedes iniciar sesión con tu username. Si añadiste un email a tu cuenta, también puedes usar ese email.</div></form></div>`;
+    bindPasswordToggle('showLoginPass','loginPass');
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});
+  }else if(mode==='register'){
+    box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. sebas10" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
+    let regMode='basic';
+    const choices=[...box.querySelectorAll('[data-reg-mode]')];
+    const emailInput=document.getElementById('regEmail'), emailLabel=document.getElementById('emailLabel');
+    choices.forEach(btn=>btn.addEventListener('click',()=>{regMode=btn.dataset.regMode;choices.forEach(x=>x.classList.toggle('active',x===btn));const required=regMode==='email';emailInput.required=required;emailLabel.firstChild.textContent=required?'Email ':'Email (opcional)';emailInput.placeholder=required?'Tu email personal o escolar':'Puede ser personal o escolar';}));
+    bindPasswordToggle('showRegPass','regPass');bindPasswordToggle('showRegPass2','regPass2');
+    document.getElementById('regPass').addEventListener('input',e=>{const v=e.target.value;document.getElementById('passStrength').textContent=v.length?`Seguridad: ${passwordStrengthText(v)}.`:'Mínimo 8 caracteres.';});
+    document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPass').value;if(p!==document.getElementById('regPass2').value){accountMessage('Las contraseñas no coinciden.',true);return;}const email=document.getElementById('regEmail').value.trim();if(regMode==='email'&&!email){accountMessage('Escribe un email para este tipo de cuenta.',true);return;}accountMessage('Creando cuenta…');try{const data=await accountRequest('POST',{action:'register',username:document.getElementById('regUser').value,email,password:p,requireEmail:regMode==='email',remember:document.getElementById('rememberRegister').checked});accountSession={status:'ready',user:data.user};lastCloudHash='';await syncCloudState();box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Cuenta creada ✓</h2><p><b>Guarda este código de recuperación.</b> Te permite recuperar tu cuenta incluso si no puedes entrar.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. Guárdalo en un lugar seguro. El sitio no puede volver a mostrarlo después.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishAccount">Continuar</button></div></div>`;document.getElementById('finishAccount').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});
+  }else{
+    box.innerHTML=`<div class="card"><form class="account-form" id="recoverForm"><label>Username o email<input id="recId" autocomplete="username" maxlength="120" required></label><label>Código de recuperación<input id="recCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX" required></label><label>Nueva contraseña<div class="password-wrap"><input id="recPass" type="password" autocomplete="new-password" minlength="8" required><button class="show-pass" id="showRecPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRecover" type="checkbox" checked> Mantener mi sesión iniciada después de recuperar la cuenta</label><div class="btn-row"><button class="btn" type="submit">Cambiar contraseña</button><span class="save-note" id="accountMsg"></span></div></form><p class="cloud-note">Por seguridad, conocer solo el username o email no permite cambiar una contraseña: también necesitas el código de recuperación.</p></div>`;
+    bindPasswordToggle('showRecPass','recPass');
+    document.getElementById('recoverForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Verificando…');try{const data=await accountRequest('POST',{action:'reset-password',identifier:document.getElementById('recId').value,recoveryCode:document.getElementById('recCode').value,newPassword:document.getElementById('recPass').value,remember:document.getElementById('rememberRecover').checked});accountSession={status:'ready',user:data.user};renderNav();render();}catch(err){accountMessage(err.message,true);}});
+  }
+}
+
+/* =========================================================
    LEADERBOARD
 ========================================================= */
-function ensureLeaderboardDeviceId(){
-  if(!state.settings.leaderboardDeviceId){
-    state.settings.leaderboardDeviceId=(crypto&&crypto.randomUUID)?crypto.randomUUID():`dev_${Date.now()}_${Math.random().toString(36).slice(2)}`;
-    saveState();
-  }
-  return state.settings.leaderboardDeviceId;
-}
 async function leaderboardRequest(method='GET', body=null){
-  const opts={method,headers:{'Content-Type':'application/json'}};
+  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
   if(body) opts.body=JSON.stringify(body);
   const res=await fetch('/.netlify/functions/leaderboard',opts);
-  if(!res.ok) throw new Error(`Leaderboard ${res.status}`);
-  return res.json();
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){const err=new Error(data.error||`Leaderboard ${res.status}`);err.status=res.status;throw err;}
+  return data;
 }
 async function submitLeaderboardScore(result){
-  if(!result || result.mode!=='examen' || !state.settings.leaderboardName) return;
+  if(!result || result.mode!=='examen' || !accountSession.user) return;
   try{
     await leaderboardRequest('POST',{
-      deviceId:ensureLeaderboardDeviceId(),
-      name:state.settings.leaderboardName,
-      score:result.correctCount,
-      total:result.total,
-      pct:result.pct
+      score:result.correctCount,total:result.total,pct:result.pct,
+      topics:result.examTopics||Object.keys(result.byTopic||{}),fullExam:!!result.examFull
     });
   }catch(e){}
 }
+function topicNamesCompact(ids){
+  const names=(ids||[]).map(id=>TOPICS.find(t=>t.id===id)?.name).filter(Boolean);
+  return names.length?names.join(', '):'Temas no disponibles';
+}
 function renderLeaderboard(main){
-  const name=state.settings.leaderboardName||'';
   main.innerHTML=`
-    <div class="pagehead"><h1>🏆 Leaderboard</h1><p>Compite con estudiantes que usan este mismo hub. Se publica tu mejor nota de examen.</p></div>
+    <div class="pagehead"><h1>🏆 Leaderboard</h1><p>Compite con estudiantes que usan este mismo hub. Se publica la mejor nota de cada cuenta.</p></div>
     <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Tu perfil</p>
-      <div class="setting-row"><div class="setting-copy"><b>Nombre visible</b><span>Este nombre será público en el leaderboard. No uses información privada.</span></div><div class="setting-control"><input id="leaderName" maxlength="24" value="${escHtml(name)}" placeholder="Tu nombre" style="min-width:180px;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);"></div></div>
-      <div class="btn-row"><button class="btn" id="saveLeaderName">${name?'Guardar nombre':'Registrarme para el leaderboard'}</button><span class="save-note" id="leaderSaveNote"></span></div>
+      ${accountSession.status==='checking'?`<p>Comprobando tu cuenta…</p>`:accountSession.user?`
+        <div class="account-status"><div><div class="account-user">${escHtml(accountSession.user.username)}</div><div class="account-sub">Tu leaderboard está ligado a esta cuenta para evitar perfiles duplicados.</div></div><span class="sync-pill">Cuenta conectada</span></div>
+      `:`<div class="account-status"><div><b>Necesitas una cuenta para competir</b><div class="account-sub">Puedes seguir estudiando sin cuenta, pero solo las cuentas pueden publicar notas.</div></div><button class="btn" id="leaderLogin">Registrarme / Login</button></div>`}
     </div>
     <div class="card"><p class="section-title">Clasificación</p><div id="leaderList"><div class="empty-state"><span class="ic">…</span>Cargando leaderboard…</div></div></div>`;
-  document.getElementById('saveLeaderName').addEventListener('click',async()=>{
-    const v=document.getElementById('leaderName').value.trim().replace(/\s+/g,' ');
-    if(v.length<2){alert('Escribe un nombre de al menos 2 caracteres.');return;}
-    state.settings.leaderboardName=v.slice(0,24); ensureLeaderboardDeviceId(); saveState();
-    document.getElementById('leaderSaveNote').textContent='Guardado ✓';
-    await loadLeaderboard();
-  });
+  const b=document.getElementById('leaderLogin'); if(b)b.addEventListener('click',()=>goto('cuenta'));
   loadLeaderboard();
 }
 async function loadLeaderboard(){
@@ -2304,9 +2895,12 @@ async function loadLeaderboard(){
   try{
     const data=await leaderboardRequest('GET');
     const rows=Array.isArray(data.players)?data.players:[];
-    box.innerHTML=rows.length?rows.map((p,i)=>`<div class="hist-row"><span><b>${i+1}.</b> ${escHtml(p.name)}${p.deviceId===state.settings.leaderboardDeviceId?' · Tú':''}</span><span><b>${p.bestPct}%</b> · ${p.bestScore}/${p.bestTotal} · ${p.exams} ${p.exams===1?'examen':'exámenes'}</span></div>`).join(''):`<div class="empty-state"><span class="ic">🏆</span>Todavía no hay notas publicadas.</div>`;
+    box.innerHTML=rows.length?rows.map((p,i)=>{
+      const meta=`${p.bestFullExam?'Examen completo · ':''}${p.bestTotal} preguntas · ${topicNamesCompact(p.bestTopics)}`;
+      return `<div class="hist-row"><span><b>${i+1}.</b> ${escHtml(p.name)}${p.isMe?' · Tú':''}<span class="leader-meta">${escHtml(meta)}</span></span><span class="leader-score"><b>${p.bestPct}%</b> · ${p.bestScore}/${p.bestTotal}<span class="leader-meta">${p.exams} ${p.exams===1?'examen':'exámenes'} completados</span></span></div>`;
+    }).join(''):`<div class="empty-state"><span class="ic">🏆</span>Todavía no hay notas publicadas.</div>`;
   }catch(e){
-    box.innerHTML=`<div class="empty-state"><span class="ic">☁</span>El leaderboard online todavía no está conectado en este deploy. El resto del cuaderno funciona normalmente.</div>`;
+    box.innerHTML=`<div class="empty-state"><span class="ic">☁</span>No se pudo cargar el leaderboard ahora mismo.</div>`;
   }
 }
 
@@ -2319,7 +2913,11 @@ function renderNovedades(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
     <div class="card">
-      <div class="update-item"><h3>Versión 1.7 · Leaderboard y personalización <span class="new-pill">NUEVO</span></h3><p>Se añadió el sistema de leaderboard compartido para registrar un nombre y publicar la mejor nota de los exámenes, junto con personalización del color principal de la interfaz. El leaderboard usa una función segura del proyecto de Netlify y el progreso local sigue conservándose entre actualizaciones.</p></div>
+      <div class="update-item"><h3>Versión 2.0 · Grande, refinada y final <span class="new-pill">NUEVO</span></h3><p>Se refinó la retroalimentación educativa: después de contestar, el cuaderno explica por qué la respuesta está bien o mal, muestra la definición del concepto relacionado, añade un ejemplo distinto para entenderlo y conserva una clave para reconocerlo la próxima vez. También se limpiaron pequeñas partes del código y se mantuvieron prácticas persistentes, cuentas, sincronización, leaderboard, usuarios conectados y Modo Experimental.</p></div>
+      <div class="update-item"><h3>Experimental y usuarios conectados</h3><p>Se añadió un contador aproximado de usuarios activos en la esquina superior derecha y un Modo Experimental dentro de Practicar. El modo experimental crea nuevas variaciones de ejemplos y preguntas mediante plantillas controladas, muestra una advertencia clara de que puede contener errores y, por seguridad académica, no modifica estadísticas, errores, historial ni leaderboard.</p></div>
+      <div class="update-item"><h3>Estructura de Español y pulido anterior</h3><p>El encabezado ahora identifica la materia como Español y muestra la versión publicada. El Panel quedó preparado para el futuro hub universal con categorías separadas de Temas actuales y Exámenes pasados, sin inventar exámenes que todavía no se han añadido. También se refinó la estructura para que futuras materias puedan reutilizar la misma base sin cambiar el diseño actual.</p></div>
+      <div class="update-item"><h3>Cuentas y sincronización universal</h3><p>Se añadieron cuentas sincronizadas con dos opciones de registro: cuenta básica con username + contraseña y cuenta con username + email + contraseña. El email sigue siendo opcional en la cuenta básica y, si lo añades, también sirve para iniciar sesión. Se mejoró la sesión persistente, recuperación mediante código personal, controles para ver/ocultar contraseña y sincronización en la nube de progreso, historial, errores, guardadas y toda la configuración. El leaderboard queda ligado a la cuenta y muestra en pequeño los temas y el tamaño del examen usado para la mejor nota.</p></div>
+      <div class="update-item"><h3>Versión 1.7 · Leaderboard y personalización</h3><p>Se añadió el sistema de leaderboard compartido para registrar un nombre y publicar la mejor nota de los exámenes, junto con personalización del color principal de la interfaz. El leaderboard usa una función segura del proyecto de Netlify y el progreso local sigue conservándose entre actualizaciones.</p></div>
       <div class="update-item"><h3>Versión 1.6 · Versión final estable</h3><p>Se revisó y limpió el código completo sin rediseñar el sitio. Se reforzó la recuperación del progreso, se corrigió el respaldo local, se evitó revelar la respuesta en el primer intento fallido, se protegieron las sesiones al navegar, se eliminan preguntas repetidas del modo adaptativo y los exámenes solo afectan el Panel cuando se completan.</p></div>
       <div class="update-item"><h3>Versión 1.5 · Revisión de preguntas y memoria estable</h3><p>Ahora puedes volver a revisar preguntas ya contestadas durante una sesión y, al terminar, abrir sesiones nuevas desde Historial para ver cada pregunta, si estuvo bien o mal y su explicación. También se añadió una clave de almacenamiento estable que no cambia con las actualizaciones, manteniendo compatibilidad con el progreso de versiones anteriores.</p></div>
       <div class="update-item"><h3>Versión 1.4 · Explicaciones mejoradas</h3><p>Después de contestar en Práctica, el cuaderno ahora explica por qué la respuesta es correcta o incorrecta, muestra la respuesta correcta cuando hace falta y añade una clave para reconocer ese concepto la próxima vez. En Examen, las explicaciones aparecen al final para no revelar respuestas durante la prueba.</p></div>
@@ -2336,7 +2934,7 @@ function renderNovedades(main){
 function renderAjustes(main){
   const selected=new Set(state.settings.examTopics||TOPICS.map(t=>t.id));
   main.innerHTML = `
-    <div class="pagehead"><h1>Configuración</h1><p>Personaliza cómo funciona tu cuaderno en este dispositivo.</p></div>
+    <div class="pagehead"><h1>Configuración</h1><p>Personaliza cómo funciona tu cuaderno.${accountSession.user?' Estos ajustes se sincronizan con tu cuenta.':' Inicia sesión para sincronizarlos entre dispositivos.'}</p></div>
     <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Apariencia</p>
       <div class="setting-row"><div class="setting-copy"><b>Tema</b><span>Escoge claro, oscuro o automático según tu iPhone.</span></div><div class="setting-control"><select id="themeMode"><option value="light" ${state.settings.themeMode==='light'?'selected':''}>Claro</option><option value="dark" ${state.settings.themeMode==='dark'?'selected':''}>Oscuro</option><option value="auto" ${state.settings.themeMode==='auto'?'selected':''}>Automático</option></select></div></div>
@@ -2379,9 +2977,15 @@ document.addEventListener('keydown', e=>{
 ========================================================= */
 // Guarda de forma periódica y también cuando iOS/Safari oculta o cierra la página.
 setInterval(()=>{ saveState(); },5000);
-document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') saveState(); });
-window.addEventListener('pagehide',saveState);
-window.addEventListener('beforeunload',saveState);
+function checkpointActivePractice(){
+  if(state.session && state.session.mode==='practica' && !state.session.experimental){
+    state.session.lastCheckpointAt=Date.now();
+  }
+  saveState();
+}
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') checkpointActivePractice(); });
+window.addEventListener('pagehide',checkpointActivePractice);
+window.addEventListener('beforeunload',checkpointActivePractice);
 window.addEventListener('pageshow',()=>{ if(!hasLocalSavedState) restoreIndexedDBFallback(); });
 if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(()=>{}); }
 
@@ -2395,6 +2999,52 @@ if(window.matchMedia){
 }
 render();
 restoreIndexedDBFallback();
+restoreAccountSession();
+
+
+/* =========================================================
+   PRESENCIA: usuarios conectados
+   Conteo aproximado de navegadores activos en los últimos 90 s.
+========================================================= */
+const ONLINE_CLIENT_KEY='studyhub_presence_client_v1';
+let presenceTimer=null;
+function presenceClientId(){
+  try{
+    let id=localStorage.getItem(ONLINE_CLIENT_KEY);
+    if(!id){
+      id=(crypto&&crypto.randomUUID)?crypto.randomUUID():`c_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+      localStorage.setItem(ONLINE_CLIENT_KEY,id);
+    }
+    return id;
+  }catch(e){ return `temp_${Math.random().toString(36).slice(2)}`; }
+}
+function updateOnlineBadge(count){
+  const el=document.getElementById('onlineCount');
+  if(!el)return;
+  if(!Number.isFinite(count)){ el.textContent='Conectados: —'; return; }
+  el.textContent=count===1?'1 conectado':`${count} conectados`;
+}
+async function heartbeatPresence(){
+  if(document.visibilityState==='hidden') return;
+  try{
+    const res=await fetch('/.netlify/functions/presence',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({clientId:presenceClientId()}),cache:'no-store'
+    });
+    const data=await res.json().catch(()=>({}));
+    if(res.ok && Number.isFinite(data.count)) updateOnlineBadge(data.count);
+    else updateOnlineBadge(NaN);
+  }catch(e){ updateOnlineBadge(NaN); }
+}
+function startPresence(){
+  heartbeatPresence();
+  clearInterval(presenceTimer);
+  presenceTimer=setInterval(heartbeatPresence,30000);
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible') heartbeatPresence(); });
+}
+
+
+startPresence();
 </script>
 </body>
 </html>
