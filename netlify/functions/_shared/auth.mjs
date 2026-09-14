@@ -25,7 +25,20 @@ export function roleForUser(user) {
   if (username === 'superdev') return 'superdev';
   if (username && configuredUsernames('OWNER_USERNAME').has(username)) return 'owner';
   if (username && configuredUsernames('ADMIN_USERNAMES').has(username)) return 'admin';
+  if (user?.securityRole === 'admin') return 'admin';
   return 'member';
+}
+
+export function accountProfile(user) {
+  const username = String(user?.username || 'Estudiante').slice(0, 20);
+  const veteran = user?.veteran === true || user?.whitelisted === true || user?.entitlement === 'veteran';
+  return {
+    displayName: String(user?.displayName || username).trim().slice(0, 60) || username,
+    visibleRank: String(user?.visibleRank || (veteran ? 'Veterano' : 'Estudiante')).trim().slice(0, 40) || 'Estudiante',
+    veteran,
+    entitlement: veteran ? 'veteran' : 'standard',
+    privacy: user?.privacy && typeof user.privacy === 'object' ? { profile: user.privacy.profile === 'public' ? 'public' : 'private' } : { profile: 'private' },
+  };
 }
 
 export function roleForSession(user, session) {
@@ -102,11 +115,19 @@ export function clearSessionCookie() {
 }
 
 export function publicUser(user, role = roleForUser(user)) {
+  const profile = accountProfile(user);
   return {
     id: user.id,
     username: user.username,
     email: user.email || '',
+    displayName: profile.displayName,
+    visibleRank: profile.visibleRank,
+    veteran: profile.veteran,
+    entitlement: profile.entitlement,
+    privacy: profile.privacy,
     createdAt: user.createdAt,
+    updatedAt: Number(user.updatedAt || user.createdAt || 0),
+    lastActivityAt: Number(user.lastActivityAt || user.updatedAt || user.createdAt || 0),
     status: isSuspended(user) ? 'suspended' : 'active',
     role,
   };
@@ -121,6 +142,9 @@ export function canManageUser(actor, target, action, authenticatedActorRole = ro
   const targetRole = roleForUser(target);
   if (!canAccessAdmin(actorRole) || targetRole === 'superdev') return false;
   if (actor?.id === target?.id && ['suspend', 'delete', 'revoke-sessions'].includes(action)) return false;
+  if (['set-veteran', 'remove-veteran', 'grant-admin', 'revoke-admin'].includes(action)) {
+    return actorRole === 'superdev' && ['member', 'admin', 'owner'].includes(targetRole);
+  }
   if (actorRole === 'admin') return targetRole === 'member';
   if (actorRole === 'owner') return targetRole === 'member' || targetRole === 'admin';
   if (actorRole === 'superdev') return ['member', 'admin', 'owner'].includes(targetRole);

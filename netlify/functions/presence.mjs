@@ -1,4 +1,5 @@
 import { getStore } from '@netlify/blobs';
+import { authenticateRequest, publicUser } from './_shared/auth.mjs';
 
 const PRESENCE = getStore('study-hub-presence-v1');
 const ACTIVE_MS = 90_000;
@@ -18,6 +19,15 @@ function json(data, status = 200) {
 }
 function validId(value) {
   return typeof value === 'string' && /^[A-Za-z0-9_-]{8,120}$/.test(value);
+}
+function cleanContext(value, max = 80) {
+  return typeof value === 'string' ? value.trim().slice(0, max) : '';
+}
+function clientKind(req) {
+  const agent = String(req.headers.get('user-agent') || '').toLowerCase();
+  if (/iphone|android|mobile/.test(agent)) return 'mobile';
+  if (/ipad|tablet/.test(agent)) return 'tablet';
+  return agent ? 'desktop' : 'unknown';
 }
 async function activeCount(now) {
   const { blobs } = await PRESENCE.list({ prefix: 'heartbeat/' });
@@ -49,7 +59,24 @@ export default async (req) => {
       let body = {};
       try { body = await req.json(); } catch {}
       if (!validId(body.clientId)) return json({ error: 'Identificador inválido.' }, 400);
-      await PRESENCE.setJSON(`heartbeat/${body.clientId}`, { at: now });
+      const auth = await authenticateRequest(req);
+      const row = {
+        at: now,
+        section: cleanContext(body.section),
+        subjectId: cleanContext(body.subjectId, 40),
+        topicId: cleanContext(body.topicId),
+        clientKind: clientKind(req),
+      };
+      if (auth.ok) {
+        const user = publicUser(auth.user, auth.role);
+        row.userId = user.id;
+        row.username = user.username;
+        row.displayName = user.displayName;
+        row.role = user.role;
+        row.visibleRank = user.visibleRank;
+        row.veteran = user.veteran;
+      }
+      await PRESENCE.setJSON(`heartbeat/${body.clientId}`, row);
       return json({ count: await activeCount(now), windowSeconds: Math.round(ACTIVE_MS / 1000) });
     }
     if (req.method === 'GET') {

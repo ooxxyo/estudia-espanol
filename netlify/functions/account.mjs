@@ -126,6 +126,11 @@ export default async (req) => {
         username,
         normalizedUsername: normalized,
         email,
+        displayName: username,
+        visibleRank: 'Estudiante',
+        veteran: false,
+        entitlement: 'standard',
+        privacy: { profile: 'private' },
         password: hashSecret(password),
         recovery: hashSecret(recoveryCode.replace(/-/g, '').toUpperCase()),
         status: 'active',
@@ -149,6 +154,9 @@ export default async (req) => {
       if (!user || !checkSecret(body.password, user.password)) return await failAttempt(rate, 'Usuario/email o contraseña incorrectos.');
       if (isSuspended(user)) return await failAttempt(rate, 'Esta cuenta está suspendida.');
       if (normalizeUsername(user.username) === 'superdev') return await failAttempt(rate, 'Usa Dev Login para acceder a esta cuenta.');
+      user.lastActivityAt = Date.now();
+      user.updatedAt = Math.max(Number(user.updatedAt || 0), user.lastActivityAt);
+      await USERS.setJSON(`user/${user.id}`, user);
       const remember = body.remember !== false;
       const token = await createSession(user, remember);
       const cloudState = await PROGRESS.get(`user/${user.id}`, { type: 'json', consistency: 'strong' });
@@ -168,6 +176,9 @@ export default async (req) => {
       const user = await resolveUser('superdev');
       if (!user) return await failAttempt(rate, 'La cuenta Super Dev todavía no está configurada.');
       if (isSuspended(user)) return await failAttempt(rate, 'La cuenta Super Dev no está disponible.');
+      user.lastActivityAt = Date.now();
+      user.updatedAt = Math.max(Number(user.updatedAt || 0), user.lastActivityAt);
+      await USERS.setJSON(`user/${user.id}`, user);
       const remember = body.remember !== false;
       const token = await createSession(user, remember, { superdevAuthenticated: true });
       const cloudState = await PROGRESS.get(`user/${user.id}`, { type: 'json', consistency: 'strong' });

@@ -8,6 +8,7 @@ export const RATE_POLICIES = Object.freeze({
   recovery: { attempts: 5, windowMs: 30 * 60_000, cooldownMs: 30 * 60_000 },
   devLogin: { attempts: 5, windowMs: 15 * 60_000, cooldownMs: 30 * 60_000 },
   register: { attempts: 5, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
+  feedback: { attempts: 6, windowMs: 15 * 60_000, cooldownMs: 30 * 60_000 },
 });
 
 function clientAddress(req) {

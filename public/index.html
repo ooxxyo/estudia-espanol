@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cuaderno · Español</title>
+<title>Study Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -86,6 +86,28 @@ button{font-family:inherit;}
 .subject-tags{display:flex;gap:7px;flex-wrap:wrap;}
 .subject-tag{font-size:.76rem;font-weight:600;padding:5px 8px;border:1px solid var(--line);border-radius:999px;background:var(--bg-soft);}
 .subject-empty{font-size:.82rem;color:var(--ink-soft);margin:0;}
+.hub-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;}
+.hub-date{display:inline-flex;padding:7px 11px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink-soft);font-size:.78rem;font-weight:700;white-space:nowrap;}
+.hub-summary{margin-bottom:24px;}
+.hub-summary .card{height:100%;}
+.hub-progress{display:flex;align-items:center;gap:15px;}
+.hub-progress strong{font-family:'Fraunces',Georgia,serif;font-size:2rem;font-weight:600;}
+.hub-day{margin-top:26px;}
+.hub-day-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:11px;}
+.hub-day-head h2{font-size:1.18rem;margin:0;}
+.hub-day-head span{font-size:.76rem;color:var(--ink-soft);}
+.subject-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+.hub-subject-card{display:flex;flex-direction:column;min-height:190px;}
+.hub-subject-card.available{border-color:color-mix(in srgb,var(--accent) 45%,var(--line));}
+.hub-subject-card.unavailable{box-shadow:none;}
+.subject-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+.subject-emoji{font-size:1.65rem;line-height:1;}
+.subject-status{font-size:.68rem;font-weight:800;padding:4px 8px;border-radius:999px;background:var(--bg-soft);color:var(--ink-soft);}
+.hub-subject-card.available .subject-status{background:var(--accent-soft);color:var(--accent);}
+.hub-subject-card h3{font-size:1.05rem;margin:16px 0 5px;}
+.hub-subject-card p{margin:0 0 16px;color:var(--ink-soft);font-size:.82rem;line-height:1.45;}
+.hub-subject-card .btn{margin-top:auto;width:100%;}
+.subject-context{font-size:.74rem;color:var(--ink-soft);font-weight:700;margin:0 0 7px;}
 .system-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;}
 .online-badge{
   position:fixed;top:12px;right:14px;z-index:80;
@@ -129,7 +151,8 @@ button{font-family:inherit;}
 
 @media(max-width:820px){.online-badge{top:8px;right:8px;font-size:.66rem;padding:6px 8px;}.experimental-controls{grid-template-columns:1fr;}}
 
-@media (max-width:620px){.subject-columns{grid-template-columns:1fr;}}
+@media (max-width:720px){.subject-grid{grid-template-columns:1fr 1fr;}}
+@media (max-width:620px){.subject-columns,.subject-grid{grid-template-columns:1fr;}.hub-heading{display:block;}.hub-date{margin-top:12px;}}
 
 .nav-btn{
   display:flex;align-items:center;gap:10px;
@@ -155,9 +178,9 @@ button{font-family:inherit;}
   .mobile-nav{
     display:flex;position:fixed;bottom:0;left:0;right:0;
     background:var(--bg-soft);border-top:1px solid var(--line);
-    padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:50;overflow-x:auto;gap:2px;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:50;overflow-x:hidden;gap:2px;
   }
-  .mobile-nav .nav-btn{flex-direction:column;gap:3px;font-size:.62rem;padding:7px 8px;min-width:58px;text-align:center;}
+  .mobile-nav .nav-btn{flex:1 1 0;flex-direction:column;gap:3px;font-size:.62rem;line-height:1.1;padding:7px 2px;min-width:0;text-align:center;white-space:nowrap;overflow:hidden;}
   main{padding-bottom:78px !important;}
 }
 
@@ -550,11 +573,21 @@ body{line-height:1.55;}
 .dev-login{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
 .role-badge{display:inline-flex;padding:3px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.7rem;font-weight:800}
 .admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.admin-actions button{font-size:.76rem;padding:7px 9px}
+.veteran-badge{display:inline-flex;padding:3px 7px;border-radius:999px;background:var(--amber-soft);color:var(--amber);font-size:.7rem;font-weight:800}
+.status-badge{display:inline-flex;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-size:.7rem;font-weight:800}.status-badge.offline{background:var(--bg-soft);color:var(--ink-soft)}.status-badge.suspended{background:var(--bad-soft);color:var(--bad)}
+.admin-tabs,.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.admin-tabs .chip,.filter-row .chip{min-height:38px}
+.admin-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.admin-metric{padding:16px;border:1px solid var(--line);border-radius:11px;background:var(--bg)}.admin-metric strong{display:block;font-family:'Fraunces',Georgia,serif;font-size:1.7rem}.admin-metric span{font-size:.76rem;color:var(--ink-soft)}
+.admin-list{display:grid;gap:10px}.admin-user-card,.feedback-card{padding:15px;border:1px solid var(--line);border-radius:11px;background:var(--card)}.admin-user-card h3,.feedback-card h3{margin:0 0 4px;font-size:1rem}.admin-user-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}.admin-detail{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.admin-form-grid label,.feedback-form label{display:grid;gap:6px;font-size:.82rem;color:var(--ink-soft)}.admin-form-grid input,.feedback-form input,.feedback-form select,.feedback-form textarea,.admin-toolbar input,.admin-toolbar select,.feature-row select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}.feedback-form textarea{min-height:130px;resize:vertical}.admin-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) 180px auto;gap:10px;align-items:end}.admin-toolbar.feedback-filters{grid-template-columns:minmax(160px,1fr) repeat(3,minmax(120px,150px)) auto}.feature-list{display:grid;gap:10px}.feature-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 130px auto;gap:10px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:11px}.feature-row h3{margin:0 0 4px;font-size:.95rem}.feedback-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px}.feedback-type{font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--accent)}
+.nav-btn.feedback-nav{border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--accent-soft);color:var(--accent);font-weight:800}
+.nav-btn.feedback-nav.active{background:var(--accent);color:#fff}
+.app-toast{position:fixed;right:18px;bottom:18px;z-index:200;max-width:360px;padding:12px 15px;border-radius:10px;background:var(--ink);color:var(--card);box-shadow:var(--shadow);font-size:.86rem}.app-toast.bad{background:var(--bad);color:#fff}
 .cloud-note{font-size:.78rem;color:var(--ink-soft);margin-top:6px;}
 .leader-meta{display:block;margin-top:3px;font-size:.72rem;color:var(--ink-soft);font-weight:500;}
 .leader-score{text-align:right;white-space:nowrap;}
 .sync-pill{font-size:.68rem;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-weight:700;}
-@media(max-width:640px){.account-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}}
+@media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-row,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
+@media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}}
 
 </style>
 </head>
@@ -564,7 +597,7 @@ body{line-height:1.55;}
   <nav class="rail" id="rail"></nav>
   <main id="main">
       <div class="card" style="margin:30px auto;max-width:680px;">
-        <h2 style="margin-top:0;">Cuaderno · Español</h2>
+        <h2 style="margin-top:0;">Study Hub</h2>
         <p>La aplicación está cargando.</p>
         <p style="color:var(--ink-soft);font-size:.9rem;">Si este mensaje no desaparece, el visor donde abriste el archivo no permite ejecutar JavaScript. Abre el archivo directamente en Safari, Chrome, Edge o Firefox.</p>
       </div>
@@ -584,14 +617,31 @@ const TOPICS = [
   {id:'figuras', name:'Figuras literarias', icon:'✦'},
 ];
 
-// Metadatos del área actual. Esta estructura queda preparada para
-// convertir el proyecto en un hub universal con más materias más adelante.
-const SUBJECT = {
-  id:'espanol',
-  name:'Español',
-  currentTopics:TOPICS.map(t=>t.id),
-  pastExams:[] // Se añaden aquí solo cuando el usuario provea exámenes anteriores reales.
-};
+const STUDY_DAYS=Object.freeze([
+  {id:1,name:'Día 1'},
+  {id:2,name:'Día 2'},
+]);
+
+// Fuente única de verdad para la estructura del Hub. El motor heredado de
+// Español se adapta mediante contentKey; las demás materias no crean vistas
+// vacías y podrán activarse agregando su contenido al mismo contrato.
+const SUBJECT_CATALOG=Object.freeze([
+  {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
+  {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
+  {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
+  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
+  {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
+  {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Disponible',available:true,contentKey:'legacy-espanol-v1',topicGroups:{current:{id:'espanol-v2',name:'Material actual',topicIds:TOPICS.map(t=>t.id)},previous:[]}},
+]);
+const SUBJECT_BY_ID=new Map(SUBJECT_CATALOG.map(subject=>[subject.id,subject]));
+const SUBJECT=SUBJECT_BY_ID.get('espanol');
+const SUBJECT_VIEW_IDS=new Set(['dashboard','repaso','repasoCards','practica','experimental','examen','errores','guardadas','historial','session','results']);
+function subjectsForDay(day){return SUBJECT_CATALOG.filter(subject=>subject.day===day);}
+function subjectContent(subjectId){
+  const subject=SUBJECT_BY_ID.get(subjectId);
+  if(!subject?.available || subject.contentKey!=='legacy-espanol-v1') return {topics:[],reviewCards:[],questions:[]};
+  return {topics:TOPICS,reviewCards:REVIEW_CARDS,questions:Q};
+}
 
 /* =========================================================
    DATOS: preguntas
@@ -655,7 +705,7 @@ Q.push(
 Q.push(
 {id:nid(), topic:'morfologia', type:'mc', dif:'facil',
  prompt:'¿Cómo se llama la parte fundamental de una palabra, la que contiene el significado principal?',
- options:['Morfema flexivo','Lexema o raíz','Infijo','Sufijo'], correct:1,
+ options:['Morfema flexivo','Lexema o raíz','Interfijo','Sufijo'], correct:1,
  hints:['A partir de esta parte se forman palabras relacionadas como pan, panadero, panadería.','Es la base sobre la que se añaden los demás elementos.'],
  exp:'El lexema (o raíz) es la parte fundamental de la palabra y contiene el significado principal.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'facil',
@@ -665,17 +715,17 @@ Q.push(
  exp:'"pan-" es el lexema; el resto son morfemas añadidos.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'facil',
  prompt:'Un morfema que expresa información gramatical como género, número, persona, tiempo o modo, sin crear una palabra nueva, se llama:',
- options:['Morfema derivativo','Morfema flexivo','Infijo','Lexema'], correct:1,
+ options:['Morfema derivativo','Morfema flexivo','Interfijo','Lexema'], correct:1,
  hints:['Piensa en el ejemplo "niñas": la -a y la -s no crean una palabra distinta, solo dan información.'],
  exp:'El morfema flexivo aporta género, número, persona, tiempo o modo, sin crear una palabra completamente nueva.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'facil',
  prompt:'En la palabra "niñas", ¿qué representa la "-s" final?',
- options:['Morfema flexivo de género','Morfema flexivo de número plural','Morfema derivativo prefijo','Infijo'], correct:1,
+ options:['Morfema flexivo de género','Morfema flexivo de número plural','Morfema derivativo prefijo','Interfijo'], correct:1,
  hints:['La -a ya marca el género femenino.','La -s marca cuántos son.'],
  exp:'La "-s" es el morfema flexivo de número plural; la "-a" es el morfema flexivo de género femenino.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'medio',
  prompt:'Un morfema que sirve para formar una palabra nueva o modificar el significado del lexema (y puede ser prefijo o sufijo) se llama:',
- options:['Morfema flexivo','Morfema derivativo','Infijo','Lexema'], correct:1,
+ options:['Morfema flexivo','Morfema derivativo','Interfijo','Lexema'], correct:1,
  hints:['A diferencia del flexivo, este sí puede crear una palabra distinta o cambiar su significado.'],
  exp:'El morfema derivativo forma palabras nuevas o modifica el significado del lexema; incluye prefijos y sufijos.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'medio',
@@ -684,15 +734,15 @@ Q.push(
  hints:['MDP = Morfema Derivativo Prefijo. "Pre-" significa "antes".'],
  exp:'El prefijo aparece antes del lexema (por ejemplo, "i-" en "ilegal").'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'medio',
- prompt:'¿Dónde aparece un infijo?',
+ prompt:'¿Dónde aparece un interfijo?',
  options:['Antes del lexema','Después del sufijo','Entre el lexema y el sufijo','Al final absoluto de la palabra'], correct:2,
  hints:['Funciona como una partícula de enlace.','Ejemplo clave: "panecillo" → pan + ec + illo.'],
- exp:'El infijo aparece entre el lexema y el sufijo, funcionando como enlace (ej. la "-ec-" en "panecillo").'},
+ exp:'El interfijo aparece entre el lexema y el sufijo, funcionando como enlace (ej. la "-ec-" en "panecillo").'},
 {id:nid(), topic:'morfologia', type:'tf', dif:'medio',
- prompt:'El infijo normalmente tiene un significado propio muy importante.',
+ prompt:'El interfijo normalmente tiene un significado propio muy importante.',
  correct:false,
  hints:['El documento dice que "normalmente no tiene significado propio importante".'],
- exp:'Falso: el infijo funciona como partícula de enlace y normalmente no aporta un significado propio importante.'},
+ exp:'Falso: el interfijo funciona como partícula de enlace y normalmente no aporta un significado propio importante.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'medio',
  prompt:'Una palabra derivada se forma:',
  options:['Combinando dos lexemas completos','Añadiendo uno o más morfemas derivativos a un lexema','Quitando morfemas de un lexema','Repitiendo el mismo lexema dos veces'], correct:1,
@@ -700,7 +750,7 @@ Q.push(
  exp:'Una palabra derivada se forma añadiendo uno o más morfemas derivativos a un lexema (casa → casita).'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
  prompt:'La parasíntesis es un procedimiento de formación de palabras que se practica especialmente con esta estructura:',
- options:['lexema + lexema','sufijo + lexema + prefijo','prefijo + lexema + sufijo','infijo + lexema'], correct:2,
+ options:['lexema + lexema','sufijo + lexema + prefijo','prefijo + lexema + sufijo','interfijo + lexema'], correct:2,
  hints:['Intervienen simultáneamente distintos elementos, con el prefijo y el sufijo "abrazando" al lexema.'],
  exp:'La estructura típica de la parasíntesis es prefijo + lexema + sufijo, con ambos elementos actuando a la vez.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
@@ -716,7 +766,7 @@ Q.push(
 );
 
 /* ---------- SECCIÓN 3: ANÁLISIS MORFOLÓGICO (segmentación) ---------- */
-// roles: MDP, LEX, INF, MDS, MF
+// roles: MDP, LEX, MDI, MDS, MF. INF se acepta solo como alias de sesiones antiguas.
 function segQ(word, parts, dif, note){
   return {id:nid(), topic:'morfologia', type:'seg', dif,
     prompt:`Divide la palabra "${word}" y asigna la función correcta a cada parte.`,
@@ -724,7 +774,7 @@ function segQ(word, parts, dif, note){
     hints:[
       'Busca primero el lexema: la parte con el significado principal.',
       'Revisa si hay algo antes del lexema (prefijo) o después (sufijo/flexivo).',
-      note || 'Recuerda: MDP = prefijo, LEX = lexema, INF = infijo, MDS = sufijo, MF = morfema flexivo.'
+      note || 'Recuerda: MDP = prefijo, LEX = lexema, MDI = interfijo, MDS = sufijo, MF = morfema flexivo.'
     ],
     exp: explainSeg(word, parts)
   };
@@ -732,13 +782,14 @@ function segQ(word, parts, dif, note){
 function explainSeg(word, parts){
   return parts.map(p=>`${p.text.toUpperCase()} (${roleName(p.role)})`).join(' + ');
 }
+function normalizeMorphRole(role){return role==='INF'?'MDI':role;}
 function roleName(r){
-  return {MDP:'prefijo', LEX:'lexema', INF:'infijo', MDS:'sufijo', MF:'morfema flexivo'}[r];
+  return {MDP:'prefijo', LEX:'lexema', MDI:'interfijo', INF:'interfijo', MDS:'sufijo', MF:'morfema flexivo'}[r];
 }
 
 Q.push(
- segQ('panecillo', [{text:'pan',role:'LEX'},{text:'ec',role:'INF'},{text:'illo',role:'MDS'}], 'medio',
-   'Este es el ejemplo fundamental de infijo: pan + ec + illo.'),
+ segQ('panecillo', [{text:'pan',role:'LEX'},{text:'ec',role:'MDI'},{text:'illo',role:'MDS'}], 'medio',
+   'Este es el ejemplo fundamental de interfijo: pan + ec + illo.'),
  segQ('calentadores', [{text:'calent',role:'LEX'},{text:'ador',role:'MDS'},{text:'es',role:'MF'}], 'medio'),
  segQ('destornillador', [{text:'des',role:'MDP'},{text:'tornill',role:'LEX'},{text:'ador',role:'MDS'}], 'medio'),
  segQ('casita', [{text:'cas',role:'LEX'},{text:'ita',role:'MDS'}], 'facil'),
@@ -756,34 +807,34 @@ Q.push(
  // extra "same level" words to check real understanding
  segQ('panadería', [{text:'pan',role:'LEX'},{text:'ader',role:'MDS'},{text:'ía',role:'MDS'}], 'dificil',
    'En este nivel puedes agrupar "-adería" como un sufijo compuesto que forma el lugar donde se hace algo.'),
- segQ('florecillas', [{text:'flor',role:'LEX'},{text:'ec',role:'INF'},{text:'ill',role:'MDS'},{text:'as',role:'MF'}], 'dificil',
-   'Igual que en "panecillo": lexema + infijo -ec- + sufijo + flexivo de plural.'),
+ segQ('florecillas', [{text:'flor',role:'LEX'},{text:'ec',role:'MDI'},{text:'ill',role:'MDS'},{text:'as',role:'MF'}], 'dificil',
+   'Igual que en "panecillo": lexema + interfijo -ec- + sufijo + flexivo de plural.'),
  segQ('desilusionado', [{text:'des',role:'MDP'},{text:'ilusion',role:'LEX'},{text:'ado',role:'MDS'}], 'dificil')
 );
 
 // Palabra compuesta especial (cabizbajo) — no es un simple prefijo+lexema+sufijo
 Q.push({id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
  prompt:'"Cabizbajo" se forma a partir de "cabeza" + "bajo". ¿Cómo se describe mejor este tipo de formación?',
- options:['Es solo un morfema flexivo','Es una palabra compuesta a partir de dos lexemas, no un simple prefijo o sufijo','Es un infijo','No tiene ninguna formación morfológica'], correct:1,
+ options:['Es solo un morfema flexivo','Es una palabra compuesta a partir de dos lexemas, no un simple prefijo o sufijo','Es un interfijo','No tiene ninguna formación morfológica'], correct:1,
  hints:['Observa que "cabeza" y "bajo" son dos palabras completas con significado propio, no un prefijo ni un sufijo.'],
  exp:'"Cabizbajo" une dos lexemas (cabeza + bajo) en una palabra compuesta, un proceso distinto a simplemente añadir un prefijo o sufijo.'});
 
 Q.push(
 {id:nid(), topic:'morfologia', type:'mc', dif:'medio',
- prompt:'¿Qué representan las siglas MDP, LEX, INF, MDS y MF en el análisis morfológico?',
+ prompt:'¿Qué representan las siglas MDP, LEX, MDI, MDS y MF en el análisis morfológico?',
  options:[
-  'Morfema Derivativo Prefijo, Lexema, Infijo, Morfema Derivativo Sufijo, Morfema Flexivo',
+  'Morfema Derivativo Prefijo, Lexema, Morfema Derivativo Interfijo, Morfema Derivativo Sufijo, Morfema Flexivo',
   'Modo, Léxico, Interjección, Modo de Sufijo, Modo Final',
   'Morfema Doble, Léxico, Intención, Morfema del Sujeto, Modo Flexivo',
   'Ninguna de las anteriores'], correct:0,
  hints:['Cada sigla corresponde a un tipo de parte de la palabra que hemos estudiado.'],
- exp:'MDP=Morfema Derivativo Prefijo, LEX=Lexema, INF=Infijo, MDS=Morfema Derivativo Sufijo, MF=Morfema Flexivo.'},
+ exp:'MDP=Morfema Derivativo Prefijo, LEX=Lexema, MDI=Morfema Derivativo Interfijo, MDS=Morfema Derivativo Sufijo, MF=Morfema Flexivo.'},
 {id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
  prompt:'Un compañero analizó "calentadores" así: "calentador (LEX) + es (MDS)". ¿Qué corrigirías?',
  options:[
    'Está completamente correcto',
    '"calentador" no es un lexema completo; debería ser calent (LEX) + ador (MDS) + es (MF), y "-es" es un morfema flexivo, no derivativo',
-   'Falta un infijo',
+   'Falta un interfijo',
    '"-es" debería ser un prefijo'], correct:1,
  hints:['El lexema debe ser la raíz mínima con el significado base: "calent-".','La "-es" final solo marca plural: eso es información gramatical, no una palabra nueva.'],
  exp:'El análisis correcto es calent (LEX) + ador (MDS) + es (MF): "-es" marca plural, así que es un morfema flexivo, no derivativo.'}
@@ -1151,6 +1202,28 @@ Q.push(
  exp:'La hipérbole exagera intencionalmente; la metáfora identifica directamente dos elementos, sin que su función central sea exagerar.'}
 );
 
+const QUESTION_AUDIT_RULES=Object.freeze({lengthRatio:1.35,minCorrectLength:12,technicalWordLength:8});
+function auditQuestionOptions(bank=Q,{includeExperimental=false}={}){
+  const scoped=includeExperimental?bank:bank.filter(question=>!question.experimental);
+  const multipleChoice=scoped.filter(question=>question.type==='mc'&&Array.isArray(question.options)&&Number.isInteger(question.correct));
+  const distribution={A:0,B:0,C:0,D:0,E:0};
+  const flagged=[];
+  multipleChoice.forEach(question=>{
+    const correct=String(question.options[question.correct]||'');
+    const distractors=question.options.filter((_,index)=>index!==question.correct).map(String);
+    const average=distractors.length?distractors.reduce((sum,text)=>sum+text.length,0)/distractors.length:0;
+    const reasons=[];
+    if(correct.length>=QUESTION_AUDIT_RULES.minCorrectLength&&average&&correct.length>average*QUESTION_AUDIT_RULES.lengthRatio)reasons.push('correcta-más-larga');
+    const distractorWords=new Set(distractors.join(' ').toLowerCase().match(/[a-záéíóúñü]{8,}/g)||[]);
+    const uniqueTechnical=(correct.toLowerCase().match(/[a-záéíóúñü]{8,}/g)||[]).filter(word=>!distractorWords.has(word));
+    if(uniqueTechnical.length>=2)reasons.push('detalle-técnico-solo-correcta');
+    if(distractors.some(text=>/\b(nunca|siempre|exactamente lo mismo|ninguna diferencia|ninguna de las anteriores)\b/i.test(text)))reasons.push('distractor-absoluto-o-débil');
+    const letter='ABCDE'[question.correct];if(letter)distribution[letter]++;
+    if(reasons.length)flagged.push({id:question.id,reasons,correctLength:correct.length,averageDistractorLength:Math.round(average)});
+  });
+  return {total:scoped.length,multipleChoice:multipleChoice.length,distribution,flagged};
+}
+
 /* =========================================================
    ESTADO Y PERSISTENCIA
 ========================================================= */
@@ -1169,10 +1242,14 @@ let cloudSyncTimer = null;
 let cloudSyncInFlight = false;
 let lastCloudHash = '';
 let lastCloudUpdatedAt = 0;
+let lastCloudSyncAt = 0;
+let featureFlags = [];
+let adminRefreshTimer = null;
 
 const state = {
   theme:'light',
-  view:'dashboard',
+  view:'hub',
+  activeSubjectId:null,
   stats:{}, // topicId -> {attempts, correct, recent:[bool], mastered:false}
   totalAnswered:0, totalCorrect:0, currentStreak:0, bestStreak:0,
   studySeconds:0,
@@ -1187,7 +1264,8 @@ const state = {
     lastSeenUpdate:'',
     accentColor:'#8B2635',
     leaderboardName:'',
-    leaderboardDeviceId:''
+    leaderboardDeviceId:'',
+    hiddenWarnings:{}
   }
 };
 TOPICS.forEach(t=> state.stats[t.id] = {attempts:0, correct:0, recent:[]});
@@ -1206,6 +1284,7 @@ function snapshotState(){
     savedAt:Date.now(),
     theme:state.theme,
     view:state.view,
+    activeSubjectId:state.activeSubjectId,
     stats:state.stats,
     totalAnswered:state.totalAnswered,totalCorrect:state.totalCorrect,
     currentStreak:state.currentStreak,bestStreak:state.bestStreak,
@@ -1258,8 +1337,14 @@ function applySavedData(d){
     if(typeof incoming.accentColor==='string' && /^#[0-9A-Fa-f]{6}$/.test(incoming.accentColor)) state.settings.accentColor=incoming.accentColor;
     if(typeof incoming.leaderboardName==='string') state.settings.leaderboardName=incoming.leaderboardName.slice(0,40);
     if(typeof incoming.leaderboardDeviceId==='string') state.settings.leaderboardDeviceId=incoming.leaderboardDeviceId.slice(0,120);
+    if(incoming.hiddenWarnings && typeof incoming.hiddenWarnings==='object' && !Array.isArray(incoming.hiddenWarnings)) state.settings.hiddenWarnings={...incoming.hiddenWarnings};
   }
-  if(typeof d.view==='string' && d.view!=='session') state.view=d.view;
+  if(typeof d.activeSubjectId==='string' && SUBJECT_BY_ID.get(d.activeSubjectId)?.available) state.activeSubjectId=d.activeSubjectId;
+  if(typeof d.view==='string' && d.view!=='session'){
+    state.view=d.view;
+    if(SUBJECT_VIEW_IDS.has(d.view)) state.activeSubjectId=SUBJECT.id;
+    else if(d.view==='hub') state.activeSubjectId=null;
+  }
   if(d.session && Array.isArray(d.session.queueIds)){
     const queue=d.session.queueIds.map(findQuestionById).filter(Boolean);
     if(queue.length){
@@ -1381,7 +1466,10 @@ function stableCloudPayload(){
   // El progreso general siempre se sincroniza. Una práctica normal pausada también
   // viaja con la cuenta para poder continuarla en otro dispositivo.
   // Exámenes incompletos y sesiones experimentales permanecen locales.
-  snap.view='dashboard';
+  // La vista sincronizada es neutral: cada dispositivo conserva su contexto
+  // local, mientras versiones anteriores siguen cayendo en su Panel por defecto.
+  snap.view='hub';
+  snap.activeSubjectId=null;
   if(!(state.session && state.session.mode==='practica' && !state.session.experimental)){
     snap.session=null;
   }
@@ -1396,17 +1484,21 @@ function scheduleCloudSync(){
   cloudSyncTimer=setTimeout(syncCloudState,1200);
 }
 async function syncCloudState(){
-  if(!accountSession.user || cloudSyncInFlight || suppressCloudSync) return;
+  if(!accountSession.user) return {ok:false,error:'Inicia sesión para sincronizar.'};
+  if(cloudSyncInFlight || suppressCloudSync) return {ok:false,pending:true};
   const payload=stableCloudPayload();
   const hash=cloudPayloadHash(payload);
-  if(hash===lastCloudHash) return;
+  if(hash===lastCloudHash) return {ok:true,unchanged:true,updatedAt:lastCloudSyncAt};
   cloudSyncInFlight=true;
   let retry=false;
+  let outcome={ok:false,error:'No se pudo sincronizar.'};
   try{
     const result=await accountRequest('POST',{action:'sync',state:payload,baseUpdatedAt:lastCloudUpdatedAt});
     lastCloudUpdatedAt=Number(result.updatedAt)||lastCloudUpdatedAt;
+    lastCloudSyncAt=Date.now();
     lastCloudHash=hash;
     const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent='Sincronizado ✓';
+    outcome={ok:true,updatedAt:lastCloudSyncAt};
   }catch(e){
     if(e.status===401){ accountSession={status:'ready',user:null}; renderNav(); }
     if(e.status===409 && e.data?.cloudState){
@@ -1420,18 +1512,23 @@ async function syncCloudState(){
       if(cloudIsNewer && cloudProgress>=localProgress) applyCloudCanonical(cloud);
       else { lastCloudHash=''; retry=true; }
     }
-    const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent='Pendiente de sincronizar';
+    const message=e.status===409?'Resolviendo cambios…':'No se pudo sincronizar';
+    const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent=message;
+    outcome={ok:false,error:e.message||'No se pudo sincronizar.',retry};
   }finally{cloudSyncInFlight=false;}
   if(retry) setTimeout(syncCloudState,100);
+  return outcome;
 }
 function applyCloudCanonical(cloudState){
   if(!cloudState || typeof cloudState!=='object') return false;
   suppressCloudSync=true;
   try{
     const currentView=state.view;
+    const currentSubjectId=state.activeSubjectId;
     const localSession=state.session && state.session.mode==='practica' && !state.session.experimental?state.session:null;
     applySavedData(cloudState);
     state.view=currentView;
+    state.activeSubjectId=currentSubjectId;
     const cloudSession=state.session && state.session.mode==='practica' && !state.session.experimental?state.session:null;
     const localProgress=localSession?(localSession.answers?.length||0)*1000+(localSession.idx||0):-1;
     const cloudProgress=cloudSession?(cloudSession.answers?.length||0)*1000+(cloudSession.idx||0):-1;
@@ -1455,6 +1552,24 @@ async function restoreAccountSession(){
   }catch(e){accountSession={status:'ready',user:null}; renderNav();}
 }
 function accountLabel(){ return accountSession.user?accountSession.user.username:'Cuenta'; }
+function accountDisplayName(user=accountSession.user){return user?.displayName||user?.username||'Estudiante';}
+function featureEnabled(id){return featureFlags.some(feature=>feature.id===id && feature.enabled===true);}
+async function loadFeatureFlagState(){
+  try{
+    const res=await fetch('/.netlify/functions/features',{credentials:'same-origin',cache:'no-store'});
+    const data=await res.json().catch(()=>({}));
+    featureFlags=res.ok&&Array.isArray(data.features)?data.features:[];
+  }catch{featureFlags=[];}
+}
+function showToast(message,bad=false){
+  document.querySelector('.app-toast')?.remove();
+  const toast=document.createElement('div');
+  toast.className=`app-toast${bad?' bad':''}`;
+  toast.setAttribute('role','status');
+  toast.textContent=message;
+  document.body.appendChild(toast);
+  setTimeout(()=>toast.remove(),3200);
+}
 
 function computeMastery(topicId){
   const s = state.stats[topicId];
@@ -1505,15 +1620,21 @@ function recordAnswer(q, correct){
 /* =========================================================
    NAV / RENDER SHELL
 ========================================================= */
-const NAV_ITEMS = [
-  {id:'dashboard', label:'Panel', icon:'⌂'},
-  {id:'cuenta', label:'Cuenta', icon:'●'},
+const HUB_NAV_ITEMS = [
+  {id:'hub', label:'Hub', icon:'⌂'},
+];
+const STUDY_NAV_ITEMS = [
+  {id:'dashboard', label:'Panel', icon:SUBJECT.emoji},
   {id:'repaso', label:'Repasar', icon:'▤'},
   {id:'practica', label:'Practicar', icon:'✎'},
   {id:'examen', label:'Examen', icon:'▦'},
   {id:'errores', label:'Mis errores', icon:'✕'},
   {id:'guardadas', label:'Guardadas', icon:'★'},
   {id:'historial', label:'Historial', icon:'▥'},
+];
+const UTILITY_NAV_ITEMS = [
+  {id:'cuenta', label:'Cuenta', icon:'●'},
+  {id:'feedback', label:'Enviar feedback', icon:'✉', prominent:true},
   {id:'leaderboard', label:'Leaderboard', icon:'🏆'},
   {id:'admin', label:'Admin', icon:'⚑', adminOnly:true},
   {id:'novedades', label:'Novedades', icon:'✦'},
@@ -1521,14 +1642,19 @@ const NAV_ITEMS = [
 ];
 function visibleNavItems(){
   const role=accountSession.user?.role;
-  return NAV_ITEMS.filter(item=>!item.adminOnly || ['admin','owner','superdev'].includes(role));
+  const items=state.activeSubjectId===SUBJECT.id
+    ? [...HUB_NAV_ITEMS,...STUDY_NAV_ITEMS,...UTILITY_NAV_ITEMS]
+    : [...HUB_NAV_ITEMS,...UTILITY_NAV_ITEMS];
+  return items.filter(item=>!item.adminOnly || ['admin','owner','superdev'].includes(role));
 }
 
 function renderNav(){
   const rail = document.getElementById('rail');
+  const activeSubject=SUBJECT_BY_ID.get(state.activeSubjectId);
+  const role=accountSession.user?.role;
   rail.innerHTML = `
-    <div class="rail-brand"><div class="rail-brand-line">Cuaderno <span class="version-badge">v${APP_VERSION}</span></div><span>${SUBJECT.name}</span></div>
-    ${visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?accountLabel():n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
+    <div class="rail-brand"><div class="rail-brand-line">Study Hub <span class="version-badge">v${APP_VERSION}</span></div><span>${activeSubject?`${activeSubject.emoji} Día ${activeSubject.day} · ${activeSubject.name}`:'Estudio general'}</span></div>
+    ${visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''} ${n.prominent?'feedback-nav':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?accountLabel():n.id==='admin'&&role==='superdev'?'Super Dev':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
     <div class="rail-foot">
       <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
@@ -1536,17 +1662,21 @@ function renderNav(){
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
   const mob = document.getElementById('mobileNav');
-  mob.innerHTML = visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?'Cuenta':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
+  mob.innerHTML = visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''} ${n.prominent?'feedback-nav':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?'Cuenta':n.id==='feedback'?'Feedback':n.id==='leaderboard'?'Ranking':n.id==='admin'&&role==='superdev'?'Dev':n.id==='novedades'?'Nuevo':n.id==='ajustes'?'Ajustes':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
   mob.querySelectorAll('[data-navm]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.navm)));
+}
+function setViewContext(view){
+  state.view=view;
+  if(view==='hub') state.activeSubjectId=null;
+  else if(SUBJECT_VIEW_IDS.has(view)) state.activeSubjectId=SUBJECT.id;
 }
 function navigateFromNav(view){
   if(state.session){
     if(state.session.mode==='practica' && !state.session.experimental){
       if(state.view!=='session'){ goto(view); return; }
-      if(!confirm('Hay una práctica en curso. Se guardará para que puedas continuarla después. ¿Salir de la práctica?')) return;
       state.session.pausedAt=Date.now();
       state.session.attemptStage=attemptStage;
-      state.view=view;
+      setViewContext(view);
       saveState();
       render();
       window.scrollTo(0,0);
@@ -1594,23 +1724,67 @@ function discardPausedPractice(){
   state.session=null;
   saveState();
 }
-function goto(view){ state.view=view; saveState(); render(); window.scrollTo(0,0); }
+function goto(view){ setViewContext(view); saveState(); render(); window.scrollTo(0,0); }
 function render(){
+  if(state.view!=='admin'){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
   renderNav();
   const main = document.getElementById('main');
   main.innerHTML='';
   const renderers = {
+    hub:renderHub,
     dashboard: renderDashboard, cuenta: renderCuenta, repaso: renderRepasoHome, practica: renderPracticaHome,
     experimental: renderExperimentalHome, examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
-    historial: renderHistorial, leaderboard: renderLeaderboard, admin: renderAdmin, novedades: renderNovedades, ajustes: renderAjustes,
+    historial: renderHistorial, feedback:renderFeedback, leaderboard: renderLeaderboard, admin: renderAdmin, novedades: renderNovedades, ajustes: renderAjustes,
     session: renderSession, results: renderResults, repasoCards: renderRepasoCards,
   };
-  (renderers[state.view]||renderDashboard)(main);
+  (renderers[state.view]||renderHub)(main);
 }
 
 /* =========================================================
    DASHBOARD
 ========================================================= */
+function localDateLabel(){
+  try{return new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(new Date());}
+  catch{return '';}
+}
+function renderHubSubjectCard(subject){
+  const content=subjectContent(subject.id);
+  const detail=subject.available
+    ? `${content.topics.length} temas · ${content.questions.length} preguntas`
+    : `Día ${subject.day} · contenido en preparación`;
+  return `<article class="card hub-subject-card ${subject.available?'available':'unavailable'}" ${subject.available?'':'aria-disabled="true"'}>
+    <div class="subject-card-top"><span class="subject-emoji" aria-hidden="true">${subject.emoji}</span><span class="subject-status">${subject.status}</span></div>
+    <h3>${subject.name}</h3>
+    <p>${detail}</p>
+    <button class="btn ${subject.available?'':'ghost'}" ${subject.available?`data-open-subject="${subject.id}"`:'disabled'}>${subject.available?'Abrir materia':'Próximamente'}</button>
+  </article>`;
+}
+function openSubject(subjectId,view='dashboard'){
+  const subject=SUBJECT_BY_ID.get(subjectId);
+  if(!subject?.available) return false;
+  state.activeSubjectId=subject.id;
+  goto(view);
+  return true;
+}
+function renderHub(main){
+  const date=localDateLabel();
+  const pending=resumablePracticeProgress();
+  const mastery=overallMastery();
+  main.innerHTML=`
+    <div class="pagehead hub-heading"><div><h1>Study Hub</h1><p>Tu espacio general para organizar y continuar el estudio.</p></div>${date?`<span class="hub-date">${escHtml(date)}</span>`:''}</div>
+    ${pending?`<div class="card resume-card"><div class="system-row"><div><b>▶ Práctica pendiente en ${SUBJECT.name}</b><div class="resume-meta"><span class="resume-pill">Pregunta ${pending.current} de ${pending.total}</span><span class="resume-pill">${pending.answered} contestadas</span><span class="resume-pill">${escHtml(pending.topic)}</span></div></div><button class="btn" id="resumeFromHub">Continuar práctica</button></div></div>`:''}
+    <div class="grid grid-2 hub-summary">
+      <div class="card"><p class="section-title">Progreso general disponible</p><div class="hub-progress"><strong>${mastery}%</strong><div><b>${SUBJECT.emoji} ${SUBJECT.name}</b><div class="account-sub">${state.totalAnswered} ${state.totalAnswered===1?'pregunta contestada':'preguntas contestadas'} · ${state.history.length} sesiones en historial</div></div></div><div class="btn-row" style="margin-top:15px;"><button class="btn primary" id="openSpanishQuick">Abrir Español</button></div></div>
+      <div class="card"><p class="section-title">Acceso rápido</p><h3 style="margin:0 0 6px;">Novedades del Hub</h3><p style="margin:0 0 15px;color:var(--ink-soft);font-size:.86rem;">Consulta las mejoras recientes y las funciones que están en preparación.</p><button class="btn ghost" id="openHubUpdates">Ver Novedades</button></div>
+    </div>
+    ${STUDY_DAYS.map(day=>`<section class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h2 id="hub-day-${day.id}">${day.name}</h2><span>${subjectsForDay(day.id).length} materias</span></div><div class="subject-grid">${subjectsForDay(day.id).map(renderHubSubjectCard).join('')}</div></section>`).join('')}`;
+  main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject)));
+  document.getElementById('openSpanishQuick').addEventListener('click',()=>openSubject(SUBJECT.id));
+  document.getElementById('openHubUpdates').addEventListener('click',()=>goto('novedades'));
+  const resumeFromHub=document.getElementById('resumeFromHub');
+  if(resumeFromHub) resumeFromHub.addEventListener('click',()=>openSubject(SUBJECT.id,'session'));
+}
+
 function ringSvg(pct, size=150, stroke=12){
   const r=(size-stroke)/2, c=2*Math.PI*r;
   const off = c*(1-pct/100);
@@ -1631,7 +1805,7 @@ function renderDashboard(main){
   const weak = weakestTopic();
   const lastErrors = state.errors.slice(-3).reverse();
   main.innerHTML = `
-    <div class="pagehead"><h1>Panel de estudio</h1><p>Tu progreso general en ${SUBJECT.name}.</p></div>
+    <div class="pagehead"><p class="subject-context">Study Hub → Día ${SUBJECT.day} → ${SUBJECT.emoji} ${SUBJECT.name}</p><div class="system-row"><div><h1>Panel de ${SUBJECT.name}</h1><p>Tu progreso y herramientas de esta materia.</p></div><button class="icon-btn" id="backToHub">← Volver al Hub</button></div></div>
     ${!accountSession.user?`<div class="card" style="margin-bottom:20px;"><div class="account-status"><div><b>Guarda todo en tu cuenta</b><div class="account-sub">Sincroniza progreso, historial, guardadas y configuración entre dispositivos.</div></div><button class="btn" id="goAccount">Registrarme / Login</button></div></div>`:`<div class="cloud-note" style="margin:-14px 0 18px 0;">● Conectado como <b>${escHtml(accountSession.user.username)}</b> · <span id="cloudSyncStatus">Sincronización activa</span></div>`}
     ${hasResumablePractice()?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><b>▶ Tienes una práctica sin terminar</b><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} de ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><button class="btn" id="resumeFromDash">Continuar práctica</button></div></div>`})():''}
     <div class="card dash-top" style="margin-bottom:20px;">
@@ -1651,20 +1825,21 @@ function renderDashboard(main){
       <div class="system-row">
         <div>
           <p class="section-title" style="margin-bottom:4px;">${SUBJECT.name}</p>
-          <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Organización de la materia para el hub.</p>
+          <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Primera materia activa del Study Hub.</p>
         </div>
         <span class="version-badge">v${APP_VERSION}</span>
       </div>
       <div class="subject-columns" style="margin-top:14px;">
         <div class="subject-block">
-          <h3>Temas actuales</h3>
-          <div class="subject-tags">${TOPICS.filter(t=>SUBJECT.currentTopics.includes(t.id)).map(t=>`<span class="subject-tag">${t.icon} ${t.name}</span>`).join('')}</div>
+          <h3>Tema actual · ${SUBJECT.topicGroups.current.name}</h3>
+          <div class="subject-tags">${TOPICS.filter(t=>SUBJECT.topicGroups.current.topicIds.includes(t.id)).map(t=>`<span class="subject-tag">${t.icon} ${t.name}</span>`).join('')}</div>
+          <div class="btn-row" style="margin-top:12px;"><button class="btn soft" id="openSubjectReview">Repasar temas</button><button class="btn ghost" id="openSubjectPractice">Practicar</button></div>
         </div>
         <div class="subject-block">
-          <h3>Exámenes pasados</h3>
-          ${SUBJECT.pastExams.length
-            ? `<div class="subject-tags">${SUBJECT.pastExams.map(x=>`<span class="subject-tag">${escHtml(x.name||String(x))}</span>`).join('')}</div>`
-            : `<p class="subject-empty">Todavía no hay exámenes anteriores añadidos. Cuando se incorporen, aparecerán aquí sin mezclar el material actual.</p>`}
+          <h3>Temas anteriores</h3>
+          ${SUBJECT.topicGroups.previous.length
+            ? `<div class="subject-tags">${SUBJECT.topicGroups.previous.map(topic=>`<span class="subject-tag">${escHtml(topic.name)}</span>`).join('')}</div>`
+            : `<p class="subject-empty">Todavía no hay temas anteriores. Cuando se añada material nuevo, el contenido actual seguirá accesible aquí.</p>`}
         </div>
       </div>
     </div>
@@ -1687,6 +1862,9 @@ function renderDashboard(main){
       </div>
     </div>
   `;
+  document.getElementById('backToHub').addEventListener('click',()=>goto('hub'));
+  document.getElementById('openSubjectReview').addEventListener('click',()=>goto('repaso'));
+  document.getElementById('openSubjectPractice').addEventListener('click',()=>goto('practica'));
   if(weak) document.getElementById('goWeak').addEventListener('click', ()=> startSession({mode:'practica', topic:weak.id}));
   const ga=document.getElementById('goAccount'); if(ga) ga.addEventListener('click',()=>goto('cuenta')); 
   const resumeFromDash=document.getElementById('resumeFromDash');
@@ -1710,7 +1888,7 @@ const REVIEW_CARDS = [
  {topic:'morfologia', title:'Morfema flexivo', def:'No crea una palabra nueva; expresa género, número, persona, tiempo o modo.', example:'niñ-a-s: -a género, -s número'},
  {topic:'morfologia', title:'MDP (prefijo)', def:'Morfema Derivativo Prefijo. Aparece antes del lexema y modifica el significado.', example:'ilegal → i- + legal'},
  {topic:'morfologia', title:'MDS (sufijo)', def:'Morfema Derivativo Sufijo. Aparece después del lexema; puede formar palabras nuevas.', example:'casita → cas + ita'},
- {topic:'morfologia', title:'Infijo', def:'Aparece entre el lexema y el sufijo; funciona como enlace, normalmente sin significado propio importante.', example:'panecillo → pan + ec + illo'},
+ {topic:'morfologia', title:'Interfijo', def:'Morfema derivativo que aparece entre el lexema y el sufijo; funciona como enlace y normalmente no aporta un significado propio importante.', example:'panecillo → pan + ec + illo'},
  {topic:'morfologia', title:'Palabra derivada', def:'Se forma añadiendo uno o más morfemas derivativos a un lexema.', example:'casa → casita'},
  {topic:'morfologia', title:'Parasíntesis', def:'Formación de palabras donde intervienen simultáneamente distintos elementos, típicamente prefijo + lexema + sufijo.', example:'des + tornill + ador'},
  {topic:'narrativa', title:'Género narrativo', def:'Cuenta acontecimientos, reales o ficticios, con personajes que actúan y participan en conflictos.', example:'Puede usar diálogo, metáfora, descripción.'},
@@ -1783,9 +1961,9 @@ function renderReviewExample(c){
       morphVisual([{text:'cas',label:'LEX'},{text:'ita',label:'MDS',kind:'suffix'}]),
       `<b>Qué debes notar:</b> el sufijo <span class="study-highlight">-ita</span> aparece después del lexema.`
     ),
-    'morfologia|Infijo':studyExample(
-      morphVisual([{text:'pan',label:'LEX'},{text:'ec',label:'INF',kind:'infix'},{text:'illo',label:'MDS',kind:'suffix'}]),
-      `<b>Qué debes notar:</b> <span class="study-highlight">ec</span> está entre <b>pan</b> e <b>illo</b>; por eso es un infijo.`
+    'morfologia|Interfijo':studyExample(
+      morphVisual([{text:'pan',label:'LEX'},{text:'ec',label:'MDI',kind:'infix'},{text:'illo',label:'MDS',kind:'suffix'}]),
+      `<b>Qué debes notar:</b> <span class="study-highlight">ec</span> está entre <b>pan</b> e <b>illo</b>; por eso es un interfijo.`
     ),
     'morfologia|Palabra derivada':studyExample(
       `<div class="study-sequence"><span class="study-step">casa</span><span class="study-arrow">→ + -ita →</span><span class="study-step">casita</span></div>`,
@@ -2016,7 +2194,7 @@ function experimentalBank(topic){
 
   if(topic==='morfologia'){
     [
-      ['En “panecillo”, ¿qué función cumple “ec”?','Infijo',['Lexema','Prefijo','Morfema flexivo'],'pan + ec + illo: “ec” aparece entre el lexema y el sufijo, por eso funciona como infijo.'],
+      ['En “panecillo”, ¿qué función cumple “ec”?','Interfijo',['Lexema','Prefijo','Morfema flexivo'],'pan + ec + illo: “ec” aparece entre el lexema y el sufijo, por eso funciona como interfijo.'],
       ['En “casita”, ¿qué parte es un morfema derivativo sufijo?','ita',['cas','a','s'],'cas es el lexema y -ita se añade después para formar una palabra derivada.'],
       ['En “niñas”, ¿qué elemento indica número plural?','s',['niñ','a','niñas'],'La -s final es un morfema flexivo que marca el plural.'],
       ['En “ilegal”, ¿dónde está el prefijo?','i-',['legal','-al','-gal'],'El elemento i- aparece antes de la base y modifica el significado.'],
@@ -2390,7 +2568,8 @@ function confirmQuit(){
 let sessionSelection = null; // holds current user selection before submit
 
 function renderQuestionBody(q, isExam){
-  const savedSelection=state.session.currentSelection??null;
+  let savedSelection=state.session.currentSelection??null;
+  if(q.type==='seg'&&Array.isArray(savedSelection))savedSelection=savedSelection.map(normalizeMorphRole);
   sessionSelection = savedSelection;
   const box = document.getElementById('qBody');
   if(q.type==='mc'){
@@ -2430,13 +2609,13 @@ function renderQuestionBody(q, isExam){
     });
   } else if(q.type==='seg'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
-      <p class="seg-key">MDP = prefijo · LEX = lexema · INF = infijo · MDS = sufijo · MF = morfema flexivo</p>
+      <p class="seg-key">MDP = prefijo · LEX = lexema · MDI = interfijo · MDS = sufijo · MF = morfema flexivo</p>
       <div class="seg-word">${q.parts.map((p,i)=>`
         <div class="seg-chunk"><div class="txt">${p.text}</div>
         <select data-i="${i}">
           <option value="">—</option>
           <option value="MDP">MDP</option><option value="LEX">LEX</option>
-          <option value="INF">INF</option><option value="MDS">MDS</option>
+          <option value="MDI">MDI</option><option value="MDS">MDS</option>
           <option value="MF">MF</option>
         </select></div>`).join('')}</div>`;
     box.querySelectorAll('select').forEach(sel=>sel.addEventListener('change', ()=>{
@@ -2507,7 +2686,7 @@ function checkCorrectness(q, ans){
   if(q.type==='mc') return ans===q.correct;
   if(q.type==='tf') return ans===q.correct;
   if(q.type==='fill') return ans && ans.trim().toLowerCase()===q.answer.toLowerCase();
-  if(q.type==='seg') return Array.isArray(ans) && q.parts.every((p,i)=>ans[i]===p.role);
+  if(q.type==='seg') return Array.isArray(ans) && q.parts.every((p,i)=>normalizeMorphRole(ans[i])===normalizeMorphRole(p.role));
   if(q.type==='eviden'){
     const okSentence = ans?.sentence===q.correctSentence;
     const okFollow = q.followup? ans?.follow===q.followup.correct : true;
@@ -2523,7 +2702,7 @@ function answerLabel(q, ans){
   if(q.type==='mc') return q.options?.[ans] ?? 'Sin respuesta';
   if(q.type==='tf') return ans===true?'Verdadero':ans===false?'Falso':'Sin respuesta';
   if(q.type==='fill') return ans || 'Sin respuesta';
-  if(q.type==='seg') return Array.isArray(ans)? ans.join(' · ') : 'Sin respuesta';
+  if(q.type==='seg') return Array.isArray(ans)? ans.map(normalizeMorphRole).join(' · ') : 'Sin respuesta';
   if(q.type==='eviden'){
     const sent = Number.isInteger(ans?.sentence) ? q.reading?.[ans.sentence] : null;
     const follow = q.followup && Number.isInteger(ans?.follow) ? q.followup.options?.[ans.follow] : null;
@@ -2566,7 +2745,7 @@ const CONCEPT_ALIASES = {
   'morfema flexivo':['morfema flexivo','mf'],
   'mdp prefijo':['mdp','prefijo','morfema derivativo prefijo'],
   'mds sufijo':['mds','sufijo','morfema derivativo sufijo'],
-  infijo:['infijo','inf'],
+  interfijo:['interfijo','mdi','infijo','inf'],
   'palabra derivada':['palabra derivada','derivada'],
   parasintesis:['parasintesis'],
   'genero narrativo':['genero narrativo'],
@@ -2998,10 +3177,27 @@ function renderCuenta(main){
   if(accountSession.user){
     main.innerHTML=`
       <div class="pagehead"><h1>Tu cuenta</h1><p>Todo tu progreso y configuración se sincronizan con esta cuenta.</p></div>
-      <div class="card" style="margin-bottom:20px;"><div class="account-status"><div><div class="account-user">${escHtml(accountSession.user.username)} ${accountSession.user.role!=='member'?`<span class="role-badge">${accountSession.user.role==='superdev'?'Super Dev':accountSession.user.role==='owner'?'Owner':'Admin'}</span>`:''}</div><div class="account-sub">${accountSession.user.email?escHtml(accountSession.user.email)+' · login por username o email':'Sin email añadido · login por username'} · sesión activa</div></div><span class="sync-pill" id="cloudSyncStatus">Sincronización activa</span></div>
+      <div class="card" style="margin-bottom:20px;"><div class="account-status"><div><div class="account-user">${escHtml(accountDisplayName())} <span class="role-badge">${roleLabel(accountSession.user.role)}</span> ${accountSession.user.veteran?'<span class="veteran-badge">Veterano</span>':''}</div><div class="account-sub">@${escHtml(accountSession.user.username)} · ${accountSession.user.email?escHtml(accountSession.user.email)+' · login por username o email':'Sin email añadido · login por username'} · sesión activa</div></div><span class="sync-pill" id="cloudSyncStatus">Sincronización activa</span></div>
       <div class="btn-row" style="margin-top:16px;"><button class="btn" id="syncNow">Sincronizar ahora</button><button class="icon-btn" id="logoutBtn">Cerrar sesión</button></div></div>
       <div class="card"><p class="section-title">Qué se guarda en tu cuenta</p><p style="margin:0;color:var(--ink-soft);">Progreso por tema, estadísticas, historial, errores, preguntas guardadas, preferencias de práctica y examen, modo claro/oscuro, color de interfaz y futuras materias del hub.</p></div>`;
-    document.getElementById('syncNow').addEventListener('click',async()=>{lastCloudHash='';await syncCloudState();const e=document.getElementById('cloudSyncStatus');if(e)e.textContent='Sincronizado ✓';});
+    document.getElementById('syncNow').addEventListener('click',async()=>{
+      const button=document.getElementById('syncNow');
+      const status=document.getElementById('cloudSyncStatus');
+      button.disabled=true;if(status)status.textContent='Sincronizando…';
+      lastCloudHash='';
+      const result=await syncCloudState();
+      button.disabled=false;
+      if(result?.ok){
+        const time=new Date(result.updatedAt||Date.now()).toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'});
+        if(status)status.textContent=`Sincronizado ✓ · ${time}`;
+        button.textContent='Sincronizar ahora';
+        showToast('Sincronizado ✓');
+      }else{
+        if(status)status.textContent='No se pudo sincronizar';
+        button.textContent='Reintentar';
+        showToast(result?.error||'No se pudo sincronizar.',true);
+      }
+    });
     document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('¿Cerrar sesión? Tu copia local seguirá en este dispositivo.'))return;try{await accountRequest('POST',{action:'logout'});accountSession={status:'ready',user:null};lastCloudHash='';lastCloudUpdatedAt=0;render();}catch(err){alert(`No se pudo revocar la sesión en el servidor. Sigues conectado. ${err.message}`);}});
     return;
   }
@@ -3047,65 +3243,220 @@ function renderAccountPanel(mode){
 }
 
 /* =========================================================
+   FEEDBACK
+========================================================= */
+const FEEDBACK_TYPES=Object.freeze({bug:'Bug',suggestion:'Sugerencia',content:'Contenido','ui-ux':'UI/UX',other:'Otro'});
+const FEEDBACK_STATUSES=Object.freeze({new:'Nuevo',reviewing:'Revisando',planned:'Planeado',fixed:'Arreglado',dismissed:'Descartado'});
+async function feedbackRequest(method='GET',body=null,query=''){
+  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch(`/.netlify/functions/feedback${query?`?${query}`:''}`,opts);
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){const error=new Error(data.error||'No se pudo procesar el feedback.');error.status=res.status;throw error;}
+  return data;
+}
+function feedbackCard(report,admin=false){
+  const subject=SUBJECT_BY_ID.get(report.subjectId);
+  return `<article class="feedback-card"><div class="system-row"><div><span class="feedback-type">${escHtml(FEEDBACK_TYPES[report.type]||'Otro')}</span><h3>${escHtml(report.title||'Sin título')}</h3><div class="meta">${new Date(Number(report.createdAt)||Date.now()).toLocaleString('es-ES')} ${subject?`· ${subject.emoji} ${subject.name}`:''}</div></div><span class="status-badge ${report.status==='dismissed'?'suspended':''}">${escHtml(FEEDBACK_STATUSES[report.status]||'Nuevo')}</span></div><p style="white-space:pre-wrap;margin:12px 0 0;">${escHtml(report.message||'')}</p>${admin?`<div class="meta" style="margin-top:10px;">${escHtml(report.displayName||report.username||'Estudiante')} · @${escHtml(report.username||'')}</div><div class="admin-actions"><select data-feedback-status="${escHtml(report.id)}">${Object.entries(FEEDBACK_STATUSES).map(([value,label])=>`<option value="${value}" ${report.status===value?'selected':''}>${label}</option>`).join('')}</select><button class="icon-btn" data-save-feedback="${escHtml(report.id)}">Guardar estado</button></div>`:''}</article>`;
+}
+function renderFeedback(main){
+  if(!accountSession.user){
+    main.innerHTML=`<div class="pagehead"><h1>Enviar feedback</h1><p>Ayúdanos a mejorar el Study Hub.</p></div><div class="card"><h2 style="margin-top:0;">Inicia sesión para continuar</h2><p>Así podrás consultar el estado de tus propios reportes sin ver feedback privado de otras personas.</p><button class="btn" id="feedbackLogin">Ir a Cuenta</button></div>`;
+    document.getElementById('feedbackLogin').addEventListener('click',()=>goto('cuenta'));
+    return;
+  }
+  const activeSubject=SUBJECT_BY_ID.get(state.activeSubjectId);
+  const activeQuestion=state.session?.queue?.[state.session.idx];
+  const activeTopicId=activeQuestion?.topic||'';
+  main.innerHTML=`<div class="pagehead"><h1>Enviar feedback</h1><p>Reporta un problema o comparte una idea. La app añadirá automáticamente tu contexto actual.</p></div><div class="feedback-layout"><div class="card"><form class="feedback-form account-form" id="feedbackForm"><label>Tipo<select id="feedbackType">${Object.entries(FEEDBACK_TYPES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('')}</select></label><label>Título<input id="feedbackTitle" maxlength="100" minlength="4" required placeholder="Resumen breve"></label><label>Mensaje<textarea id="feedbackMessage" maxlength="4000" minlength="10" required placeholder="Qué ocurrió o qué te gustaría mejorar"></textarea></label><label>Materia (opcional)<select id="feedbackSubject"><option value="">General</option>${SUBJECT_CATALOG.map(subject=>`<option value="${subject.id}" ${activeSubject?.id===subject.id?'selected':''}>${subject.emoji} ${subject.name}</option>`).join('')}</select></label><label>Tema (opcional)<select id="feedbackTopic"><option value="">Sin tema</option>${TOPICS.map(topic=>`<option value="${topic.id}" ${activeTopicId===topic.id?'selected':''}>${topic.icon} ${topic.name}</option>`).join('')}</select></label><div class="cloud-note">Se incluirán tu cuenta, fecha, sección actual y materia/tema seleccionados. Nunca se envían contraseñas, respuestas ni tokens.</div><div class="btn-row"><button class="btn primary" type="submit" id="sendFeedback">Enviar feedback</button><span class="save-note" id="feedbackMessageState"></span></div></form></div><div><div class="system-row" style="margin-bottom:12px;"><div><h2 style="margin:0;">Mis feedbacks</h2><p class="cloud-note">Solo tú y el personal autorizado pueden verlos.</p></div><button class="icon-btn" id="refreshFeedback">Actualizar</button></div><div class="admin-list" id="myFeedbackList"><div class="empty-state"><span class="ic">…</span>Cargando…</div></div></div></div>`;
+  document.getElementById('feedbackForm').addEventListener('submit',async event=>{
+    event.preventDefault();
+    const button=document.getElementById('sendFeedback');
+    const note=document.getElementById('feedbackMessageState');
+    button.disabled=true;note.textContent='Enviando…';
+    try{
+      await feedbackRequest('POST',{action:'create',type:document.getElementById('feedbackType').value,title:document.getElementById('feedbackTitle').value,message:document.getElementById('feedbackMessage').value,subjectId:document.getElementById('feedbackSubject').value,topicId:document.getElementById('feedbackTopic').value,section:state.view});
+      document.getElementById('feedbackTitle').value='';document.getElementById('feedbackMessage').value='';
+      note.textContent='Enviado ✓';showToast('Feedback enviado ✓');await loadOwnFeedback();
+    }catch(error){note.textContent=error.message;showToast(error.message,true);}finally{button.disabled=false;}
+  });
+  document.getElementById('refreshFeedback').addEventListener('click',loadOwnFeedback);
+  loadOwnFeedback();
+}
+async function loadOwnFeedback(){
+  const box=document.getElementById('myFeedbackList');if(!box)return;
+  box.innerHTML='<div class="empty-state"><span class="ic">…</span>Cargando…</div>';
+  try{
+    const data=await feedbackRequest();
+    const reports=Array.isArray(data.reports)?data.reports:[];
+    box.innerHTML=reports.length?reports.map(report=>feedbackCard(report)).join(''):'<div class="empty-state"><span class="ic">✉</span>Todavía no enviaste feedback.</div>';
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+}
+
+/* =========================================================
    ADMIN
 ========================================================= */
-async function adminRequest(method='GET', body=null, query=''){
+async function adminRequest(method='GET',body=null,query=''){
   const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
-  if(body) opts.body=JSON.stringify(body);
-  const res=await fetch(`/.netlify/functions/admin${query?`?q=${encodeURIComponent(query)}`:''}`,opts);
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch(`/.netlify/functions/admin${query?`?${query}`:''}`,opts);
   const data=await res.json().catch(()=>({}));
-  if(!res.ok){const err=new Error(data.error||`Admin ${res.status}`);err.status=res.status;throw err;}
+  if(!res.ok){const error=new Error(data.error||`Admin ${res.status}`);error.status=res.status;throw error;}
+  return data;
+}
+async function featureRequest(method='GET',body=null){
+  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
+  if(body)opts.body=JSON.stringify(body);
+  const res=await fetch('/.netlify/functions/features',opts);
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok)throw new Error(data.error||'No se pudieron cargar Early Access y Feature Flags.');
   return data;
 }
 function roleLabel(role){return role==='superdev'?'Super Dev':role==='owner'?'Owner':role==='admin'?'Admin':'Member';}
 function frontendCanManage(actorRole,targetRole){
-  if(targetRole==='superdev') return false;
-  if(actorRole==='admin') return targetRole==='member';
-  if(actorRole==='owner') return targetRole==='member'||targetRole==='admin';
-  return actorRole==='superdev' && ['member','admin','owner'].includes(targetRole);
+  if(targetRole==='superdev')return false;
+  if(actorRole==='admin')return targetRole==='member';
+  if(actorRole==='owner')return targetRole==='member'||targetRole==='admin';
+  return actorRole==='superdev'&&['member','admin','owner'].includes(targetRole);
 }
+function relativeActivity(value){
+  const at=Number(value||0);if(!at)return'Sin actividad registrada';
+  const seconds=Math.max(0,Math.round((Date.now()-at)/1000));
+  if(seconds<60)return'Hace menos de un minuto';if(seconds<3600)return`Hace ${Math.floor(seconds/60)} min`;
+  if(seconds<86400)return`Hace ${Math.floor(seconds/3600)} h`;
+  return new Date(at).toLocaleDateString('es-ES');
+}
+let activeAdminSection='summary';
+const ADMIN_SECTIONS=[
+  {id:'summary',label:'Resumen',roles:['admin','owner','superdev']},
+  {id:'users',label:'Usuarios',roles:['admin','owner','superdev']},
+  {id:'connected',label:'Conectados',roles:['admin','owner','superdev']},
+  {id:'feedback',label:'Feedback',roles:['admin','owner','superdev']},
+  {id:'early',label:'Early Access',roles:['superdev']},
+  {id:'sessions',label:'Sesiones',roles:['superdev']},
+  {id:'system',label:'Sistema',roles:['superdev']},
+  {id:'updates',label:'Novedades',roles:['admin','owner','superdev']},
+];
 function renderAdmin(main){
   const role=accountSession.user?.role;
   if(!['admin','owner','superdev'].includes(role)){
     main.innerHTML='<div class="pagehead"><h1>Admin</h1><p>No tienes permiso para acceder a esta sección.</p></div>';
     return;
   }
-  main.innerHTML=`<div class="pagehead"><h1>Admin <span class="role-badge">${roleLabel(role)}</span></h1><p>Administración segura de cuentas. Todas las acciones se validan nuevamente en el backend.</p></div><div class="card" style="margin-bottom:20px;"><form class="account-form" id="adminSearchForm"><label>Buscar por username o email<input id="adminSearch" maxlength="120" placeholder="Buscar usuario"></label><div class="btn-row"><button class="btn" type="submit">Buscar</button><button class="btn ghost" type="button" id="adminShowAll">Mostrar todos</button></div></form></div><div class="card"><div id="adminList"><div class="empty-state"><span class="ic">…</span>Cargando usuarios…</div></div></div>`;
-  const load=query=>loadAdminUsers(query);
-  document.getElementById('adminSearchForm').addEventListener('submit',e=>{e.preventDefault();load(document.getElementById('adminSearch').value);});
-  document.getElementById('adminShowAll').addEventListener('click',()=>{document.getElementById('adminSearch').value='';load('');});
-  load('');
+  const sections=ADMIN_SECTIONS.filter(section=>section.roles.includes(role));
+  if(!sections.some(section=>section.id===activeAdminSection))activeAdminSection=sections[0].id;
+  clearInterval(adminRefreshTimer);adminRefreshTimer=null;
+  main.innerHTML=`<div class="pagehead"><h1>${role==='superdev'?'Super Dev':'Administración'} <span class="role-badge">${roleLabel(role)}</span></h1><p>Centro seguro de usuarios, presencia, feedback y funciones del Hub.</p></div><div class="admin-tabs">${sections.map(section=>`<button class="chip ${section.id===activeAdminSection?'active':''}" data-admin-section="${section.id}">${section.label}</button>`).join('')}</div><div id="adminContent"><div class="empty-state"><span class="ic">…</span>Cargando…</div></div>`;
+  main.querySelectorAll('[data-admin-section]').forEach(button=>button.addEventListener('click',()=>{activeAdminSection=button.dataset.adminSection;render();}));
+  loadAdminSection(activeAdminSection);
 }
-async function loadAdminUsers(query=''){
+async function loadAdminSection(section){
+  const box=document.getElementById('adminContent');if(!box)return;
+  if(section==='users'){renderAdminUsersShell(box,false);return;}
+  if(section==='sessions'){renderAdminUsersShell(box,true);return;}
+  if(section==='feedback'){renderAdminFeedbackShell(box);return;}
+  if(section==='early'){loadEarlyAccess(box);return;}
+  if(section==='updates'){box.innerHTML='<div class="card"><h2 style="margin-top:0;">Novedades del Hub</h2><p>Revisa el registro visible sin abandonar la experiencia general.</p><button class="btn" id="openUpdatesFromAdmin">Abrir Novedades</button></div>';document.getElementById('openUpdatesFromAdmin').addEventListener('click',()=>goto('novedades'));return;}
+  if(section==='connected'){renderConnectedUsersShell(box);adminRefreshTimer=setInterval(()=>{if(state.view==='admin'&&activeAdminSection==='connected')loadConnectedUsers();},30000);return;}
+  if(section==='system'){await loadAdminAudit(box);return;}
+  await loadAdminSummary(box);
+}
+async function loadAdminSummary(box){
+  try{
+    const data=await adminRequest('GET',null,'section=summary');
+    const summary=data.summary||{};
+    const metrics=[['Usuarios',summary.users],['Online',summary.online],['Veteranos',summary.veterans],['Admins',summary.admins],['Suspendidos',summary.suspended],['Feedback nuevo',summary.newFeedback],['Features activas',summary.enabledFeatures],['Sesiones activas',summary.activeSessions]];
+    box.innerHTML=`<div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div><div class="card" style="margin-top:18px;"><h2 style="margin-top:0;">Estado del Hub</h2><p style="margin-bottom:0;">Study Hub v${APP_VERSION} · acceso público obligatorio y pagos continúan desactivados. Las autorizaciones se validan en backend.</p></div>`;
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+}
+function renderAdminUsersShell(box,sessionsOnly){
+  box.innerHTML=`<div class="card" style="margin-bottom:16px;"><form class="admin-toolbar" id="adminSearchForm"><label>Buscar<input id="adminSearch" maxlength="120" placeholder="Username, nombre o email"></label><label>Filtro<select id="adminFilter"><option value="all">Todos</option><option value="online">Online</option><option value="veteran">Veteranos</option><option value="admin">Admins</option><option value="member">Members</option><option value="suspended">Suspendidos</option></select></label><button class="btn" type="submit">Buscar</button></form></div><div class="admin-list" id="adminList"><div class="empty-state"><span class="ic">…</span>Cargando usuarios…</div></div>`;
+  const load=()=>loadAdminUsers(document.getElementById('adminSearch').value,document.getElementById('adminFilter').value,sessionsOnly);
+  document.getElementById('adminSearchForm').addEventListener('submit',event=>{event.preventDefault();load();});
+  document.getElementById('adminFilter').addEventListener('change',load);
+  load();
+}
+function adminUserCard(user,index,actorRole,sessionsOnly){
+  const manageable=frontendCanManage(actorRole,user.role)&&user.id!==accountSession.user?.id;
+  return `<article class="admin-user-card"><div class="system-row"><div><h3>${escHtml(user.displayName||user.username)} ${user.veteran?'<span class="veteran-badge">Veterano</span>':''}</h3><div class="meta">@${escHtml(user.username||'')} ${user.email?`· ${escHtml(user.email)}`:''}</div></div><div class="admin-user-meta"><span class="role-badge">${roleLabel(user.role)}</span><span class="status-badge ${user.status==='suspended'?'suspended':user.online?'':'offline'}">${user.status==='suspended'?'Suspendido':user.online?'Online':'Offline'}</span></div></div><div class="meta" style="margin-top:8px;">Rango: ${escHtml(user.visibleRank||'Estudiante')} · ${relativeActivity(user.lastActivityAt)} · ${Number(user.activeSessions)||0} sesiones activas${user.section?` · ${escHtml(user.section)}`:''}</div>${sessionsOnly?`${manageable?`<div class="admin-actions"><button class="icon-btn" data-admin-action="revoke-sessions" data-admin-index="${index}">Cerrar sesiones</button></div>`:'<p class="cloud-note">Sesiones protegidas para tu rol.</p>'}`:`<button class="icon-btn" style="margin-top:10px;" data-user-detail="${index}">Abrir usuario</button><div class="admin-detail" id="adminDetail${index}" hidden>${adminUserDetail(user,index,actorRole,manageable)}</div>`}</article>`;
+}
+function adminUserDetail(user,index,actorRole,manageable){
+  if(!manageable)return'<p class="cloud-note">Esta cuenta está protegida para tu rol. Super Dev nunca puede modificarse desde este panel.</p>';
+  const isSuper=actorRole==='superdev';
+  return `<div class="admin-form-grid"><label>Nombre visible<input id="adminDisplay${index}" maxlength="60" value="${escHtml(user.displayName||user.username)}"></label><label>Rango visible<input id="adminRank${index}" maxlength="40" value="${escHtml(user.visibleRank||'Estudiante')}" ${isSuper?'':'disabled'}></label></div><label class="account-form" style="margin-top:10px;">Razón administrativa (opcional)<input id="adminReason${index}" maxlength="200" placeholder="Motivo para el audit log"></label><div class="admin-actions"><button class="icon-btn" data-admin-action="update-profile" data-admin-index="${index}">Guardar perfil</button>${isSuper?`<button class="icon-btn" data-admin-action="${user.veteran?'remove-veteran':'set-veteran'}" data-admin-index="${index}">${user.veteran?'Quitar Veterano':'Convertir en Veterano'}</button>${user.role==='member'?`<button class="icon-btn" data-admin-action="grant-admin" data-admin-index="${index}">Dar Admin</button>`:user.role==='admin'?`<button class="icon-btn" data-admin-action="revoke-admin" data-admin-index="${index}">Quitar Admin</button>`:''}`:''}<button class="icon-btn" data-admin-action="${user.status==='suspended'?'reactivate':'suspend'}" data-admin-index="${index}">${user.status==='suspended'?'Reactivar':'Suspender'}</button><button class="icon-btn" data-admin-action="revoke-sessions" data-admin-index="${index}">Cerrar sesiones</button><button class="icon-btn" data-admin-action="remove-leaderboard" data-admin-index="${index}">Quitar leaderboard</button><button class="icon-btn" data-admin-action="delete" data-admin-index="${index}">Borrar cuenta</button></div>`;
+}
+async function loadAdminUsers(query='',filter='all',sessionsOnly=false){
   const box=document.getElementById('adminList');if(!box)return;
   box.innerHTML='<div class="empty-state"><span class="ic">…</span>Cargando usuarios…</div>';
   try{
-    const data=await adminRequest('GET',null,query);
+    const params=new URLSearchParams({section:'users',q:query,filter:sessionsOnly?'all':filter});
+    const data=await adminRequest('GET',null,params.toString());
     const users=Array.isArray(data.users)?data.users:[];
     const actorRole=data.actor?.role||accountSession.user?.role||'member';
-    box.innerHTML=users.length?users.map((user,index)=>{
-      const manageable=frontendCanManage(actorRole,user.role) && user.id!==accountSession.user?.id;
-      const status=user.status==='suspended'?'Suspendido':'Activo';
-      return `<div class="err-item"><div class="system-row"><div><div class="q">${escHtml(String(user.username||''))} <span class="role-badge">${roleLabel(user.role)}</span></div><div class="meta">${user.email?escHtml(String(user.email))+' · ':''}${status}</div></div></div>${manageable?`<div class="admin-actions"><button class="icon-btn" data-admin-action="${user.status==='suspended'?'reactivate':'suspend'}" data-admin-index="${index}">${user.status==='suspended'?'Reactivar':'Suspender'}</button><button class="icon-btn" data-admin-action="revoke-sessions" data-admin-index="${index}">Cerrar sesiones</button><button class="icon-btn" data-admin-action="remove-leaderboard" data-admin-index="${index}">Quitar leaderboard</button><button class="icon-btn" data-admin-action="delete" data-admin-index="${index}">Borrar cuenta</button></div>`:'<p class="cloud-note">Este usuario está protegido para tu rol.</p>'}</div>`;
-    }).join(''):'<div class="empty-state"><span class="ic">○</span>No se encontraron usuarios.</div>';
-    box.querySelectorAll('[data-admin-action]').forEach(button=>button.addEventListener('click',async()=>{
-      const user=users[Number(button.dataset.adminIndex)];
-      if(!user)return;
-      await runAdminAction(button.dataset.adminAction,user,query);
-    }));
+    box.innerHTML=users.length?users.map((user,index)=>adminUserCard(user,index,actorRole,sessionsOnly)).join(''):'<div class="empty-state"><span class="ic">○</span>No se encontraron usuarios.</div>';
+    box.querySelectorAll('[data-user-detail]').forEach(button=>button.addEventListener('click',()=>{const detail=document.getElementById(`adminDetail${button.dataset.userDetail}`);detail.hidden=!detail.hidden;button.textContent=detail.hidden?'Abrir usuario':'Cerrar detalle';}));
+    box.querySelectorAll('[data-admin-action]').forEach(button=>button.addEventListener('click',async()=>{const index=Number(button.dataset.adminIndex),user=users[index];if(user)await runAdminAction(button.dataset.adminAction,user,query,filter,index,sessionsOnly);}));
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
-async function runAdminAction(action,user,query){
-  const labels={suspend:'suspender',reactivate:'reactivar','revoke-sessions':'cerrar las sesiones de','remove-leaderboard':'quitar del leaderboard a',delete:'borrar permanentemente'};
+async function runAdminAction(action,user,query,filter,index,sessionsOnly){
+  const labels={suspend:'suspender',reactivate:'reactivar','revoke-sessions':'cerrar las sesiones de','remove-leaderboard':'quitar del leaderboard a','set-veteran':'convertir en Veterano a','remove-veteran':'quitar Veterano a','grant-admin':'dar Admin a','revoke-admin':'quitar Admin a',delete:'borrar permanentemente'};
   if(action==='delete'){
-    const typed=prompt(`Acción irreversible: escribe exactamente ${user.username} para borrar esta cuenta.`);
-    if(typed!==user.username){if(typed!==null)alert('El username no coincide. No se realizó ningún cambio.');return;}
-  }else if(!confirm(`¿Confirmas ${labels[action]} ${user.username}?`)) return;
-  const reason=prompt('Razón administrativa (opcional):')||'';
+    const typed=prompt(`Acción irreversible: escribe exactamente ${user.username} para borrar esta cuenta y sus datos.`);
+    if(typed!==user.username){if(typed!==null)showToast('El username no coincide. No se realizó ningún cambio.',true);return;}
+  }else if(action!=='update-profile'&&!confirm(`¿Confirmas ${labels[action]} ${user.username}?`))return;
+  const body={action,targetUserId:user.id,reason:document.getElementById(`adminReason${index}`)?.value||''};
+  if(action==='update-profile'){body.displayName=document.getElementById(`adminDisplay${index}`)?.value||'';body.visibleRank=document.getElementById(`adminRank${index}`)?.value||'';}
+  try{await adminRequest('POST',body);showToast('Cambio administrativo guardado ✓');await loadAdminUsers(query,filter,sessionsOnly);}catch(error){showToast(error.message,true);}
+}
+function renderConnectedUsersShell(box){
+  box.innerHTML=`<div class="card" style="margin-bottom:16px;"><div class="system-row"><div><h2 style="margin:0;">Usuarios conectados</h2><p class="cloud-note">Heartbeat de 30 s · timeout de 90 s · actualización automática</p></div><span class="status-badge" id="connectedCount">…</span></div><form class="admin-toolbar" id="connectedFilters" style="margin-top:14px;"><label>Buscar<input id="connectedQuery" maxlength="120" placeholder="Username, nombre o email"></label><label>Filtro<select id="connectedFilter"><option value="all">Todos</option><option value="veteran">Veteranos</option><option value="admin">Admins</option><option value="member">Members</option></select></label><button class="btn" type="submit">Buscar</button></form></div><div class="admin-list" id="connectedList"><div class="empty-state"><span class="ic">…</span>Actualizando conectados…</div></div>`;
+  document.getElementById('connectedFilters').addEventListener('submit',event=>{event.preventDefault();loadConnectedUsers();});
+  document.getElementById('connectedFilter').addEventListener('change',loadConnectedUsers);
+  loadConnectedUsers();
+}
+async function loadConnectedUsers(){
+  const box=document.getElementById('connectedList');if(!box)return;
+  const query=document.getElementById('connectedQuery')?.value||'',filter=document.getElementById('connectedFilter')?.value||'all';
   try{
-    await adminRequest('POST',{action,targetUserId:user.id,reason});
-    await loadAdminUsers(query);
-  }catch(error){alert(`No se pudo completar la acción sobre ${user.username}: ${error.message}`);}
+    const data=await adminRequest('GET',null,new URLSearchParams({section:'connected',q:query,filter}).toString());
+    const users=Array.isArray(data.users)?data.users:[];
+    const count=document.getElementById('connectedCount');if(count)count.textContent=`${Number(data.count)||0} online`;
+    box.innerHTML=users.length?users.map(user=>`<article class="admin-user-card"><div class="system-row"><div><h3>${escHtml(user.displayName||user.username)} ${user.veteran?'<span class="veteran-badge">Veterano</span>':''}</h3><div class="meta">@${escHtml(user.username)} · ${roleLabel(user.role)} · ${escHtml(user.visibleRank||'Estudiante')}</div></div><span class="status-badge">Online</span></div><div class="meta" style="margin-top:8px;">${relativeActivity(user.lastActivityAt)}${user.section?` · ${escHtml(user.section)}`:''}${user.subjectId?` · ${escHtml(SUBJECT_BY_ID.get(user.subjectId)?.name||user.subjectId)}`:''}${user.clientKind?` · ${escHtml(user.clientKind)}`:''}</div></article>`).join(''):'<div class="empty-state"><span class="ic">○</span>No hay cuentas identificadas con estos filtros.</div>';
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+}
+function renderAdminFeedbackShell(box){
+  box.innerHTML=`<div class="card" style="margin-bottom:16px;"><form class="admin-toolbar feedback-filters" id="adminFeedbackFilters"><label>Buscar<input id="adminFeedbackQuery" maxlength="120" placeholder="Título, mensaje o usuario"></label><label>Tipo<select id="adminFeedbackType"><option value="">Todos</option>${Object.entries(FEEDBACK_TYPES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('')}</select></label><label>Estado<select id="adminFeedbackStatus"><option value="">Todos</option>${Object.entries(FEEDBACK_STATUSES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('')}</select></label><label>Materia<select id="adminFeedbackSubject"><option value="">Todas</option>${SUBJECT_CATALOG.map(subject=>`<option value="${subject.id}">${subject.emoji} ${subject.name}</option>`).join('')}</select></label><button class="btn" type="submit">Filtrar</button></form></div><div class="admin-list" id="adminFeedbackList"><div class="empty-state"><span class="ic">…</span>Cargando feedback…</div></div>`;
+  document.getElementById('adminFeedbackFilters').addEventListener('submit',event=>{event.preventDefault();loadAdminFeedback();});
+  document.getElementById('adminFeedbackType').addEventListener('change',loadAdminFeedback);
+  document.getElementById('adminFeedbackStatus').addEventListener('change',loadAdminFeedback);
+  document.getElementById('adminFeedbackSubject').addEventListener('change',loadAdminFeedback);
+  loadAdminFeedback();
+}
+async function loadAdminFeedback(){
+  const box=document.getElementById('adminFeedbackList');if(!box)return;
+  const params=new URLSearchParams({scope:'admin',q:document.getElementById('adminFeedbackQuery')?.value||'',type:document.getElementById('adminFeedbackType')?.value||'',status:document.getElementById('adminFeedbackStatus')?.value||'',subject:document.getElementById('adminFeedbackSubject')?.value||''});
+  try{
+    const data=await feedbackRequest('GET',null,params.toString());
+    const reports=Array.isArray(data.reports)?data.reports:[];
+    box.innerHTML=reports.length?reports.map(report=>feedbackCard(report,true)).join(''):'<div class="empty-state"><span class="ic">✉</span>No hay feedback con estos filtros.</div>';
+    box.querySelectorAll('[data-save-feedback]').forEach(button=>button.addEventListener('click',async()=>{const id=button.dataset.saveFeedback,status=box.querySelector(`[data-feedback-status="${id}"]`)?.value;try{await feedbackRequest('POST',{action:'set-status',reportId:id,status});showToast('Estado actualizado ✓');await loadAdminFeedback();}catch(error){showToast(error.message,true);}}));
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+}
+async function loadEarlyAccess(box){
+  try{
+    const data=await featureRequest();featureFlags=Array.isArray(data.features)?data.features:[];
+    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Laboratorio Super Dev</h2><p style="margin-bottom:0;">Las funciones hidden nunca se exponen a usuarios normales. Activar una flag no sustituye validaciones backend.</p></div><div class="feature-list">${featureFlags.map((feature,index)=>`<article class="feature-row"><div><h3>${escHtml(feature.name)}</h3><p class="cloud-note">${escHtml(feature.description)}</p></div><select data-feature-state="${index}">${['hidden','development','experimental','preview','ready'].map(value=>`<option value="${value}" ${feature.state===value?'selected':''}>${value}</option>`).join('')}</select><select data-feature-audience="${index}">${['superdev','staff','all'].map(value=>`<option value="${value}" ${feature.audience===value?'selected':''}>${value}</option>`).join('')}</select><button class="btn ${feature.enabled?'soft':'ghost'}" data-feature-toggle="${index}">${feature.enabled?'Desactivar':'Activar'}</button></article>`).join('')}</div>`;
+    box.querySelectorAll('[data-feature-toggle]').forEach(button=>button.addEventListener('click',async()=>{const index=Number(button.dataset.featureToggle),feature=featureFlags[index];const state=box.querySelector(`[data-feature-state="${index}"]`).value,audience=box.querySelector(`[data-feature-audience="${index}"]`).value;try{const result=await featureRequest('POST',{id:feature.id,state,audience,enabled:!feature.enabled});featureFlags[index]=result.feature;showToast('Feature Flag actualizada ✓');await loadEarlyAccess(box);}catch(error){showToast(error.message,true);}}));
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+}
+async function loadAdminAudit(box){
+  try{
+    const data=await adminRequest('GET',null,'section=audit');
+    const events=Array.isArray(data.events)?data.events:[];
+    const audit=auditQuestionOptions(Q.filter(question=>!question.experimental));
+    const experimentalAudit=auditQuestionOptions(TOPICS.flatMap(topic=>experimentalBank(topic.id)),{includeExperimental:true});
+    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Sistema y audit log</h2><p style="margin-bottom:0;">No contiene contraseñas, códigos de recuperación, tokens de sesión ni DEV_LOGIN_CODE.</p></div><div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Auditoría de preguntas</h2><p>${audit.total} preguntas · ${audit.multipleChoice} de selección múltiple · ${audit.flagged.length} candidatas para revisión humana.</p><div class="meta">Distribución correcta: A ${audit.distribution.A} · B ${audit.distribution.B} · C ${audit.distribution.C} · D ${audit.distribution.D} · E ${audit.distribution.E}</div><p class="cloud-note">Modo Experimental: ${experimentalAudit.total} plantillas · ${experimentalAudit.flagged.length} candidatas en esta generación.</p><p class="cloud-note">La auditoría solo detecta patrones; no reescribe contenido ni decide exactitud académica.</p>${audit.flagged.length?`<details><summary>Ver primeras candidatas</summary><div class="meta" style="margin-top:8px;">${audit.flagged.slice(0,12).map(row=>`${escHtml(row.id)}: ${row.reasons.map(escHtml).join(', ')}`).join('<br>')}</div></details>`:''}</div><div class="admin-list">${events.length?events.map(event=>`<article class="admin-user-card"><h3>${escHtml(event.action||'Acción administrativa')}</h3><div class="meta">${escHtml(event.actorUsername||'sistema')} · ${roleLabel(event.actorRole)} · ${new Date(Number(event.timestamp)||Date.now()).toLocaleString('es-ES')} · ${escHtml(event.outcome||'')}</div>${event.targetUsername?`<p class="cloud-note">Objetivo: @${escHtml(event.targetUsername)}</p>`:''}</article>`).join(''):'<div class="empty-state"><span class="ic">○</span>No hay acciones administrativas registradas.</div>'}</div>`;
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 
 /* =========================================================
@@ -3168,6 +3519,8 @@ function renderNovedades(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
     <div class="card">
+      <div class="update-item"><h3>Plataforma del Hub · Administración y feedback</h3><p>Super Dev incorpora resumen, usuarios, conectados, feedback, Early Access, sesiones y sistema. Veterano identifica el acceso gratuito sin conceder permisos Admin; las cuentas antiguas reciben defaults compatibles. También se añadió feedback privado con estados, Feature Flags centralizadas, sincronización con resultado real y la corrección académica Interfijo / MDI. El acceso obligatorio y los pagos continúan aplazados.</p></div>
+      <div class="update-item"><h3>Study Hub · Base general</h3><p>La entrada ahora organiza Día 1 y Día 2 con seis materias. Español conserva todas sus herramientas y progreso como primera materia activa; Inglés, Salud, Historia, Ciencia y Matemáticas aparecen como Próximamente hasta incorporar contenido real. La versión visible permanece en v2.0.</p></div>
       <div class="update-item"><h3>Práctica y apariencia más estables</h3><p>La práctica conserva la selección, el intento y el feedback al pausar o recargar; la revisión permite navegar con Anterior y Siguiente sin perder la pregunta actual. También se corrigieron Claro, Oscuro, Automático y el color personalizado, manteniendo el diseño y la compatibilidad del progreso.</p></div>
       <div class="update-item"><h3>Seguridad, cuentas y estabilidad</h3><p>Se prepararon roles verificados en backend, administración protegida, Dev Login, rate limiting, rotación del código de recuperación y mejoras compatibles para sesiones, sincronización y prácticas guardadas. La versión pública permanece en v2.0.</p></div>
       <div class="update-item"><h3>Versión 2.0 · Grande, refinada y final <span class="new-pill">NUEVO</span></h3><p>Se refinó la retroalimentación educativa: después de contestar, el cuaderno explica por qué la respuesta está bien o mal, muestra la definición del concepto relacionado, añade un ejemplo distinto para entenderlo y conserva una clave para reconocerlo la próxima vez. También se limpiaron pequeñas partes del código y se mantuvieron prácticas persistentes, cuentas, sincronización, leaderboard, usuarios conectados y Modo Experimental.</p></div>
@@ -3206,6 +3559,10 @@ function renderAjustes(main){
       <div class="check-list" id="defaultTopics">${TOPICS.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}</div>
     </div>
     <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Avisos</p>
+      <div class="setting-row"><div class="setting-copy"><b>Restablecer avisos y confirmaciones</b><span>Vuelve a mostrar avisos recuperables que hayas ocultado. Las confirmaciones destructivas siempre permanecen activas.</span></div><div class="setting-control"><button class="icon-btn" id="resetWarnings">Restablecer</button></div></div>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Open Source</p>
       <p style="margin:0 0 12px;color:var(--ink-soft);font-size:.88rem;">Consulta el código, el historial de cambios y los reportes del proyecto.</p>
       <div class="btn-row"><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol" target="_blank" rel="noopener noreferrer">Repositorio</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/commits" target="_blank" rel="noopener noreferrer">Commits</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
@@ -3226,6 +3583,11 @@ function renderAjustes(main){
   accentColor.addEventListener('change',()=>{
     saveState();
     renderNav();
+  });
+  document.getElementById('resetWarnings').addEventListener('click',()=>{
+    state.settings.hiddenWarnings={};
+    saveState();
+    showToast('Avisos restablecidos ✓');
   });
   document.getElementById('saveSettings').addEventListener('click',()=>{
     const topics=[...document.querySelectorAll('#defaultTopics input:checked')].map(x=>x.value);
@@ -3279,6 +3641,7 @@ render();
 (async()=>{
   await restoreIndexedDBFallback();
   await restoreAccountSession();
+  await loadFeatureFlagState();
 })();
 
 
@@ -3307,9 +3670,10 @@ function updateOnlineBadge(count){
 async function heartbeatPresence(){
   if(document.visibilityState==='hidden') return;
   try{
+    const activeQuestion=state.session?.queue?.[state.session.idx];
     const res=await fetch('/.netlify/functions/presence',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({clientId:presenceClientId()}),cache:'no-store'
+      body:JSON.stringify({clientId:presenceClientId(),section:state.view,subjectId:state.activeSubjectId||'',topicId:activeQuestion?.topic||''}),cache:'no-store',credentials:'same-origin'
     });
     const data=await res.json().catch(()=>({}));
     if(res.ok && Number.isFinite(data.count)) updateOnlineBadge(data.count);

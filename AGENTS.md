@@ -40,9 +40,21 @@
 - Nunca almacenes contraseñas en texto plano ni pongas secretos, tokens o contraseñas en `public/index.html`.
 - No debilites la autenticación ni la recuperación de cuentas.
 - Valida Owner/Admin exclusivamente en backend. `OWNER_USERNAME` y `ADMIN_USERNAMES` provienen de variables de entorno de Netlify; nunca escribas sus valores en el repositorio.
+- Mantén separados `username`, `displayName`, rol de seguridad, rango visible, acceso/entitlement y privacidad.
+- Usa `Veterano` como nombre visible del acceso gratuito por whitelist. Ser Veterano no concede Admin ni otro permiso backend.
+- Las cuentas antiguas deben recibir defaults seguros sin duplicarse ni exigir un nuevo registro.
 - Impide que usuarios suspendidos inicien sesión o publiquen en el leaderboard.
 - Exige confirmación para toda acción destructiva y protege al Owner de acciones administrativas destructivas.
 - Registra las acciones administrativas importantes.
+
+## Acceso público, feedback y funciones experimentales
+
+- No actives login obligatorio, pagos, paquetes ni expiraciones hasta que el lanzamiento público sea aprobado explícitamente.
+- Mantén `PUBLIC LAUNCH ACCESS` como fase futura; el Hub actual no debe bloquearse por pago o entitlement.
+- Centraliza Feature Flags y oculta a usuarios normales las funciones con estado `hidden`.
+- El feedback de cada usuario es privado salvo para personal autorizado; nunca adjuntes secretos, tokens, contraseñas ni respuestas de examen.
+- Protege el envío de feedback con rate limiting server-side.
+- Una IA futura solo podrá responder sobre la materia y el tema activos usando material académico aprobado.
 
 ## Super Dev
 
@@ -69,6 +81,7 @@
 
 - No cambies definiciones del material sin mi permiso.
 - No añadas contenido de monólogo.
+- Usa siempre `Interfijo`, nunca `infijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`.
 - Crónica tiene exactamente:
   1. Autor testigo
   2. Exactitud y veracidad
