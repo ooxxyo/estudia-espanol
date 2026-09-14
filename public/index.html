@@ -155,7 +155,7 @@ button{font-family:inherit;}
   .mobile-nav{
     display:flex;position:fixed;bottom:0;left:0;right:0;
     background:var(--bg-soft);border-top:1px solid var(--line);
-    padding:6px 4px;z-index:50;overflow-x:auto;gap:2px;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:50;overflow-x:auto;gap:2px;
   }
   .mobile-nav .nav-btn{flex-direction:column;gap:3px;font-size:.62rem;padding:7px 8px;min-width:58px;text-align:center;}
   main{padding-bottom:78px !important;}
@@ -547,6 +547,9 @@ body{line-height:1.55;}
 .account-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
 .recovery-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:1.05rem;letter-spacing:.08em;padding:12px;border:1px dashed var(--accent);border-radius:9px;background:var(--accent-soft);word-break:break-all;}
 .account-choice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:16px}.account-choice button{text-align:left;padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer}.account-choice button.active{border-color:var(--accent);background:var(--accent-soft)}.account-choice b{display:block;margin-bottom:3px}.account-choice span{display:block;color:var(--ink-soft);font-size:.84rem;line-height:1.35}.password-wrap{position:relative}.password-wrap input{padding-right:78px!important}.show-pass{position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:var(--accent);font-weight:700;cursor:pointer;padding:6px}.password-meter{font-size:.82rem;color:var(--ink-soft);margin-top:4px}.remember-row{display:flex;align-items:center;gap:8px;color:var(--ink-soft);font-size:.9rem}.account-benefit{margin:12px 0 0;padding:10px 12px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:7px;color:var(--ink-soft);font-size:.9rem}
+.dev-login{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.role-badge{display:inline-flex;padding:3px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.7rem;font-weight:800}
+.admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.admin-actions button{font-size:.76rem;padding:7px 9px}
 .cloud-note{font-size:.78rem;color:var(--ink-soft);margin-top:6px;}
 .leader-meta{display:block;margin-top:3px;font-size:.72rem;color:var(--ink-soft);font-weight:500;}
 .leader-score{text-align:right;white-space:nowrap;}
@@ -1165,6 +1168,7 @@ let suppressCloudSync = false;
 let cloudSyncTimer = null;
 let cloudSyncInFlight = false;
 let lastCloudHash = '';
+let lastCloudUpdatedAt = 0;
 
 const state = {
   theme:'light',
@@ -1188,6 +1192,14 @@ const state = {
 };
 TOPICS.forEach(t=> state.stats[t.id] = {attempts:0, correct:0, recent:[]});
 
+// Los IDs q1, q2… son identificadores heredados y su orden no debe cambiarse.
+// Las futuras migraciones pueden añadir alias explícitos sin invalidar datos antiguos.
+const QUESTION_ID_ALIASES=Object.freeze({});
+function findQuestionById(id){
+  const resolved=QUESTION_ID_ALIASES[id]||id;
+  return Q.find(question=>question.id===resolved);
+}
+
 function snapshotState(){
   return {
     version:APP_VERSION,
@@ -1205,17 +1217,56 @@ function snapshotState(){
 }
 function applySavedData(d){
   if(!d || typeof d!=='object') return false;
-  if(d.stats) TOPICS.forEach(t=>{ if(d.stats[t.id]) state.stats[t.id]={...state.stats[t.id],...d.stats[t.id]}; });
+  if(d.stats && typeof d.stats==='object') TOPICS.forEach(t=>{
+    const incoming=d.stats[t.id];
+    if(!incoming || typeof incoming!=='object') return;
+    state.stats[t.id]={
+      attempts:Number.isFinite(incoming.attempts)?Math.max(0,incoming.attempts):state.stats[t.id].attempts,
+      correct:Number.isFinite(incoming.correct)?Math.max(0,incoming.correct):state.stats[t.id].correct,
+      recent:Array.isArray(incoming.recent)?incoming.recent.slice(-20).map(Boolean):state.stats[t.id].recent
+    };
+  });
   ['totalAnswered','totalCorrect','currentStreak','bestStreak','studySeconds'].forEach(k=>{ if(Number.isFinite(d[k])) state[k]=d[k]; });
-  if(Array.isArray(d.errors)) state.errors=d.errors;
-  if(Array.isArray(d.saved)) state.saved=new Set(d.saved);
-  if(Array.isArray(d.history)) state.history=d.history;
-  if(d.lastResult) state.lastResult=d.lastResult;
-  if(d.settings) state.settings={...state.settings,...d.settings};
+  if(Array.isArray(d.errors)) state.errors=d.errors.filter(e=>e&&typeof e.qid==='string').slice(-1000);
+  if(Array.isArray(d.saved)) state.saved=new Set(d.saved.filter(id=>typeof id==='string').slice(-1000));
+  if(Array.isArray(d.history)) state.history=d.history.filter(entry=>entry&&typeof entry==='object').slice(-500);
+  if(d.lastResult && typeof d.lastResult==='object'){
+    const result=d.lastResult;
+    const byTopic={};
+    if(result.byTopic && typeof result.byTopic==='object') TOPICS.forEach(topic=>{
+      const row=result.byTopic[topic.id];
+      if(row && typeof row==='object') byTopic[topic.id]={c:Math.max(0,Number(row.c)||0),t:Math.max(0,Number(row.t)||0)};
+    });
+    state.lastResult={
+      ...result,
+      total:Math.max(0,Number(result.total)||0),
+      correctCount:Math.max(0,Number(result.correctCount)||0),
+      pct:Math.max(0,Math.min(100,Number(result.pct)||0)),
+      elapsed:Math.max(0,Number(result.elapsed)||0),
+      byTopic,
+      answers:Array.isArray(result.answers)?result.answers.filter(a=>a&&typeof a.qid==='string').slice(0,500):[],
+      mode:result.mode==='examen'?'examen':'practica',
+      experimental:result.experimental===true
+    };
+  }
+  if(d.settings && typeof d.settings==='object'){
+    const incoming=d.settings;
+    if(['light','dark','auto'].includes(incoming.themeMode)) state.settings.themeMode=incoming.themeMode;
+    if(typeof incoming.practiceCountsByDefault==='boolean') state.settings.practiceCountsByDefault=incoming.practiceCountsByDefault;
+    if(Array.isArray(incoming.examTopics)) state.settings.examTopics=incoming.examTopics.filter(id=>TOPICS.some(t=>t.id===id));
+    if(typeof incoming.lastSeenUpdate==='string') state.settings.lastSeenUpdate=incoming.lastSeenUpdate.slice(0,20);
+    if(typeof incoming.accentColor==='string' && /^#[0-9A-Fa-f]{6}$/.test(incoming.accentColor)) state.settings.accentColor=incoming.accentColor;
+    if(typeof incoming.leaderboardName==='string') state.settings.leaderboardName=incoming.leaderboardName.slice(0,40);
+    if(typeof incoming.leaderboardDeviceId==='string') state.settings.leaderboardDeviceId=incoming.leaderboardDeviceId.slice(0,120);
+  }
   if(typeof d.view==='string' && d.view!=='session') state.view=d.view;
   if(d.session && Array.isArray(d.session.queueIds)){
-    const queue=d.session.queueIds.map(id=>Q.find(q=>q.id===id)).filter(Boolean);
-    if(queue.length) state.session={...d.session,queue};
+    const queue=d.session.queueIds.map(findQuestionById).filter(Boolean);
+    if(queue.length){
+      const idx=Math.max(0,Math.min(Number.isFinite(d.session.idx)?d.session.idx:0,queue.length-1));
+      const answers=Array.isArray(d.session.answers)?d.session.answers.filter(a=>a&&typeof a==='object').slice(0,queue.length):[];
+      state.session={...d.session,idx,answers,queue};
+    }
   }
   lastSaveAt=Number.isFinite(d.savedAt)?d.savedAt:Date.now();
   return true;
@@ -1319,7 +1370,7 @@ async function accountRequest(method='GET', body=null){
   if(body) opts.body=JSON.stringify(body);
   const res=await fetch('/.netlify/functions/account',opts);
   const data=await res.json().catch(()=>({}));
-  if(!res.ok){ const err=new Error(data.error||`Cuenta ${res.status}`); err.status=res.status; throw err; }
+  if(!res.ok){ const err=new Error(data.error||`Cuenta ${res.status}`); err.status=res.status; err.data=data; throw err; }
   return data;
 }
 function stableCloudPayload(){
@@ -1347,29 +1398,45 @@ async function syncCloudState(){
   const hash=cloudPayloadHash(payload);
   if(hash===lastCloudHash) return;
   cloudSyncInFlight=true;
+  let retry=false;
   try{
-    await accountRequest('POST',{action:'sync',state:payload});
+    const result=await accountRequest('POST',{action:'sync',state:payload,baseUpdatedAt:lastCloudUpdatedAt});
+    lastCloudUpdatedAt=Number(result.updatedAt)||lastCloudUpdatedAt;
     lastCloudHash=hash;
     const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent='Sincronizado ✓';
   }catch(e){
     if(e.status===401){ accountSession={status:'ready',user:null}; renderNav(); }
+    if(e.status===409 && e.data?.cloudState){
+      const cloud=e.data.cloudState;
+      lastCloudUpdatedAt=Number(e.data.cloudUpdatedAt)||lastCloudUpdatedAt;
+      const localSession=payload.session;
+      const cloudSession=cloud.session;
+      const localProgress=localSession?(localSession.answers?.length||0)*1000+(localSession.idx||0):-1;
+      const cloudProgress=cloudSession?(cloudSession.answers?.length||0)*1000+(cloudSession.idx||0):-1;
+      const cloudIsNewer=(Number(cloud.savedAt)||0)>(Number(payload.savedAt)||0);
+      if(cloudIsNewer && cloudProgress>=localProgress) applyCloudCanonical(cloud);
+      else { lastCloudHash=''; retry=true; }
+    }
     const el=document.getElementById('cloudSyncStatus'); if(el) el.textContent='Pendiente de sincronizar';
   }finally{cloudSyncInFlight=false;}
+  if(retry) setTimeout(syncCloudState,100);
 }
 function applyCloudCanonical(cloudState){
   if(!cloudState || typeof cloudState!=='object') return false;
   suppressCloudSync=true;
   try{
-    // Mantiene la vista actual, pero reemplaza los datos de estudio/configuración con la cuenta.
     const currentView=state.view;
-    const currentSession=state.session;
+    const localSession=state.session && state.session.mode==='practica' && !state.session.experimental?state.session:null;
     applySavedData(cloudState);
     state.view=currentView;
-    // Una sesión local tiene prioridad. Si no existe, conserva la práctica recuperada de la cuenta.
-    if(currentSession) state.session=currentSession;
+    const cloudSession=state.session && state.session.mode==='practica' && !state.session.experimental?state.session:null;
+    const localProgress=localSession?(localSession.answers?.length||0)*1000+(localSession.idx||0):-1;
+    const cloudProgress=cloudSession?(cloudSession.answers?.length||0)*1000+(cloudSession.idx||0):-1;
+    const keptLocal=localSession && localProgress>cloudProgress;
+    if(keptLocal) state.session=localSession;
     applyThemeMode();
     saveState();
-    lastCloudHash=cloudPayloadHash(stableCloudPayload());
+    lastCloudHash=keptLocal?'':cloudPayloadHash(stableCloudPayload());
     return true;
   }finally{suppressCloudSync=false;}
 }
@@ -1377,9 +1444,11 @@ async function restoreAccountSession(){
   try{
     const data=await accountRequest('GET');
     accountSession={status:'ready',user:data.authenticated?data.user:null};
+    lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;
     if(data.authenticated && data.cloudState) applyCloudCanonical(data.cloudState);
     renderNav();
-    if(state.view==='cuenta' || state.view==='leaderboard' || state.view==='ajustes') render();
+    render();
+    if(data.authenticated && !lastCloudHash) scheduleCloudSync();
   }catch(e){accountSession={status:'ready',user:null}; renderNav();}
 }
 function accountLabel(){ return accountSession.user?accountSession.user.username:'Cuenta'; }
@@ -1443,15 +1512,20 @@ const NAV_ITEMS = [
   {id:'guardadas', label:'Guardadas', icon:'★'},
   {id:'historial', label:'Historial', icon:'▥'},
   {id:'leaderboard', label:'Leaderboard', icon:'🏆'},
+  {id:'admin', label:'Admin', icon:'⚑', adminOnly:true},
   {id:'novedades', label:'Novedades', icon:'✦'},
   {id:'ajustes', label:'Configuración', icon:'⚙'},
 ];
+function visibleNavItems(){
+  const role=accountSession.user?.role;
+  return NAV_ITEMS.filter(item=>!item.adminOnly || ['admin','owner','superdev'].includes(role));
+}
 
 function renderNav(){
   const rail = document.getElementById('rail');
   rail.innerHTML = `
     <div class="rail-brand"><div class="rail-brand-line">Cuaderno <span class="version-badge">v${APP_VERSION}</span></div><span>${SUBJECT.name}</span></div>
-    ${NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?accountLabel():n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
+    ${visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?accountLabel():n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
     <div class="rail-foot">
       <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
@@ -1459,11 +1533,22 @@ function renderNav(){
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
   const mob = document.getElementById('mobileNav');
-  mob.innerHTML = NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?'Cuenta':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
+  mob.innerHTML = visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?'Cuenta':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
   mob.querySelectorAll('[data-navm]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.navm)));
 }
 function navigateFromNav(view){
   if(state.session){
+    if(state.session.mode==='practica' && !state.session.experimental){
+      if(state.view!=='session'){ goto(view); return; }
+      if(!confirm('Hay una práctica en curso. Se guardará para que puedas continuarla después. ¿Salir de la práctica?')) return;
+      state.session.pausedAt=Date.now();
+      state.session.attemptStage=attemptStage;
+      state.view=view;
+      saveState();
+      render();
+      window.scrollTo(0,0);
+      return;
+    }
     if(!confirm('Tienes una sesión en progreso. ¿Quieres salir y abrir otra sección?')) return;
     state.session=null;
     attemptStage=0;
@@ -1495,6 +1580,7 @@ function saveAndExitPractice(){
   s.pausedAt=Date.now();
   s.hintLevel=Number.isFinite(s.hintLevel)?s.hintLevel:0;
   s.answered=!!s.answered;
+  s.attemptStage=attemptStage;
   state.view='practica';
   saveState();
   render();
@@ -1513,7 +1599,7 @@ function render(){
   const renderers = {
     dashboard: renderDashboard, cuenta: renderCuenta, repaso: renderRepasoHome, practica: renderPracticaHome,
     experimental: renderExperimentalHome, examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
-    historial: renderHistorial, leaderboard: renderLeaderboard, novedades: renderNovedades, ajustes: renderAjustes,
+    historial: renderHistorial, leaderboard: renderLeaderboard, admin: renderAdmin, novedades: renderNovedades, ajustes: renderAjustes,
     session: renderSession, results: renderResults, repasoCards: renderRepasoCards,
   };
   (renderers[state.view]||renderDashboard)(main);
@@ -1593,7 +1679,7 @@ function renderDashboard(main){
         <button class="btn" id="goWeak">Practicar ${weak.name}</button>` : `<p>Empieza a practicar para recibir una recomendación.</p>`}
         <div style="margin-top:20px;">
           <p class="section-title">Últimos errores</p>
-          ${lastErrors.length? lastErrors.map(e=>{const q=Q.find(x=>x.id===e.qid); return `<div style="font-size:.85rem;padding:8px 0;border-bottom:1px solid var(--line);">${truncate(q?q.prompt:'', 70)}</div>`;}).join(''):'<p style="color:var(--ink-soft);font-size:.88rem;">Todavía no tienes errores registrados. ¡Bien!</p>'}
+          ${lastErrors.length? lastErrors.map(e=>{const q=findQuestionById(e.qid); return `<div style="font-size:.85rem;padding:8px 0;border-bottom:1px solid var(--line);">${truncate(q?q.prompt:'', 70)}</div>`;}).join(''):'<p style="color:var(--ink-soft);font-size:.88rem;">Todavía no tienes errores registrados. ¡Bien!</p>'}
         </div>
       </div>
     </div>
@@ -2080,7 +2166,7 @@ function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0
 
 function startSession(opts){
   if(opts.mode==='practica' && hasResumablePractice() && state.view!=='session' && !opts.forceNew){
-    const ok=confirm('Tienes una práctica guardada. ¿Quieres descartarla y comenzar una nueva?');
+    const ok=confirm('Tienes una práctica guardada. Aceptar la descarta y comienza una nueva; Cancelar conserva la práctica para continuarla.');
     if(!ok) return;
     state.session=null;
   }
@@ -2103,9 +2189,9 @@ function startSession(opts){
   } else if(opts.topic){
     pool = Q.filter(q=>q.topic===opts.topic);
   } else if(opts.errorsOnly){
-    pool = state.errors.map(e=>Q.find(q=>q.id===e.qid)).filter(Boolean);
+    pool = state.errors.map(e=>findQuestionById(e.qid)).filter(Boolean);
   } else if(opts.savedOnly){
-    pool = [...state.saved].map(id=>Q.find(q=>q.id===id)).filter(Boolean);
+    pool = [...state.saved].map(findQuestionById).filter(Boolean);
   } else {
     pool = Q.slice();
   }
@@ -2137,12 +2223,13 @@ function currentQ(){ const s=state.session; return s.queue[s.idx]; }
 function renderSession(main){
   const s = state.session;
   if(!s){ goto('dashboard'); return; }
+  attemptStage=Number.isFinite(s.attemptStage)?s.attemptStage:0;
   const q = currentQ();
   const total = s.queue.length;
   const t = TOPICS.find(x=>x.id===q.topic);
 
   // check for "mini repaso" trigger: 3 consecutive fails on same topic recently in this session
-  const recentSameTopicFails = s.answers.filter(a=>a.qid && Q.find(qq=>qq.id===a.qid).topic===q.topic).slice(-3);
+  const recentSameTopicFails = s.answers.filter(a=>a.qid && findQuestionById(a.qid)?.topic===q.topic).slice(-3);
   const needsMini = s.mode==='practica' && !s.miniReviewShown && recentSameTopicFails.length===3 && recentSameTopicFails.every(a=>!a.correct);
 
   let bodyHtml = '';
@@ -2220,7 +2307,7 @@ function renderAnsweredReview(answerIndex){
   if(!s || !s.answers.length){ render(); return; }
   const idx=Math.max(0,Math.min(answerIndex,s.answers.length-1));
   const a=s.answers[idx];
-  const q=Q.find(x=>x.id===a.qid);
+  const q=findQuestionById(a.qid);
   if(!q){ render(); return; }
   const t=TOPICS.find(x=>x.id===q.topic);
   const main=document.getElementById('main');
@@ -2553,10 +2640,12 @@ function submitAnswer(){
     finalizeStep();
   } else if(attemptStage===0){
     attemptStage=1;
+    s.attemptStage=1;
     fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>Inténtalo otra vez. ${q.hints?'Puedes usar una pista.':''}</div>`;
     document.getElementById('submitBtn').textContent='Responder de nuevo';
     document.getElementById('submitBtn').disabled=true;
     reenableInputs(q);
+    saveState();
   } else {
     markAnswerVisual(q, sessionSelection, false);
     fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>${detailedExplanation(q, sessionSelection, false)}</div>`;
@@ -2626,6 +2715,7 @@ function nextQuestion(ans, correct, skipped){
 function advance(){
   attemptStage=0;
   const s=state.session;
+  s.attemptStage=0;
   if(s.idx < s.queue.length-1){ s.idx++; saveState(); render(); }
   else { finishSession(); }
 }
@@ -2639,14 +2729,14 @@ function finishSession(){
   if(countsTowardProgress) state.studySeconds += elapsed;
   if(s.mode==='examen'){
     s.answers.filter(a=>!a.skipped).forEach(a=>{
-      const q=Q.find(x=>x.id===a.qid);
+      const q=findQuestionById(a.qid);
       if(q) recordAnswer(q, !!a.correct);
     });
   }
 
   const byTopic={};
   s.answers.forEach(a=>{
-    const q=Q.find(x=>x.id===a.qid); if(!q) return;
+    const q=findQuestionById(a.qid); if(!q) return;
     byTopic[q.topic] = byTopic[q.topic]||{c:0,t:0};
     byTopic[q.topic].t++; if(a.correct) byTopic[q.topic].c++;
   });
@@ -2676,8 +2766,8 @@ function finishSession(){
 function renderResults(main){
   const r = state.lastResult;
   if(!r){ goto('dashboard'); return; }
-  const wrong = r.answers.filter(a=>!a.correct).map(a=>Q.find(q=>q.id===a.qid)).filter(Boolean);
-  const good = r.answers.filter(a=>a.correct).map(a=>Q.find(q=>q.id===a.qid)).filter(Boolean);
+  const wrong = r.answers.filter(a=>!a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
+  const good = r.answers.filter(a=>a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
   const topicNames = Object.keys(r.byTopic);
 
   main.innerHTML = `
@@ -2713,16 +2803,17 @@ function renderResults(main){
     ${r.mode==='examen'? `<div class="card" style="margin-top:20px;">
       <p class="section-title">Explicación de cada respuesta</p>
       <p style="font-size:.86rem;color:var(--ink-soft);margin-bottom:14px;">Durante el examen no se muestran respuestas para no darte pistas. Aquí puedes revisar por qué cada contestación estuvo bien o mal.</p>
-      ${r.answers.map((a,i)=>{ const q=Q.find(x=>x.id===a.qid); if(!q) return ''; return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`; }).join('')}
+      ${r.answers.map((a,i)=>{ const q=findQuestionById(a.qid); if(!q) return ''; return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`; }).join('')}
     </div>`:''}
   `;
   document.getElementById('backDash').addEventListener('click', ()=>goto('dashboard'));
   const newExperimental=document.getElementById('newExperimental');
   if(newExperimental) newExperimental.addEventListener('click', ()=>goto('experimental'));
-  document.getElementById('retryWrong').addEventListener('click', ()=>{
+  const retryWrong=document.getElementById('retryWrong');
+  if(retryWrong) retryWrong.addEventListener('click', ()=>{
     const ids = wrong.map(q=>q.id);
     state.session=null;
-    const pool = ids.map(id=>Q.find(q=>q.id===id));
+    const pool = ids.map(findQuestionById).filter(Boolean);
     state.session = {mode:'practica', queue:shuffle(pool), idx:0, answers:[], hintLevel:0, hintsUsed:0, startedAt:Date.now(), miniReviewShown:false, countStats:state.settings.practiceCountsByDefault!==false, returnView:'practica'};
     saveState();
     goto('session');
@@ -2738,9 +2829,9 @@ function renderErrores(main){
     <div class="pagehead"><h1>Mis errores</h1><p>Preguntas que has fallado, guardadas para reforzar.</p></div>
     ${list.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practErr">Practicar mis errores (${list.length})</button></div>` : ''}
     ${list.length? list.map(e=>{
-      const q=Q.find(x=>x.id===e.qid); if(!q) return '';
+      const q=findQuestionById(e.qid); if(!q) return '';
       return `<div class="err-item"><div class="q">${q.prompt}</div>
-      <div class="meta">${TOPICS.find(t=>t.id===q.topic).name} · Fallada ${e.times} ${e.times===1?'vez':'veces'} · Última vez: ${new Date(e.last).toLocaleDateString('es-ES')}</div></div>`;
+      <div class="meta">${TOPICS.find(t=>t.id===q.topic).name} · Fallada ${Math.max(0,Number(e.times)||0)} ${Number(e.times)===1?'vez':'veces'} · Última vez: ${Number.isFinite(Number(e.last))?new Date(Number(e.last)).toLocaleDateString('es-ES'):'sin fecha'}</div></div>`;
     }).join('') : `<div class="empty-state"><span class="ic">✕</span>Todavía no tienes errores guardados. ¡Sigue así!</div>`}
   `;
   if(list.length) document.getElementById('practErr').addEventListener('click', ()=>startSession({mode:'practica', errorsOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
@@ -2754,7 +2845,7 @@ function renderGuardadas(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Preguntas guardadas</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p></div>
     ${ids.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practSaved">Practicar guardadas (${ids.length})</button></div>` : ''}
-    ${ids.length? ids.map(id=>{ const q=Q.find(x=>x.id===id); if(!q) return '';
+    ${ids.length? ids.map(id=>{ const q=findQuestionById(id); if(!q) return '';
       return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${TOPICS.find(t=>t.id===q.topic).name}</div></div>`;
     }).join('') : `<div class="empty-state"><span class="ic">★</span>No has guardado preguntas todavía. Usa el botón "Guardar" durante la práctica.</div>`}
   `;
@@ -2770,12 +2861,12 @@ function renderHistorial(main){
     <div class="pagehead"><h1>Historial</h1><p>Tus exámenes y sesiones de práctica anteriores. Toca una sesión para revisar sus preguntas.</p></div>
     ${h.length? `<div class="card" style="margin-bottom:20px;">
       <p class="section-title">Progreso reciente (%)</p>
-      <div class="spark">${h.slice(0,14).reverse().map(x=>`<div style="height:${x.pct}%" title="${x.pct}%"></div>`).join('')}</div>
+      <div class="spark">${h.slice(0,14).reverse().map(x=>{const pct=Math.max(0,Math.min(100,Number(x.pct)||0));return `<div style="height:${pct}%" title="${pct}%"></div>`;}).join('')}</div>
     </div>
     <div class="card">
       ${h.map((x,i)=>`<button class="hist-row hist-open" data-hi="${i}" style="width:100%;border:0;background:none;color:inherit;text-align:left;cursor:pointer;">
-        <span>${x.mode==='examen'?'Examen':'Práctica'} · ${x.date} ${x.time}${x.countsTowardProgress===false?' · No contó al Panel':''}</span>
-        <span>${x.correct}/${x.total} · ${x.pct}% · ${fmtTime(x.seconds)} ›</span>
+        <span>${x.mode==='examen'?'Examen':'Práctica'} · ${escHtml(String(x.date||''))} ${escHtml(String(x.time||''))}${x.countsTowardProgress===false?' · No contó al Panel':''}</span>
+        <span>${Math.max(0,Number(x.correct)||0)}/${Math.max(0,Number(x.total)||0)} · ${Math.max(0,Math.min(100,Number(x.pct)||0))}% · ${fmtTime(Number(x.seconds)||0)} ›</span>
       </button>`).join('')}
     </div>` : `<div class="empty-state"><span class="ic">▥</span>Todavía no tienes historial. Completa una práctica o examen.</div>`}
   `;
@@ -2786,10 +2877,10 @@ function renderHistoryDetail(entry){
   const main=document.getElementById('main');
   const answers=Array.isArray(entry?.answers)?entry.answers:[];
   main.innerHTML=`
-    <div class="pagehead"><h1>Revisión de sesión</h1><p>${entry.mode==='examen'?'Examen':'Práctica'} · ${entry.date} ${entry.time} · ${entry.correct}/${entry.total} (${entry.pct}%)</p></div>
+    <div class="pagehead"><h1>Revisión de sesión</h1><p>${entry.mode==='examen'?'Examen':'Práctica'} · ${escHtml(String(entry.date||''))} ${escHtml(String(entry.time||''))} · ${Number(entry.correct)||0}/${Number(entry.total)||0} (${Number(entry.pct)||0}%)</p></div>
     <div class="btn-row" style="margin-bottom:18px;"><button class="icon-btn" id="backHistory">← Volver al historial</button></div>
     ${answers.length? `<div class="card">
-      ${answers.map((a,i)=>{const q=Q.find(x=>x.id===a.qid);if(!q)return'';const t=TOPICS.find(x=>x.id===q.topic);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
+      ${answers.map((a,i)=>{const q=findQuestionById(a.qid);if(!q)return'';const t=TOPICS.find(x=>x.id===q.topic);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
     </div>` : `<div class="empty-state"><span class="ic">▥</span>Esta sesión es de una versión anterior y solo guardó el resultado general. Las sesiones nuevas sí guardarán cada pregunta y tu respuesta.</div>`}
   `;
   document.getElementById('backHistory').addEventListener('click',()=>goto('historial'));
@@ -2807,11 +2898,11 @@ function renderCuenta(main){
   if(accountSession.user){
     main.innerHTML=`
       <div class="pagehead"><h1>Tu cuenta</h1><p>Todo tu progreso y configuración se sincronizan con esta cuenta.</p></div>
-      <div class="card" style="margin-bottom:20px;"><div class="account-status"><div><div class="account-user">${escHtml(accountSession.user.username)}</div><div class="account-sub">${accountSession.user.email?escHtml(accountSession.user.email)+' · login por username o email':'Sin email añadido · login por username'} · sesión recordada</div></div><span class="sync-pill" id="cloudSyncStatus">Sincronización activa</span></div>
+      <div class="card" style="margin-bottom:20px;"><div class="account-status"><div><div class="account-user">${escHtml(accountSession.user.username)} ${accountSession.user.role!=='member'?`<span class="role-badge">${accountSession.user.role==='superdev'?'Super Dev':accountSession.user.role==='owner'?'Owner':'Admin'}</span>`:''}</div><div class="account-sub">${accountSession.user.email?escHtml(accountSession.user.email)+' · login por username o email':'Sin email añadido · login por username'} · sesión activa</div></div><span class="sync-pill" id="cloudSyncStatus">Sincronización activa</span></div>
       <div class="btn-row" style="margin-top:16px;"><button class="btn" id="syncNow">Sincronizar ahora</button><button class="icon-btn" id="logoutBtn">Cerrar sesión</button></div></div>
       <div class="card"><p class="section-title">Qué se guarda en tu cuenta</p><p style="margin:0;color:var(--ink-soft);">Progreso por tema, estadísticas, historial, errores, preguntas guardadas, preferencias de práctica y examen, modo claro/oscuro, color de interfaz y futuras materias del hub.</p></div>`;
     document.getElementById('syncNow').addEventListener('click',async()=>{lastCloudHash='';await syncCloudState();const e=document.getElementById('cloudSyncStatus');if(e)e.textContent='Sincronizado ✓';});
-    document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('¿Cerrar sesión? Tu copia local seguirá en este dispositivo.'))return;try{await accountRequest('POST',{action:'logout'});}catch{}accountSession={status:'ready',user:null};lastCloudHash='';render();});
+    document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('¿Cerrar sesión? Tu copia local seguirá en este dispositivo.'))return;try{await accountRequest('POST',{action:'logout'});accountSession={status:'ready',user:null};lastCloudHash='';lastCloudUpdatedAt=0;render();}catch(err){alert(`No se pudo revocar la sesión en el servidor. Sigues conectado. ${err.message}`);}});
     return;
   }
   main.innerHTML=`
@@ -2823,6 +2914,7 @@ function renderCuenta(main){
   renderAccountPanel('login');
 }
 function accountMessage(text,bad=false){const el=document.getElementById('accountMsg');if(el){el.textContent=text;el.style.color=bad?'var(--bad)':'var(--good)';}}
+function devMessage(text,bad=false){const el=document.getElementById('devMsg');if(el){el.textContent=text;el.style.color=bad?'var(--bad)':'var(--good)';}}
 function bindPasswordToggle(buttonId,inputId){
   const b=document.getElementById(buttonId), i=document.getElementById(inputId); if(!b||!i)return;
   b.addEventListener('click',()=>{const show=i.type==='password';i.type=show?'text':'password';b.textContent=show?'Ocultar':'Ver';b.setAttribute('aria-pressed',show?'true':'false');});
@@ -2834,11 +2926,12 @@ function passwordStrengthText(value){
 function renderAccountPanel(mode){
   const box=document.getElementById('accountPanel'); if(!box)return;
   if(mode==='login'){
-    box.innerHTML=`<div class="card"><form class="account-form" id="loginForm"><label>Username o email<input id="loginId" autocomplete="username" maxlength="120" placeholder="Tu username o email" required></label><label>Contraseña<div class="password-wrap"><input id="loginPass" type="password" autocomplete="current-password" minlength="8" required><button class="show-pass" id="showLoginPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberLogin" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Entrar</button><span class="save-note" id="accountMsg"></span></div><div class="account-benefit">Puedes iniciar sesión con tu username. Si añadiste un email a tu cuenta, también puedes usar ese email.</div></form></div>`;
+    box.innerHTML=`<div class="card"><form class="account-form" id="loginForm"><label>Username o email<input id="loginId" autocomplete="username" maxlength="120" placeholder="Tu username o email" required></label><label>Contraseña<div class="password-wrap"><input id="loginPass" type="password" autocomplete="current-password" minlength="8" maxlength="128" required><button class="show-pass" id="showLoginPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberLogin" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Entrar</button><span class="save-note" id="accountMsg"></span></div><div class="account-benefit">Puedes iniciar sesión con tu username. Si añadiste un email a tu cuenta, también puedes usar ese email.</div></form><div class="dev-login"><p class="section-title">🧪 Dev Login</p><p class="account-sub" style="margin-bottom:10px;">Acceso exclusivo del desarrollador.</p><form class="account-form" id="devLoginForm"><label>Código de desarrollador<input id="devCode" type="password" autocomplete="off" maxlength="256" required></label><label class="remember-row"><input id="rememberDev" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn ghost" type="submit">Entrar como Super Dev</button><span class="save-note" id="devMsg"></span></div></form></div></div>`;
     bindPasswordToggle('showLoginPass','loginPass');
-    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});
+    document.getElementById('devLoginForm').addEventListener('submit',async e=>{e.preventDefault();devMessage('Verificando…');try{const data=await accountRequest('POST',{action:'dev-login',code:document.getElementById('devCode').value,remember:document.getElementById('rememberDev').checked});document.getElementById('devCode').value='';accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){document.getElementById('devCode').value='';devMessage(err.message,true);}});
   }else if(mode==='register'){
-    box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. sebas10" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
+    box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. sebas10" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
     let regMode='basic';
     const choices=[...box.querySelectorAll('[data-reg-mode]')];
     const emailInput=document.getElementById('regEmail'), emailLabel=document.getElementById('emailLabel');
@@ -2847,10 +2940,72 @@ function renderAccountPanel(mode){
     document.getElementById('regPass').addEventListener('input',e=>{const v=e.target.value;document.getElementById('passStrength').textContent=v.length?`Seguridad: ${passwordStrengthText(v)}.`:'Mínimo 8 caracteres.';});
     document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPass').value;if(p!==document.getElementById('regPass2').value){accountMessage('Las contraseñas no coinciden.',true);return;}const email=document.getElementById('regEmail').value.trim();if(regMode==='email'&&!email){accountMessage('Escribe un email para este tipo de cuenta.',true);return;}accountMessage('Creando cuenta…');try{const data=await accountRequest('POST',{action:'register',username:document.getElementById('regUser').value,email,password:p,requireEmail:regMode==='email',remember:document.getElementById('rememberRegister').checked});accountSession={status:'ready',user:data.user};lastCloudHash='';await syncCloudState();box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Cuenta creada ✓</h2><p><b>Guarda este código de recuperación.</b> Te permite recuperar tu cuenta incluso si no puedes entrar.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. Guárdalo en un lugar seguro. El sitio no puede volver a mostrarlo después.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishAccount">Continuar</button></div></div>`;document.getElementById('finishAccount').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});
   }else{
-    box.innerHTML=`<div class="card"><form class="account-form" id="recoverForm"><label>Username o email<input id="recId" autocomplete="username" maxlength="120" required></label><label>Código de recuperación<input id="recCode" autocomplete="off" placeholder="XXXX-XXXX-XXXX-XXXX" required></label><label>Nueva contraseña<div class="password-wrap"><input id="recPass" type="password" autocomplete="new-password" minlength="8" required><button class="show-pass" id="showRecPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRecover" type="checkbox" checked> Mantener mi sesión iniciada después de recuperar la cuenta</label><div class="btn-row"><button class="btn" type="submit">Cambiar contraseña</button><span class="save-note" id="accountMsg"></span></div></form><p class="cloud-note">Por seguridad, conocer solo el username o email no permite cambiar una contraseña: también necesitas el código de recuperación.</p></div>`;
+    box.innerHTML=`<div class="card"><form class="account-form" id="recoverForm"><label>Username o email<input id="recId" autocomplete="username" maxlength="120" required></label><label>Código de recuperación<input id="recCode" autocomplete="off" maxlength="64" placeholder="XXXX-XXXX-XXXX-XXXX" required></label><label>Nueva contraseña<div class="password-wrap"><input id="recPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRecPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRecover" type="checkbox" checked> Mantener mi sesión iniciada después de recuperar la cuenta</label><div class="btn-row"><button class="btn" type="submit">Cambiar contraseña</button><span class="save-note" id="accountMsg"></span></div></form><p class="cloud-note">Por seguridad, conocer solo el username o email no permite cambiar una contraseña: también necesitas el código de recuperación.</p></div>`;
     bindPasswordToggle('showRecPass','recPass');
-    document.getElementById('recoverForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Verificando…');try{const data=await accountRequest('POST',{action:'reset-password',identifier:document.getElementById('recId').value,recoveryCode:document.getElementById('recCode').value,newPassword:document.getElementById('recPass').value,remember:document.getElementById('rememberRecover').checked});accountSession={status:'ready',user:data.user};renderNav();render();}catch(err){accountMessage(err.message,true);}});
+    document.getElementById('recoverForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Verificando…');try{const data=await accountRequest('POST',{action:'reset-password',identifier:document.getElementById('recId').value,recoveryCode:document.getElementById('recCode').value,newPassword:document.getElementById('recPass').value,remember:document.getElementById('rememberRecover').checked});accountSession={status:'ready',user:data.user};box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Contraseña cambiada ✓</h2><p><b>Guarda tu nuevo código de recuperación.</b> El código anterior ya no funciona.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. No podrá volver a mostrarse.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishRecovery">Continuar</button></div></div>`;document.getElementById('finishRecovery').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});
   }
+}
+
+/* =========================================================
+   ADMIN
+========================================================= */
+async function adminRequest(method='GET', body=null, query=''){
+  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(`/.netlify/functions/admin${query?`?q=${encodeURIComponent(query)}`:''}`,opts);
+  const data=await res.json().catch(()=>({}));
+  if(!res.ok){const err=new Error(data.error||`Admin ${res.status}`);err.status=res.status;throw err;}
+  return data;
+}
+function roleLabel(role){return role==='superdev'?'Super Dev':role==='owner'?'Owner':role==='admin'?'Admin':'Member';}
+function frontendCanManage(actorRole,targetRole){
+  if(targetRole==='superdev') return false;
+  if(actorRole==='admin') return targetRole==='member';
+  if(actorRole==='owner') return targetRole==='member'||targetRole==='admin';
+  return actorRole==='superdev' && ['member','admin','owner'].includes(targetRole);
+}
+function renderAdmin(main){
+  const role=accountSession.user?.role;
+  if(!['admin','owner','superdev'].includes(role)){
+    main.innerHTML='<div class="pagehead"><h1>Admin</h1><p>No tienes permiso para acceder a esta sección.</p></div>';
+    return;
+  }
+  main.innerHTML=`<div class="pagehead"><h1>Admin <span class="role-badge">${roleLabel(role)}</span></h1><p>Administración segura de cuentas. Todas las acciones se validan nuevamente en el backend.</p></div><div class="card" style="margin-bottom:20px;"><form class="account-form" id="adminSearchForm"><label>Buscar por username o email<input id="adminSearch" maxlength="120" placeholder="Buscar usuario"></label><div class="btn-row"><button class="btn" type="submit">Buscar</button><button class="btn ghost" type="button" id="adminShowAll">Mostrar todos</button></div></form></div><div class="card"><div id="adminList"><div class="empty-state"><span class="ic">…</span>Cargando usuarios…</div></div></div>`;
+  const load=query=>loadAdminUsers(query);
+  document.getElementById('adminSearchForm').addEventListener('submit',e=>{e.preventDefault();load(document.getElementById('adminSearch').value);});
+  document.getElementById('adminShowAll').addEventListener('click',()=>{document.getElementById('adminSearch').value='';load('');});
+  load('');
+}
+async function loadAdminUsers(query=''){
+  const box=document.getElementById('adminList');if(!box)return;
+  box.innerHTML='<div class="empty-state"><span class="ic">…</span>Cargando usuarios…</div>';
+  try{
+    const data=await adminRequest('GET',null,query);
+    const users=Array.isArray(data.users)?data.users:[];
+    const actorRole=data.actor?.role||accountSession.user?.role||'member';
+    box.innerHTML=users.length?users.map((user,index)=>{
+      const manageable=frontendCanManage(actorRole,user.role) && user.id!==accountSession.user?.id;
+      const status=user.status==='suspended'?'Suspendido':'Activo';
+      return `<div class="err-item"><div class="system-row"><div><div class="q">${escHtml(String(user.username||''))} <span class="role-badge">${roleLabel(user.role)}</span></div><div class="meta">${user.email?escHtml(String(user.email))+' · ':''}${status}</div></div></div>${manageable?`<div class="admin-actions"><button class="icon-btn" data-admin-action="${user.status==='suspended'?'reactivate':'suspend'}" data-admin-index="${index}">${user.status==='suspended'?'Reactivar':'Suspender'}</button><button class="icon-btn" data-admin-action="revoke-sessions" data-admin-index="${index}">Cerrar sesiones</button><button class="icon-btn" data-admin-action="remove-leaderboard" data-admin-index="${index}">Quitar leaderboard</button><button class="icon-btn" data-admin-action="delete" data-admin-index="${index}">Borrar cuenta</button></div>`:'<p class="cloud-note">Este usuario está protegido para tu rol.</p>'}</div>`;
+    }).join(''):'<div class="empty-state"><span class="ic">○</span>No se encontraron usuarios.</div>';
+    box.querySelectorAll('[data-admin-action]').forEach(button=>button.addEventListener('click',async()=>{
+      const user=users[Number(button.dataset.adminIndex)];
+      if(!user)return;
+      await runAdminAction(button.dataset.adminAction,user,query);
+    }));
+  }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+}
+async function runAdminAction(action,user,query){
+  const labels={suspend:'suspender',reactivate:'reactivar','revoke-sessions':'cerrar las sesiones de','remove-leaderboard':'quitar del leaderboard a',delete:'borrar permanentemente'};
+  if(action==='delete'){
+    const typed=prompt(`Acción irreversible: escribe exactamente ${user.username} para borrar esta cuenta.`);
+    if(typed!==user.username){if(typed!==null)alert('El username no coincide. No se realizó ningún cambio.');return;}
+  }else if(!confirm(`¿Confirmas ${labels[action]} ${user.username}?`)) return;
+  const reason=prompt('Razón administrativa (opcional):')||'';
+  try{
+    await adminRequest('POST',{action,targetUserId:user.id,reason});
+    await loadAdminUsers(query);
+  }catch(error){alert(`No se pudo completar la acción sobre ${user.username}: ${error.message}`);}
 }
 
 /* =========================================================
@@ -2913,6 +3068,7 @@ function renderNovedades(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
     <div class="card">
+      <div class="update-item"><h3>Seguridad, cuentas y estabilidad</h3><p>Se prepararon roles verificados en backend, administración protegida, Dev Login, rate limiting, rotación del código de recuperación y mejoras compatibles para sesiones, sincronización y prácticas guardadas. La versión pública permanece en v2.0.</p></div>
       <div class="update-item"><h3>Versión 2.0 · Grande, refinada y final <span class="new-pill">NUEVO</span></h3><p>Se refinó la retroalimentación educativa: después de contestar, el cuaderno explica por qué la respuesta está bien o mal, muestra la definición del concepto relacionado, añade un ejemplo distinto para entenderlo y conserva una clave para reconocerlo la próxima vez. También se limpiaron pequeñas partes del código y se mantuvieron prácticas persistentes, cuentas, sincronización, leaderboard, usuarios conectados y Modo Experimental.</p></div>
       <div class="update-item"><h3>Experimental y usuarios conectados</h3><p>Se añadió un contador aproximado de usuarios activos en la esquina superior derecha y un Modo Experimental dentro de Practicar. El modo experimental crea nuevas variaciones de ejemplos y preguntas mediante plantillas controladas, muestra una advertencia clara de que puede contener errores y, por seguridad académica, no modifica estadísticas, errores, historial ni leaderboard.</p></div>
       <div class="update-item"><h3>Estructura de Español y pulido anterior</h3><p>El encabezado ahora identifica la materia como Español y muestra la versión publicada. El Panel quedó preparado para el futuro hub universal con categorías separadas de Temas actuales y Exámenes pasados, sin inventar exámenes que todavía no se han añadido. También se refinó la estructura para que futuras materias puedan reutilizar la misma base sin cambiar el diseño actual.</p></div>
@@ -2947,6 +3103,11 @@ function renderAjustes(main){
     <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Examen · temas predeterminados</p>
       <div class="check-list" id="defaultTopics">${TOPICS.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}</div>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Open Source</p>
+      <p style="margin:0 0 12px;color:var(--ink-soft);font-size:.88rem;">Consulta el código, el historial de cambios y los reportes del proyecto.</p>
+      <div class="btn-row"><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol" target="_blank" rel="noopener noreferrer">Repositorio</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/commits" target="_blank" rel="noopener noreferrer">Commits</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
     </div>
     <div class="btn-row"><button class="btn" id="saveSettings">💾 Guardar</button><span class="save-note" id="savedNote">${lastSaveAt?'Guardado automático activo ✓':'Guardado automático activo'}</span></div>`;
   document.getElementById('saveSettings').addEventListener('click',()=>{
@@ -2998,8 +3159,10 @@ if(window.matchMedia){
   if(mq.addEventListener) mq.addEventListener('change',onScheme); else if(mq.addListener) mq.addListener(onScheme);
 }
 render();
-restoreIndexedDBFallback();
-restoreAccountSession();
+(async()=>{
+  await restoreIndexedDBFallback();
+  await restoreAccountSession();
+})();
 
 
 /* =========================================================

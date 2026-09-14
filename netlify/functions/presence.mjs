@@ -4,6 +4,7 @@ const PRESENCE = getStore('study-hub-presence-v1');
 const ACTIVE_MS = 90_000;
 const CLEANUP_MS = 10 * 60_000;
 const MAX_SCAN = 1000;
+const MAX_CLEANUP = 100;
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -24,10 +25,16 @@ async function activeCount(now) {
   let cleaned = 0;
   for (const item of blobs.slice(0, MAX_SCAN)) {
     const row = await PRESENCE.get(item.key, { type: 'json', consistency: 'strong' });
-    if (!row || !Number.isFinite(row.at)) continue;
+    if (!row || !Number.isFinite(row.at)) {
+      if (cleaned < MAX_CLEANUP) {
+        cleaned++;
+        try { await PRESENCE.delete(item.key); } catch {}
+      }
+      continue;
+    }
     const age = now - row.at;
     if (age <= ACTIVE_MS) count++;
-    else if (age > CLEANUP_MS && cleaned < 25) {
+    else if (age > CLEANUP_MS && cleaned < MAX_CLEANUP) {
       cleaned++;
       try { await PRESENCE.delete(item.key); } catch {}
     }

@@ -1,12 +1,9 @@
 import { getStore } from '@netlify/blobs';
-import { createHash } from 'node:crypto';
+import { authenticateRequest } from './_shared/auth.mjs';
 
 const LEADERBOARD = getStore('study-hub-leaderboard-v2');
-const USERS = getStore('study-hub-users-v1');
-const SESSIONS = getStore('study-hub-sessions-v1');
-const COOKIE = 'studyhub_session';
 const MAX_PLAYERS = 100;
-const ALLOWED_TOPICS = new Set(['gramatica','morfologia','narrativa','cronica','figuras']);
+const ALLOWED_TOPICS = new Set(['gramatica', 'morfologia', 'narrativa', 'cronica', 'figuras']);
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -14,38 +11,46 @@ function json(data, status = 200) {
     headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' },
   });
 }
-function parseCookies(req) {
-  const raw = req.headers.get('cookie') || '';
-  return Object.fromEntries(raw.split(';').map(x => x.trim()).filter(Boolean).map(pair => {
-    const i = pair.indexOf('=');
-    return [decodeURIComponent(i < 0 ? pair : pair.slice(0, i)), decodeURIComponent(i < 0 ? '' : pair.slice(i + 1))];
-  }));
+
+function cleanTopics(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.map(String).filter(topic => ALLOWED_TOPICS.has(topic)))].slice(0, 5);
 }
-function tokenHash(token) { return createHash('sha256').update(token).digest('hex'); }
-async function authenticate(req) {
-  const token = parseCookies(req)[COOKIE];
-  if (!token) return null;
-  const session = await SESSIONS.get(`session/${tokenHash(token)}`, { type: 'json', consistency: 'strong' });
-  if (!session || session.expiresAt < Date.now()) return null;
-  const user = await USERS.get(`user/${session.userId}`, { type: 'json', consistency: 'strong' });
-  if (!user || (session.sessionVersion ?? 1) !== (user.sessionVersion ?? 1)) return null;
-  return user;
+
+function finiteInteger(value, fallback = 0) {
+  const number = Number(value);
+  return Number.isInteger(number) ? number : fallback;
 }
-function cleanTopics(v) {
-  if (!Array.isArray(v)) return [];
-  return [...new Set(v.map(String).filter(x => ALLOWED_TOPICS.has(x)))].slice(0, 5);
+
+function publicPlayer(player, currentUserId) {
+  const bestTotal = Math.max(0, finiteInteger(player.bestTotal));
+  const bestScore = Math.max(0, Math.min(bestTotal, finiteInteger(player.bestScore)));
+  const calculated = bestTotal ? Math.round((bestScore / bestTotal) * 100) : 0;
+  const bestPct = Math.max(0, Math.min(100, finiteInteger(player.bestPct, calculated)));
+  return {
+    name: String(player.name || 'Estudiante').slice(0, 20),
+    bestPct,
+    bestScore,
+    bestTotal,
+    bestTopics: cleanTopics(player.bestTopics),
+    bestFullExam: player.bestFullExam === true,
+    exams: Math.max(0, finiteInteger(player.exams)),
+    updatedAt: Number.isFinite(player.updatedAt) ? player.updatedAt : 0,
+    isMe: Boolean(currentUserId && player.userId === currentUserId),
+  };
 }
 
 export default async (req) => {
   try {
-    const currentUser = await authenticate(req);
+    const auth = await authenticateRequest(req);
+    const currentUser = auth.ok ? auth.user : null;
 
     if (req.method === 'GET') {
       const { blobs } = await LEADERBOARD.list({ prefix: 'players/' });
       const players = [];
       for (const item of blobs.slice(0, 500)) {
-        const p = await LEADERBOARD.get(item.key, { type: 'json', consistency: 'strong' });
-        if (p && typeof p === 'object') players.push({ ...p, isMe: !!currentUser && p.userId === currentUser.id });
+        const stored = await LEADERBOARD.get(item.key, { type: 'json', consistency: 'strong' });
+        if (stored && typeof stored === 'object') players.push(publicPlayer(stored, currentUser?.id));
       }
       players.sort((a, b) =>
         (b.bestPct - a.bestPct) ||
@@ -57,14 +62,16 @@ export default async (req) => {
     }
 
     if (req.method !== 'POST') return json({ error: 'Método no permitido.' }, 405);
-    if (!currentUser) return json({ error: 'Inicia sesión para publicar una nota.' }, 401);
+    if (!currentUser) return json({ error: auth.reason === 'suspended' ? 'Cuenta suspendida.' : 'Inicia sesión para publicar una nota.' }, 401);
 
     let body = {};
     try { body = await req.json(); } catch {}
     const score = Number(body.score);
     const total = Number(body.total);
     let pct = Number(body.pct);
-    if (!Number.isInteger(score) || !Number.isInteger(total) || total < 1 || total > 500 || score < 0 || score > total) return json({ error: 'Nota inválida.' }, 400);
+    if (!Number.isInteger(score) || !Number.isInteger(total) || total < 1 || total > 500 || score < 0 || score > total) {
+      return json({ error: 'Nota inválida.' }, 400);
+    }
     const calculated = Math.round((score / total) * 100);
     if (!Number.isFinite(pct) || Math.abs(pct - calculated) > 1) pct = calculated;
     pct = Math.max(0, Math.min(100, Math.round(pct)));
@@ -73,22 +80,24 @@ export default async (req) => {
 
     const key = `players/${currentUser.id}`;
     const old = await LEADERBOARD.get(key, { type: 'json', consistency: 'strong' });
-    const isBetter = !old || pct > old.bestPct || (pct === old.bestPct && total > old.bestTotal);
+    const oldPct = finiteInteger(old?.bestPct, -1);
+    const oldTotal = finiteInteger(old?.bestTotal);
+    const isBetter = !old || pct > oldPct || (pct === oldPct && total > oldTotal);
     const next = {
       userId: currentUser.id,
       name: currentUser.username,
-      bestPct: isBetter ? pct : old.bestPct,
-      bestScore: isBetter ? score : old.bestScore,
-      bestTotal: isBetter ? total : old.bestTotal,
-      bestTopics: isBetter ? topics : (old.bestTopics || []),
-      bestFullExam: isBetter ? fullExam : !!old.bestFullExam,
-      exams: (old?.exams || 0) + 1,
+      bestPct: isBetter ? pct : oldPct,
+      bestScore: isBetter ? score : finiteInteger(old.bestScore),
+      bestTotal: isBetter ? total : oldTotal,
+      bestTopics: isBetter ? topics : cleanTopics(old.bestTopics),
+      bestFullExam: isBetter ? fullExam : old.bestFullExam === true,
+      exams: Math.max(0, finiteInteger(old?.exams)) + 1,
       updatedAt: Date.now(),
     };
     await LEADERBOARD.setJSON(key, next);
-    return json({ ok: true, player: { ...next, isMe: true } });
+    return json({ ok: true, player: publicPlayer(next, currentUser.id) });
   } catch (error) {
-    console.error('leaderboard function error', error);
+    console.error('leaderboard function error', { name: error?.name || 'Error' });
     return json({ error: 'Ocurrió un error en el leaderboard.' }, 500);
   }
 };
