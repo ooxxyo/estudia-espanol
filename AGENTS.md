@@ -82,6 +82,14 @@
 - Añade cada actualización aprobada a Novedades / Update Log.
 - Identifica claramente como experimentales los cambios experimentales.
 
+## Documentación del proyecto
+
+- Consulta `DECISIONS.md` antes de cambiar materias, roles, identidad, acceso o privacidad.
+- Mantén `ROADMAP.md` con estados `Planned`, `In Progress`, `Testing` o `Completed`.
+- Actualiza `ARCHITECTURE.md` cuando cambien límites entre frontend, motor de estudio, persistencia o backend.
+- Registra en `TESTING.md` la matriz mínima y las pruebas de regresión aplicables.
+- No marques trabajo como `Completed` hasta que sus pruebas relevantes hayan pasado.
+
 ## Pruebas y entrega
 
 Antes de terminar cualquier cambio:
