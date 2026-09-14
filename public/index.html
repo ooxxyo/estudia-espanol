@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuaderno · Examen de Español</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EFEBE2;
+  --bg-soft:#E5E0D3;
+  --card:#FFFFFF;
+  --ink:#22303A;
+  --ink-soft:#5B6670;
+  --line:#D9D2C0;
+  --accent:#8B2635;
+  --accent-soft:#F3DCDD;
+  --amber:#B9772E;
+  --amber-soft:#F3E3CC;
+  --good:#3E7A58;
+  --good-soft:#DCEBE1;
+  --bad:#A63B3B;
+  --bad-soft:#F4DCDC;
+  --radius-card:14px;
+  --radius-chip:999px;
+  --shadow:0 1px 2px rgba(34,48,58,.06), 0 6px 20px rgba(34,48,58,.05);
+}
+[data-theme="dark"]{
+  --bg:#1A1D21;
+  --bg-soft:#212429;
+  --card:#24272C;
+  --ink:#EAE6DC;
+  --ink-soft:#A3A99F;
+  --line:#33373D;
+  --accent:#E2828F;
+  --accent-soft:#3A2429;
+  --amber:#E0A667;
+  --amber-soft:#3A2E1C;
+  --good:#7FC49A;
+  --good-soft:#1E2E26;
+  --bad:#E08A8A;
+  --bad-soft:#332022;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 6px 20px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+h1,h2,h3,.serif{font-family:'Fraunces',Georgia,serif;}
+button{font-family:inherit;}
+.app{display:flex;min-height:100vh;}
+
+/* ---- Nav rail ---- */
+.rail{
+  width:220px;flex-shrink:0;
+  background:var(--bg-soft);
+  border-right:1px solid var(--line);
+  padding:22px 14px;
+  display:flex;flex-direction:column;gap:4px;
+  position:sticky;top:0;height:100vh;
+}
+.rail-brand{
+  font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;
+  padding:0 10px 18px 10px;line-height:1.25;
+  border-bottom:1px solid var(--line);margin-bottom:12px;
+}
+.rail-brand span{display:block;font-family:'Inter';font-weight:500;font-size:.72rem;color:var(--ink-soft);margin-top:3px;}
+.nav-btn{
+  display:flex;align-items:center;gap:10px;
+  background:none;border:none;text-align:left;
+  padding:10px 12px;border-radius:10px;cursor:pointer;
+  color:var(--ink-soft);font-size:.92rem;font-weight:500;
+  transition:background .15s ease, color .15s ease;
+}
+.nav-btn:hover{background:var(--card);}
+.nav-btn.active{background:var(--accent);color:#fff;}
+.nav-btn .ic{width:18px;text-align:center;font-size:1rem;}
+.rail-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line);}
+.theme-toggle{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:8px 12px;cursor:pointer;color:var(--ink);font-size:.85rem;
+}
+
+/* ---- mobile bottom nav ---- */
+.mobile-nav{display:none;}
+@media (max-width:820px){
+  .rail{display:none;}
+  .mobile-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;
+    background:var(--bg-soft);border-top:1px solid var(--line);
+    padding:6px 4px;z-index:50;overflow-x:auto;gap:2px;
+  }
+  .mobile-nav .nav-btn{flex-direction:column;gap:3px;font-size:.62rem;padding:7px 8px;min-width:58px;text-align:center;}
+  main{padding-bottom:78px !important;}
+}
+
+main{flex:1;padding:34px 40px;max-width:980px;margin:0 auto;width:100%;}
+@media (max-width:820px){ main{padding:20px 16px;} }
+
+.pagehead{margin-bottom:26px;}
+.pagehead h1{font-size:1.7rem;font-weight:600;margin:0 0 4px 0;}
+.pagehead p{color:var(--ink-soft);margin:0;font-size:.95rem;}
+
+/* ---- cards / grids ---- */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-card);padding:20px;box-shadow:var(--shadow);}
+.grid{display:grid;gap:16px;}
+.grid-2{grid-template-columns:1fr 1fr;}
+.grid-3{grid-template-columns:repeat(3,1fr);}
+.grid-4{grid-template-columns:repeat(4,1fr);}
+@media (max-width:720px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr;} }
+@media (max-width:480px){ .grid-2,.grid-3,.grid-4{grid-template-columns:1fr;} }
+
+/* ---- dashboard ring ---- */
+.dash-top{display:flex;gap:24px;align-items:center;flex-wrap:wrap;}
+.ring-wrap{position:relative;width:150px;height:150px;flex-shrink:0;}
+.ring-num{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.ring-num b{font-family:'Fraunces';font-size:2rem;font-weight:600;}
+.ring-num span{font-size:.7rem;color:var(--ink-soft);}
+.stat-box{padding:14px 16px;}
+.stat-box b{display:block;font-family:'Fraunces';font-size:1.5rem;font-weight:600;}
+.stat-box span{color:var(--ink-soft);font-size:.8rem;}
+
+.topic-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+.topic-row:last-child{border-bottom:none;}
+.topic-row .tname{width:150px;flex-shrink:0;font-weight:600;font-size:.9rem;}
+.bar-track{flex:1;height:8px;background:var(--bg-soft);border-radius:999px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:999px;background:var(--accent);transition:width .4s ease;}
+.pill{font-size:.68rem;padding:3px 9px;border-radius:var(--radius-chip);font-weight:600;white-space:nowrap;}
+.pill-none{background:var(--bg-soft);color:var(--ink-soft);}
+.pill-progress{background:var(--amber-soft);color:var(--amber);}
+.pill-almost{background:#DCE6F3;color:#3A5D8A;}
+.pill-mastered{background:var(--good-soft);color:var(--good);}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;justify-content:center;
+  background:var(--accent);color:#fff;border:none;border-radius:10px;
+  padding:11px 18px;font-size:.92rem;font-weight:600;cursor:pointer;
+  transition:transform .1s ease, opacity .15s ease;
+}
+.btn:hover{opacity:.92;}
+.btn:active{transform:scale(.98);}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);}
+.btn.soft{background:var(--accent-soft);color:var(--accent);}
+.btn.amber{background:var(--amber);}
+.btn:disabled{opacity:.45;cursor:not-allowed;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 13px;border-radius:var(--radius-chip);border:1px solid var(--line);background:var(--card);font-size:.82rem;font-weight:500;cursor:pointer;color:var(--ink);}
+.chip.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+[data-theme="dark"] .chip.active{background:var(--accent);border-color:var(--accent);}
+
+.section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 0 10px 2px;font-weight:600;}
+/* deliberately used sparingly, only as small section labels above lists — not as a decorative eyebrow on every block */
+
+.mode-card{cursor:pointer;transition:border-color .15s ease, transform .1s ease;}
+.mode-card:hover{border-color:var(--accent);}
+.mode-card h3{margin:0 0 6px 0;font-size:1rem;}
+.mode-card p{margin:0;color:var(--ink-soft);font-size:.83rem;line-height:1.4;}
+.mode-card .ic{font-size:1.4rem;margin-bottom:8px;display:block;}
+
+/* ---- question view ---- */
+.q-wrap{max-width:700px;margin:0 auto;}
+.q-topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;font-size:.82rem;color:var(--ink-soft);}
+.q-progress{height:6px;background:var(--bg-soft);border-radius:999px;overflow:hidden;margin-bottom:22px;}
+.q-progress-fill{height:100%;background:var(--accent);transition:width .3s ease;}
+.q-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;box-shadow:var(--shadow);}
+.q-topic-tag{display:inline-block;background:var(--bg-soft);color:var(--ink-soft);font-size:.72rem;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:12px;}
+.q-prompt{font-size:1.15rem;line-height:1.5;margin:0 0 20px 0;font-weight:500;}
+.q-reading{background:var(--bg-soft);border-radius:10px;padding:16px 18px;margin-bottom:18px;font-size:.95rem;line-height:1.65;}
+.q-reading .sent{cursor:pointer;padding:1px 2px;border-radius:4px;}
+.q-reading .sent:hover{background:var(--accent-soft);}
+.q-reading .sent.picked{background:var(--accent);color:#fff;}
+.q-reading .sent.correct{background:var(--good-soft);color:var(--good);}
+.q-reading .sent.incorrect{background:var(--bad-soft);color:var(--bad);}
+
+.opt-list{display:flex;flex-direction:column;gap:10px;}
+.opt{
+  display:flex;align-items:center;gap:12px;padding:13px 16px;border:1.5px solid var(--line);
+  border-radius:11px;cursor:pointer;background:var(--card);font-size:.95rem;transition:border-color .12s ease, background .12s ease;
+}
+.opt:hover{border-color:var(--accent);}
+.opt.selected{border-color:var(--accent);background:var(--accent-soft);}
+.opt.correct{border-color:var(--good);background:var(--good-soft);}
+.opt.incorrect{border-color:var(--bad);background:var(--bad-soft);}
+.opt-letter{width:26px;height:26px;border-radius:50%;background:var(--bg-soft);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;flex-shrink:0;}
+
+.tf-row{display:flex;gap:12px;}
+.tf-row .opt{flex:1;justify-content:center;}
+
+.seg-word{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;justify-content:center;}
+.seg-chunk{display:flex;flex-direction:column;align-items:center;gap:6px;}
+.seg-chunk .txt{font-family:'Fraunces';font-size:1.4rem;font-weight:600;padding:6px 10px;background:var(--bg-soft);border-radius:8px;}
+.seg-chunk select{padding:6px 8px;border-radius:8px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font-size:.78rem;font-weight:600;}
+.seg-chunk select.correct{border-color:var(--good);background:var(--good-soft);}
+.seg-chunk select.incorrect{border-color:var(--bad);background:var(--bad-soft);}
+.seg-key{font-size:.78rem;color:var(--ink-soft);text-align:center;margin-bottom:10px;}
+
+.fill-input{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:11px;font-size:1rem;background:var(--card);color:var(--ink);}
+.fill-input:focus{outline:none;border-color:var(--accent);}
+.fill-input.correct{border-color:var(--good);background:var(--good-soft);}
+.fill-input.incorrect{border-color:var(--bad);background:var(--bad-soft);}
+
+.feedback{margin-top:18px;padding:15px 17px;border-radius:11px;font-size:.9rem;line-height:1.5;}
+.feedback.good{background:var(--good-soft);color:var(--good);}
+.feedback.bad{background:var(--bad-soft);color:var(--bad);}
+.feedback b{display:block;margin-bottom:4px;font-size:.95rem;}
+.feedback .exp{color:var(--ink);margin-top:6px;}
+.feedback .detail-block{margin-top:10px;padding-top:10px;border-top:1px solid color-mix(in srgb, var(--line) 80%, transparent);}
+.feedback .detail-title{font-weight:800;color:var(--ink);margin-bottom:4px;}
+.feedback .detail-answer{font-weight:800;}
+.feedback .detail-tip{margin-top:8px;color:var(--ink-soft);}
+.feedback .detail-tip b{display:inline;color:inherit;font-size:inherit;margin:0;}
+
+.hint-box{margin-top:14px;background:var(--amber-soft);border-radius:10px;padding:12px 15px;font-size:.87rem;color:var(--ink);}
+.hint-box b{color:var(--amber);}
+
+.q-actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;flex-wrap:wrap;gap:10px;}
+.icon-btn{background:none;border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;color:var(--ink-soft);font-size:.85rem;display:flex;align-items:center;gap:6px;}
+.icon-btn:hover{color:var(--ink);border-color:var(--ink-soft);}
+.icon-btn.starred{color:var(--amber);border-color:var(--amber);}
+
+.mini-review{background:var(--amber-soft);border:1px solid var(--amber);border-radius:12px;padding:18px;margin-bottom:18px;}
+.mini-review h4{margin:0 0 8px 0;color:var(--amber);}
+
+.results-hero{text-align:center;padding:30px 20px;}
+.results-hero .big{font-family:'Fraunces';font-size:3rem;font-weight:600;}
+.err-item{border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:10px;}
+.err-item .q{font-weight:600;margin-bottom:4px;}
+.err-item .meta{font-size:.78rem;color:var(--ink-soft);}
+
+.empty-state{text-align:center;padding:50px 20px;color:var(--ink-soft);}
+.empty-state .ic{font-size:2.2rem;margin-bottom:10px;display:block;}
+
+.kbd-hint{font-size:.75rem;color:var(--ink-soft);text-align:center;margin-top:10px;}
+kbd{background:var(--bg-soft);border-radius:5px;padding:1px 6px;font-family:inherit;border:1px solid var(--line);}
+
+.hist-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:.88rem;}
+.hist-row:last-child{border-bottom:none;}
+.spark{display:flex;align-items:flex-end;gap:3px;height:60px;margin-top:6px;}
+.spark div{flex:1;background:var(--accent);border-radius:3px 3px 0 0;min-height:3px;}
+
+.trick{background:var(--amber-soft);border-left:3px solid var(--amber);padding:9px 13px;border-radius:0 8px 8px 0;font-size:.85rem;margin-top:14px;}
+
+@media (max-width:520px){
+  .q-card{padding:18px;}
+  .grid-2{grid-template-columns:1fr;}
+}
+
+/* ===== MEJORA VISUAL SEGURA ===== */
+:root{
+  --bg:#F3F0E8;
+  --bg-soft:#E9E4D9;
+  --card:#FCFBF7;
+  --ink:#28343B;
+  --ink-soft:#616B72;
+  --line:#D6D0C5;
+  --accent:#74414A;
+  --accent-soft:#EEE1E3;
+  --amber:#8C6B43;
+  --amber-soft:#F1E8DB;
+  --good:#5D7966;
+  --good-soft:#E2ECE5;
+  --bad:#925D5D;
+  --bad-soft:#F0E3E2;
+  --radius-card:15px;
+  --shadow:0 1px 2px rgba(40,52,59,.04),0 8px 22px rgba(40,52,59,.05);
+}
+[data-theme="dark"]{
+  --bg:#1C2023;
+  --bg-soft:#22272B;
+  --card:#282D31;
+  --ink:#ECE8DF;
+  --ink-soft:#B2B7B3;
+  --line:#3A4044;
+  --accent:#C1848D;
+  --accent-soft:#3A2E31;
+  --amber:#C09A68;
+  --amber-soft:#382F25;
+  --good:#87A48F;
+  --good-soft:#28342C;
+  --bad:#C78686;
+  --bad-soft:#382A2A;
+  --shadow:0 1px 2px rgba(0,0,0,.20),0 8px 22px rgba(0,0,0,.18);
+}
+body{line-height:1.55;}
+.nav-btn.active{background:var(--accent);color:#FFF9F7;}
+.btn{background:var(--accent);color:#FFF9F7;}
+.btn:hover{opacity:.96;}
+.card,.q-card{box-shadow:var(--shadow);}
+.q-card{border-radius:15px;}
+.feedback.good,.feedback.bad{color:var(--ink);}
+.feedback.good b{color:var(--good);}
+.feedback.bad b{color:var(--bad);}
+.hint-box{
+  border:1px solid var(--line);
+  border-left:3px solid var(--amber);
+  background:var(--amber-soft);
+  color:var(--ink);
+  line-height:1.58;
+}
+.hint-box b{color:var(--ink);}
+
+/* Repaso visual */
+.review-card{text-align:left !important;}
+.review-definition{
+  font-size:1.05rem;
+  line-height:1.68;
+  margin:0 auto;
+  max-width:62ch;
+}
+.study-example{
+  margin-top:20px;
+  padding:16px 18px;
+  background:var(--bg-soft);
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.study-example-label{
+  display:block;
+  font-size:.72rem;
+  color:var(--ink-soft);
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.05em;
+  margin-bottom:10px;
+}
+.study-quote{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.18rem;
+  line-height:1.85;
+}
+.study-highlight{
+  font-weight:700;
+  padding:0 2px 1px;
+  border-radius:3px;
+  background:var(--accent-soft);
+  border-bottom:2px solid var(--accent);
+}
+.study-note{
+  border-top:1px solid var(--line);
+  margin-top:14px;
+  padding-top:12px;
+  font-size:.9rem;
+  line-height:1.55;
+}
+.study-note b{color:var(--accent);}
+
+.morph-example{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  margin:14px 0 4px;
+}
+.morph-piece{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+}
+.morph-word{
+  font-family:'Fraunces',Georgia,serif;
+  font-size:1.3rem;
+  font-weight:650;
+  padding:9px 11px;
+  border:1px solid var(--line);
+  border-bottom:3px solid var(--accent);
+  background:var(--card);
+  border-radius:9px;
+}
+.morph-label{
+  color:var(--ink-soft);
+  font-size:.7rem;
+  font-weight:700;
+}
+.morph-piece.infix .morph-word{
+  background:var(--amber-soft);
+  border-bottom-color:var(--amber);
+}
+.morph-piece.suffix .morph-word{
+  background:var(--good-soft);
+  border-bottom-color:var(--good);
+}
+.morph-piece.flex .morph-word{
+  background:#E9E5EE;
+  border-bottom-color:#756780;
+}
+[data-theme="dark"] .morph-piece.flex .morph-word{
+  background:#342F39;
+  border-bottom-color:#A99AB5;
+}
+.morph-plus{
+  align-self:center;
+  color:var(--ink-soft);
+  font-weight:700;
+  margin-top:8px;
+}
+.study-sequence{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  align-items:center;
+}
+.study-step{
+  padding:7px 10px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:9px;
+  font-weight:600;
+  font-size:.86rem;
+}
+.study-arrow{color:var(--ink-soft);font-weight:700;}
+
+@media (max-width:520px){
+  .study-example{padding:14px;}
+  .study-quote{font-size:1.08rem;}
+  .morph-word{font-size:1.12rem;}
+  .q-card{padding:18px 16px;}
+}
+
+
+/* ---- Añadidos funcionales v1.2 (mantienen el diseño original) ---- */
+.nav-badge{margin-left:auto;font-size:.62rem;font-weight:700;letter-spacing:.04em;padding:2px 6px;border-radius:999px;background:var(--accent);color:#fff;}
+.setting-row{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:14px 0;border-bottom:1px solid var(--line);}
+.setting-row:last-child{border-bottom:none;}
+.setting-copy{min-width:0;}
+.setting-copy b{display:block;margin-bottom:3px;}
+.setting-copy span{display:block;color:var(--ink-soft);font-size:.84rem;line-height:1.45;}
+.setting-control{flex-shrink:0;}
+.setting-control select{min-height:40px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink);padding:0 10px;font:inherit;}
+.check-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;margin-top:10px;}
+.check-line{display:flex;align-items:center;gap:8px;font-size:.9rem;cursor:pointer;}
+.check-line input{width:18px;height:18px;accent-color:var(--accent);}
+.save-note{font-size:.82rem;color:var(--good);margin-left:8px;}
+.update-item{padding:16px 0;border-bottom:1px solid var(--line);}
+.update-item:last-child{border-bottom:none;}
+.update-item h3{font-size:1rem;margin:0 0 5px;}
+.update-item p{margin:0;color:var(--ink-soft);font-size:.87rem;line-height:1.55;}
+.new-pill{display:inline-block;margin-left:7px;padding:2px 7px;border-radius:999px;background:var(--accent);color:#fff;font-family:'Inter',sans-serif;font-size:.62rem;font-weight:700;vertical-align:middle;}
+.practice-count-box{display:flex;align-items:center;gap:9px;margin:0 0 20px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:.88rem;}
+.practice-count-box input{width:18px;height:18px;accent-color:var(--accent);}
+@media(max-width:640px){.setting-row{flex-direction:column;gap:10px}.setting-control{width:100%}.setting-control select{width:100%}.check-list{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body data-theme="light">
+<div class="app">
+  <nav class="rail" id="rail"></nav>
+  <main id="main">
+      <div class="card" style="margin:30px auto;max-width:680px;">
+        <h2 style="margin-top:0;">Cuaderno · Examen de Español</h2>
+        <p>La aplicación está cargando.</p>
+        <p style="color:var(--ink-soft);font-size:.9rem;">Si este mensaje no desaparece, el visor donde abriste el archivo no permite ejecutar JavaScript. Abre el archivo directamente en Safari, Chrome, Edge o Firefox.</p>
+      </div>
+    </main>
+</div>
+<nav class="mobile-nav" id="mobileNav"></nav>
+
+<script>
+/* =========================================================
+   DATOS: temas
+========================================================= */
+const TOPICS = [
+  {id:'gramatica', name:'Gramática', icon:'✎'},
+  {id:'morfologia', name:'Morfología', icon:'🧩'},
+  {id:'narrativa', name:'Narrador', icon:'📖'},
+  {id:'cronica', name:'Crónica', icon:'📰'},
+  {id:'figuras', name:'Figuras literarias', icon:'✦'},
+];
+
+/* =========================================================
+   DATOS: preguntas
+   tipo: 'mc' | 'tf' | 'seg' | 'fill' | 'eviden'
+========================================================= */
+let _id = 0;
+const nid = () => 'q' + (++_id);
+
+const Q = [];
+
+/* ---------- SECCIÓN 1: GRAMÁTICA ---------- */
+Q.push(
+{id:nid(), topic:'gramatica', type:'mc', dif:'facil',
+ prompt:'¿Cuál disciplina estudia la estructura de una lengua en general: la forma de las palabras, cómo se organizan y cómo se relacionan?',
+ options:['Morfología','Sintaxis','Gramática','Crónica'], correct:2,
+ hints:['Es el término más amplio de los tres.','Incluye tanto la morfología como la sintaxis.','La palabra que buscas nombra a toda la disciplina, no a una de sus partes.'],
+ exp:'La gramática es la disciplina general que estudia la estructura de la lengua; morfología y sintaxis son sus dos partes.'},
+{id:nid(), topic:'gramatica', type:'mc', dif:'facil',
+ prompt:'"Estudia la estructura interna de las palabras, su formación y sus variaciones." Esta definición corresponde a:',
+ options:['Sintaxis','Morfología','Gramática','Narrador'], correct:1,
+ hints:['Piensa en la palabra "interna": se enfoca dentro de la palabra.','No es sobre cómo se combinan varias palabras.','Es la parte de la gramática que estudia lexemas y morfemas.'],
+ exp:'La morfología mira hacia adentro de la palabra: su formación y variaciones.'},
+{id:nid(), topic:'gramatica', type:'mc', dif:'facil',
+ prompt:'"Estudia cómo las palabras se combinan y organizan para formar frases y oraciones." Esta definición corresponde a:',
+ options:['Morfología','Sintaxis','Crónica','Narrador testigo'], correct:1,
+ hints:['Aquí el enfoque está en varias palabras juntas, no en una sola.','Piensa en el orden de las palabras dentro de una oración.','Es la otra mitad de la gramática, junto con la morfología.'],
+ exp:'La sintaxis estudia la combinación de palabras para formar frases y oraciones.'},
+{id:nid(), topic:'gramatica', type:'tf', dif:'facil',
+ prompt:'La morfología y la sintaxis son ambas partes de la gramática.',
+ correct:true,
+ hints:['La gramática es el término general.','Ambas estudian distintos aspectos de la lengua, pero pertenecen a la misma disciplina.'],
+ exp:'Correcto: la gramática incluye la relación entre morfología y sintaxis.'},
+{id:nid(), topic:'gramatica', type:'mc', dif:'medio',
+ prompt:'Si un ejercicio te pide dividir la palabra "calentadores" en sus partes internas (lexema, sufijo, morfema flexivo), ¿qué disciplina estás practicando?',
+ options:['Sintaxis','Morfología','Crónica','Narrador'], correct:1,
+ hints:['Estás trabajando con una sola palabra, no con una oración completa.','El análisis interno de una palabra es morfológico.'],
+ exp:'Dividir una palabra en lexema y morfemas es un ejercicio de morfología.'},
+{id:nid(), topic:'gramatica', type:'mc', dif:'medio',
+ prompt:'Si un ejercicio te pide identificar el sujeto y el predicado de una oración, ¿qué disciplina estás practicando?',
+ options:['Morfología','Sintaxis','Gramática (en general, sin especificar)','Ninguna de las anteriores'], correct:1,
+ hints:['Sujeto y predicado son partes de la oración, no de una sola palabra.','Esto trata sobre cómo se organizan varias palabras juntas.'],
+ exp:'Identificar sujeto y predicado es un análisis sintáctico: organización de palabras en la oración.'},
+{id:nid(), topic:'gramatica', type:'tf', dif:'medio',
+ prompt:'La sintaxis se enfoca en la formación interna de una sola palabra.',
+ correct:false,
+ hints:['Eso describe mejor a otra disciplina.','La sintaxis trabaja con combinaciones de palabras, no con una palabra aislada.'],
+ exp:'Falso: eso describe a la morfología. La sintaxis trabaja con la combinación de palabras.'},
+{id:nid(), topic:'gramatica', type:'mc', dif:'dificil',
+ prompt:'¿Cuál de las siguientes afirmaciones describe mejor la relación entre gramática, morfología y sintaxis?',
+ options:[
+   'Son tres disciplinas completamente independientes sin relación entre sí.',
+   'La gramática es la disciplina general; la morfología estudia la palabra y la sintaxis estudia la oración.',
+   'La sintaxis es una parte de la morfología.',
+   'La morfología estudia oraciones completas y la sintaxis estudia palabras sueltas.'],
+ correct:1,
+ hints:['Piensa en cuál es el término "paraguas" que engloba a los otros dos.','Una mira hacia adentro de la palabra; la otra mira hacia afuera, hacia la oración.'],
+ exp:'La gramática engloba ambas: la morfología analiza la palabra por dentro y la sintaxis analiza cómo se combinan las palabras.'}
+);
+
+/* ---------- SECCIÓN 2/3: MORFOLOGÍA - conceptos ---------- */
+Q.push(
+{id:nid(), topic:'morfologia', type:'mc', dif:'facil',
+ prompt:'¿Cómo se llama la parte fundamental de una palabra, la que contiene el significado principal?',
+ options:['Morfema flexivo','Lexema o raíz','Infijo','Sufijo'], correct:1,
+ hints:['A partir de esta parte se forman palabras relacionadas como pan, panadero, panadería.','Es la base sobre la que se añaden los demás elementos.'],
+ exp:'El lexema (o raíz) es la parte fundamental de la palabra y contiene el significado principal.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'facil',
+ prompt:'¿Cuál es el lexema compartido por "pan", "panadero", "panadería" y "panecillo"?',
+ options:['pan','ero','ería','ecillo'], correct:0,
+ hints:['Busca la parte que se repite igual en las cuatro palabras.'],
+ exp:'"pan-" es el lexema; el resto son morfemas añadidos.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'facil',
+ prompt:'Un morfema que expresa información gramatical como género, número, persona, tiempo o modo, sin crear una palabra nueva, se llama:',
+ options:['Morfema derivativo','Morfema flexivo','Infijo','Lexema'], correct:1,
+ hints:['Piensa en el ejemplo "niñas": la -a y la -s no crean una palabra distinta, solo dan información.'],
+ exp:'El morfema flexivo aporta género, número, persona, tiempo o modo, sin crear una palabra completamente nueva.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'facil',
+ prompt:'En la palabra "niñas", ¿qué representa la "-s" final?',
+ options:['Morfema flexivo de género','Morfema flexivo de número plural','Morfema derivativo prefijo','Infijo'], correct:1,
+ hints:['La -a ya marca el género femenino.','La -s marca cuántos son.'],
+ exp:'La "-s" es el morfema flexivo de número plural; la "-a" es el morfema flexivo de género femenino.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'medio',
+ prompt:'Un morfema que sirve para formar una palabra nueva o modificar el significado del lexema (y puede ser prefijo o sufijo) se llama:',
+ options:['Morfema flexivo','Morfema derivativo','Infijo','Lexema'], correct:1,
+ hints:['A diferencia del flexivo, este sí puede crear una palabra distinta o cambiar su significado.'],
+ exp:'El morfema derivativo forma palabras nuevas o modifica el significado del lexema; incluye prefijos y sufijos.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'medio',
+ prompt:'¿Dónde aparece un prefijo respecto al lexema?',
+ options:['Después','Antes','En medio, entre el lexema y el sufijo','No tiene posición fija'], correct:1,
+ hints:['MDP = Morfema Derivativo Prefijo. "Pre-" significa "antes".'],
+ exp:'El prefijo aparece antes del lexema (por ejemplo, "i-" en "ilegal").'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'medio',
+ prompt:'¿Dónde aparece un infijo?',
+ options:['Antes del lexema','Después del sufijo','Entre el lexema y el sufijo','Al final absoluto de la palabra'], correct:2,
+ hints:['Funciona como una partícula de enlace.','Ejemplo clave: "panecillo" → pan + ec + illo.'],
+ exp:'El infijo aparece entre el lexema y el sufijo, funcionando como enlace (ej. la "-ec-" en "panecillo").'},
+{id:nid(), topic:'morfologia', type:'tf', dif:'medio',
+ prompt:'El infijo normalmente tiene un significado propio muy importante.',
+ correct:false,
+ hints:['El documento dice que "normalmente no tiene significado propio importante".'],
+ exp:'Falso: el infijo funciona como partícula de enlace y normalmente no aporta un significado propio importante.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'medio',
+ prompt:'Una palabra derivada se forma:',
+ options:['Combinando dos lexemas completos','Añadiendo uno o más morfemas derivativos a un lexema','Quitando morfemas de un lexema','Repitiendo el mismo lexema dos veces'], correct:1,
+ hints:['Ejemplo: casa → casita.'],
+ exp:'Una palabra derivada se forma añadiendo uno o más morfemas derivativos a un lexema (casa → casita).'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
+ prompt:'La parasíntesis es un procedimiento de formación de palabras que se practica especialmente con esta estructura:',
+ options:['lexema + lexema','sufijo + lexema + prefijo','prefijo + lexema + sufijo','infijo + lexema'], correct:2,
+ hints:['Intervienen simultáneamente distintos elementos, con el prefijo y el sufijo "abrazando" al lexema.'],
+ exp:'La estructura típica de la parasíntesis es prefijo + lexema + sufijo, con ambos elementos actuando a la vez.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
+ prompt:'¿Cuál es la diferencia clave entre morfema derivativo y morfema flexivo?',
+ options:[
+   'El derivativo cambia el significado o forma una palabra nueva; el flexivo solo aporta información gramatical.',
+   'El flexivo siempre va antes del lexema; el derivativo siempre va después.',
+   'No hay ninguna diferencia real, son sinónimos.',
+   'El derivativo solo existe en verbos.'],
+ correct:0,
+ hints:['Piensa en "niñas": -a y -s no crean una palabra nueva. Piensa en "casita": -ita sí forma una palabra derivada.'],
+ exp:'El morfema derivativo forma palabras nuevas o cambia el significado; el flexivo únicamente marca género, número, persona, tiempo o modo.'}
+);
+
+/* ---------- SECCIÓN 3: ANÁLISIS MORFOLÓGICO (segmentación) ---------- */
+// roles: MDP, LEX, INF, MDS, MF
+function segQ(word, parts, dif, note){
+  return {id:nid(), topic:'morfologia', type:'seg', dif,
+    prompt:`Divide la palabra "${word}" y asigna la función correcta a cada parte.`,
+    word, parts,
+    hints:[
+      'Busca primero el lexema: la parte con el significado principal.',
+      'Revisa si hay algo antes del lexema (prefijo) o después (sufijo/flexivo).',
+      note || 'Recuerda: MDP = prefijo, LEX = lexema, INF = infijo, MDS = sufijo, MF = morfema flexivo.'
+    ],
+    exp: 'PAN | EC | ILLO'.length ? explainSeg(word, parts) : ''
+  };
+}
+function explainSeg(word, parts){
+  return parts.map(p=>`${p.text.toUpperCase()} (${roleName(p.role)})`).join(' + ');
+}
+function roleName(r){
+  return {MDP:'prefijo', LEX:'lexema', INF:'infijo', MDS:'sufijo', MF:'morfema flexivo'}[r];
+}
+
+Q.push(
+ segQ('panecillo', [{text:'pan',role:'LEX'},{text:'ec',role:'INF'},{text:'illo',role:'MDS'}], 'medio',
+   'Este es el ejemplo fundamental de infijo: pan + ec + illo.'),
+ segQ('calentadores', [{text:'calent',role:'LEX'},{text:'ador',role:'MDS'},{text:'es',role:'MF'}], 'medio'),
+ segQ('destornillador', [{text:'des',role:'MDP'},{text:'tornill',role:'LEX'},{text:'ador',role:'MDS'}], 'medio'),
+ segQ('casita', [{text:'cas',role:'LEX'},{text:'ita',role:'MDS'}], 'facil'),
+ segQ('rojizo', [{text:'roj',role:'LEX'},{text:'izo',role:'MDS'}], 'facil'),
+ segQ('bombardeo', [{text:'bombard',role:'LEX'},{text:'eo',role:'MDS'}], 'facil'),
+ segQ('ilegal', [{text:'i',role:'MDP'},{text:'legal',role:'LEX'}], 'facil'),
+ segQ('subterráneos', [{text:'sub',role:'MDP'},{text:'terráne',role:'LEX'},{text:'os',role:'MF'}], 'medio'),
+ segQ('antiaéreos', [{text:'anti',role:'MDP'},{text:'aére',role:'LEX'},{text:'os',role:'MF'}], 'medio'),
+ segQ('inhospitales', [{text:'in',role:'MDP'},{text:'hospital',role:'LEX'},{text:'es',role:'MF'}], 'dificil'),
+ segQ('ilegalidad', [{text:'i',role:'MDP'},{text:'legal',role:'LEX'},{text:'idad',role:'MDS'}], 'dificil'),
+ segQ('comparación', [{text:'compar',role:'LEX'},{text:'ación',role:'MDS'}], 'medio'),
+ segQ('avispero', [{text:'avisp',role:'LEX'},{text:'ero',role:'MDS'}], 'facil'),
+ segQ('descomponer', [{text:'des',role:'MDP'},{text:'componer',role:'LEX'}], 'medio'),
+ segQ('pronombres', [{text:'pro',role:'MDP'},{text:'nombre',role:'LEX'},{text:'s',role:'MF'}], 'dificil'),
+ // extra "same level" words to check real understanding
+ segQ('panadería', [{text:'pan',role:'LEX'},{text:'ader',role:'MDS'},{text:'ía',role:'MDS'}], 'dificil',
+   'En este nivel puedes agrupar "-adería" como un sufijo compuesto que forma el lugar donde se hace algo.'),
+ segQ('florecillas', [{text:'flor',role:'LEX'},{text:'ec',role:'INF'},{text:'ill',role:'MDS'},{text:'as',role:'MF'}], 'dificil',
+   'Igual que en "panecillo": lexema + infijo -ec- + sufijo + flexivo de plural.'),
+ segQ('desilusionado', [{text:'des',role:'MDP'},{text:'ilusion',role:'LEX'},{text:'ado',role:'MDS'}], 'dificil')
+);
+
+// Palabra compuesta especial (cabizbajo) — no es un simple prefijo+lexema+sufijo
+Q.push({id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
+ prompt:'"Cabizbajo" se forma a partir de "cabeza" + "bajo". ¿Cómo se describe mejor este tipo de formación?',
+ options:['Es solo un morfema flexivo','Es una palabra compuesta a partir de dos lexemas, no un simple prefijo o sufijo','Es un infijo','No tiene ninguna formación morfológica'], correct:1,
+ hints:['Observa que "cabeza" y "bajo" son dos palabras completas con significado propio, no un prefijo ni un sufijo.'],
+ exp:'"Cabizbajo" une dos lexemas (cabeza + bajo) en una palabra compuesta, un proceso distinto a simplemente añadir un prefijo o sufijo.'});
+
+Q.push(
+{id:nid(), topic:'morfologia', type:'mc', dif:'medio',
+ prompt:'¿Qué representan las siglas MDP, LEX, INF, MDS y MF en el análisis morfológico?',
+ options:[
+  'Morfema Derivativo Prefijo, Lexema, Infijo, Morfema Derivativo Sufijo, Morfema Flexivo',
+  'Modo, Léxico, Interjección, Modo de Sufijo, Modo Final',
+  'Morfema Doble, Léxico, Intención, Morfema del Sujeto, Modo Flexivo',
+  'Ninguna de las anteriores'], correct:0,
+ hints:['Cada sigla corresponde a un tipo de parte de la palabra que hemos estudiado.'],
+ exp:'MDP=Morfema Derivativo Prefijo, LEX=Lexema, INF=Infijo, MDS=Morfema Derivativo Sufijo, MF=Morfema Flexivo.'},
+{id:nid(), topic:'morfologia', type:'mc', dif:'dificil',
+ prompt:'Un compañero analizó "calentadores" así: "calentador (LEX) + es (MDS)". ¿Qué corrigirías?',
+ options:[
+   'Está completamente correcto',
+   '"calentador" no es un lexema completo; debería ser calent (LEX) + ador (MDS) + es (MF), y "-es" es un morfema flexivo, no derivativo',
+   'Falta un infijo',
+   '"-es" debería ser un prefijo'], correct:1,
+ hints:['El lexema debe ser la raíz mínima con el significado base: "calent-".','La "-es" final solo marca plural: eso es información gramatical, no una palabra nueva.'],
+ exp:'El análisis correcto es calent (LEX) + ador (MDS) + es (MF): "-es" marca plural, así que es un morfema flexivo, no derivativo.'}
+);
+
+/* ---------- SECCIÓN 4/5: NARRATIVA Y NARRADOR ---------- */
+Q.push(
+{id:nid(), topic:'narrativa', type:'mc', dif:'facil',
+ prompt:'¿Qué caracteriza principalmente al género narrativo?',
+ options:['Cuenta acontecimientos, reales o ficticios, con personajes que actúan','Expresa solamente sentimientos personales sin personajes','Da instrucciones paso a paso','Es siempre en verso'], correct:0,
+ hints:['Piensa en historias: personajes, acciones, conflictos.'],
+ exp:'El género narrativo cuenta acontecimientos (reales o ficticios) con personajes que actúan y participan en conflictos.'},
+{id:nid(), topic:'narrativa', type:'mc', dif:'medio',
+ prompt:'Un texto narrativo usa diálogo, metáfora y descripción detallada de un lugar. ¿Qué son estos elementos?',
+ options:['Morfemas flexivos','Recursos retóricos y estilísticos del género narrativo','Errores de redacción','Características exclusivas de la crónica'], correct:1,
+ hints:['El género narrativo puede utilizar diálogo, metáfora, símil, personificación, hipérbole y descripción.'],
+ exp:'Son recursos retóricos y estilísticos que el género narrativo puede emplear.'},
+{id:nid(), topic:'narrativa', type:'mc', dif:'facil',
+ prompt:'"Entré al Teatro Cervantes cinco minutos antes de las ocho." Palabras como "entré" indican que el narrador habla en:',
+ options:['Tercera persona','Primera persona','Segunda persona','No se puede saber'], correct:1,
+ hints:['Busca la terminación del verbo: "-é" en "entré" indica "yo".'],
+ exp:'"Entré" es una forma verbal de primera persona (yo), típica de expresiones como yo, nosotros, me, mi, vi, pensé, escuché.'},
+{id:nid(), topic:'narrativa', type:'mc', dif:'medio',
+ prompt:'Un narrador que cuenta una historia en la que él mismo es el personaje principal es un narrador:',
+ options:['Testigo','Protagonista','Omnisciente en tercera persona','Ninguno de los anteriores'], correct:1,
+ hints:['Piensa en quién vive los acontecimientos centrales de la historia.'],
+ exp:'El narrador protagonista cuenta una historia en la que él mismo es el personaje principal, normalmente en primera persona.'},
+{id:nid(), topic:'narrativa', type:'mc', dif:'medio',
+ prompt:'Un narrador que cuenta acontecimientos que vio o presenció, pero que no es necesariamente el personaje principal, es un narrador:',
+ options:['Protagonista','Testigo','Omnisciente','Antagonista'], correct:1,
+ hints:['Puede aparecer en la historia, pero el foco no está en él.'],
+ exp:'El narrador testigo cuenta lo que vio o presenció y puede aparecer en la historia sin ser el personaje principal.'},
+{id:nid(), topic:'narrativa', type:'eviden', dif:'dificil',
+ prompt:'Lee el fragmento y decide: ¿el narrador es protagonista o testigo? Selecciona la oración que mejor lo demuestra.',
+ reading:['Vi a Marcela entrar corriendo a la estación.', 'Ella dejó caer su maleta y se sentó a llorar.', 'Me acerqué para preguntarle qué había pasado, aunque el tren que ella esperaba ya se iba.'],
+ correctSentence:0, // index sentence that shows he only observed
+ followup:{options:['Protagonista','Testigo'], correct:1},
+ hints:['¿Quién vive los hechos centrales de la historia: el narrador o Marcela?','El narrador observa y luego se acerca, pero el conflicto principal le ocurre a otro personaje.'],
+ exp:'El narrador es testigo: presencia los hechos ("Vi a Marcela...") pero el conflicto central le ocurre a Marcela, no a él.'},
+{id:nid(), topic:'narrativa', type:'tf', dif:'medio',
+ prompt:'Un narrador testigo siempre tiene que ser también el personaje principal de la historia.',
+ correct:false,
+ hints:['Recuerda la definición: "puede aparecer en la historia pero no necesariamente es el personaje principal".'],
+ exp:'Falso: el narrador testigo puede aparecer en la historia sin ser el protagonista.'},
+{id:nid(), topic:'narrativa', type:'mc', dif:'facil',
+ prompt:'¿Cuál de estas expresiones NO es típica de la primera persona?',
+ options:['nosotros','él pensó','yo escuché','mi casa'], correct:1,
+ hints:['"Él" es un pronombre de tercera persona.'],
+ exp:'"Él pensó" está en tercera persona; las demás opciones son marcas de primera persona.'},
+{id:nid(), topic:'narrativa', type:'eviden', dif:'dificil',
+ prompt:'Lee el fragmento y selecciona la oración que demuestra que el narrador es protagonista.',
+ reading:['La lluvia caía sobre el pueblo desde el amanecer.', 'Yo caminaba sin rumbo, pensando en la carta que acababa de recibir.', 'Nadie más en la calle parecía notar el frío que sentía yo.'],
+ correctSentence:1,
+ followup:{options:['Protagonista','Testigo'], correct:0},
+ hints:['Busca dónde el narrador habla de sus propias acciones y pensamientos, no de otro personaje.'],
+ exp:'"Yo caminaba... pensando en la carta" muestra que el narrador vive y siente los hechos centrales: es protagonista.'},
+{id:nid(), topic:'narrativa', type:'mc', dif:'medio',
+ prompt:'¿Qué tienen en común el narrador protagonista y el narrador testigo?',
+ options:['Ambos hablan siempre en tercera persona','Ambos pueden narrar en primera persona, ya que ambos "estuvieron ahí"','Ninguno puede aparecer en la historia','Solo existen en la crónica, no en la narrativa'], correct:1,
+ hints:['Los dos tipos suelen usar expresiones como yo, vi, escuché — la diferencia está en su papel dentro de los hechos, no en la persona gramatical.'],
+ exp:'Ambos pueden narrar en primera persona; la diferencia es si el narrador vive los hechos centrales (protagonista) o solo los observa (testigo).'}
+);
+
+/* ---------- SECCIÓN 6/7/8: CRÓNICA ---------- */
+Q.push(
+{id:nid(), topic:'cronica', type:'mc', dif:'facil',
+ prompt:'¿Qué es una crónica?',
+ options:[
+   'Un poema sin estructura fija',
+   'Un texto narrativo que relata acontecimientos siguiendo una secuencia temporal, combinando hechos reales con una forma narrativa de contarlos',
+   'Un texto exclusivamente de opinión sin hechos comprobables',
+   'Un diálogo teatral'], correct:1,
+ hints:['Combina información real con una manera de contarla parecida a una narración.'],
+ exp:'La crónica relata acontecimientos en secuencia temporal, combinando hechos reales con una forma narrativa.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'facil',
+ prompt:'¿Qué puede hacer un cronista para reunir información?',
+ options:['Solamente inventar los hechos','Presenciarlos, investigarlos, entrevistar personas, consultar información o reconstruir acontecimientos','Copiar exactamente una crónica anterior','Nada, la crónica no requiere investigación'], correct:1,
+ hints:['El cronista puede obtener información de varias formas distintas, no solo de una.'],
+ exp:'El cronista puede haber presenciado los hechos, investigarlos, entrevistar personas, consultar información o reconstruirlos.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'¿Cuáles son las características de la crónica, correctamente agrupadas?',
+ options:[
+   'Autor testigo, Exactitud, Veracidad (por separado), Afán descriptivo, Intención narrativa, Recursos retóricos, Recursos literarios (por separado)',
+   'Autor testigo, Exactitud y veracidad, Afán descriptivo, Intención narrativa, Recursos retóricos y literarios',
+   'Solo Exactitud y Opinión personal',
+   'Autor testigo y nada más'], correct:1,
+ hints:['"Exactitud y veracidad" va junta, como una sola característica.','"Recursos retóricos y literarios" también va junta, como una sola característica.'],
+ exp:'Las cinco características son: Autor testigo, Exactitud y veracidad, Afán descriptivo, Intención narrativa, y Recursos retóricos y literarios.'},
+{id:nid(), topic:'cronica', type:'tf', dif:'medio',
+ prompt:'"Exactitud" y "veracidad" son dos características completamente separadas de la crónica.',
+ correct:false,
+ hints:['El material indica explícitamente que no deben separarse.'],
+ exp:'Falso: "Exactitud y veracidad" se agrupan como UNA sola característica.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'La característica que se refiere a fechas, horas, lugares, nombres y circunstancias precisas es:',
+ options:['Afán descriptivo','Exactitud y veracidad','Intención narrativa','Recursos retóricos y literarios'], correct:1,
+ hints:['Piensa en datos concretos y comprobables.'],
+ exp:'La exactitud y veracidad se refiere a que la información corresponda a hechos reales, con precisión (fechas, horas, lugares, nombres).'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'La característica que describe lugares, personas, ambiente y acciones para que el lector pueda imaginar mejor lo ocurrido es:',
+ options:['Afán descriptivo','Exactitud y veracidad','Autor testigo','Intención narrativa'], correct:0,
+ hints:['La palabra clave es "describir".'],
+ exp:'El afán descriptivo describe lugares, personas, ambiente y circunstancias para ayudar a imaginar lo ocurrido.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'La característica que hace que los datos NO se presenten como una simple lista, sino organizados como una historia con secuencia y desarrollo temporal, es:',
+ options:['Intención narrativa','Autor testigo','Exactitud y veracidad','Recursos retóricos y literarios'], correct:0,
+ hints:['Piensa en la diferencia entre una lista de datos y un relato organizado.'],
+ exp:'La intención narrativa organiza los acontecimientos como una narración, no como una simple lista de datos.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'El uso de metáforas, símiles, personificación e imágenes en una crónica corresponde a la característica de:',
+ options:['Recursos retóricos y literarios','Exactitud y veracidad','Autor testigo','Afán descriptivo únicamente'], correct:0,
+ hints:['Son herramientas de lenguaje figurado.'],
+ exp:'Los recursos retóricos y literarios son el uso de lenguaje figurado como metáforas, símiles, personificación, etc.'},
+{id:nid(), topic:'cronica', type:'tf', dif:'dificil',
+ prompt:'Si una crónica usa recursos retóricos y literarios, puede inventar libremente los hechos.',
+ correct:false,
+ hints:['El uso de estos recursos no anula la obligación de ser veraz.'],
+ exp:'Falso: usar recursos retóricos NO significa que se puedan inventar los hechos; la crónica debe conservar exactitud y veracidad.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'facil',
+ prompt:'La característica de "autor testigo" en la crónica significa que:',
+ options:['El cronista nunca puede haber visto los hechos','El cronista puede haber presenciado directamente los acontecimientos','El cronista siempre inventa lo ocurrido','El cronista es un personaje de ficción'], correct:1,
+ hints:['Relaciona esto con la idea de "estar presente" en los hechos.'],
+ exp:'El autor testigo puede haber presenciado directamente los acontecimientos que narra.'}
+);
+
+// Tipos de crónica — definiciones y escenarios
+const cronicaTypes = ['Crónica informativa','Crónica interpretativa','Crónica de opinión','Crónica policial','Crónica negra','Crónica de sucesos','Crónica política','Crónica deportiva','Crónica social','Crónica de viaje','Crónica literaria','Crónica histórica'];
+
+Q.push(
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'Un texto narra, en orden cronológico, los goles y jugadas más importantes de la final de un campeonato de fútbol. ¿Qué tipo de crónica es?',
+ options:cronicaTypes.slice(0,4).concat(['Crónica deportiva']), correct:4,
+ hints:['El tema central es un evento de un deporte.'],
+ exp:'Es una crónica deportiva: narra en secuencia los hechos de un evento deportivo.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'Un texto relata, con detalle y en orden temporal, los días previos y posteriores a un crimen ocurrido en un barrio, incluyendo entrevistas a vecinos y a la policía. ¿Qué tipo de crónica es probablemente?',
+ options:['Crónica de viaje','Crónica policial','Crónica deportiva','Crónica de opinión'], correct:1,
+ hints:['El tema central involucra un delito y una investigación.'],
+ exp:'Es una crónica policial: se centra en hechos delictivos, investigación y testimonios relacionados.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'Un texto sobre un crimen se enfoca de manera especialmente cruda en la violencia, el ambiente sórdido y los detalles más oscuros del hecho. ¿Qué matiz de crónica es este, más específico que la simple crónica policial?',
+ options:['Crónica negra','Crónica de viaje','Crónica social','Crónica literaria'], correct:0,
+ hints:['Este subtipo se enfoca en un tono más oscuro y crudo dentro de los temas criminales.'],
+ exp:'La crónica negra es un subtipo centrado en el lado más crudo y sombrío de los hechos delictivos.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'Un texto describe un accidente de tránsito ocurrido esa mañana: hora, lugar, personas involucradas y consecuencias inmediatas, sin profundizar en investigación policial. ¿Qué tipo de crónica es?',
+ options:['Crónica de sucesos','Crónica política','Crónica deportiva','Crónica histórica'], correct:0,
+ hints:['Piensa en hechos cotidianos e imprevistos, como accidentes o incidentes.'],
+ exp:'Es una crónica de sucesos: relata hechos imprevistos de la vida cotidiana, como accidentes.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'Un texto narra el desarrollo de una sesión legislativa, las negociaciones entre partidos y las declaraciones de los diputados durante el día. ¿Qué tipo de crónica es?',
+ options:['Crónica política','Crónica social','Crónica de viaje','Crónica literaria'], correct:0,
+ hints:['El tema central son instituciones de gobierno y actores políticos.'],
+ exp:'Es una crónica política: se centra en hechos relacionados con el poder, gobierno o instituciones políticas.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'Un texto describe con detalle sensorial un viaje en tren por los Andes, las paradas, la gente que el autor conoció y sus propias reflexiones durante el trayecto. ¿Qué tipo de crónica es?',
+ options:['Crónica de viaje','Crónica policial','Crónica política','Crónica de sucesos'], correct:0,
+ hints:['El eje central es un desplazamiento geográfico y la experiencia personal de recorrerlo.'],
+ exp:'Es una crónica de viaje: relata una experiencia de desplazamiento con observaciones personales del entorno.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'Un texto relata, décadas después, cómo ocurrió un terremoto que marcó a una ciudad, apoyándose en archivos, testimonios recogidos con el tiempo y documentos oficiales. ¿Qué tipo de crónica es principalmente?',
+ options:['Crónica histórica','Crónica deportiva','Crónica de opinión','Crónica social'], correct:0,
+ hints:['El hecho ocurrió hace mucho tiempo y se reconstruye con fuentes documentales.'],
+ exp:'Es una crónica histórica: reconstruye hechos del pasado a partir de archivos y testimonios.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'Un texto no solo informa sobre un hecho, sino que además explica sus causas, consecuencias y contexto, ayudando al lector a comprender el "por qué" detrás de lo ocurrido, sin llegar a dar una opinión personal explícita del autor. ¿Qué tipo de crónica es?',
+ options:['Crónica interpretativa','Crónica de opinión','Crónica informativa','Crónica social'], correct:0,
+ hints:['La diferencia con la crónica de opinión es que aquí no hay una postura personal explícita, sino análisis del contexto.','La diferencia con la informativa es que va más allá de solo contar el hecho: también lo explica.'],
+ exp:'Es una crónica interpretativa: explica causas y contexto sin llegar a la opinión personal directa, a diferencia de la crónica de opinión.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'Un texto relata un evento social —una boda, una fiesta de gala, una reunión de la alta sociedad— describiendo a los asistentes, el ambiente y las costumbres. ¿Qué tipo de crónica es?',
+ options:['Crónica social','Crónica de sucesos','Crónica policial','Crónica interpretativa'], correct:0,
+ hints:['El foco está en la vida social y las costumbres de un grupo.'],
+ exp:'Es una crónica social: se centra en eventos y costumbres de la vida social.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'Un texto narra un hecho real, pero con un lenguaje muy cuidado, recursos estilísticos elaborados y una estructura que se acerca al cuento, publicado en una revista cultural. ¿Qué tipo de crónica es, sobre todo por su cuidado estilístico?',
+ options:['Crónica literaria','Crónica deportiva','Crónica de sucesos','Crónica política'], correct:0,
+ hints:['El énfasis está en la elaboración estética del lenguaje, casi como una obra literaria.'],
+ exp:'Es una crónica literaria: prioriza un lenguaje elaborado y recursos estilísticos, acercándose a la literatura.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'Un texto cuenta un hecho y, además, el autor incluye claramente su punto de vista personal y sus juicios de valor sobre lo ocurrido. ¿Qué tipo de crónica es?',
+ options:['Crónica de opinión','Crónica informativa','Crónica de sucesos','Crónica de viaje'], correct:0,
+ hints:['Aquí sí aparece explícitamente la postura personal del autor, a diferencia de la interpretativa.'],
+ exp:'Es una crónica de opinión: el autor expresa explícitamente su punto de vista y juicios de valor.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'Un texto simplemente informa qué pasó, cuándo, dónde y quiénes participaron, sin profundizar en interpretación ni opinión. ¿Qué tipo de crónica es la más básica de todas?',
+ options:['Crónica informativa','Crónica interpretativa','Crónica de opinión','Crónica literaria'], correct:0,
+ hints:['Es el tipo más neutral y directo, centrado en los datos básicos del hecho.'],
+ exp:'Es una crónica informativa: se limita a contar los hechos esenciales sin interpretación ni opinión explícita.'}
+);
+
+// Lectura completa de crónica con preguntas de análisis
+const cronicaReading = [
+ 'El sábado a las once y media de la noche, un incendio consumió parte del mercado municipal de la calle Higueras.',
+ 'Yo llegué al lugar minutos después de escuchar las sirenas desde mi ventana, a solo dos cuadras de distancia.',
+ 'El fuego avanzaba como una lengua hambrienta que devoraba los toldos de lona uno tras otro.',
+ 'Los bomberos, encabezados por el capitán Ortiz, controlaron las llamas en poco más de cuarenta minutos.',
+ 'Según los comerciantes afectados, todo comenzó en un puesto de velas cerca de la entrada norte.',
+ 'Para cuando el sol asomó sobre los techos ennegrecidos, ya se contaban doce puestos destruidos.'
+];
+Q.push(
+{id:nid(), topic:'cronica', type:'eviden', dif:'dificil',
+ prompt:'Lee la crónica y selecciona la oración que demuestra "exactitud y veracidad" (datos precisos de hora, lugar, tiempo).',
+ reading:cronicaReading, correctSentence:0,
+ hints:['Busca datos concretos: hora exacta, día, lugar.'],
+ exp:'"El sábado a las once y media de la noche... mercado municipal de la calle Higueras" da hora, día y lugar precisos.'},
+{id:nid(), topic:'cronica', type:'eviden', dif:'dificil',
+ prompt:'En la misma crónica, ¿qué oración demuestra que el autor es un "autor testigo"?',
+ reading:cronicaReading, correctSentence:1,
+ hints:['Busca dónde el narrador habla de sí mismo llegando al lugar.'],
+ exp:'"Yo llegué al lugar minutos después de escuchar las sirenas" muestra que el cronista presenció los hechos directamente.'},
+{id:nid(), topic:'cronica', type:'eviden', dif:'dificil',
+ prompt:'¿Qué oración de la crónica contiene un recurso retórico o literario (una comparación)?',
+ reading:cronicaReading, correctSentence:2,
+ hints:['Busca una comparación usando "como".'],
+ exp:'"El fuego avanzaba como una lengua hambrienta" es un símil, un recurso retórico y literario.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'En esta crónica del incendio, ¿quién narra los hechos?',
+ options:['Un narrador protagonista, porque el incendio le ocurrió a él','Un narrador testigo, porque presenció los hechos pero no fue el afectado directo','No hay narrador identificable','Un narrador en tercera persona omnisciente'], correct:1,
+ hints:['El narrador llega al lugar y observa, pero el incendio no le sucede directamente a él.'],
+ exp:'Es un narrador testigo: presenció el incendio y lo relata, pero no es él quien sufre el hecho central.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'¿Cuál es el acontecimiento principal de esta crónica?',
+ options:['La llegada del sol','Un incendio en el mercado municipal','Una entrevista con el capitán Ortiz','Una fiesta en la calle Higueras'], correct:1,
+ hints:['Busca el hecho central alrededor del cual gira todo el texto.'],
+ exp:'El acontecimiento principal es el incendio que consumió parte del mercado municipal.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'dificil',
+ prompt:'¿En qué tipo de crónica encaja mejor este texto sobre el incendio?',
+ options:['Crónica de sucesos','Crónica política','Crónica de viaje','Crónica de opinión'], correct:0,
+ hints:['Es un hecho imprevisto de la vida cotidiana, sin ser necesariamente un delito.'],
+ exp:'Encaja como crónica de sucesos: relata un hecho imprevisto (un incendio) sin enfoque de opinión o investigación criminal profunda.'},
+{id:nid(), topic:'cronica', type:'mc', dif:'medio',
+ prompt:'¿En qué orden se presentan los acontecimientos en esta crónica?',
+ options:['Cronológico: desde el inicio del incendio hasta el amanecer siguiente','Aleatorio, sin ningún orden','Solo en el presente, sin referencias de tiempo','De atrás hacia adelante (empezando por el final)'], correct:0,
+ hints:['Sigue las marcas de tiempo: "el sábado a las once y media", "minutos después", "en poco más de cuarenta minutos", "cuando el sol asomó".'],
+ exp:'Los acontecimientos siguen una secuencia cronológica, desde el inicio del incendio hasta la mañana siguiente.'}
+);
+
+/* ---------- SECCIÓN 9: FIGURAS LITERARIAS ---------- */
+function figQ(name, sentence, options, correctIdx, hints, exp, dif){
+  return {id:nid(), topic:'figuras', type:'mc', dif: dif||'facil',
+   prompt:`¿Qué figura literaria aparece en: "${sentence}"?`,
+   options, correct: correctIdx, hints, exp};
+}
+const FIG_ALL = ['Símil','Metáfora','Personificación','Hipérbole','Antítesis','Anáfora','Retruécano','Aliteración','Asíndeton','Polisíndeton','Onomatopeya','Hipérbaton','Redundancia','Encabalgamiento','Oxímoron','Paradoja','Alegoría'];
+function pickOpts(correctName, n){
+  const others = FIG_ALL.filter(f=>f!==correctName);
+  const shuffled = others.sort(()=>Math.random()-0.5).slice(0,n-1);
+  const opts = [correctName, ...shuffled];
+  return opts.sort(()=>Math.random()-0.5);
+}
+function mkFig(name, sentence, hints, exp, dif){
+  const opts = pickOpts(name,4);
+  return figQ(name, sentence, opts, opts.indexOf(name), hints, exp, dif);
+}
+
+Q.push(
+ mkFig('Símil','Tus ojos son como universos vivos.', ['Busca la palabra "como" haciendo una comparación explícita.'], 'Es un símil: comparación explícita usando "como".','facil'),
+ mkFig('Metáfora','Su alma es una mina de carbón.', ['No hay "como"; se relaciona una cosa con otra directamente.'], 'Es una metáfora: relación directa entre dos elementos sin comparación explícita.','facil'),
+ mkFig('Personificación','El sol sonrió a lo lejos.', ['El sol, que no es humano, realiza una acción humana.'], 'Es una personificación: se atribuye una acción humana (sonreír) a un objeto natural.','facil'),
+ mkFig('Hipérbole','Te esperé una eternidad.', ['Es una exageración; nadie espera literalmente una eternidad.'], 'Es una hipérbole: exageración intencional.','facil'),
+ mkFig('Antítesis','Hielo abrasador, fuego helado.', ['Observa que se presentan ideas opuestas entre sí, en frases distintas.'], 'Es una antítesis: contraste de ideas opuestas.','medio'),
+ mkFig('Anáfora','Quiero verte. Quiero escucharte. Quiero hablarte.', ['Fíjate en la palabra que se repite al inicio de cada frase.'], 'Es una anáfora: repetición de "quiero" al comienzo de cada frase.','facil'),
+ mkFig('Retruécano','Viví para amar y amé para vivir.', ['Las mismas palabras se repiten pero en orden invertido.'], 'Es un retruécano: se invierten los términos de la primera frase en la segunda.','dificil'),
+ mkFig('Aliteración','Mi mamá me mima.', ['Presta atención al sonido que se repite: la "m".'], 'Es una aliteración: repetición del sonido "m".','facil'),
+ mkFig('Asíndeton','Llegué, vi, vencí.', ['No hay ninguna conjunción como "y" entre las acciones.'], 'Es un asíndeton: se eliminan las conjunciones entre los elementos.','medio'),
+ mkFig('Polisíndeton','Y corre, y salta, y grita, y ríe.', ['La conjunción "y" se repite varias veces, más de lo normal.'], 'Es un polisíndeton: repetición de la conjunción "y".','medio'),
+ mkFig('Onomatopeya','El reloj hacía tic-tac en la habitación silenciosa.', ['Busca la palabra que imita un sonido.'], 'Es una onomatopeya: "tic-tac" imita el sonido del reloj.','facil'),
+ mkFig('Hipérbaton','Sobre el mar brillaba la luna.', ['Compara con el orden normal: "La luna brillaba sobre el mar". Aquí el orden está alterado.'], 'Es un hipérbaton: se altera el orden normal de la oración.','medio'),
+ mkFig('Oxímoron','El silencio ensordecedor llenaba la sala.', ['Se unen dos palabras de significado contradictorio en una sola idea muy breve.'], 'Es un oxímoron: une términos aparentemente contradictorios ("silencio" y "ensordecedor").','medio'),
+ mkFig('Paradoja','Mientras más aprendo, más comprendo lo poco que sé.', ['A diferencia del oxímoron, aquí la contradicción se desarrolla en una idea completa, no en dos palabras juntas, y tiene un sentido lógico profundo.'], 'Es una paradoja: presenta una idea contradictoria que, pensada bien, tiene sentido lógico.','dificil'),
+);
+Q.push(
+{id:nid(), topic:'figuras', type:'mc', dif:'medio',
+ prompt:'"Silencio ensordecedor" y "dulce amargura" son ejemplos de:',
+ options:['Paradoja','Oxímoron','Antítesis','Hipérbaton'], correct:1,
+ hints:['Son solo dos palabras unidas, contradictorias entre sí, no una idea completa desarrollada.'],
+ exp:'Son oxímoron: unen dos términos contradictorios en una expresión muy breve.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'dificil',
+ prompt:'¿Qué figura literaria consiste en repetir una idea o información que ya está contenida en otra expresión?',
+ options:['Redundancia','Encabalgamiento','Alegoría','Anáfora'], correct:0,
+ hints:['Piensa en decir lo mismo dos veces con distintas palabras, de forma innecesaria.'],
+ exp:'La redundancia repite una idea ya contenida en otra expresión.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'dificil',
+ prompt:'¿Qué figura literaria ocurre cuando una idea comienza en un verso y continúa en el siguiente sin una pausa completa?',
+ options:['Encabalgamiento','Hipérbaton','Anáfora','Retruécano'], correct:0,
+ hints:['Ocurre específicamente entre el final de un verso y el inicio del siguiente.'],
+ exp:'El encabalgamiento ocurre cuando una idea sigue de un verso a otro sin pausa completa.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'dificil',
+ prompt:'¿Qué figura literaria utiliza una serie de imágenes o elementos para representar de forma extensa otra idea (por ejemplo, un relato completo que representa un concepto abstracto)?',
+ options:['Alegoría','Onomatopeya','Aliteración','Redundancia'], correct:0,
+ hints:['Es una figura que se desarrolla a lo largo de todo un texto o imagen, no en una sola frase.'],
+ exp:'La alegoría usa una serie extensa de imágenes o elementos para representar otra idea más amplia.'}
+);
+
+// Comparaciones importantes
+Q.push(
+{id:nid(), topic:'figuras', type:'mc', dif:'medio',
+ prompt:'"Sus lágrimas eran como perlas" vs. "Sus lágrimas eran perlas". ¿Cuál es símil y cuál es metáfora?',
+ options:['La primera es metáfora, la segunda es símil','La primera es símil (usa "como"), la segunda es metáfora (relación directa)','Ambas son símiles','Ambas son metáforas'], correct:1,
+ hints:['El símil necesita una palabra comparativa como "como". La metáfora no la usa.'],
+ exp:'"Como perlas" es símil (comparación explícita); "eran perlas" es metáfora (relación directa, sin "como").'},
+{id:nid(), topic:'figuras', type:'mc', dif:'medio',
+ prompt:'¿Cuál es la diferencia clave entre antítesis y oxímoron?',
+ options:[
+   'No hay ninguna diferencia',
+   'La antítesis contrasta ideas opuestas generalmente en frases o cláusulas distintas; el oxímoron une dos términos contradictorios en una sola expresión muy breve',
+   'El oxímoron siempre es más largo que la antítesis',
+   'La antítesis solo se usa en poesía'], correct:1,
+ hints:['Piensa en "hielo abrasador, fuego helado" (dos frases opuestas) frente a "silencio ensordecedor" (dos palabras juntas).'],
+ exp:'La antítesis contrasta ideas opuestas en frases o cláusulas; el oxímoron condensa la contradicción en una sola expresión breve.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'dificil',
+ prompt:'¿Cuál es la diferencia clave entre oxímoron y paradoja?',
+ options:[
+   'El oxímoron une dos palabras contradictorias de forma breve; la paradoja desarrolla una idea completa que, aunque parece contradictoria, tiene sentido lógico',
+   'Son exactamente lo mismo',
+   'La paradoja siempre es más corta que el oxímoron',
+   'El oxímoron nunca aparece en el lenguaje cotidiano'], correct:0,
+ hints:['El oxímoron es breve (dos palabras); la paradoja se desarrolla en una idea o frase completa con sentido reflexivo.'],
+ exp:'El oxímoron es una unión breve de opuestos; la paradoja es una idea más desarrollada que, pensada bien, resulta lógica.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'medio',
+ prompt:'¿Cuál es la diferencia entre anáfora y aliteración?',
+ options:[
+   'La anáfora repite palabras al comienzo de frases o versos; la aliteración repite sonidos dentro de las palabras',
+   'Ambas repiten exactamente lo mismo',
+   'La aliteración solo ocurre al final de una frase',
+   'La anáfora repite sonidos, la aliteración repite palabras completas'], correct:0,
+ hints:['"Quiero verte, quiero escucharte" repite una palabra al inicio (anáfora). "Mi mamá me mima" repite un sonido (aliteración).'],
+ exp:'La anáfora repite palabras al inicio de frases o versos; la aliteración repite sonidos dentro de las palabras.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'medio',
+ prompt:'¿Cuál es la diferencia entre asíndeton y polisíndeton?',
+ options:[
+   'El asíndeton elimina conjunciones; el polisíndeton las repite en exceso',
+   'Ambos eliminan las conjunciones',
+   'Ambos repiten las conjunciones',
+   'El asíndeton solo se usa en prosa, nunca en poesía'], correct:0,
+ hints:['"Llegué, vi, vencí" (sin conjunciones) frente a "y corre, y salta, y grita" (conjunción repetida).'],
+ exp:'El asíndeton elimina las conjunciones; el polisíndeton las repite más de lo habitual.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'dificil',
+ prompt:'"El tiempo es un ladrón" (una frase) frente a una novela completa donde cada personaje representa un pecado capital. ¿Cuál es metáfora y cuál es alegoría?',
+ options:[
+   '"El tiempo es un ladrón" es metáfora (relación directa breve); la novela es alegoría (serie extensa de elementos que representan otra idea)',
+   'Ambas son metáforas',
+   'Ambas son alegorías',
+   'La frase es alegoría y la novela es metáfora'], correct:0,
+ hints:['La alegoría se extiende a lo largo de todo un relato; la metáfora suele ser una relación puntual y breve.'],
+ exp:'La metáfora es una relación directa y breve; la alegoría desarrolla una serie extensa de elementos para representar otra idea.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'medio',
+ prompt:'"El sol sonrió" (personificación) frente a "su sonrisa es un amanecer" (metáfora). ¿Cuál es la diferencia principal?',
+ options:[
+   'La personificación da cualidades humanas a algo no humano; la metáfora relaciona directamente dos elementos sin necesariamente dar cualidades humanas',
+   'No hay ninguna diferencia',
+   'La metáfora siempre habla del sol',
+   'La personificación nunca puede usarse con el sol'], correct:0,
+ hints:['En la personificación, algo no humano actúa como persona (sonreír). En la metáfora, se identifica una cosa con otra, sin que sea necesariamente una acción humana.'],
+ exp:'La personificación atribuye cualidades o acciones humanas a algo no humano; la metáfora identifica directamente dos elementos entre sí.'},
+{id:nid(), topic:'figuras', type:'mc', dif:'dificil',
+ prompt:'"Te esperé una eternidad" (hipérbole) frente a "eres mi sol" (metáfora). ¿Cuál es la diferencia clave?',
+ options:[
+   'La hipérbole exagera una cantidad, tiempo o intensidad; la metáfora identifica una cosa con otra sin necesariamente exagerar',
+   'Ambas son exactamente lo mismo',
+   'La metáfora siempre exagera más que la hipérbole',
+   'La hipérbole nunca se usa con el tiempo'], correct:0,
+ hints:['La hipérbole se trata de exagerar (una eternidad = mucho tiempo). La metáfora identifica dos elementos, sin que el punto central sea la exageración.'],
+ exp:'La hipérbole exagera intencionalmente; la metáfora identifica directamente dos elementos, sin que su función central sea exagerar.'}
+);
+
+/* =========================================================
+   ESTADO Y PERSISTENCIA
+========================================================= */
+const APP_VERSION = '1.7.0';
+// Clave estable: NO cambiar entre actualizaciones. Así el progreso sobrevive a nuevas versiones.
+const STABLE_STORAGE_KEY = 'cuaderno_espanol_hub_progress_v1';
+const STORAGE_KEY = 'cuaderno_espanol_v12'; // compatibilidad con versiones anteriores
+const STORAGE_BACKUP_KEY = 'cuaderno_espanol_v12_backup';
+const IDB_NAME = 'cuaderno_espanol_db';
+const IDB_STORE = 'progress';
+let hasLocalSavedState = false;
+let lastSaveAt = 0;
+const state = {
+  theme:'light',
+  view:'dashboard',
+  stats:{}, // topicId -> {attempts, correct, recent:[bool], mastered:false}
+  totalAnswered:0, totalCorrect:0, currentStreak:0, bestStreak:0,
+  studySeconds:0,
+  errors:[], // {qid, userAnswerText, times, last}
+  saved:new Set(),
+  history:[],
+  session:null,
+  settings:{
+    themeMode:'light',
+    practiceCountsByDefault:true,
+    examTopics:TOPICS.map(t=>t.id),
+    lastSeenUpdate:'',
+    accentColor:'#8B2635',
+    leaderboardName:'',
+    leaderboardDeviceId:''
+  }
+};
+TOPICS.forEach(t=> state.stats[t.id] = {attempts:0, correct:0, recent:[]});
+
+function snapshotState(){
+  return {
+    version:APP_VERSION,
+    savedAt:Date.now(),
+    theme:state.theme,
+    view:state.view,
+    stats:state.stats,
+    totalAnswered:state.totalAnswered,totalCorrect:state.totalCorrect,
+    currentStreak:state.currentStreak,bestStreak:state.bestStreak,
+    studySeconds:state.studySeconds,errors:state.errors,
+    saved:[...state.saved],history:state.history,lastResult:state.lastResult||null,
+    settings:state.settings,
+    session:state.session?{...state.session,queueIds:state.session.queue.map(q=>q.id),queue:undefined}:null
+  };
+}
+function applySavedData(d){
+  if(!d || typeof d!=='object') return false;
+  if(d.stats) TOPICS.forEach(t=>{ if(d.stats[t.id]) state.stats[t.id]={...state.stats[t.id],...d.stats[t.id]}; });
+  ['totalAnswered','totalCorrect','currentStreak','bestStreak','studySeconds'].forEach(k=>{ if(Number.isFinite(d[k])) state[k]=d[k]; });
+  if(Array.isArray(d.errors)) state.errors=d.errors;
+  if(Array.isArray(d.saved)) state.saved=new Set(d.saved);
+  if(Array.isArray(d.history)) state.history=d.history;
+  if(d.lastResult) state.lastResult=d.lastResult;
+  if(d.settings) state.settings={...state.settings,...d.settings};
+  if(typeof d.view==='string' && d.view!=='session') state.view=d.view;
+  if(d.session && Array.isArray(d.session.queueIds)){
+    const queue=d.session.queueIds.map(id=>Q.find(q=>q.id===id)).filter(Boolean);
+    if(queue.length) state.session={...d.session,queue};
+  }
+  lastSaveAt=Number.isFinite(d.savedAt)?d.savedAt:Date.now();
+  return true;
+}
+function openProgressDB(){
+  return new Promise((resolve,reject)=>{
+    if(!('indexedDB' in window)){ reject(new Error('IndexedDB unavailable')); return; }
+    const req=indexedDB.open(IDB_NAME,1);
+    req.onupgradeneeded=()=>{ const db=req.result; if(!db.objectStoreNames.contains(IDB_STORE)) db.createObjectStore(IDB_STORE); };
+    req.onsuccess=()=>resolve(req.result);
+    req.onerror=()=>reject(req.error);
+  });
+}
+async function saveToIndexedDB(data){
+  try{
+    const db=await openProgressDB();
+    await new Promise((resolve,reject)=>{
+      const tx=db.transaction(IDB_STORE,'readwrite');
+      tx.objectStore(IDB_STORE).put(data,'latest');
+      tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error); tx.onabort=()=>reject(tx.error);
+    });
+    db.close();
+  }catch(e){}
+}
+async function loadFromIndexedDB(){
+  try{
+    const db=await openProgressDB();
+    const data=await new Promise((resolve,reject)=>{
+      const tx=db.transaction(IDB_STORE,'readonly');
+      const req=tx.objectStore(IDB_STORE).get('latest');
+      req.onsuccess=()=>resolve(req.result||null); req.onerror=()=>reject(req.error);
+    });
+    db.close();
+    return data;
+  }catch(e){ return null; }
+}
+function saveState(){
+  const data=snapshotState();
+  const raw=JSON.stringify(data);
+  let localSaved=false;
+  try{
+    const previous=localStorage.getItem(STABLE_STORAGE_KEY);
+    if(previous && previous!==raw) localStorage.setItem(STORAGE_BACKUP_KEY,previous);
+    localStorage.setItem(STABLE_STORAGE_KEY,raw);
+    localStorage.setItem(STORAGE_KEY,raw); // compatibilidad con versiones anteriores
+    localSaved=true;
+  }catch(e){}
+  lastSaveAt=data.savedAt;
+  if(localSaved) hasLocalSavedState=true;
+  saveToIndexedDB(data);
+}
+function loadState(){
+  let candidates=[];
+  try{
+    candidates=[
+      localStorage.getItem(STABLE_STORAGE_KEY),
+      localStorage.getItem(STORAGE_KEY),
+      localStorage.getItem(STORAGE_BACKUP_KEY)
+    ].filter(Boolean);
+  }catch(e){}
+  for(const raw of candidates){
+    try{
+      const ok=applySavedData(JSON.parse(raw));
+      if(ok){ hasLocalSavedState=true; return true; }
+    }catch(e){}
+  }
+  return false;
+}
+async function restoreIndexedDBFallback(){
+  if(hasLocalSavedState) return;
+  const data=await loadFromIndexedDB();
+  if(data && applySavedData(data)){
+    hasLocalSavedState=true;
+    try{ const raw=JSON.stringify(data); localStorage.setItem(STABLE_STORAGE_KEY,raw); localStorage.setItem(STORAGE_KEY,raw); localStorage.setItem(STORAGE_BACKUP_KEY,raw); }catch(e){}
+    applyThemeMode();
+    render();
+  }
+}
+function hexToRgb(hex){ const m=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex||''); return m?{r:parseInt(m[1],16),g:parseInt(m[2],16),b:parseInt(m[3],16)}:null; }
+function applyAccentColor(){
+  const hex=state.settings.accentColor||'#8B2635';
+  const rgb=hexToRgb(hex)||{r:139,g:38,b:53};
+  document.documentElement.style.setProperty('--accent',hex);
+  const alpha=state.theme==='dark'?.18:.14;
+  document.documentElement.style.setProperty('--accent-soft',`rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`);
+}
+function applyThemeMode(){
+  const mode=state.settings.themeMode||'light';
+  const actual=mode==='auto' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light') : mode;
+  state.theme=actual;
+  document.body.setAttribute('data-theme',actual);
+  applyAccentColor();
+}
+const loadedExistingState=loadState();
+applyThemeMode();
+if(loadedExistingState) saveState(); // migra automáticamente a la clave estable sin borrar nada
+
+function computeMastery(topicId){
+  const s = state.stats[topicId];
+  if(!s || s.attempts===0) return {pct:0, status:'none'};
+  const overall = s.correct/s.attempts;
+  const recentArr = s.recent.slice(-8);
+  const recentAcc = recentArr.length? recentArr.filter(Boolean).length/recentArr.length : 0;
+  let pct = Math.round((overall*0.4 + recentAcc*0.6)*100);
+  let status;
+  if(s.attempts < 3) status='progress';
+  else if(pct>=80 && s.attempts>=8 && recentArr.length>=5 && recentArr.slice(-5).filter(Boolean).length>=4) status='mastered';
+  else if(pct>=55) status='almost';
+  else status='progress';
+  return {pct, status};
+}
+function overallMastery(){
+  const all = TOPICS.map(t=>computeMastery(t.id).pct);
+  return Math.round(all.reduce((a,b)=>a+b,0)/all.length);
+}
+function statusLabel(s){
+  return {none:'No estudiado', progress:'En progreso', almost:'Casi dominado', mastered:'Dominado'}[s];
+}
+function statusPillClass(s){
+  return {none:'pill-none', progress:'pill-progress', almost:'pill-almost', mastered:'pill-mastered'}[s];
+}
+
+function recordAnswer(q, correct){
+  if(state.session && state.session.mode==='practica' && state.session.countStats===false) return;
+  state.totalAnswered++;
+  if(correct) state.totalCorrect++;
+  state.currentStreak = correct? state.currentStreak+1 : 0;
+  state.bestStreak = Math.max(state.bestStreak, state.currentStreak);
+  const s = state.stats[q.topic];
+  s.attempts++;
+  if(correct) s.correct++;
+  s.recent.push(correct);
+  if(s.recent.length>20) s.recent.shift();
+  if(!correct){
+    let ex = state.errors.find(e=>e.qid===q.id);
+    if(ex){ ex.times++; ex.last=Date.now(); }
+    else state.errors.push({qid:q.id, times:1, last:Date.now()});
+  } else {
+    // remove from errors after 2 consecutive later correct answers handled elsewhere; keep simple: leave record but could be re-practiced
+  }
+  saveState();
+}
+
+/* =========================================================
+   NAV / RENDER SHELL
+========================================================= */
+const NAV_ITEMS = [
+  {id:'dashboard', label:'Panel', icon:'⌂'},
+  {id:'repaso', label:'Repasar', icon:'▤'},
+  {id:'practica', label:'Practicar', icon:'✎'},
+  {id:'examen', label:'Examen', icon:'▦'},
+  {id:'errores', label:'Mis errores', icon:'✕'},
+  {id:'guardadas', label:'Guardadas', icon:'★'},
+  {id:'historial', label:'Historial', icon:'▥'},
+  {id:'leaderboard', label:'Leaderboard', icon:'🏆'},
+  {id:'novedades', label:'Novedades', icon:'✦'},
+  {id:'ajustes', label:'Configuración', icon:'⚙'},
+];
+
+function renderNav(){
+  const rail = document.getElementById('rail');
+  rail.innerHTML = `
+    <div class="rail-brand">Cuaderno<span>Examen de Español</span></div>
+    ${NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
+    <div class="rail-foot">
+      <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
+    </div>`;
+  rail.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.nav)));
+  document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+
+  const mob = document.getElementById('mobileNav');
+  mob.innerHTML = NAV_ITEMS.map(n=>`<button class="nav-btn ${state.view===n.id?'active':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
+  mob.querySelectorAll('[data-navm]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.navm)));
+}
+function navigateFromNav(view){
+  if(state.session){
+    if(!confirm('Tienes una sesión en progreso. ¿Quieres salir y abrir otra sección?')) return;
+    state.session=null;
+    attemptStage=0;
+  }
+  goto(view);
+}
+function toggleTheme(){
+  state.theme = state.theme==='light'?'dark':'light';
+  state.settings.themeMode=state.theme;
+  document.body.setAttribute('data-theme', state.theme);
+  saveState();
+  renderNav();
+}
+function goto(view){ state.view=view; saveState(); render(); window.scrollTo(0,0); }
+function render(){
+  renderNav();
+  const main = document.getElementById('main');
+  main.innerHTML='';
+  const renderers = {
+    dashboard: renderDashboard, repaso: renderRepasoHome, practica: renderPracticaHome,
+    examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
+    historial: renderHistorial, leaderboard: renderLeaderboard, novedades: renderNovedades, ajustes: renderAjustes,
+    session: renderSession, results: renderResults, repasoCards: renderRepasoCards,
+  };
+  (renderers[state.view]||renderDashboard)(main);
+}
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+function ringSvg(pct, size=150, stroke=12){
+  const r=(size-stroke)/2, c=2*Math.PI*r;
+  const off = c*(1-pct/100);
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--bg-soft)" stroke-width="${stroke}"/>
+    <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="var(--accent)" stroke-width="${stroke}" stroke-linecap="round"
+      stroke-dasharray="${c}" stroke-dashoffset="${off}" transform="rotate(-90 ${size/2} ${size/2})" style="transition:stroke-dashoffset .5s ease"/>
+  </svg>`;
+}
+function weakestTopic(){
+  const studied=TOPICS.filter(t=>state.stats[t.id]?.attempts>0);
+  if(!studied.length) return null;
+  return studied.reduce((best,t)=>computeMastery(t.id).pct<computeMastery(best.id).pct?t:best, studied[0]);
+}
+function renderDashboard(main){
+  const pct = overallMastery();
+  const accPct = state.totalAnswered? Math.round(state.totalCorrect/state.totalAnswered*100):0;
+  const weak = weakestTopic();
+  const lastErrors = state.errors.slice(-3).reverse();
+  main.innerHTML = `
+    <div class="pagehead"><h1>Panel de estudio</h1><p>Tu progreso general para el examen de Español.</p></div>
+    <div class="card dash-top" style="margin-bottom:20px;">
+      <div class="ring-wrap">${ringSvg(pct)}<div class="ring-num"><b>${pct}%</b><span>dominado</span></div></div>
+      <div class="grid grid-4" style="flex:1;">
+        <div class="stat-box"><b>${state.totalAnswered}</b><span>Preguntas contestadas</span></div>
+        <div class="stat-box"><b>${state.totalCorrect}</b><span>Correctas</span></div>
+        <div class="stat-box"><b>${state.totalAnswered-state.totalCorrect}</b><span>Incorrectas</span></div>
+        <div class="stat-box"><b>${accPct}%</b><span>Precisión</span></div>
+        <div class="stat-box"><b>${state.currentStreak}</b><span>Racha actual</span></div>
+        <div class="stat-box"><b>${state.bestStreak}</b><span>Mejor racha</span></div>
+        <div class="stat-box"><b>${fmtTime(state.studySeconds)}</b><span>Tiempo estudiando</span></div>
+        <div class="stat-box"><b>${state.errors.length}</b><span>Errores guardados</span></div>
+      </div>
+    </div>
+    <div class="grid grid-2" style="align-items:start;">
+      <div class="card">
+        <p class="section-title">Progreso por tema</p>
+        ${TOPICS.map(t=>{ const m=computeMastery(t.id);
+          return `<div class="topic-row"><div class="tname">${t.icon} ${t.name}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${m.pct}%"></div></div>
+          <span class="pill ${statusPillClass(m.status)}">${statusLabel(m.status)}</span></div>`; }).join('')}
+      </div>
+      <div class="card">
+        <p class="section-title">Recomendación</p>
+        ${weak? `<p style="margin:0 0 12px 0;">Tu tema con menor dominio es <b>${weak.name}</b>. Te conviene practicarlo ahora.</p>
+        <button class="btn" id="goWeak">Practicar ${weak.name}</button>` : `<p>Empieza a practicar para recibir una recomendación.</p>`}
+        <div style="margin-top:20px;">
+          <p class="section-title">Últimos errores</p>
+          ${lastErrors.length? lastErrors.map(e=>{const q=Q.find(x=>x.id===e.qid); return `<div style="font-size:.85rem;padding:8px 0;border-bottom:1px solid var(--line);">${truncate(q?q.prompt:'', 70)}</div>`;}).join(''):'<p style="color:var(--ink-soft);font-size:.88rem;">Todavía no tienes errores registrados. ¡Bien!</p>'}
+        </div>
+      </div>
+    </div>
+  `;
+  if(weak) document.getElementById('goWeak').addEventListener('click', ()=> startSession({mode:'practica', topic:weak.id}));
+}
+function fmtTime(sec){
+  const m = Math.floor(sec/60), s=sec%60;
+  return m>0? `${m}m ${s}s` : `${s}s`;
+}
+function truncate(s,n){ return s.length>n? s.slice(0,n)+'…' : s; }
+
+/* =========================================================
+   REPASO (flashcards)
+========================================================= */
+const REVIEW_CARDS = [
+ {topic:'gramatica', title:'Gramática', def:'Disciplina que estudia la estructura de una lengua: la forma de las palabras, cómo se organizan y cómo se relacionan.', example:'Incluye la relación entre morfología y sintaxis.'},
+ {topic:'gramatica', title:'Morfología', def:'Estudia la estructura interna de las palabras, su formación y sus variaciones.', example:'Ej: analizar "niñas" en lexema + morfemas.'},
+ {topic:'gramatica', title:'Sintaxis', def:'Estudia cómo las palabras se combinan y organizan para formar frases y oraciones.', example:'Ej: identificar sujeto y predicado.'},
+ {topic:'morfologia', title:'Lexema o raíz', def:'Parte fundamental de la palabra; contiene el significado principal.', example:'pan, panadero, panadería → lexema: pan'},
+ {topic:'morfologia', title:'Morfema derivativo', def:'Forma una palabra nueva o modifica el significado del lexema. Puede ser prefijo o sufijo.', example:'casa → casita (sufijo -ita)'},
+ {topic:'morfologia', title:'Morfema flexivo', def:'No crea una palabra nueva; expresa género, número, persona, tiempo o modo.', example:'niñ-a-s: -a género, -s número'},
+ {topic:'morfologia', title:'MDP (prefijo)', def:'Morfema Derivativo Prefijo. Aparece antes del lexema y modifica el significado.', example:'ilegal → i- + legal'},
+ {topic:'morfologia', title:'MDS (sufijo)', def:'Morfema Derivativo Sufijo. Aparece después del lexema; puede formar palabras nuevas.', example:'casita → cas + ita'},
+ {topic:'morfologia', title:'Infijo', def:'Aparece entre el lexema y el sufijo; funciona como enlace, normalmente sin significado propio importante.', example:'panecillo → pan + ec + illo'},
+ {topic:'morfologia', title:'Palabra derivada', def:'Se forma añadiendo uno o más morfemas derivativos a un lexema.', example:'casa → casita'},
+ {topic:'morfologia', title:'Parasíntesis', def:'Formación de palabras donde intervienen simultáneamente distintos elementos, típicamente prefijo + lexema + sufijo.', example:'des + tornill + ador'},
+ {topic:'narrativa', title:'Género narrativo', def:'Cuenta acontecimientos, reales o ficticios, con personajes que actúan y participan en conflictos.', example:'Puede usar diálogo, metáfora, descripción.'},
+ {topic:'narrativa', title:'Narrador protagonista', def:'Cuenta una historia en la que él mismo es el personaje principal; normalmente en primera persona.', example:'"Yo caminaba pensando en la carta..."'},
+ {topic:'narrativa', title:'Narrador testigo', def:'Cuenta acontecimientos que vio o presenció; puede aparecer en la historia sin ser el protagonista.', example:'"Vi a Marcela entrar corriendo..."'},
+ {topic:'cronica', title:'Crónica', def:'Texto narrativo que relata acontecimientos siguiendo una secuencia temporal, combinando hechos reales con una forma narrativa.', example:'El cronista puede presenciar, investigar o entrevistar.'},
+ {topic:'cronica', title:'Autor testigo', def:'El cronista puede haber presenciado directamente los acontecimientos.', example:'"Yo llegué al lugar minutos después..."'},
+ {topic:'cronica', title:'Exactitud y veracidad', def:'La información corresponde a hechos reales y presenta precisión: fechas, horas, lugares, nombres, circunstancias.', example:'"El sábado a las once y media de la noche..."'},
+ {topic:'cronica', title:'Afán descriptivo', def:'Describe lugares, personas, ambiente, circunstancias y acciones para imaginar mejor lo ocurrido.', example:'Descripciones sensoriales detalladas.'},
+ {topic:'cronica', title:'Intención narrativa', def:'Los datos no se presentan como una lista; se organizan como una narración con secuencia y desarrollo temporal.', example:'Orden cronológico de los hechos.'},
+ {topic:'cronica', title:'Recursos retóricos y literarios', def:'Uso de lenguaje figurado y expresivo: metáforas, símiles, personificación, imágenes.', example:'"El fuego avanzaba como una lengua hambrienta."'},
+ {topic:'figuras', title:'Símil', def:'Comparación explícita, usa como/parece/semejante a/cual.', example:'"Tus ojos son como universos vivos."'},
+ {topic:'figuras', title:'Metáfora', def:'Relaciona directamente una cosa con otra sin comparación explícita.', example:'"Su alma es una mina de carbón."'},
+ {topic:'figuras', title:'Personificación', def:'Atribuye características humanas a objetos, animales, naturaleza o ideas.', example:'"El sol sonrió a lo lejos."'},
+ {topic:'figuras', title:'Hipérbole', def:'Exageración intencional.', example:'"Te esperé una eternidad."'},
+ {topic:'figuras', title:'Antítesis', def:'Presenta ideas opuestas o contrastantes.', example:'"Hielo abrasador, fuego helado."'},
+ {topic:'figuras', title:'Anáfora', def:'Repetición de palabras al comienzo de frases o versos.', example:'"Quiero verte. Quiero escucharte."'},
+ {topic:'figuras', title:'Retruécano', def:'Repite palabras o estructuras invirtiendo su orden.', example:'"Viví para amar y amé para vivir."'},
+ {topic:'figuras', title:'Aliteración', def:'Repetición intencional de sonidos.', example:'"Mi mamá me mima."'},
+ {topic:'figuras', title:'Asíndeton', def:'Elimina conjunciones.', example:'"Llegué, vi, vencí."'},
+ {topic:'figuras', title:'Polisíndeton', def:'Repite conjunciones.', example:'"Y corre, y salta, y grita, y ríe."'},
+ {topic:'figuras', title:'Onomatopeya', def:'Representa o imita sonidos.', example:'boom, tic-tac, miau'},
+ {topic:'figuras', title:'Hipérbaton', def:'Altera el orden normal de una oración.', example:'"Sobre el mar brillaba la luna."'},
+ {topic:'figuras', title:'Redundancia', def:'Repite una idea o información contenida en otra expresión.', example:'"Subir arriba", "entrar adentro".'},
+ {topic:'figuras', title:'Encabalgamiento', def:'Una idea comienza en un verso y continúa en el siguiente sin pausa completa.', example:'Se ve en poesía, entre el final de un verso y el inicio del otro.'},
+ {topic:'figuras', title:'Oxímoron', def:'Une términos aparentemente contradictorios.', example:'"Silencio ensordecedor", "dulce amargura."'},
+ {topic:'figuras', title:'Paradoja', def:'Presenta una idea aparentemente contradictoria que contiene un significado lógico o profundo.', example:'"Mientras más aprendo, más comprendo lo poco que sé."'},
+ {topic:'figuras', title:'Alegoría', def:'Utiliza una serie de imágenes o elementos para representar otra idea de manera más extensa.', example:'Una novela donde cada personaje representa un pecado capital.'},
+];
+
+function morphVisual(parts){
+  return `<div class="morph-example">${parts.map((p,i)=>`
+    ${i?'<span class="morph-plus">+</span>':''}
+    <div class="morph-piece ${p.kind||''}">
+      <span class="morph-word">${p.text}</span>
+      <span class="morph-label">${p.label}</span>
+    </div>`).join('')}</div>`;
+}
+function studyExample(content,note){
+  return `<div class="study-example">
+    <span class="study-example-label">Ejemplo visual</span>
+    ${content}
+    ${note?`<div class="study-note">${note}</div>`:''}
+  </div>`;
+}
+function renderReviewExample(c){
+  const k=`${c.topic}|${c.title}`;
+  const map={
+    'morfologia|Lexema o raíz':studyExample(
+      `<div class="study-quote">
+        <span class="study-highlight">pan</span>adero<br>
+        <span class="study-highlight">pan</span>adería<br>
+        <span class="study-highlight">pan</span>ecillo
+      </div>`,
+      `<b>Qué debes notar:</b> <span class="study-highlight">pan</span> se mantiene en las tres palabras; por eso es el lexema.`
+    ),
+    'morfologia|Morfema derivativo':studyExample(
+      morphVisual([{text:'cas',label:'LEX'},{text:'ita',label:'MDS',kind:'suffix'}]),
+      `<b>Qué debes notar:</b> <span class="study-highlight">-ita</span> se añade al lexema y forma una palabra derivada.`
+    ),
+    'morfologia|Morfema flexivo':studyExample(
+      morphVisual([{text:'niñ',label:'LEX'},{text:'a',label:'MF · femenino',kind:'flex'},{text:'s',label:'MF · plural',kind:'flex'}]),
+      `<b>Qué debes notar:</b> -a y -s dan información gramatical; no crean una palabra nueva.`
+    ),
+    'morfologia|MDP (prefijo)':studyExample(
+      morphVisual([{text:'i',label:'MDP'},{text:'legal',label:'LEX'}]),
+      `<b>Qué debes notar:</b> el prefijo <span class="study-highlight">i-</span> aparece antes del lexema.`
+    ),
+    'morfologia|MDS (sufijo)':studyExample(
+      morphVisual([{text:'cas',label:'LEX'},{text:'ita',label:'MDS',kind:'suffix'}]),
+      `<b>Qué debes notar:</b> el sufijo <span class="study-highlight">-ita</span> aparece después del lexema.`
+    ),
+    'morfologia|Infijo':studyExample(
+      morphVisual([{text:'pan',label:'LEX'},{text:'ec',label:'INF',kind:'infix'},{text:'illo',label:'MDS',kind:'suffix'}]),
+      `<b>Qué debes notar:</b> <span class="study-highlight">ec</span> está entre <b>pan</b> e <b>illo</b>; por eso es un infijo.`
+    ),
+    'morfologia|Palabra derivada':studyExample(
+      `<div class="study-sequence"><span class="study-step">casa</span><span class="study-arrow">→ + -ita →</span><span class="study-step">casita</span></div>`,
+      `<b>Qué debes notar:</b> se añade un morfema derivativo al lexema para formar una palabra nueva.`
+    ),
+    'morfologia|Parasíntesis':studyExample(
+      morphVisual([{text:'des',label:'MDP'},{text:'tornill',label:'LEX'},{text:'ador',label:'MDS',kind:'suffix'}]),
+      `<b>Qué debes notar:</b> el lexema aparece acompañado por prefijo y sufijo.`
+    ),
+
+    'narrativa|Narrador protagonista':studyExample(
+      `<div class="study-quote">“<span class="study-highlight">Yo caminaba</span> sin rumbo, pensando en la carta...”</div>`,
+      `<b>Qué debes notar:</b> el narrador vive los hechos centrales y habla de sus propias acciones.`
+    ),
+    'narrativa|Narrador testigo':studyExample(
+      `<div class="study-quote">“<span class="study-highlight">Vi a Marcela</span> entrar corriendo...”</div>`,
+      `<b>Qué debes notar:</b> el narrador presencia lo que le sucede a otra persona.`
+    ),
+
+    'cronica|Autor testigo':studyExample(
+      `<div class="study-quote">“<span class="study-highlight">Yo llegué al lugar</span> minutos después...”</div>`,
+      `<b>Qué debes notar:</b> “Yo llegué” demuestra que el cronista estuvo presente.`
+    ),
+    'cronica|Exactitud y veracidad':studyExample(
+      `<div class="study-quote">“El <span class="study-highlight">sábado</span> a las <span class="study-highlight">once y media</span>, en el <span class="study-highlight">mercado municipal</span>...”</div>`,
+      `<b>Qué debes notar:</b> día, hora y lugar son datos concretos. <b>Exactitud y veracidad</b> es una sola característica.`
+    ),
+    'cronica|Afán descriptivo':studyExample(
+      `<div class="study-quote">“Los <span class="study-highlight">techos ennegrecidos</span> y el aire <span class="study-highlight">cubierto de humo</span>...”</div>`,
+      `<b>Qué debes notar:</b> los detalles ayudan al lector a imaginar el ambiente.`
+    ),
+    'cronica|Intención narrativa':studyExample(
+      `<div class="study-sequence"><span class="study-step">Inicio</span><span class="study-arrow">→</span><span class="study-step">Desarrollo</span><span class="study-arrow">→</span><span class="study-step">Consecuencia</span></div>`,
+      `<b>Qué debes notar:</b> los hechos siguen una secuencia, no una lista suelta.`
+    ),
+    'cronica|Recursos retóricos y literarios':studyExample(
+      `<div class="study-quote">“El fuego avanzaba <span class="study-highlight">como una lengua hambrienta</span>.”</div>`,
+      `<b>Qué debes notar:</b> la comparación es un recurso figurado. <b>Recursos retóricos y literarios</b> es una sola característica.`
+    ),
+
+    'figuras|Símil':studyExample(
+      `<div class="study-quote">“Tus ojos son <span class="study-highlight">como</span> universos vivos.”</div>`,
+      `<b>Qué debes notar:</b> “como” hace la comparación explícita.`
+    ),
+    'figuras|Metáfora':studyExample(
+      `<div class="study-quote">“Su <span class="study-highlight">alma</span> es una <span class="study-highlight">mina de carbón</span>.”</div>`,
+      `<b>Qué debes notar:</b> relaciona directamente dos elementos sin usar “como”.`
+    ),
+    'figuras|Personificación':studyExample(
+      `<div class="study-quote">“El sol <span class="study-highlight">sonrió</span> a lo lejos.”</div>`,
+      `<b>Qué debes notar:</b> “sonrió” es una acción humana atribuida al sol.`
+    ),
+    'figuras|Hipérbole':studyExample(
+      `<div class="study-quote">“Te esperé <span class="study-highlight">una eternidad</span>.”</div>`,
+      `<b>Qué debes notar:</b> “una eternidad” es una exageración.`
+    ),
+    'figuras|Anáfora':studyExample(
+      `<div class="study-quote"><span class="study-highlight">Quiero</span> verte.<br><span class="study-highlight">Quiero</span> escucharte.<br><span class="study-highlight">Quiero</span> hablarte.</div>`,
+      `<b>Qué debes notar:</b> “Quiero” se repite al inicio.`
+    ),
+    'figuras|Retruécano':studyExample(
+      `<div class="study-quote"><span class="study-highlight">Viví para amar</span> ↔ <span class="study-highlight">amé para vivir</span>.</div>`,
+      `<b>Qué debes notar:</b> se invierte el orden de las palabras o estructuras.`
+    ),
+    'figuras|Aliteración':studyExample(
+      `<div class="study-quote"><span class="study-highlight">M</span>i <span class="study-highlight">m</span>a<span class="study-highlight">m</span>á <span class="study-highlight">m</span>e <span class="study-highlight">m</span>i<span class="study-highlight">m</span>a.</div>`,
+      `<b>Qué debes notar:</b> se repite el sonido m.`
+    ),
+    'figuras|Asíndeton':studyExample(
+      `<div class="study-quote">“Llegué, vi, vencí.”</div>`,
+      `<b>Qué debes notar:</b> no aparecen conjunciones como “y” entre las acciones.`
+    ),
+    'figuras|Polisíndeton':studyExample(
+      `<div class="study-quote">“<span class="study-highlight">Y</span> corre, <span class="study-highlight">y</span> salta, <span class="study-highlight">y</span> grita, <span class="study-highlight">y</span> ríe.”</div>`,
+      `<b>Qué debes notar:</b> la conjunción “y” se repite.`
+    ),
+    'figuras|Onomatopeya':studyExample(
+      `<div class="study-quote">El reloj hacía <span class="study-highlight">tic-tac</span>.</div>`,
+      `<b>Qué debes notar:</b> “tic-tac” imita un sonido.`
+    ),
+    'figuras|Hipérbaton':studyExample(
+      `<div class="study-quote"><small style="color:var(--ink-soft)">Orden normal:</small><br>La luna brillaba sobre el mar.<br><br><small style="color:var(--ink-soft)">Orden alterado:</small><br><span class="study-highlight">Sobre el mar brillaba la luna.</span></div>`,
+      `<b>Qué debes notar:</b> cambia el orden normal de la oración.`
+    ),
+    'figuras|Oxímoron':studyExample(
+      `<div class="study-quote">“<span class="study-highlight">silencio ensordecedor</span>”</div>`,
+      `<b>Qué debes notar:</b> une dos términos contradictorios en una expresión breve.`
+    ),
+    'figuras|Paradoja':studyExample(
+      `<div class="study-quote">“Mientras más aprendo, <span class="study-highlight">más comprendo lo poco que sé</span>.”</div>`,
+      `<b>Qué debes notar:</b> parece contradictoria, pero contiene una idea lógica o profunda.`
+    )
+  };
+  return map[k] || studyExample(`<div class="study-quote">${c.example}</div>`,'');
+}
+
+let repasoIndex = 0, repasoFilter=null;
+
+function renderRepasoHome(main){
+  main.innerHTML = `
+    <div class="pagehead"><h1>Modo repaso</h1><p>Revisa el contenido en tarjetas, a tu ritmo, antes de practicar.</p></div>
+    <div class="grid grid-3">
+      ${TOPICS.map(t=>`<div class="card mode-card" data-t="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${REVIEW_CARDS.filter(c=>c.topic===t.id).length} tarjetas</p></div>`).join('')}
+      <div class="card mode-card" data-t="all"><span class="ic">◎</span><h3>Todo el material</h3><p>${REVIEW_CARDS.length} tarjetas en total</p></div>
+    </div>`;
+  main.querySelectorAll('[data-t]').forEach(c=>c.addEventListener('click', ()=>{
+    repasoFilter = c.dataset.t==='all'? null : c.dataset.t;
+    repasoIndex = 0;
+    goto('repasoCards');
+  }));
+}
+function renderRepasoCards(main){
+  const cards = repasoFilter? REVIEW_CARDS.filter(c=>c.topic===repasoFilter) : REVIEW_CARDS;
+  const c = cards[repasoIndex];
+  main.innerHTML = `
+    <div class="q-wrap">
+      <div class="q-topbar"><button class="icon-btn" id="backRep">← Volver</button><span>${repasoIndex+1} / ${cards.length}</span></div>
+      <div class="q-progress"><div class="q-progress-fill" style="width:${(repasoIndex+1)/cards.length*100}%"></div></div>
+      <div class="q-card review-card">
+        <div style="text-align:center;">
+          <span class="q-topic-tag">${TOPICS.find(t=>t.id===c.topic).name}</span>
+          <h2 class="serif" style="margin:6px 0 16px 0;">${c.title}</h2>
+          <p class="review-definition">${c.def}</p>
+        </div>
+        ${renderReviewExample(c)}
+      </div>
+      <div class="q-actions">
+        <button class="icon-btn" id="prevRep" ${repasoIndex===0?'disabled':''}>← Anterior</button>
+        <div class="btn-row">
+          <button class="btn soft" id="practThis">Practicar este tema</button>
+          <button class="btn" id="nextRep">${repasoIndex===cards.length-1?'Terminar':'Siguiente →'}</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('backRep').addEventListener('click', ()=>goto('repaso'));
+  document.getElementById('prevRep').addEventListener('click', ()=>{ repasoIndex=Math.max(0,repasoIndex-1); render(); });
+  document.getElementById('nextRep').addEventListener('click', ()=>{
+    if(repasoIndex<cards.length-1){ repasoIndex++; render(); } else { goto('repaso'); }
+  });
+  document.getElementById('practThis').addEventListener('click', ()=> startSession({mode:'practica', topic:c.topic, countStats:state.settings.practiceCountsByDefault!==false}));
+}
+
+/* =========================================================
+   PRÁCTICA HOME
+========================================================= */
+function renderPracticaHome(main){
+  let countPractice = state.settings.practiceCountsByDefault!==false;
+  main.innerHTML = `
+    <div class="pagehead"><h1>Modo práctica</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
+    <label class="practice-count-box"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label>
+    <p class="section-title">Por tema</p>
+    <div class="grid grid-3" style="margin-bottom:24px;">
+      ${TOPICS.map(t=>{const m=computeMastery(t.id); return `<div class="card mode-card" data-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${Q.filter(q=>q.topic===t.id).length} preguntas</p></div>`}).join('')}
+    </div>
+    <p class="section-title">Modos especiales</p>
+    <div class="grid grid-3">
+      <div class="card mode-card" data-special="debiles"><span class="ic">⚠</span><h3>Temas débiles</h3><p>Preguntas centradas en tus temas con menor dominio.</p></div>
+      <div class="card mode-card" data-special="rapido"><span class="ic">⚡</span><h3>Modo rápido</h3><p>10 preguntas mezcladas de todos los temas.</p></div>
+      <div class="card mode-card" data-special="intermedio"><span class="ic">◫</span><h3>Modo intermedio <span class="new-pill">NUEVO</span></h3><p>25 preguntas mezcladas de todos los temas.</p></div>
+      <div class="card mode-card" data-special="figuras"><span class="ic">✦</span><h3>Solo figuras literarias</h3><p>Identificación de figuras literarias.</p></div>
+      <div class="card mode-card" data-special="morfologia"><span class="ic">🧩</span><h3>Solo morfología</h3><p>Análisis y segmentación de palabras.</p></div>
+      <div class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></div>
+      <div class="card mode-card" data-special="adaptativo"><span class="ic">◈</span><h3>Adaptativo</h3><p>Se ajusta según lo que fallas o dominas.</p></div>
+    </div>`;
+  const getCount=()=>document.getElementById('countPractice').checked;
+  main.querySelectorAll('[data-topic]').forEach(c=>c.addEventListener('click', ()=>startSession({mode:'practica', topic:c.dataset.topic, countStats:getCount()})));
+  main.querySelectorAll('[data-special]').forEach(c=>c.addEventListener('click', ()=>{
+    const sp = c.dataset.special, countStats=getCount();
+    if(sp==='debiles') startSession({mode:'practica', special:'debiles', countStats});
+    else if(sp==='rapido') startSession({mode:'practica', special:'rapido', limit:10, countStats});
+    else if(sp==='intermedio') startSession({mode:'practica', special:'intermedio', limit:25, countStats});
+    else if(sp==='figuras') startSession({mode:'practica', topic:'figuras', countStats});
+    else if(sp==='morfologia') startSession({mode:'practica', topic:'morfologia', countStats});
+    else if(sp==='cronica') startSession({mode:'practica', topic:'cronica', countStats});
+    else if(sp==='adaptativo') startSession({mode:'practica', special:'adaptativo', countStats});
+  }));
+}
+
+
+/* =========================================================
+   EXAMEN HOME
+========================================================= */
+function renderExamenHome(main){
+  const defaults = new Set((state.settings.examTopics&&state.settings.examTopics.length?state.settings.examTopics:TOPICS.map(t=>t.id)));
+  main.innerHTML = `
+    <div class="pagehead"><h1>Modo examen</h1><p>Simula un examen real. Las respuestas se revelan solo al terminar.</p></div>
+    <div class="card">
+      <p class="section-title">Temas que quieres incluir <span class="new-pill">NUEVO</span></p>
+      <div class="check-list" id="examTopics" style="margin-bottom:20px;">
+        ${TOPICS.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${defaults.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}
+      </div>
+      <p class="section-title">Número de preguntas</p>
+      <div class="btn-row" id="examSize" style="margin-bottom:20px;">
+        ${[10,20,25,30,50].map(n=>`<button class="chip" data-n="${n}">${n} preguntas</button>`).join('')}
+        <button class="chip" data-n="all">Examen completo</button>
+      </div>
+      <button class="btn" id="startExam" disabled>Selecciona un número de preguntas</button>
+    </div>`;
+  let chosen=null;
+  function selectedTopics(){ return [...main.querySelectorAll('#examTopics input:checked')].map(x=>x.value); }
+  function updateStart(){
+    const btn=document.getElementById('startExam'), topics=selectedTopics();
+    btn.disabled=!chosen || topics.length===0;
+    btn.textContent=topics.length===0?'Selecciona al menos un tema':(!chosen?'Selecciona un número de preguntas':'Comenzar examen');
+  }
+  main.querySelectorAll('#examTopics input').forEach(x=>x.addEventListener('change',updateStart));
+  main.querySelectorAll('#examSize .chip').forEach(c=>c.addEventListener('click', ()=>{
+    main.querySelectorAll('#examSize .chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active'); chosen=c.dataset.n; updateStart();
+  }));
+  document.getElementById('startExam').addEventListener('click', ()=>{
+    const topics=selectedTopics(); if(!chosen || !topics.length) return;
+    const available=Q.filter(q=>topics.includes(q.topic)).length;
+    startSession({mode:'examen', topics, limit: chosen==='all'? available : parseInt(chosen)});
+  });
+}
+
+
+/* =========================================================
+   SESSION ENGINE
+========================================================= */
+function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]); }
+
+function startSession(opts){
+  attemptStage = 0;
+  let pool;
+  if(opts.special==='debiles'){
+    const sorted = [...TOPICS].sort((a,b)=>computeMastery(a.id).pct - computeMastery(b.id).pct);
+    const weakIds = sorted.slice(0,2).map(t=>t.id);
+    pool = Q.filter(q=>weakIds.includes(q.topic));
+  } else if(opts.special==='adaptativo'){
+    // Prioriza temas débiles sin duplicar preguntas dentro de la misma sesión.
+    pool = Q.map(q=>{
+      const m=computeMastery(q.topic);
+      const weight=m.pct<50?3:m.pct<80?2:1;
+      const u=Math.max(Math.random(),1e-9);
+      return {q, key:-Math.log(u)/weight};
+    }).sort((a,b)=>a.key-b.key).map(x=>x.q);
+  } else if(opts.topics && opts.topics.length){
+    pool = Q.filter(q=>opts.topics.includes(q.topic));
+  } else if(opts.topic){
+    pool = Q.filter(q=>q.topic===opts.topic);
+  } else if(opts.errorsOnly){
+    pool = state.errors.map(e=>Q.find(q=>q.id===e.qid)).filter(Boolean);
+  } else if(opts.savedOnly){
+    pool = [...state.saved].map(id=>Q.find(q=>q.id===id)).filter(Boolean);
+  } else {
+    pool = Q.slice();
+  }
+  pool = shuffle(pool);
+  if(opts.limit) pool = pool.slice(0, Math.min(opts.limit, pool.length));
+  if(pool.length===0) pool = shuffle(Q).slice(0, opts.limit||10);
+
+  state.session = {
+    mode: opts.mode, // 'practica' | 'examen'
+    queue: pool,
+    idx: 0,
+    answers: [], // {qid, correct, userAnswer, usedHint}
+    hintsUsed: 0,
+    hintLevel: 0,
+    answered:false,
+    startedAt: Date.now(),
+    miniReviewShown:false,
+    countStats: opts.mode==='examen' ? true : opts.countStats!==false,
+    returnView: opts.mode==='examen' ? 'examen' : 'practica',
+  };
+  saveState();
+  goto('session');
+}
+
+function currentQ(){ const s=state.session; return s.queue[s.idx]; }
+
+function renderSession(main){
+  const s = state.session;
+  if(!s){ goto('dashboard'); return; }
+  const q = currentQ();
+  const total = s.queue.length;
+  const t = TOPICS.find(x=>x.id===q.topic);
+
+  // check for "mini repaso" trigger: 3 consecutive fails on same topic recently in this session
+  const recentSameTopicFails = s.answers.filter(a=>a.qid && Q.find(qq=>qq.id===a.qid).topic===q.topic).slice(-3);
+  const needsMini = s.mode==='practica' && !s.miniReviewShown && recentSameTopicFails.length===3 && recentSameTopicFails.every(a=>!a.correct);
+
+  let bodyHtml = '';
+  if(needsMini){
+    const card = REVIEW_CARDS.find(c=>c.topic===q.topic);
+    bodyHtml = `<div class="mini-review">
+      <h4>Parece que necesitas repasar esto.</h4>
+      <p style="margin:0 0 6px 0;"><b>${card.title}:</b> ${card.def}</p>
+      <p style="margin:0;color:var(--ink-soft);font-size:.87rem;">Ejemplo: ${card.example}</p>
+      <button class="btn amber" id="miniOk" style="margin-top:12px;">Entendido, continuar</button>
+    </div>`;
+    main.innerHTML = `<div class="q-wrap"><div class="q-topbar"><button class="icon-btn" id="quitSession">✕ Salir</button><span>${s.idx+1} / ${total}</span></div>${bodyHtml}</div>`;
+    document.getElementById('quitSession').addEventListener('click', confirmQuit);
+    document.getElementById('miniOk').addEventListener('click', ()=>{ s.miniReviewShown=true; render(); });
+    return;
+  }
+  s.miniReviewShown=false;
+
+  const isExam = s.mode==='examen';
+  const starred = state.saved.has(q.id);
+
+  main.innerHTML = `
+    <div class="q-wrap">
+      <div class="q-topbar">
+        <div class="btn-row">
+          <button class="icon-btn" id="quitSession">✕ ${isExam?'Abandonar examen':'Salir'}</button>
+          ${s.answers.length?'<button class="icon-btn" id="reviewPreviousBtn">← Ver anterior</button>':''}
+        </div>
+        <span>${t.icon} ${t.name} · ${s.idx+1} / ${total} ${isExam?'':''}</span>
+      </div>
+      <div class="q-progress"><div class="q-progress-fill" style="width:${(s.idx)/total*100}%"></div></div>
+      <div class="q-card">
+        <span class="q-topic-tag">${t.name} · ${q.dif}</span>
+        <div id="qBody"></div>
+        <div id="feedbackZone"></div>
+        <div id="hintZone"></div>
+      </div>
+      <div class="q-actions">
+        <div class="btn-row">
+          <button class="icon-btn ${starred?'starred':''}" id="starBtn">${starred?'★ Guardada':'☆ Guardar'}</button>
+          <button class="icon-btn" id="skipBtn">Saltar</button>
+          <button class="icon-btn" id="restartQBtn">↺ Reiniciar</button>
+        </div>
+        <div class="btn-row">
+          ${!isExam? `<button class="icon-btn" id="hintBtn">💡 Pista (${q.hints? Math.min(s.hintLevel,q.hints.length):0}/${q.hints?q.hints.length:0})</button>`:''}
+          <button class="btn" id="submitBtn" disabled>Responder</button>
+        </div>
+      </div>
+      <p class="kbd-hint">Atajo: presiona <kbd>Enter</kbd> para responder/continuar</p>
+    </div>`;
+
+  document.getElementById('quitSession').addEventListener('click', confirmQuit);
+  const reviewPrevBtn=document.getElementById('reviewPreviousBtn');
+  if(reviewPrevBtn) reviewPrevBtn.addEventListener('click', ()=>renderAnsweredReview(s.answers.length-1));
+  document.getElementById('starBtn').addEventListener('click', ()=>{
+    if(state.saved.has(q.id)) state.saved.delete(q.id); else state.saved.add(q.id);
+    saveState();
+    render();
+  });
+  document.getElementById('skipBtn').addEventListener('click', ()=> nextQuestion(null,false,true));
+  document.getElementById('restartQBtn').addEventListener('click', ()=>{ attemptStage=0; sessionSelection=null; s.hintLevel=0; s.answered=false; render(); });
+  if(!isExam) document.getElementById('hintBtn').addEventListener('click', showHint);
+
+  renderQuestionBody(q, isExam);
+}
+
+function renderAnsweredReview(answerIndex){
+  const s=state.session;
+  if(!s || !s.answers.length){ render(); return; }
+  const idx=Math.max(0,Math.min(answerIndex,s.answers.length-1));
+  const a=s.answers[idx];
+  const q=Q.find(x=>x.id===a.qid);
+  if(!q){ render(); return; }
+  const t=TOPICS.find(x=>x.id===q.topic);
+  const main=document.getElementById('main');
+  main.innerHTML=`
+    <div class="q-wrap">
+      <div class="q-topbar">
+        <button class="icon-btn" id="backCurrent">← Volver a la pregunta actual</button>
+        <span>Revisión · ${idx+1} / ${s.answers.length}</span>
+      </div>
+      <div class="q-card">
+        <span class="q-topic-tag">${t.icon} ${t.name} · ${q.dif}</span>
+        <h2 style="font-size:1.18rem;margin:12px 0;">${q.prompt}</h2>
+        <div class="feedback ${a.correct?'good':'bad'}">
+          <b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>
+          ${a.skipped
+            ? `<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="detail-tip"><b>Explicación:</b> ${escHtml(q.exp||recognitionTip(q))}</div></div>`
+            : detailedExplanation(q,a.userAnswer,a.correct)}
+        </div>
+        <div class="btn-row" style="margin-top:16px;justify-content:space-between;">
+          <button class="icon-btn" id="reviewPrev" ${idx===0?'disabled':''}>← Más anterior</button>
+          <button class="icon-btn" id="reviewNext" ${idx===s.answers.length-1?'disabled':''}>Más reciente →</button>
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('backCurrent').addEventListener('click',render);
+  document.getElementById('reviewPrev').addEventListener('click',()=>renderAnsweredReview(idx-1));
+  document.getElementById('reviewNext').addEventListener('click',()=>renderAnsweredReview(idx+1));
+}
+
+function confirmQuit(){
+  const s=state.session;
+  if(confirm('¿Seguro que quieres salir de esta sesión?')){
+    const back=s&&s.returnView ? s.returnView : (s&&s.mode==='examen'?'examen':'practica');
+    state.session=null;
+    saveState();
+    goto(back);
+  }
+}
+
+let sessionSelection = null; // holds current user selection before submit
+
+function renderQuestionBody(q, isExam){
+  sessionSelection = null;
+  const box = document.getElementById('qBody');
+  if(q.type==='mc'){
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="opt-list">
+      ${q.options.map((o,i)=>`<div class="opt" data-i="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></div>`).join('')}
+    </div>`;
+    box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click', ()=>{
+      box.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
+      o.classList.add('selected'); sessionSelection=parseInt(o.dataset.i);
+      enableSubmit();
+    }));
+  } else if(q.type==='tf'){
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="tf-row">
+      <div class="opt" data-v="true"><span>Verdadero</span></div>
+      <div class="opt" data-v="false"><span>Falso</span></div>
+    </div>`;
+    box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click', ()=>{
+      box.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
+      o.classList.add('selected'); sessionSelection = o.dataset.v==='true';
+      enableSubmit();
+    }));
+  } else if(q.type==='fill'){
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p><input class="fill-input" id="fillInput" type="text" placeholder="Escribe tu respuesta" autocomplete="off">`;
+    document.getElementById('fillInput').addEventListener('input', e=>{ sessionSelection=e.target.value; enableSubmit(); });
+  } else if(q.type==='seg'){
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
+      <p class="seg-key">MDP = prefijo · LEX = lexema · INF = infijo · MDS = sufijo · MF = morfema flexivo</p>
+      <div class="seg-word">${q.parts.map((p,i)=>`
+        <div class="seg-chunk"><div class="txt">${p.text}</div>
+        <select data-i="${i}">
+          <option value="">—</option>
+          <option value="MDP">MDP</option><option value="LEX">LEX</option>
+          <option value="INF">INF</option><option value="MDS">MDS</option>
+          <option value="MF">MF</option>
+        </select></div>`).join('')}</div>`;
+    box.querySelectorAll('select').forEach(sel=>sel.addEventListener('change', ()=>{
+      const sels=[...box.querySelectorAll('select')];
+      sessionSelection = sels.map(s=>s.value);
+      enableSubmit(sessionSelection.every(v=>v!==''));
+    }));
+  } else if(q.type==='eviden'){
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
+      <div class="q-reading">${q.reading.map((s,i)=>`<span class="sent" data-i="${i}">${s}</span> `).join('')}</div>
+      ${q.followup? `<div class="opt-list">${q.followup.options.map((o,i)=>`<div class="opt" data-fi="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></div>`).join('')}</div>` : ''}`;
+    let pickedSentence=null, pickedFollow=null;
+    box.querySelectorAll('.sent').forEach(sp=>sp.addEventListener('click', ()=>{
+      box.querySelectorAll('.sent').forEach(x=>x.classList.remove('picked'));
+      sp.classList.add('picked'); pickedSentence=parseInt(sp.dataset.i);
+      sessionSelection = {sentence:pickedSentence, follow:pickedFollow};
+      enableSubmit(pickedSentence!==null && (!q.followup || pickedFollow!==null));
+    }));
+    if(q.followup) box.querySelectorAll('[data-fi]').forEach(o=>o.addEventListener('click', ()=>{
+      box.querySelectorAll('[data-fi]').forEach(x=>x.classList.remove('selected'));
+      o.classList.add('selected'); pickedFollow=parseInt(o.dataset.fi);
+      sessionSelection = {sentence:pickedSentence, follow:pickedFollow};
+      enableSubmit(pickedSentence!==null && pickedFollow!==null);
+    }));
+  }
+  document.getElementById('feedbackZone').innerHTML='';
+  document.getElementById('hintZone').innerHTML='';
+  state.session.hintLevel=0;
+}
+function enableSubmit(force){
+  const btn=document.getElementById('submitBtn');
+  if(force===undefined) btn.disabled = (sessionSelection===null || sessionSelection==='');
+  else btn.disabled = !force;
+  btn.onclick = submitAnswer;
+}
+
+function showHint(){
+  const q=currentQ(); const s=state.session;
+  if(!q.hints || s.hintLevel>=q.hints.length) return;
+  s.hintLevel++;
+  const zone=document.getElementById('hintZone');
+  zone.innerHTML = q.hints.slice(0,s.hintLevel).map((h,i)=>`<div class="hint-box"><b>Pista ${i+1}:</b> ${h}</div>`).join('');
+  document.getElementById('hintBtn').textContent = `💡 Pista (${s.hintLevel}/${q.hints.length})`;
+  if(s.hintLevel>=q.hints.length) document.getElementById('hintBtn').disabled=true;
+  saveState();
+}
+
+function checkCorrectness(q, ans){
+  if(q.type==='mc') return ans===q.correct;
+  if(q.type==='tf') return ans===q.correct;
+  if(q.type==='fill') return ans && ans.trim().toLowerCase()===q.answer.toLowerCase();
+  if(q.type==='seg') return q.parts.every((p,i)=>ans[i]===p.role);
+  if(q.type==='eviden'){
+    const okSentence = ans.sentence===q.correctSentence;
+    const okFollow = q.followup? ans.follow===q.followup.correct : true;
+    return okSentence && okFollow;
+  }
+  return false;
+}
+
+function escHtml(v){
+  return String(v??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function answerLabel(q, ans){
+  if(q.type==='mc') return q.options?.[ans] ?? 'Sin respuesta';
+  if(q.type==='tf') return ans===true?'Verdadero':ans===false?'Falso':'Sin respuesta';
+  if(q.type==='fill') return ans || 'Sin respuesta';
+  if(q.type==='seg') return Array.isArray(ans)? ans.join(' · ') : 'Sin respuesta';
+  if(q.type==='eviden'){
+    const sent = Number.isInteger(ans?.sentence) ? q.reading?.[ans.sentence] : null;
+    const follow = q.followup && Number.isInteger(ans?.follow) ? q.followup.options?.[ans.follow] : null;
+    return [sent?`Oración: “${sent}”`:null, follow?`Clasificación: ${follow}`:null].filter(Boolean).join(' · ') || 'Sin respuesta';
+  }
+  return 'Sin respuesta';
+}
+function correctAnswerLabel(q){
+  if(q.type==='mc') return q.options?.[q.correct] ?? '';
+  if(q.type==='tf') return q.correct?'Verdadero':'Falso';
+  if(q.type==='fill') return q.answer || '';
+  if(q.type==='seg') return q.parts?.map(p=>`${p.text || p.part || p.segment || ''} = ${p.role}`).join(' · ') || '';
+  if(q.type==='eviden'){
+    const sent=q.reading?.[q.correctSentence];
+    const follow=q.followup ? q.followup.options?.[q.followup.correct] : null;
+    return [sent?`“${sent}”`:null, follow].filter(Boolean).join(' · ');
+  }
+  return '';
+}
+function recognitionTip(q){
+  const hs=(q.hints||[]).filter(Boolean);
+  if(hs.length) return hs[hs.length-1];
+  const topic=TOPICS.find(t=>t.id===q.topic)?.name || 'este tema';
+  return `Relaciona la definición con la característica clave de ${topic}.`;
+}
+function detailedExplanation(q, ans, correct){
+  const selected=answerLabel(q, ans);
+  const right=correctAnswerLabel(q);
+  let html='';
+  if(correct){
+    html += `<div class="detail-block"><div class="detail-title">¿Por qué está bien?</div><div>Escogiste <span class="detail-answer">${escHtml(selected)}</span>. Esa respuesta es correcta porque ${q.exp}</div>`;
+  } else {
+    html += `<div class="detail-block"><div class="detail-title">¿Por qué estaba mal?</div><div>Escogiste <span class="detail-answer">${escHtml(selected)}</span>, pero la respuesta correcta es <span class="detail-answer">${escHtml(right)}</span>. ${q.exp}</div>`;
+  }
+  html += `<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`;
+  return html;
+}
+
+let attemptStage = 0; // for practice mode two-try flow
+function submitAnswer(){
+  const q=currentQ(); const s=state.session;
+  const isExam = s.mode==='examen';
+  const correct = checkCorrectness(q, sessionSelection);
+  const box=document.getElementById('qBody');
+  const fb=document.getElementById('feedbackZone');
+
+  if(isExam){
+    s.answers.push({qid:q.id, correct, hintsUsed:s.hintLevel, userAnswer:sessionSelection});
+    saveState();
+    document.getElementById('submitBtn').textContent='Siguiente';
+    document.getElementById('submitBtn').disabled=false;
+    document.getElementById('submitBtn').onclick = ()=>advance();
+    document.querySelectorAll('.opt,.fill-input,select,.sent').forEach(el=>{el.style.pointerEvents='none'; if('disabled' in el) el.disabled=true;});
+    return;
+  }
+
+  // Práctica con dos intentos: el primer fallo NO revela la respuesta correcta.
+  if(correct){
+    markAnswerVisual(q, sessionSelection, true);
+    fb.innerHTML = `<div class="feedback good"><b>✓ Correcto</b>${detailedExplanation(q, sessionSelection, true)}</div>`;
+    s.answers.push({qid:q.id, correct:true, hintsUsed:s.hintLevel, userAnswer:sessionSelection});
+    recordAnswer(q, true);
+    finalizeStep(true);
+  } else if(attemptStage===0){
+    attemptStage=1;
+    fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>Inténtalo otra vez. ${q.hints?'Puedes usar una pista.':''}</div>`;
+    document.getElementById('submitBtn').textContent='Responder de nuevo';
+    document.getElementById('submitBtn').disabled=true;
+    reenableInputs(q);
+  } else {
+    markAnswerVisual(q, sessionSelection, false);
+    fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>${detailedExplanation(q, sessionSelection, false)}</div>`;
+    s.answers.push({qid:q.id, correct:false, hintsUsed:s.hintLevel, userAnswer:sessionSelection});
+    recordAnswer(q, false);
+    finalizeStep(false);
+  }
+}
+function reenableInputs(q){
+  const box=document.getElementById('qBody');
+  sessionSelection=null;
+  box.querySelectorAll('.opt').forEach(o=>{ o.classList.remove('selected','correct','incorrect'); o.style.pointerEvents='auto'; });
+  box.querySelectorAll('select').forEach(s=>{ s.disabled=false; s.classList.remove('correct','incorrect'); s.value=''; });
+  const fillEl = document.getElementById('fillInput'); if(fillEl){ fillEl.disabled=false; fillEl.classList.remove('correct','incorrect'); fillEl.value=''; }
+  box.querySelectorAll('.sent').forEach(s=>{ s.style.pointerEvents='auto'; s.classList.remove('picked','correct','incorrect'); });
+  document.getElementById('submitBtn').disabled=true;
+}
+function markAnswerVisual(q, ans, correct){
+  const box=document.getElementById('qBody');
+  if(q.type==='mc'){
+    box.querySelectorAll('.opt').forEach((o,i)=>{
+      o.style.pointerEvents='none';
+      if(i===q.correct) o.classList.add('correct');
+      else if(i===ans) o.classList.add('incorrect');
+    });
+  } else if(q.type==='tf'){
+    box.querySelectorAll('.opt').forEach(o=>{
+      o.style.pointerEvents='none';
+      const v = o.dataset.v==='true';
+      if(v===q.correct) o.classList.add('correct');
+      else if(v===ans) o.classList.add('incorrect');
+    });
+  } else if(q.type==='fill'){
+    const el=document.getElementById('fillInput'); el.disabled=true;
+    el.classList.add(correct?'correct':'incorrect');
+  } else if(q.type==='seg'){
+    box.querySelectorAll('select').forEach((sel,i)=>{
+      sel.disabled=true;
+      sel.classList.add(sel.value===q.parts[i].role?'correct':'incorrect');
+    });
+  } else if(q.type==='eviden'){
+    box.querySelectorAll('.sent').forEach((sp,i)=>{
+      sp.style.pointerEvents='none';
+      if(i===q.correctSentence) sp.classList.add('correct');
+      else if(i===ans.sentence) sp.classList.add('incorrect');
+    });
+    if(q.followup) box.querySelectorAll('[data-fi]').forEach((o,i)=>{
+      o.style.pointerEvents='none';
+      if(i===q.followup.correct) o.classList.add('correct');
+      else if(i===ans.follow) o.classList.add('incorrect');
+    });
+  }
+}
+function finalizeStep(correct){
+  document.getElementById('submitBtn').textContent = state.session.idx===state.session.queue.length-1? 'Ver resultados':'Siguiente pregunta';
+  document.getElementById('submitBtn').disabled=false;
+  document.getElementById('submitBtn').onclick = ()=>advance();
+  document.getElementById('hintBtn') && (document.getElementById('hintBtn').disabled=true);
+}
+function nextQuestion(ans, correct, skipped){
+  if(skipped){
+    const q=currentQ();
+    state.session.answers.push({qid:q.id, correct:false, skipped:true, userAnswer:null});
+  }
+  advance();
+}
+function advance(){
+  attemptStage=0;
+  const s=state.session;
+  if(s.idx < s.queue.length-1){ s.idx++; saveState(); render(); }
+  else { finishSession(); }
+}
+function finishSession(){
+  const s=state.session;
+  const total = s.answers.length;
+  const correctCount = s.answers.filter(a=>a.correct).length;
+  const pct = total? Math.round(correctCount/total*100):0;
+  const elapsed = Math.round((Date.now()-s.startedAt)/1000);
+  const countsTowardProgress = s.mode==='examen' || s.countStats!==false;
+  if(countsTowardProgress) state.studySeconds += elapsed;
+  if(s.mode==='examen'){
+    s.answers.filter(a=>!a.skipped).forEach(a=>{
+      const q=Q.find(x=>x.id===a.qid);
+      if(q) recordAnswer(q, !!a.correct);
+    });
+  }
+
+  const byTopic={};
+  s.answers.forEach(a=>{
+    const q=Q.find(x=>x.id===a.qid); if(!q) return;
+    byTopic[q.topic] = byTopic[q.topic]||{c:0,t:0};
+    byTopic[q.topic].t++; if(a.correct) byTopic[q.topic].c++;
+  });
+
+  // El historial guarda TODAS las sesiones para poder revisarlas después.
+  // countsTowardProgress solo controla si afecta las estadísticas del Panel.
+  state.history.push({
+    id:`${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+    date:new Date().toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit',year:'numeric'}),
+    time: new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}),
+    mode:s.mode, total, correct:correctCount, pct, seconds:elapsed,
+    byTopic, countsTowardProgress,
+    answers:s.answers.map(a=>({qid:a.qid,correct:!!a.correct,skipped:!!a.skipped,hintsUsed:a.hintsUsed||0,userAnswer:a.userAnswer??null}))
+  });
+
+  state.lastResult = {total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, countsTowardProgress};
+  const completedResult=state.lastResult;
+  state.session=null;
+  saveState();
+  if(completedResult.mode==='examen') submitLeaderboardScore(completedResult);
+  goto('results');
+}
+
+/* =========================================================
+   RESULTS
+========================================================= */
+function renderResults(main){
+  const r = state.lastResult;
+  if(!r){ goto('dashboard'); return; }
+  const wrong = r.answers.filter(a=>!a.correct).map(a=>Q.find(q=>q.id===a.qid)).filter(Boolean);
+  const good = r.answers.filter(a=>a.correct).map(a=>Q.find(q=>q.id===a.qid)).filter(Boolean);
+  const topicNames = Object.keys(r.byTopic);
+
+  main.innerHTML = `
+    <div class="pagehead"><h1>Resultados</h1><p>${r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
+    <div class="card results-hero" style="margin-bottom:20px;">
+      <div class="big">${r.pct}%</div>
+      <p style="color:var(--ink-soft);margin:4px 0 16px 0;">${r.correctCount} de ${r.total} correctas · ${fmtTime(r.elapsed)}</p>
+      <div class="btn-row" style="justify-content:center;">
+        <button class="btn" id="backDash">Ir al panel</button>
+        <button class="btn ghost" id="retryWrong" ${wrong.length===0?'disabled':''}>Practicar lo fallado (${wrong.length})</button>
+      </div>
+    </div>
+    <div class="grid grid-2" style="align-items:start;">
+      <div class="card">
+        <p class="section-title">Desempeño por tema</p>
+        ${topicNames.map(tid=>{ const t=TOPICS.find(x=>x.id===tid); const d=r.byTopic[tid]; const p=Math.round(d.c/d.t*100);
+          return `<div class="topic-row"><div class="tname">${t.icon} ${t.name}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><span class="pill pill-progress">${d.c}/${d.t}</span></div>`; }).join('')}
+      </div>
+      <div class="card">
+        <p class="section-title">Lo que hiciste bien</p>
+        <p style="font-size:.88rem;">${good.length? `Dominas bien: ${[...new Set(good.map(q=>TOPICS.find(t=>t.id===q.topic).name))].join(', ')}.` : 'Sigue practicando para ver tus fortalezas aquí.'}</p>
+        <p class="section-title" style="margin-top:16px;">Necesitas repasar</p>
+        <p style="font-size:.88rem;">${wrong.length? `Revisa: ${[...new Set(wrong.map(q=>TOPICS.find(t=>t.id===q.topic).name))].join(', ')}.` : '¡No fallaste ninguna pregunta!'}</p>
+        <p class="section-title" style="margin-top:16px;">Próximo paso recomendado</p>
+        <p style="font-size:.88rem;">${wrong.length>2? 'Practica el modo "Temas débiles" antes de intentar otro examen.' : 'Estás listo para intentar un examen más largo.'}</p>
+      </div>
+    </div>
+    ${wrong.length? `<div class="card" style="margin-top:20px;">
+      <p class="section-title">Preguntas falladas</p>
+      ${wrong.map(q=>`<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${TOPICS.find(t=>t.id===q.topic).name}</div></div>`).join('')}
+    </div>`:''}
+    ${r.mode==='examen'? `<div class="card" style="margin-top:20px;">
+      <p class="section-title">Explicación de cada respuesta</p>
+      <p style="font-size:.86rem;color:var(--ink-soft);margin-bottom:14px;">Durante el examen no se muestran respuestas para no darte pistas. Aquí puedes revisar por qué cada contestación estuvo bien o mal.</p>
+      ${r.answers.map((a,i)=>{ const q=Q.find(x=>x.id===a.qid); if(!q) return ''; return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`; }).join('')}
+    </div>`:''}
+  `;
+  document.getElementById('backDash').addEventListener('click', ()=>goto('dashboard'));
+  document.getElementById('retryWrong').addEventListener('click', ()=>{
+    const ids = wrong.map(q=>q.id);
+    state.session=null;
+    const pool = ids.map(id=>Q.find(q=>q.id===id));
+    state.session = {mode:'practica', queue:shuffle(pool), idx:0, answers:[], hintLevel:0, hintsUsed:0, startedAt:Date.now(), miniReviewShown:false, countStats:state.settings.practiceCountsByDefault!==false, returnView:'practica'};
+    saveState();
+    goto('session');
+  });
+}
+
+/* =========================================================
+   ERRORES
+========================================================= */
+function renderErrores(main){
+  const list = state.errors.slice().sort((a,b)=>b.last-a.last);
+  main.innerHTML = `
+    <div class="pagehead"><h1>Mis errores</h1><p>Preguntas que has fallado, guardadas para reforzar.</p></div>
+    ${list.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practErr">Practicar mis errores (${list.length})</button></div>` : ''}
+    ${list.length? list.map(e=>{
+      const q=Q.find(x=>x.id===e.qid); if(!q) return '';
+      return `<div class="err-item"><div class="q">${q.prompt}</div>
+      <div class="meta">${TOPICS.find(t=>t.id===q.topic).name} · Fallada ${e.times} ${e.times===1?'vez':'veces'} · Última vez: ${new Date(e.last).toLocaleDateString('es-ES')}</div></div>`;
+    }).join('') : `<div class="empty-state"><span class="ic">✕</span>Todavía no tienes errores guardados. ¡Sigue así!</div>`}
+  `;
+  if(list.length) document.getElementById('practErr').addEventListener('click', ()=>startSession({mode:'practica', errorsOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
+}
+
+/* =========================================================
+   GUARDADAS
+========================================================= */
+function renderGuardadas(main){
+  const ids=[...state.saved];
+  main.innerHTML = `
+    <div class="pagehead"><h1>Preguntas guardadas</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p></div>
+    ${ids.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practSaved">Practicar guardadas (${ids.length})</button></div>` : ''}
+    ${ids.length? ids.map(id=>{ const q=Q.find(x=>x.id===id); if(!q) return '';
+      return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${TOPICS.find(t=>t.id===q.topic).name}</div></div>`;
+    }).join('') : `<div class="empty-state"><span class="ic">★</span>No has guardado preguntas todavía. Usa el botón "Guardar" durante la práctica.</div>`}
+  `;
+  if(ids.length) document.getElementById('practSaved').addEventListener('click', ()=>startSession({mode:'practica', savedOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
+}
+
+/* =========================================================
+   HISTORIAL
+========================================================= */
+function renderHistorial(main){
+  const h = state.history.slice().reverse();
+  main.innerHTML = `
+    <div class="pagehead"><h1>Historial</h1><p>Tus exámenes y sesiones de práctica anteriores. Toca una sesión para revisar sus preguntas.</p></div>
+    ${h.length? `<div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Progreso reciente (%)</p>
+      <div class="spark">${h.slice(0,14).reverse().map(x=>`<div style="height:${x.pct}%" title="${x.pct}%"></div>`).join('')}</div>
+    </div>
+    <div class="card">
+      ${h.map((x,i)=>`<button class="hist-row hist-open" data-hi="${i}" style="width:100%;border:0;background:none;color:inherit;text-align:left;cursor:pointer;">
+        <span>${x.mode==='examen'?'Examen':'Práctica'} · ${x.date} ${x.time}${x.countsTowardProgress===false?' · No contó al Panel':''}</span>
+        <span>${x.correct}/${x.total} · ${x.pct}% · ${fmtTime(x.seconds)} ›</span>
+      </button>`).join('')}
+    </div>` : `<div class="empty-state"><span class="ic">▥</span>Todavía no tienes historial. Completa una práctica o examen.</div>`}
+  `;
+  main.querySelectorAll('.hist-open').forEach(b=>b.addEventListener('click',()=>renderHistoryDetail(h[Number(b.dataset.hi)])));
+}
+
+function renderHistoryDetail(entry){
+  const main=document.getElementById('main');
+  const answers=Array.isArray(entry?.answers)?entry.answers:[];
+  main.innerHTML=`
+    <div class="pagehead"><h1>Revisión de sesión</h1><p>${entry.mode==='examen'?'Examen':'Práctica'} · ${entry.date} ${entry.time} · ${entry.correct}/${entry.total} (${entry.pct}%)</p></div>
+    <div class="btn-row" style="margin-bottom:18px;"><button class="icon-btn" id="backHistory">← Volver al historial</button></div>
+    ${answers.length? `<div class="card">
+      ${answers.map((a,i)=>{const q=Q.find(x=>x.id===a.qid);if(!q)return'';const t=TOPICS.find(x=>x.id===q.topic);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="detail-tip"><b>Explicación:</b> ${escHtml(q.exp||recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
+    </div>` : `<div class="empty-state"><span class="ic">▥</span>Esta sesión es de una versión anterior y solo guardó el resultado general. Las sesiones nuevas sí guardarán cada pregunta y tu respuesta.</div>`}
+  `;
+  document.getElementById('backHistory').addEventListener('click',()=>goto('historial'));
+}
+
+
+/* =========================================================
+   LEADERBOARD
+========================================================= */
+function ensureLeaderboardDeviceId(){
+  if(!state.settings.leaderboardDeviceId){
+    state.settings.leaderboardDeviceId=(crypto&&crypto.randomUUID)?crypto.randomUUID():`dev_${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    saveState();
+  }
+  return state.settings.leaderboardDeviceId;
+}
+async function leaderboardRequest(method='GET', body=null){
+  const opts={method,headers:{'Content-Type':'application/json'}};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch('/.netlify/functions/leaderboard',opts);
+  if(!res.ok) throw new Error(`Leaderboard ${res.status}`);
+  return res.json();
+}
+async function submitLeaderboardScore(result){
+  if(!result || result.mode!=='examen' || !state.settings.leaderboardName) return;
+  try{
+    await leaderboardRequest('POST',{
+      deviceId:ensureLeaderboardDeviceId(),
+      name:state.settings.leaderboardName,
+      score:result.correctCount,
+      total:result.total,
+      pct:result.pct
+    });
+  }catch(e){}
+}
+function renderLeaderboard(main){
+  const name=state.settings.leaderboardName||'';
+  main.innerHTML=`
+    <div class="pagehead"><h1>🏆 Leaderboard</h1><p>Compite con estudiantes que usan este mismo hub. Se publica tu mejor nota de examen.</p></div>
+    <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Tu perfil</p>
+      <div class="setting-row"><div class="setting-copy"><b>Nombre visible</b><span>Este nombre será público en el leaderboard. No uses información privada.</span></div><div class="setting-control"><input id="leaderName" maxlength="24" value="${escHtml(name)}" placeholder="Tu nombre" style="min-width:180px;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);"></div></div>
+      <div class="btn-row"><button class="btn" id="saveLeaderName">${name?'Guardar nombre':'Registrarme para el leaderboard'}</button><span class="save-note" id="leaderSaveNote"></span></div>
+    </div>
+    <div class="card"><p class="section-title">Clasificación</p><div id="leaderList"><div class="empty-state"><span class="ic">…</span>Cargando leaderboard…</div></div></div>`;
+  document.getElementById('saveLeaderName').addEventListener('click',async()=>{
+    const v=document.getElementById('leaderName').value.trim().replace(/\s+/g,' ');
+    if(v.length<2){alert('Escribe un nombre de al menos 2 caracteres.');return;}
+    state.settings.leaderboardName=v.slice(0,24); ensureLeaderboardDeviceId(); saveState();
+    document.getElementById('leaderSaveNote').textContent='Guardado ✓';
+    await loadLeaderboard();
+  });
+  loadLeaderboard();
+}
+async function loadLeaderboard(){
+  const box=document.getElementById('leaderList'); if(!box)return;
+  try{
+    const data=await leaderboardRequest('GET');
+    const rows=Array.isArray(data.players)?data.players:[];
+    box.innerHTML=rows.length?rows.map((p,i)=>`<div class="hist-row"><span><b>${i+1}.</b> ${escHtml(p.name)}${p.deviceId===state.settings.leaderboardDeviceId?' · Tú':''}</span><span><b>${p.bestPct}%</b> · ${p.bestScore}/${p.bestTotal} · ${p.exams} ${p.exams===1?'examen':'exámenes'}</span></div>`).join(''):`<div class="empty-state"><span class="ic">🏆</span>Todavía no hay notas publicadas.</div>`;
+  }catch(e){
+    box.innerHTML=`<div class="empty-state"><span class="ic">☁</span>El leaderboard online todavía no está conectado en este deploy. El resto del cuaderno funciona normalmente.</div>`;
+  }
+}
+
+/* =========================================================
+   NOVEDADES / UPDATE LOG
+========================================================= */
+function renderNovedades(main){
+  const wasNew=state.settings.lastSeenUpdate!==APP_VERSION;
+  state.settings.lastSeenUpdate=APP_VERSION; saveState(); renderNav();
+  main.innerHTML = `
+    <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
+    <div class="card">
+      <div class="update-item"><h3>Versión 1.7 · Leaderboard y personalización <span class="new-pill">NUEVO</span></h3><p>Se añadió el sistema de leaderboard compartido para registrar un nombre y publicar la mejor nota de los exámenes, junto con personalización del color principal de la interfaz. El leaderboard usa una función segura del proyecto de Netlify y el progreso local sigue conservándose entre actualizaciones.</p></div>
+      <div class="update-item"><h3>Versión 1.6 · Versión final estable</h3><p>Se revisó y limpió el código completo sin rediseñar el sitio. Se reforzó la recuperación del progreso, se corrigió el respaldo local, se evitó revelar la respuesta en el primer intento fallido, se protegieron las sesiones al navegar, se eliminan preguntas repetidas del modo adaptativo y los exámenes solo afectan el Panel cuando se completan.</p></div>
+      <div class="update-item"><h3>Versión 1.5 · Revisión de preguntas y memoria estable</h3><p>Ahora puedes volver a revisar preguntas ya contestadas durante una sesión y, al terminar, abrir sesiones nuevas desde Historial para ver cada pregunta, si estuvo bien o mal y su explicación. También se añadió una clave de almacenamiento estable que no cambia con las actualizaciones, manteniendo compatibilidad con el progreso de versiones anteriores.</p></div>
+      <div class="update-item"><h3>Versión 1.4 · Explicaciones mejoradas</h3><p>Después de contestar en Práctica, el cuaderno ahora explica por qué la respuesta es correcta o incorrecta, muestra la respuesta correcta cuando hace falta y añade una clave para reconocer ese concepto la próxima vez. En Examen, las explicaciones aparecen al final para no revelar respuestas durante la prueba.</p></div>
+      <div class="update-item"><h3>Versión 1.3 · Guardado reforzado</h3><p>El progreso ahora se guarda después de cada cambio importante, al cambiar de sección, al minimizar o cerrar la página y también mediante guardado periódico. Se añadió una copia de respaldo local y un segundo respaldo con IndexedDB para reducir la posibilidad de perder estadísticas, historial, preguntas guardadas y sesiones.</p></div>
+      <div class="update-item"><h3>Versión 1.2 · Personalización y progreso</h3><p>Exámenes por temas, opción para decidir si una práctica cuenta en el Panel, botón Salir que vuelve a la sección correcta, guardado local del progreso, Configuración con botón Guardar, modo claro/oscuro/automático y Modo intermedio de 25 preguntas.</p></div>
+      <div class="update-item"><h3>Mejoras visuales del repaso</h3><p>Ejemplos de morfología y figuras literarias con las partes importantes resaltadas, manteniendo el diseño original del cuaderno.</p></div>
+      <div class="update-item"><h3>Base del cuaderno</h3><p>Panel de dominio, Repasar, Practicar, Examen, Mis errores, Guardadas e Historial.</p></div>
+    </div>`;
+}
+
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+function renderAjustes(main){
+  const selected=new Set(state.settings.examTopics||TOPICS.map(t=>t.id));
+  main.innerHTML = `
+    <div class="pagehead"><h1>Configuración</h1><p>Personaliza cómo funciona tu cuaderno en este dispositivo.</p></div>
+    <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Apariencia</p>
+      <div class="setting-row"><div class="setting-copy"><b>Tema</b><span>Escoge claro, oscuro o automático según tu iPhone.</span></div><div class="setting-control"><select id="themeMode"><option value="light" ${state.settings.themeMode==='light'?'selected':''}>Claro</option><option value="dark" ${state.settings.themeMode==='dark'?'selected':''}>Oscuro</option><option value="auto" ${state.settings.themeMode==='auto'?'selected':''}>Automático</option></select></div></div>
+      <div class="setting-row"><div class="setting-copy"><b>Color de la interfaz</b><span>Personaliza el color principal de botones, barras y selecciones.</span></div><div class="setting-control"><input id="accentColor" type="color" value="${escHtml(state.settings.accentColor||'#8B2635')}" style="width:52px;height:40px;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:3px;"></div></div>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Práctica</p>
+      <div class="setting-row"><div class="setting-copy"><b>Contar prácticas en el Panel por defecto</b><span>También puedes cambiarlo antes de cada práctica.</span></div><div class="setting-control"><label class="check-line"><input id="defaultCount" type="checkbox" ${state.settings.practiceCountsByDefault!==false?'checked':''}> Activado</label></div></div>
+    </div>
+    <div class="card" style="margin-bottom:20px;">
+      <p class="section-title">Examen · temas predeterminados</p>
+      <div class="check-list" id="defaultTopics">${TOPICS.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}</div>
+    </div>
+    <div class="btn-row"><button class="btn" id="saveSettings">💾 Guardar</button><span class="save-note" id="savedNote">${lastSaveAt?'Guardado automático activo ✓':'Guardado automático activo'}</span></div>`;
+  document.getElementById('saveSettings').addEventListener('click',()=>{
+    const topics=[...document.querySelectorAll('#defaultTopics input:checked')].map(x=>x.value);
+    if(!topics.length){ alert('Selecciona al menos un tema para el examen.'); return; }
+    state.settings.themeMode=document.getElementById('themeMode').value;
+    state.settings.practiceCountsByDefault=document.getElementById('defaultCount').checked;
+    state.settings.examTopics=topics;
+    state.settings.accentColor=document.getElementById('accentColor').value||'#8B2635';
+    applyThemeMode(); saveState(); renderNav();
+    document.getElementById('savedNote').textContent='Guardado ✓';
+    setTimeout(()=>{const n=document.getElementById('savedNote');if(n)n.textContent='';},1600);
+  });
+}
+
+/* =========================================================
+   TECLADO
+========================================================= */
+document.addEventListener('keydown', e=>{
+  if(e.key==='Enter'){
+    const btn=document.getElementById('submitBtn');
+    if(btn && !btn.disabled) btn.click();
+  }
+});
+
+/* =========================================================
+   GUARDADO REFORZADO
+========================================================= */
+// Guarda de forma periódica y también cuando iOS/Safari oculta o cierra la página.
+setInterval(()=>{ saveState(); },5000);
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') saveState(); });
+window.addEventListener('pagehide',saveState);
+window.addEventListener('beforeunload',saveState);
+window.addEventListener('pageshow',()=>{ if(!hasLocalSavedState) restoreIndexedDBFallback(); });
+if(navigator.storage && navigator.storage.persist){ navigator.storage.persist().catch(()=>{}); }
+
+/* =========================================================
+   INICIO
+========================================================= */
+if(window.matchMedia){
+  const mq=window.matchMedia('(prefers-color-scheme: dark)');
+  const onScheme=()=>{ if(state.settings.themeMode==='auto'){ applyThemeMode(); renderNav(); } };
+  if(mq.addEventListener) mq.addEventListener('change',onScheme); else if(mq.addListener) mq.addListener(onScheme);
+}
+render();
+restoreIndexedDBFallback();
+</script>
+</body>
+</html>
