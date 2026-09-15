@@ -23,9 +23,9 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 
 - **Hub:** Día 1 y Día 2, seis tarjetas, estados, fecha local, progreso y acceso a Novedades.
 - **Materias y unidades:** Hub → Español/Historia → unidad → tema → herramienta → Hub; las otras cuatro materias `Próximamente` permanecen vacías y deshabilitadas.
-- **Historia:** ocho topics, 25 tarjetas, 82 preguntas (72 selección múltiple y 10 verdadero/falso), respuestas A/B/C/D balanceadas y tercer mundo marcado como información incompleta.
+- **Historia:** ocho topics, 27 tarjetas, 82 preguntas (72 selección múltiple y 10 verdadero/falso), respuestas A/B/C/D balanceadas y tercer mundo marcado como información incompleta.
 - **Contexto:** navegación desktop y móvil conserva materia, unidad, tema, filtros, respuestas y posición al pasar por Hub o Más.
-- **Navegación:** exactamente Hub, Repasar, Practicar, Cuenta/Entrar y Más como accesos primarios; verificar bottom sheet a 390×844, safe area, Escape, foco, scroll, ausencia de overflow y Admin condicional.
+- **Navegación:** en teléfono, exactamente Hub, Repasar, Practicar, Cuenta/Entrar y Más; verificar bottom sheet a 390×844, safe area, Escape, foco, scroll, ausencia de overflow y Admin condicional. En desktop, verificar grupos directos y ausencia de Más.
 - **Práctica:** rápida (10), intermedia (25), normal, por tema, errores y guardadas.
 - **Respuesta:** selección múltiple, verdadero/falso, texto, segmentación y evidencia; primer error, segundo intento, pista, salto y feedback.
 - **Navegación:** Anterior, Siguiente y Volver a pregunta actual sin alterar cola, respuestas ni estadísticas.

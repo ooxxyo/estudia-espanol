@@ -51,6 +51,8 @@
     ['religion-inca', 'Mama Quilla', 'La Luna y esposa de Inti.', 'Diosa de la religión inca.'],
     ['religion-inca', 'Pacha Mama', 'Madre Tierra y fertilidad de los campos.', 'Se relaciona con la tierra y los cultivos.'],
     ['mapas-localizacion', 'Localizaciones principales', 'Mayas: Mesoamérica; aztecas: México; incas: Andes y oeste de América del Sur.', 'Las otras civilizaciones se ubican en África, Asia y el Mediterráneo según el material.'],
+    ['mapas-localizacion', 'Ciudades y civilizaciones', 'Cada ciudad debe asociarse con la civilización indicada en el material.', 'Tikal es maya, Tenochtitlán es azteca, Cuzco es inca, Roma es romana y Atenas es griega.'],
+    ['ciclo-naturaleza', 'Ciclo de vida / naturaleza', 'Relación general: Sol → agua/nubes → lluvia → plantas → seres vivos.', 'El material incluye Sol, nubes, lluvia, plantas, árboles y seres humanos.'],
   ].map(([topic, title, def, example]) => ({ topic, title, def, example }));
 
   let optionIndex = 0;

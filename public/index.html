@@ -63,7 +63,7 @@ button{font-family:inherit;}
   border-right:1px solid var(--line);
   padding:22px 14px;
   display:flex;flex-direction:column;gap:4px;
-  position:sticky;top:0;height:100vh;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
 }
 .rail-brand{
   font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;
@@ -242,7 +242,7 @@ main{flex:1;padding:34px 40px;max-width:980px;margin:0 auto;width:100%;}
 .section-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft);margin:0 0 10px 2px;font-weight:600;}
 /* deliberately used sparingly, only as small section labels above lists — not as a decorative eyebrow on every block */
 
-.mode-card{cursor:pointer;transition:border-color .15s ease, transform .1s ease;}
+.mode-card{cursor:pointer;transition:border-color .15s ease, transform .1s ease;text-align:left;color:var(--ink);width:100%;font:inherit;}
 .mode-card:hover{border-color:var(--accent);}
 .mode-card h3{margin:0 0 6px 0;font-size:1rem;}
 .mode-card p{margin:0;color:var(--ink-soft);font-size:.83rem;line-height:1.4;}
@@ -586,9 +586,10 @@ body{line-height:1.55;}
 .leader-meta{display:block;margin-top:3px;font-size:.72rem;color:var(--ink-soft);font-weight:500;}
 .leader-score{text-align:right;white-space:nowrap;}
 .sync-pill{font-size:.68rem;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-weight:700;}
-.more-backdrop{position:fixed;inset:0;z-index:90;background:rgba(20,24,27,.42);display:flex;align-items:flex-start;justify-content:flex-start;padding:72px 0 20px 232px}.more-panel{width:min(440px,calc(100vw - 252px));max-height:calc(100vh - 92px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px}.more-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.more-head h2{margin:0;font-size:1.15rem}.more-list{display:grid;gap:8px}.more-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;width:100%;padding:12px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer;min-height:58px}.more-item:hover,.more-item:focus-visible{border-color:var(--accent);outline:2px solid var(--accent-soft)}.more-item .ic{font-size:1.15rem;text-align:center}.more-item b,.more-item span{display:block}.more-item span{font-size:.76rem;color:var(--ink-soft);margin-top:2px}.more-close{min-width:44px;min-height:44px}
+.nav-group{display:grid;gap:2px;margin-bottom:10px}.nav-group-title{padding:3px 12px;color:var(--ink-soft);font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.more-backdrop{display:none}.more-panel{width:100%;max-height:min(78vh,680px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:16px 16px calc(16px + env(safe-area-inset-bottom))}.more-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.more-head h2{margin:0;font-size:1.15rem}.more-list{display:grid;gap:8px}.more-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;width:100%;padding:12px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer;min-height:62px}.more-item:hover,.more-item:focus-visible{border-color:var(--accent);outline:2px solid var(--accent-soft)}.more-item .ic{font-size:1.15rem;text-align:center}.more-item b,.more-item span{display:block}.more-item span{font-size:.76rem;color:var(--ink-soft);margin-top:2px}.more-close{min-width:44px;min-height:44px}
+@media(max-width:820px){.more-backdrop{position:fixed;inset:0;z-index:90;background:rgba(20,24,27,.42);display:flex;align-items:flex-end;justify-content:center;padding:16px 0 0}}
 @media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-controls,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
-@media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}.more-backdrop{align-items:flex-end;padding:16px 0 0}.more-panel{width:100%;max-height:min(78vh,680px);border-radius:18px 18px 0 0;border-bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}.more-item{min-height:62px}}
+@media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}}
 
 </style>
 </head>
@@ -607,6 +608,7 @@ body{line-height:1.55;}
 <nav class="mobile-nav" id="mobileNav"></nav>
 <div id="moreMenuRoot"></div>
 
+<script src="js/api-client.js"></script>
 <script src="history-data.js"></script>
 <script>
 /* =========================================================
@@ -620,6 +622,7 @@ const TOPICS = [
   {id:'figuras', name:'Figuras literarias', icon:'✦'},
 ];
 const HISTORY_CONTENT=window.HISTORY_CONTENT;
+const requestJson=window.StudyHubApi.requestJson;
 
 const STUDY_DAYS=Object.freeze([
   {id:1,name:'Día 1'},
@@ -1515,12 +1518,7 @@ applyThemeMode();
 if(loadedExistingState) saveState(); // migra automáticamente a la clave estable sin borrar nada
 
 async function accountRequest(method='GET', body=null){
-  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
-  if(body) opts.body=JSON.stringify(body);
-  const res=await fetch('/.netlify/functions/account',opts);
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok){ const err=new Error(data.error||`Cuenta ${res.status}`); err.status=res.status; err.data=data; throw err; }
-  return data;
+  return requestJson('/.netlify/functions/account',{method,body,fallbackMessage:'No se pudo procesar la cuenta.'});
 }
 function stableCloudPayload(){
   const snap=snapshotState();
@@ -1620,9 +1618,8 @@ function accountDisplayName(user=accountSession.user){return user?.displayName||
 function featureEnabled(id){return featureFlags.some(feature=>feature.id===id&&feature.enabled===true&&feature.authorized===true&&feature.canLaunch===true);}
 async function loadFeatureFlagState(){
   try{
-    const res=await fetch('/.netlify/functions/features',{credentials:'same-origin',cache:'no-store'});
-    const data=await res.json().catch(()=>({}));
-    featureFlags=res.ok&&Array.isArray(data.features)?data.features:[];
+    const data=await requestJson('/.netlify/functions/features');
+    featureFlags=Array.isArray(data.features)?data.features:[];
   }catch{featureFlags=[];}
 }
 function showToast(message,bad=false){
@@ -1711,14 +1708,18 @@ const PRIMARY_NAV_ITEMS=[
 const MORE_NAV_ITEMS=[
   {id:'examen',label:'Examen',icon:'▦',description:'Haz una prueba completa'},
   {id:'errores',label:'Errores',icon:'✕',description:'Repasa lo que contestaste mal'},
-  {id:'guardadas',label:'Guardadas',icon:'★',description:'Preguntas que marcaste para después'},
-  {id:'historial',label:'Historial',icon:'▥',description:'Tus intentos anteriores'},
   {id:'dashboard',label:'Progreso',icon:'📊',description:'Consulta tus estadísticas'},
-  {id:'feedback',label:'Feedback',icon:'✉',description:'Reporta problemas o sugerencias'},
   {id:'leaderboard',label:'Leaderboard',icon:'🏆',description:'Consulta la clasificación'},
-  {id:'novedades',label:'Novedades',icon:'✦',description:'Revisa los cambios recientes'},
   {id:'ajustes',label:'Configuración',icon:'⚙',description:'Apariencia y preferencias'},
   {id:'admin',label:'Administración',icon:'⚑',description:'Usuarios, sistema y Early Access',adminOnly:true},
+  {id:'guardadas',label:'Guardadas',icon:'★',description:'Preguntas que marcaste para después'},
+  {id:'historial',label:'Historial',icon:'▥',description:'Tus intentos anteriores'},
+  {id:'feedback',label:'Feedback',icon:'✉',description:'Reporta problemas o sugerencias'},
+];
+const DESKTOP_NAV_GROUPS=[
+  {label:'Estudio',items:[{id:'hub',label:'Hub',icon:'⌂'},{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'}]},
+  {label:'Seguimiento',items:[{id:'errores',label:'Errores',icon:'✕'},{id:'guardadas',label:'Guardadas',icon:'★'},{id:'historial',label:'Historial',icon:'▥'},{id:'dashboard',label:'Progreso',icon:'📊'},{id:'leaderboard',label:'Leaderboard',icon:'🏆'}]},
+  {label:'Personal',items:[{id:'cuenta',label:'Cuenta',icon:'●'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'novedades',label:'Novedades',icon:'✦'}]},
 ];
 const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
 let moreOpen=false;
@@ -1746,6 +1747,14 @@ function openMoreMenu(){
   document.getElementById('closeMore').focus();
 }
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&moreOpen)closeMoreMenu();});
+document.addEventListener('keydown',event=>{
+  if(!moreOpen||event.key!=='Tab')return;
+  const focusable=[...document.querySelectorAll('#morePanel button:not([disabled])')];
+  if(!focusable.length)return;
+  const first=focusable[0],last=focusable[focusable.length-1];
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+});
 
 function renderNav(){
   const rail = document.getElementById('rail');
@@ -1754,12 +1763,12 @@ function renderNav(){
   const role=accountSession.user?.role;
   rail.innerHTML = `
     <div class="rail-brand"><div class="rail-brand-line">Study Hub <span class="version-badge">v${APP_VERSION}</span></div><span>${activeSubject?`${activeSubject.emoji} Día ${activeSubject.day} · ${activeSubject.name}${activeUnit?` · ${activeUnit.name}`:''}`:'Estudio general'}</span></div>
-    ${PRIMARY_NAV_ITEMS.map(item=>`<button class="nav-btn ${primaryActive(item)?'active':''}" ${item.id==='more'?'data-open-more aria-expanded="false" aria-controls="morePanel"':`data-nav="${item.id}"`}><span class="ic">${item.icon}</span>${primaryLabel(item)}</button>`).join('')}
+    ${DESKTOP_NAV_GROUPS.map(group=>`<div class="nav-group"><span class="nav-group-title">${group.label}</span>${group.items.map(item=>`<button class="nav-btn ${state.view===item.id?'active':''}" data-nav="${item.id}"><span class="ic">${item.icon}</span>${primaryLabel(item)}</button>`).join('')}</div>`).join('')}
+    ${['admin','owner','superdev'].includes(role)?`<div class="nav-group"><span class="nav-group-title">Gestión</span><button class="nav-btn ${state.view==='admin'?'active':''}" data-nav="admin"><span class="ic">⚑</span>Administración</button></div>`:''}
     <div class="rail-foot">
       <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
   rail.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.nav)));
-  rail.querySelector('[data-open-more]').addEventListener('click',()=>moreOpen?closeMoreMenu():openMoreMenu());
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
   const mob = document.getElementById('mobileNav');
@@ -1826,6 +1835,17 @@ function saveAndExitPractice(){
   saveState();
   render();
   window.scrollTo(0,0);
+}
+function resumeSavedPractice(){
+  const s=state.session;
+  if(!hasResumablePractice())return false;
+  if(Number.isFinite(s.pausedAt)&&Number.isFinite(s.startedAt))s.startedAt+=Math.max(0,Date.now()-s.pausedAt);
+  delete s.pausedAt;
+  state.activeSubjectId=s.subjectId||questionSubjectId(s.queue[0]);
+  state.lastSubjectId=state.activeSubjectId;
+  state.activeUnitId=s.unitId||currentUnit(state.activeSubjectId)?.id||null;
+  goto('session');
+  return true;
 }
 function discardPausedPractice(){
   if(!hasResumablePractice()) return;
@@ -1894,7 +1914,7 @@ function renderHub(main){
   document.getElementById('openHistoryQuick').addEventListener('click',()=>openSubject('historia'));
   document.getElementById('openHubUpdates').addEventListener('click',()=>goto('novedades'));
   const resumeFromHub=document.getElementById('resumeFromHub');
-  if(resumeFromHub) resumeFromHub.addEventListener('click',()=>openSubject(pending.subjectId,'session'));
+  if(resumeFromHub) resumeFromHub.addEventListener('click',resumeSavedPractice);
 }
 
 function ringSvg(pct, size=150, stroke=12){
@@ -1984,7 +2004,7 @@ function renderDashboard(main){
   if(weak) document.getElementById('goWeak').addEventListener('click', ()=> startSession({mode:'practica', topic:weak.id}));
   const ga=document.getElementById('goAccount'); if(ga) ga.addEventListener('click',()=>goto('cuenta')); 
   const resumeFromDash=document.getElementById('resumeFromDash');
-  if(resumeFromDash) resumeFromDash.addEventListener('click',()=>goto('session'));
+  if(resumeFromDash) resumeFromDash.addEventListener('click',resumeSavedPractice);
 }
 function fmtTime(sec){
   const m = Math.floor(sec/60), s=sec%60;
@@ -2183,8 +2203,8 @@ function renderRepasoHome(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Repaso de ${subject.name}</h1><p>Revisa el contenido en tarjetas, a tu ritmo, antes de practicar.</p></div>
     <div class="grid grid-3">
-      ${topics.map(t=>`<div class="card mode-card" data-t="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${cards.filter(c=>c.topic===t.id).length} tarjetas</p></div>`).join('')}
-      <div class="card mode-card" data-t="all"><span class="ic">◎</span><h3>Todo el material</h3><p>${cards.length} tarjetas en total</p></div>
+      ${topics.map(t=>`<button type="button" class="card mode-card" data-t="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${cards.filter(c=>c.topic===t.id).length} tarjetas</p></button>`).join('')}
+      <button type="button" class="card mode-card" data-t="all"><span class="ic">◎</span><h3>Todo el material</h3><p>${cards.length} tarjetas en total</p></button>
     </div>`;
   main.querySelectorAll('[data-t]').forEach(c=>c.addEventListener('click', ()=>{
     repasoFilter = c.dataset.t==='all'? null : c.dataset.t;
@@ -2236,22 +2256,22 @@ function renderPracticaHome(main){
     <label class="practice-count-box"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label>
     <p class="section-title">Por tema</p>
     <div class="grid grid-3" style="margin-bottom:24px;">
-      ${topics.map(t=>{const m=computeMastery(t.id); return `<div class="card mode-card" data-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></div>`}).join('')}
+      ${topics.map(t=>{const m=computeMastery(t.id); return `<button type="button" class="card mode-card" data-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></button>`}).join('')}
     </div>
     <p class="section-title">Modos especiales</p>
     <div class="grid grid-3">
-      <div class="card mode-card" data-special="debiles"><span class="ic">⚠</span><h3>Temas débiles</h3><p>Preguntas centradas en tus temas con menor dominio.</p></div>
-      <div class="card mode-card" data-special="rapido"><span class="ic">⚡</span><h3>Modo rápido</h3><p>10 preguntas mezcladas de todos los temas.</p></div>
-      <div class="card mode-card" data-special="intermedio"><span class="ic">◫</span><h3>Modo intermedio <span class="new-pill">NUEVO</span></h3><p>25 preguntas mezcladas de todos los temas.</p></div>
-      ${isSpanish?`<div class="card mode-card" data-special="figuras"><span class="ic">✦</span><h3>Solo figuras literarias</h3><p>Identificación de figuras literarias.</p></div>
-      <div class="card mode-card" data-special="morfologia"><span class="ic">🧩</span><h3>Solo morfología</h3><p>Análisis y segmentación de palabras.</p></div>
-      <div class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></div>`:''}
-      <div class="card mode-card" data-special="adaptativo"><span class="ic">◈</span><h3>Adaptativo</h3><p>Se ajusta según lo que fallas o dominas.</p></div>
-      ${isSpanish?`<div class="card mode-card experimental-card" data-special="experimental"><span class="ic">🧪</span><h3>Modo experimental <span class="new-pill">NUEVO</span></h3><p>Genera variaciones nuevas de ejemplos y preguntas. Puede contener errores.</p></div>`:''}
+      <button type="button" class="card mode-card" data-special="debiles"><span class="ic">⚠</span><h3>Temas débiles</h3><p>Preguntas centradas en tus temas con menor dominio.</p></button>
+      <button type="button" class="card mode-card" data-special="rapido"><span class="ic">⚡</span><h3>Modo rápido</h3><p>10 preguntas mezcladas de todos los temas.</p></button>
+      <button type="button" class="card mode-card" data-special="intermedio"><span class="ic">◫</span><h3>Modo intermedio <span class="new-pill">NUEVO</span></h3><p>25 preguntas mezcladas de todos los temas.</p></button>
+      ${isSpanish?`<button type="button" class="card mode-card" data-special="figuras"><span class="ic">✦</span><h3>Solo figuras literarias</h3><p>Identificación de figuras literarias.</p></button>
+      <button type="button" class="card mode-card" data-special="morfologia"><span class="ic">🧩</span><h3>Solo morfología</h3><p>Análisis y segmentación de palabras.</p></button>
+      <button type="button" class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></button>`:''}
+      <button type="button" class="card mode-card" data-special="adaptativo"><span class="ic">◈</span><h3>Adaptativo</h3><p>Se ajusta según lo que fallas o dominas.</p></button>
+      ${isSpanish?`<button type="button" class="card mode-card experimental-card" data-special="experimental"><span class="ic">🧪</span><h3>Modo experimental <span class="new-pill">NUEVO</span></h3><p>Genera variaciones nuevas de ejemplos y preguntas. Puede contener errores.</p></button>`:''}
     </div>`;
   const getCount=()=>document.getElementById('countPractice').checked;
   const resumePractice=document.getElementById('resumePractice');
-  if(resumePractice) resumePractice.addEventListener('click',()=>goto('session'));
+  if(resumePractice) resumePractice.addEventListener('click',resumeSavedPractice);
   const discardPractice=document.getElementById('discardPractice');
   if(discardPractice) discardPractice.addEventListener('click',()=>{
     if(confirm('¿Descartar esta práctica guardada? No podrás recuperarla.')){
@@ -2570,8 +2590,6 @@ function renderSession(main){
     document.getElementById('miniOk').addEventListener('click', ()=>{ s.miniReviewShown=true; render(); });
     return;
   }
-  s.miniReviewShown=false;
-
   const isExam = s.mode==='examen';
   const isExperimental = !!s.experimental;
   const starred = !isExperimental && state.saved.has(q.id);
@@ -3382,12 +3400,7 @@ function renderAccountPanel(mode){
 const FEEDBACK_TYPES=Object.freeze({bug:'Bug',suggestion:'Sugerencia',content:'Contenido','ui-ux':'UI/UX',other:'Otro'});
 const FEEDBACK_STATUSES=Object.freeze({new:'Nuevo',reviewing:'Revisando',planned:'Planeado',fixed:'Arreglado',dismissed:'Descartado'});
 async function feedbackRequest(method='GET',body=null,query=''){
-  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
-  if(body)opts.body=JSON.stringify(body);
-  const res=await fetch(`/.netlify/functions/feedback${query?`?${query}`:''}`,opts);
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok){const error=new Error(data.error||'No se pudo procesar el feedback.');error.status=res.status;throw error;}
-  return data;
+  return requestJson(`/.netlify/functions/feedback${query?`?${query}`:''}`,{method,body,fallbackMessage:'No se pudo procesar el feedback.'});
 }
 function feedbackCard(report,admin=false){
   const subject=SUBJECT_BY_ID.get(report.subjectId);
@@ -3435,20 +3448,10 @@ async function loadOwnFeedback(){
    ADMIN
 ========================================================= */
 async function adminRequest(method='GET',body=null,query=''){
-  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
-  if(body)opts.body=JSON.stringify(body);
-  const res=await fetch(`/.netlify/functions/admin${query?`?${query}`:''}`,opts);
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok){const error=new Error(data.error||`Admin ${res.status}`);error.status=res.status;throw error;}
-  return data;
+  return requestJson(`/.netlify/functions/admin${query?`?${query}`:''}`,{method,body,fallbackMessage:'No se pudo completar la acción administrativa.'});
 }
 async function featureRequest(method='GET',body=null,query=''){
-  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
-  if(body)opts.body=JSON.stringify(body);
-  const res=await fetch(`/.netlify/functions/features${query?`?${query}`:''}`,opts);
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok){const error=new Error(data.error||'No se pudieron cargar Early Access y Feature Flags.');error.status=res.status;error.data=data;throw error;}
-  return data;
+  return requestJson(`/.netlify/functions/features${query?`?${query}`:''}`,{method,body,fallbackMessage:'No se pudieron cargar Early Access y Feature Flags.'});
 }
 function roleLabel(role){return role==='superdev'?'Super Dev':role==='owner'?'Owner':role==='admin'?'Admin':'Member';}
 function frontendCanManage(actorRole,targetRole){
@@ -3607,12 +3610,7 @@ async function loadAdminAudit(box){
    LEADERBOARD
 ========================================================= */
 async function leaderboardRequest(method='GET', body=null){
-  const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
-  if(body) opts.body=JSON.stringify(body);
-  const res=await fetch('/.netlify/functions/leaderboard',opts);
-  const data=await res.json().catch(()=>({}));
-  if(!res.ok){const err=new Error(data.error||`Leaderboard ${res.status}`);err.status=res.status;throw err;}
-  return data;
+  return requestJson('/.netlify/functions/leaderboard',{method,body,fallbackMessage:'No se pudo cargar el leaderboard.'});
 }
 async function submitLeaderboardScore(result){
   if(!result || result.mode!=='examen' || result.subjectId!=='espanol' || !accountSession.user) return;
@@ -3663,7 +3661,7 @@ function renderNovedades(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
     <div class="card">
-      <div class="update-item"><h3>Historia y navegación simplificada <span class="new-pill">TESTING</span></h3><p>Historia se incorpora como segunda materia real con la unidad Geografía y grandes civilizaciones, repaso, práctica y examen aislados de Español. La navegación prioriza Hub, Repasar, Practicar, Cuenta y Más, conservando el contexto y las prácticas pendientes.</p></div>
+      <div class="update-item"><h3>Historia y navegación simplificada <span class="new-pill">TESTING</span></h3><p>Historia se incorpora como segunda materia real con la unidad Geografía y grandes civilizaciones, repaso, práctica y examen aislados de Español. En móvil, la navegación prioriza Hub, Repasar, Practicar, Cuenta y Más; en escritorio, muestra las herramientas agrupadas directamente. Ambos diseños conservan el contexto y las prácticas pendientes.</p></div>
       <div class="update-item"><h3>Early Access real y unidades</h3><p>Las flags separan estado, audiencia y publicación, y el backend valida el acceso directo. Early Access conserva únicamente UI Beta y el Asistente IA por materia, ambos identificados como todavía no disponibles. Español agrupa su material existente en una Unidad actual neutral sin cambiar preguntas, progreso ni prácticas.</p></div>
       <div class="update-item"><h3>Plataforma del Hub · Administración y feedback</h3><p>Super Dev incorpora resumen, usuarios, conectados, feedback, Early Access, sesiones y sistema. Veterano identifica el acceso gratuito sin conceder permisos Admin; las cuentas antiguas reciben defaults compatibles. También se añadió feedback privado con estados, Feature Flags centralizadas, sincronización con resultado real y la corrección académica Interfijo / MDI. El acceso obligatorio y los pagos continúan aplazados.</p></div>
       <div class="update-item"><h3>Study Hub · Base general</h3><p>La entrada ahora organiza Día 1 y Día 2 con seis materias. Español conserva todas sus herramientas y progreso como primera materia activa; Inglés, Salud, Historia, Ciencia y Matemáticas aparecen como Próximamente hasta incorporar contenido real. La versión visible permanece en v2.0.</p></div>

@@ -9,7 +9,7 @@ import feedbackHandler from '../netlify/functions/feedback.mjs';
 import featuresHandler from '../netlify/functions/features.mjs';
 import leaderboardHandler from '../netlify/functions/leaderboard.mjs';
 import presenceHandler from '../netlify/functions/presence.mjs';
-import { COOKIE, createSession, publicUser } from '../netlify/functions/_shared/auth.mjs';
+import { COOKIE, createSession, publicUser, setSessionCookie } from '../netlify/functions/_shared/auth.mjs';
 import { authorizeAssistantSubject, normalizeAssistantContext, OTHER_SUBJECT_MESSAGE } from '../netlify/functions/_shared/study-context.mjs';
 
 const USERS = getStore('study-hub-users-v1');
@@ -63,6 +63,7 @@ test.beforeEach(() => {
   __resetAll();
   process.env.OWNER_USERNAME = 'owner';
   process.env.ADMIN_USERNAMES = '';
+  process.env.DEV_LOGIN_CODE = crypto.randomUUID();
 });
 
 test('cuentas antiguas reciben defaults seguros sin duplicarse', async () => {
@@ -299,12 +300,13 @@ test('Historia está disponible en Día 1 con su unidad Prueba actual', async ()
   assert.equal(HISTORY.unit.status, 'current');
 });
 
-test('Historia contiene ocho topics estables y 25 tarjetas de repaso', () => {
+test('Historia contiene ocho topics estables y tarjetas para cada tema', () => {
   assert.deepEqual(Array.from(HISTORY.topics, topic => topic.id), [
     'geografia', 'civilizaciones', 'mayas', 'aztecas', 'incas', 'religion-inca', 'mapas-localizacion', 'ciclo-naturaleza',
   ]);
-  assert.equal(HISTORY.reviewCards.length, 25);
+  assert.equal(HISTORY.reviewCards.length, 27);
   assert.equal(HISTORY.reviewCards.every(card => HISTORY.topics.some(topic => topic.id === card.topic)), true);
+  assert.equal(HISTORY.topics.every(topic => HISTORY.reviewCards.some(card => card.topic === topic.id)), true);
 });
 
 test('banco de Historia está aislado y balancea respuestas A/B/C/D', () => {
@@ -346,6 +348,24 @@ test('progreso y snapshots separan Historia sin romper Español legacy', async (
   assert.match(html, /subjectId:sessionSubjectId,unitId:/);
   assert.match(html, /subjectId:s\.subjectId\|\|'espanol'/);
   assert.match(html, /state\.session\.subjectId!==subject\.id/);
+  assert.match(html, /s\.startedAt\+=Math\.max\(0,Date\.now\(\)-s\.pausedAt\)/);
+  assert.doesNotMatch(html, /s\.miniReviewShown=false;\s*\n\s*const isExam/);
+});
+
+test('Super Dev solo se eleva mediante Dev Login y las cookies respetan remember me', async () => {
+  await putUser({ id: 'super-1', username: 'superdev' });
+  const normal = await payload(await accountHandler(request('account', {
+    method: 'POST', body: { action: 'login', identifier: 'superdev', password: 'Password123!', remember: true },
+  })));
+  assert.equal(normal.status, 401);
+  const elevatedResponse = await accountHandler(request('account', {
+    method: 'POST', body: { action: 'dev-login', code: process.env.DEV_LOGIN_CODE, remember: false },
+  }));
+  const elevated = await payload(elevatedResponse);
+  assert.equal(elevated.status, 200);
+  assert.equal(elevated.data.user.role, 'superdev');
+  assert.doesNotMatch(elevatedResponse.headers.get('set-cookie') || '', /Max-Age=/i);
+  assert.match(setSessionCookie('test-token', true), /Max-Age=/i);
 });
 
 test('navegación primaria tiene cinco accesos, Cuenta dinámica y Más condicional', async () => {
@@ -357,6 +377,18 @@ test('navegación primaria tiene cinco accesos, Cuenta dinámica y Más condicio
   for (const id of ['examen', 'errores', 'guardadas', 'historial', 'dashboard', 'feedback', 'ajustes']) assert.match(html, new RegExp(`id:'${id}'`));
   assert.match(html, /\['admin','owner','superdev'\]\.includes\(role\)/);
   assert.match(html, /aria-expanded="false" aria-controls="morePanel"/);
+  assert.match(html, /const DESKTOP_NAV_GROUPS=/);
+  assert.doesNotMatch(html, /rail\.querySelector\('\[data-open-more\]'\)/);
+  assert.match(html, /if\(!moreOpen\|\|event\.key!=='Tab'\)return/);
+});
+
+test('cliente API centraliza timeout y mensajes de red sin exponer errores técnicos', async () => {
+  const source = await readFile(new URL('../public/js/api-client.js', import.meta.url), 'utf8');
+  assert.match(source, /controller\.abort\(\)/);
+  assert.match(source, /No hay conexión con el servicio/);
+  assert.match(source, /La solicitud tardó demasiado/);
+  assert.match(source, /response\.status >= 500/);
+  assert.doesNotMatch(source, /DEV_LOGIN_CODE|password|token/i);
 });
 
 test('catálogo adapta Español a una unidad sin alterar banco ni claves', async () => {

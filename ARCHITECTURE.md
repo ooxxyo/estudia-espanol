@@ -2,9 +2,9 @@
 
 ## Estado actual
 
-`public/index.html` contiene estilos, catálogo, datos académicos de Español, renderizado, navegación, Study Engine y persistencia local. `public/history-data.js` contiene el paquete académico aprobado de Historia. El estado se guarda bajo claves estables de `localStorage`, con respaldo en IndexedDB, y se sincroniza mediante `account.mjs`. Las Functions de cuenta, administración, leaderboard y presencia usan Netlify Blobs; autenticación y rate limiting compartidos viven en `netlify/functions/_shared/`.
+`public/index.html` contiene estilos, catálogo, datos académicos de Español, renderizado, navegación, Study Engine y persistencia local. `public/history-data.js` contiene el paquete académico aprobado de Historia y `public/js/api-client.js` centraliza requests JSON, timeouts y errores de red. El estado se guarda bajo claves estables de `localStorage`, con respaldo en IndexedDB, y se sincroniza mediante `account.mjs`. Las Functions de cuenta, administración, leaderboard y presencia usan Netlify Blobs; autenticación y rate limiting compartidos viven en `netlify/functions/_shared/`.
 
-La navegación académica sigue `Hub → Día → Materia → Unidad/Categoría → Tema`. El shell global presenta cinco accesos (`Hub`, `Repasar`, `Practicar`, `Cuenta/Entrar`, `Más`); `Más` agrupa herramientas secundarias sin borrar el contexto ni la práctica pendiente. `SUBJECT_CATALOG` conserva metadata de materia y cada entrada declara unidades actuales, anteriores y completadas. Una unidad soporta `id`, `subjectId`, nombre neutral/configurado, tipo y fecha opcionales, estado, orden y topics. Un snapshot antiguo sin contexto se asocia automáticamente con Español y su unidad actual.
+La navegación académica sigue `Hub → Día → Materia → Unidad/Categoría → Tema`. En teléfono presenta cinco accesos (`Hub`, `Repasar`, `Practicar`, `Cuenta/Entrar`, `Más`); en desktop usa grupos directos de Estudio, Seguimiento, Personal y Gestión sin botón Más. Ambos conservan el contexto y la práctica pendiente. `SUBJECT_CATALOG` conserva metadata de materia y cada entrada declara unidades actuales, anteriores y completadas. Una unidad soporta `id`, `subjectId`, nombre neutral/configurado, tipo y fecha opcionales, estado, orden y topics. Un snapshot antiguo sin contexto se asocia automáticamente con Español y su unidad actual.
 
 La identidad de cuenta se normaliza en backend en seis dimensiones independientes: `username`, `displayName`, `securityRole`, `visibleRank`, entitlement y privacidad. Campos ausentes usan defaults seguros; una cuenta antigua no se reescribe ni duplica para poder mostrarse. `Veterano` representa entitlement gratuito y nunca eleva el rol.
 
@@ -39,13 +39,20 @@ UI Beta y Asistente IA continúan con `availability=unavailable`; no hay botones
 Extraer gradualmente módulos ES, manteniendo primero un único punto de entrada:
 
 1. `public/js/storage.js`: normalización, migraciones, localStorage e IndexedDB.
-2. `public/js/api.js`: cuenta, sync, leaderboard, presencia y admin.
+2. `public/js/api-client.js`: cliente JSON y errores comunes ya extraídos; los adaptadores de cuenta, sync, leaderboard, presencia y admin se migrarán gradualmente.
 3. `public/js/study-engine.js`: sesiones, intentos, navegación y resultados independientes de la materia.
 4. `public/js/catalog.js`: materias, unidades, temas y resolución de IDs.
 5. `public/js/settings.js`: apariencia y preferencias.
 6. `public/js/views/`: renderizadores pequeños para panel, práctica, cuenta y administración.
 
 El catálogo futuro debería referenciar `subjectId/topicId/questionId`. No se deben mover datos de usuario hasta que exista lectura dual y una prueba de ida/vuelta; el adaptador actual es la frontera compatible durante esa transición.
+
+## Contratos futuros, todavía no implementados
+
+- Estudio personalizado consumirá métricas por materia/unidad/tema y generará planes de 15, 30 o 60 minutos sin alterar contenido oficial.
+- Calendario referenciará opcionalmente `subjectId`, `unitId` y `topicId`; pruebas, tareas, proyectos y anuncios podrán enlazar material o iniciar una preparación.
+- Aportes comunitarios vivirán separados del banco oficial y pasarán por estados de moderación, deduplicación y revisión humana. Confirmar un aporte nunca permitirá editar el de otra persona.
+- Contenido generado por IA siempre conservará procedencia y estado de borrador. Solo una aprobación administrativa explícita podrá convertirlo en material oficial.
 
 ## Deuda y riesgos
 

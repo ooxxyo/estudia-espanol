@@ -18,8 +18,9 @@
 - Existe un único catálogo de materias como fuente de nombre, emoji, día, estado y disponibilidad.
 - Español e Historia son implementaciones reales del mismo Study Engine. Historia usa la unidad `Geografía y grandes civilizaciones` (`Prueba`, `current`).
 - Inglés, Salud, Ciencia y Matemáticas permanecen como `Próximamente` hasta tener contenido real.
-- La navegación primaria tiene exactamente cinco destinos: Hub, Repasar, Practicar, Cuenta/Entrar y Más. Cuenta nunca se oculta dentro de Más.
-- Más contiene Examen, Errores, Guardadas, Historial, Progreso, Feedback y Configuración; Administración se muestra solo a Admin, Owner y Super Dev.
+- En teléfono, la navegación primaria tiene exactamente cinco destinos: Hub, Repasar, Practicar, Cuenta/Entrar y Más. Cuenta nunca se oculta dentro de Más.
+- Más es exclusivo del layout móvil; contiene Examen, Errores, Progreso, Leaderboard, Configuración, Guardadas, Historial y Feedback, con Administración solo para Admin, Owner y Super Dev.
+- En desktop no existe Más: las herramientas se muestran directamente en grupos de Estudio, Seguimiento, Personal y Gestión.
 - Entrar o salir de una materia no elimina una práctica ni modifica su progreso.
 - La metadata nueva es opcional; las claves e IDs históricos conservan su significado.
 
@@ -54,6 +55,8 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - El término académico correcto es `Interfijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`. `INF` solo se acepta internamente como alias de sesiones antiguas.
 - El Study Engine es universal y admite extensiones por materia sin duplicar la aplicación.
 - Cada materia tendrá un asistente propio, nunca un chatbot general. La materia activa limita la respuesta; el tema activo da prioridad y solo se usa material aprobado de esa materia.
+- Calendario, “Lo que dieron hoy”, “Falté hoy” y estudio personalizado son capacidades futuras y deben referenciar materia/unidad/tema sin duplicar el motor.
+- Los aportes comunitarios y borradores de IA permanecen separados del contenido oficial hasta una revisión y aprobación humana explícitas; las confirmaciones de estudiantes no equivalen a publicación.
 - Design Lab permitirá comparar Classic UI con New UI Beta mediante Early Access; no forma parte de la interfaz estable actual.
 - El nombre futuro es `Estudio Hub` y el slug preferido `estudio-hub`; repositorio, remote, dominio y nombre actual no cambian sin autorización.
 - El copy genérico usa “dispositivo”, no “iPhone”, salvo instrucciones específicas de compatibilidad.
