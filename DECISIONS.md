@@ -19,7 +19,7 @@
 - Español e Historia son implementaciones reales del mismo Study Engine. Historia usa la unidad `Geografía y grandes civilizaciones` (`Prueba`, `current`).
 - Inglés, Salud, Ciencia y Matemáticas permanecen como `Próximamente` hasta tener contenido real.
 - En teléfono, la navegación primaria tiene exactamente cinco destinos: Hub, Repasar, Practicar, Cuenta/Entrar y Más. Cuenta nunca se oculta dentro de Más.
-- Más es exclusivo del layout móvil; contiene Examen, Errores, Progreso, Leaderboard, Configuración, Guardadas, Historial y Feedback, con Administración solo para Admin, Owner y Super Dev.
+- Más es exclusivo del layout móvil; contiene Examen, Errores, Progreso, Leaderboard, Comunidad, Calendario, Amigos, Notificaciones, Roadmap, Buscar, Configuración, Guardadas, Historial y Feedback, con Administración solo para Admin, Owner y Super Dev.
 - En desktop no existe Más: las herramientas se muestran directamente en grupos de Estudio, Seguimiento, Personal y Gestión.
 - Entrar o salir de una materia no elimina una práctica ni modifica su progreso.
 - La metadata nueva es opcional; las claves e IDs históricos conservan su significado.
@@ -55,8 +55,10 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - El término académico correcto es `Interfijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`. `INF` solo se acepta internamente como alias de sesiones antiguas.
 - El Study Engine es universal y admite extensiones por materia sin duplicar la aplicación.
 - Cada materia tendrá un asistente propio, nunca un chatbot general. La materia activa limita la respuesta; el tema activo da prioridad y solo se usa material aprobado de esa materia.
-- Calendario, “Lo que dieron hoy”, “Falté hoy” y estudio personalizado son capacidades futuras y deben referenciar materia/unidad/tema sin duplicar el motor.
-- Los aportes comunitarios y borradores de IA permanecen separados del contenido oficial hasta una revisión y aprobación humana explícitas; las confirmaciones de estudiantes no equivalen a publicación.
+- Community, Calendario, “Lo que dieron hoy” y “Falté hoy” usan bases separadas que referencian materia/unidad/tema sin duplicar el motor; automatización avanzada continúa futura.
+- Los aportes comunitarios permanecen separados del contenido oficial; requieren verificación y una segunda aprobación para ser oficiales. Las confirmaciones de estudiantes no equivalen a publicación.
+- `calendar:create` es una capability explícita de Admin+, Owner, Super Dev o Veterano; nunca convierte Veteranía en rol ni concede moderación.
+- Roadmap público informa estado y nunca sustituye una Feature Flag ni concede acceso.
 - Design Lab permitirá comparar Classic UI con New UI Beta mediante Early Access; no forma parte de la interfaz estable actual.
 - El nombre futuro es `Estudio Hub` y el slug preferido `estudio-hub`; repositorio, remote, dominio y nombre actual no cambian sin autorización.
 - El copy genérico usa “dispositivo”, no “iPhone”, salvo instrucciones específicas de compatibilidad.

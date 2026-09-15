@@ -14,7 +14,7 @@ git status --short --branch
 Ejecuta además las Functions contra Netlify Blobs en memoria:
 
 ```powershell
-node --import ./tests/register-blobs.mjs --test ./tests/platform.test.mjs
+node --import ./tests/register-blobs.mjs --test ./tests/*.test.mjs
 ```
 
 No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify Blobs deben ejecutarse en memoria.
@@ -44,6 +44,12 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 - **Académico:** 105 IDs en el mismo orden, Interfijo/MDI visible, alias INF solo para compatibilidad y auditoría de longitud/distribución sin reescritura automática.
 - **Backend:** suspensión, audit log, rate limiting, leaderboard y protección de Super Dev.
 - **Compatibilidad:** cargar un snapshot sin `activeSubjectId`, `activeUnitId`, `subjectId` ni `unitId`, conservar claves/IDs y reanudar una sesión antigua como Español dentro de su unidad por defecto; comprobar progreso separado de Historia.
+- **Community:** crear, confirmar una vez, comentar, ownership, bloqueo, reportar, rate limit y doble aprobación antes de `official`.
+- **Friends:** self-request y duplicados bloqueados; aceptar, rechazar, cancelar, eliminar, bloquear/desbloquear y guardar privacidad sin emails.
+- **Calendar y grupos:** member propone; Veterano publica sin ser Admin; Admin+ aprueba; duplicate flag y assignments con estado personal separado. Verificar miembro/no miembro, acceso directo con `classGroupId`, búsqueda privada, “Lo que dieron hoy”, relaciones grupo–materia–año–trimestre y conservación histórica al cambiar el año vigente.
+- **Notificaciones:** cada usuario ve solo las propias; unread, mark read, mark all read y preferencias.
+- **Roadmap/Search:** Roadmap no concede acceso; búsqueda excluye contenido restringido o autores bloqueados.
+- **Responsive plataforma:** Community, Calendar, Amigos, Notificaciones y Roadmap a 1280×720, 390×844 y 320×568, sin overflow ni errores de consola.
 
 ## Evidencia de entrega
 

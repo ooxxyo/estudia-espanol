@@ -14,8 +14,8 @@
 | Documentación permanente | Testing | Reglas, arquitectura, decisiones y matriz de pruebas pendientes de aprobación. |
 | Estabilidad de práctica y apariencia | Testing | Respuestas, reanudación, navegación, tema y color. |
 | Study Engine reutilizable | Testing | Español e Historia comparten sesión, evaluación, revisión y resultados con contenido aislado por materia. |
-| Modularización del frontend | Planned | Reducir gradualmente el `public/index.html` monolítico. |
-| Migración compatible de datos | Planned | Versionar esquemas y conservar claves, IDs y stores existentes. |
+| Modularización del frontend | In Progress | API, formularios, storage schema, planificación y vistas de plataforma ya están separados. |
+| Migración compatible de datos | Testing | Snapshots locales usan schemaVersion y lectura compatible; los stores nuevos nacen versionados. |
 | UI Refresh | Planned | Actualización futura, sin sustituir el diseño actual sin aprobación. |
 
 ## Hub y aprendizaje
@@ -26,9 +26,9 @@
 | Materias, unidades y temas | Testing | Español conserva su unidad neutral; Historia incorpora Geografía y grandes civilizaciones; las otras cuatro materias siguen Próximamente. |
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
-| Calendario completo | Planned | Agenda escolar y automatización futura, fuera de la base actual. |
-| Estudio personalizado | Planned | Planes por tiempo, fortalezas, debilidades, metas, filtros y repetición adaptativa. |
-| Lo que dieron hoy / Falté hoy | Planned | Aportes moderados por fecha y flujo para ponerse al día, sin publicación automática. |
+| Calendario base | Testing | Eventos, capability Veterano, propuestas moderadas, assignments y detección conservadora de duplicados. |
+| Estudio personalizado | In Progress | Métricas y planes puros 15/30/60 preparados; falta experiencia completa de usuario. |
+| Lo que dieron hoy / Falté hoy | Testing | Aportes y eventos por fecha; ponerse al día todavía no crea sesión automática. |
 | Novedades | In Progress | Registro visible de cambios aprobados y experimentos. |
 | Progreso y leaderboard | In Progress | Compatibilidad actual y futura agregación por materia. |
 
@@ -43,8 +43,10 @@
 | Feature Flags / Early Access | Testing | UI Beta e IA únicamente; status, audiencia, publicación y disponibilidad independientes con acceso backend comprobable. |
 | Asistente IA por materia | Planned | Contrato de contexto aprobado y límite por materia preparados; sin proveedor, API ni interfaz activa. |
 | Creación rápida de estudiantes | Planned | Alta segura y auditable por personal autorizado. |
-| Comunidad/chat y moderación | Planned | Privacidad, reporte, bloqueo y herramientas de moderación. |
-| Aportes comunitarios | Planned | Propuestas separadas de contenido oficial, confirmación estudiantil, deduplicación y doble revisión. |
+| Comunidad y moderación | Testing | Aportes, comentarios, reportes, cola central y doble aprobación; sin chat global ni DMs. |
+| Amigos y privacidad | Testing | Solicitudes, amistades, bloqueo global y perfil limitado. |
+| Notificaciones | Testing | Listado privado, unread, lectura, preferencias y eventos implementados. |
+| Roadmap público y búsqueda | Testing | Dataset no sensible y búsqueda filtrada por permisos; Roadmap no concede acceso. |
 | Feedback | Testing | Reportes privados, tipos, estados, filtros, gestión autorizada y rate limiting. |
 | Public Launch Access | Planned | Login obligatorio, paquetes, expiraciones y acceso público; no se activa durante el desarrollo privado. |
 | Pagos futuros | Planned | Integración posterior, aislada de roles y progreso. |

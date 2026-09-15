@@ -80,6 +80,15 @@
 - Vincula las notas a cuentas.
 - Guarda de forma compacta los temas utilizados, número de preguntas, si fue examen completo y mejor nota.
 
+## Comunidad, calendario y privacidad
+
+- Mantén Community separada del material oficial; las confirmaciones nunca publican contenido automáticamente.
+- Conserva `Veterano` como entitlement. Solo su capability `calendar:create` está autorizada; no concede moderación ni permisos Admin.
+- Aplica el bloqueo social en Friends, perfiles, Community, comentarios y búsqueda, sin exponer emails, sesiones, IP o progreso privado.
+- Los aportes, comentarios y eventos usan soft delete cuando corresponda. Acciones de moderación importantes deben quedar auditadas.
+- No renombres los stores sociales versionados. Todo modelo persistente nuevo debe declarar schema y migración compatible.
+- Roadmap público informa estado, pero nunca concede Feature Access.
+
 ## Académico
 
 - No cambies definiciones del material sin mi permiso.

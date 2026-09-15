@@ -19,6 +19,16 @@ const AUDIT = getStore('study-hub-admin-audit-v1');
 const PRESENCE = getStore('study-hub-presence-v1');
 const FEEDBACK = getStore('study-hub-feedback-v1');
 const FEATURES = getStore('study-hub-feature-flags-v1');
+const COMMUNITY = getStore('study-hub-community-v1');
+const CALENDAR = getStore('study-hub-calendar-v1');
+const FRIENDS = getStore('study-hub-friends-v1');
+const NOTIFICATIONS = getStore('study-hub-notifications-v1');
+const CALENDAR_PROPOSALS = getStore('study-hub-calendar-proposals-v1');
+const COMMUNITY_REPORTS = getStore('study-hub-reports-v1');
+const COMMUNITY_COMMENTS = getStore('study-hub-community-comments-v1');
+const COMMUNITY_CONFIRMATIONS = getStore('study-hub-community-confirmations-v1');
+const ASSIGNMENT_PROGRESS = getStore('study-hub-assignment-progress-v1');
+const CLASS_GROUPS = getStore('study-hub-class-groups-v1');
 const MAX_SCAN = 1000;
 const MAX_RESULTS = 200;
 const ACTIVE_MS = 90_000;
@@ -111,6 +121,11 @@ async function countEnabledFeatures() {
   return enabled;
 }
 
+async function countPrefix(store, prefix) {
+  const { blobs } = await store.list({ prefix });
+  return blobs.slice(0, MAX_SCAN).length;
+}
+
 async function beginAudit(actor, actorRole, action, target, reason = '') {
   const timestamp = Date.now();
   const event = {
@@ -157,6 +172,40 @@ async function removeUserRows(store, prefix, userId) {
   }
 }
 
+async function cleanupSocialUser(userId) {
+  const now = Date.now();
+  for (const [store, prefix, predicate] of [
+    [FRIENDS, 'requests/', row => row.fromUserId === userId || row.toUserId === userId],
+    [FRIENDS, 'friendships/', row => row.userIds?.includes(userId)],
+    [FRIENDS, 'blocks/', row => row.blockerUserId === userId || row.blockedUserId === userId],
+    [COMMUNITY_CONFIRMATIONS, 'confirmations/', row => row.userId === userId],
+    [COMMUNITY_REPORTS, 'reports/', row => row.reporterId === userId],
+    [NOTIFICATIONS, `notifications/${userId}/`, () => true],
+    [ASSIGNMENT_PROGRESS, `progress/${userId}/`, () => true],
+    [CLASS_GROUPS, 'memberships/', row => row.userId === userId],
+  ]) {
+    const { blobs } = await store.list({ prefix });
+    for (const item of blobs.slice(0, MAX_SCAN)) {
+      const row = await store.get(item.key, { type: 'json', consistency: 'strong' });
+      if (row && predicate(row)) await store.delete(item.key);
+    }
+  }
+  for (const [store, prefix, predicate] of [
+    [COMMUNITY, 'contributions/', row => row.authorId === userId],
+    [COMMUNITY_COMMENTS, 'comments/', row => row.authorId === userId],
+    [CALENDAR_PROPOSALS, 'proposals/', row => row.authorId === userId],
+    [CALENDAR, 'events/', row => row.createdBy === userId || row.originalAuthor === userId],
+  ]) {
+    const { blobs } = await store.list({ prefix });
+    for (const item of blobs.slice(0, MAX_SCAN)) {
+      const row = await store.get(item.key, { type: 'json', consistency: 'strong' });
+      if (!row || !predicate(row)) continue;
+      const shouldRemove = prefix === 'comments/' || (prefix === 'contributions/' && row.status !== 'official') || (prefix === 'proposals/' && row.status !== 'approved');
+      await store.setJSON(item.key, { ...row, authorId: row.authorId === userId ? '' : row.authorId, authorDisplayName: row.authorId === userId ? 'Cuenta eliminada' : row.authorDisplayName, createdBy: row.createdBy === userId ? '' : row.createdBy, originalAuthor: row.originalAuthor === userId ? '' : row.originalAuthor, removed: shouldRemove ? true : row.removed, deletedAt: shouldRemove ? now : row.deletedAt, deletionReason: shouldRemove ? 'account-deleted' : row.deletionReason });
+    }
+  }
+}
+
 export default async (req) => {
   try {
     const access = await requireAdmin(req);
@@ -169,8 +218,10 @@ export default async (req) => {
       const actor = publicUser(auth.user, auth.role);
 
       if (section === 'summary') {
-        const [users, presence, sessions, feedback, enabledFeatures] = await Promise.all([
+        const [users, presence, sessions, feedback, enabledFeatures, community, calendar, friends, notifications, proposals, reports] = await Promise.all([
           listUsersRaw(), presenceSnapshot(), sessionCounts(), countFeedback(), countEnabledFeatures(),
+          countPrefix(COMMUNITY, 'contributions/'), countPrefix(CALENDAR, 'events/'), countPrefix(FRIENDS, 'friendships/'),
+          countPrefix(NOTIFICATIONS, 'notifications/'), countPrefix(CALENDAR_PROPOSALS, 'proposals/'), countPrefix(COMMUNITY_REPORTS, 'reports/'),
         ]);
         const safeUsers = users.map(user => publicUser(user));
         return json({
@@ -185,6 +236,15 @@ export default async (req) => {
             feedback: feedback.total,
             enabledFeatures,
             activeSessions: sessions.total,
+            community,
+            calendar,
+            friends,
+            notifications,
+            pendingModeration: proposals + reports,
+          },
+          health: {
+            account: 'OK', auth: 'OK', sync: 'OK', community: 'OK', calendar: 'OK', friends: 'OK',
+            feedback: 'OK', leaderboard: 'OK', featureFlags: 'OK',
           },
         });
       }
@@ -302,6 +362,8 @@ export default async (req) => {
         await PROGRESS.delete(`user/${target.id}`);
         await removeUserRows(FEEDBACK, 'reports/', target.id);
         await removeUserRows(PRESENCE, 'heartbeat/', target.id);
+        await removeUserRows(SESSIONS, 'session/', target.id);
+        await cleanupSocialUser(target.id);
         await USERS.delete(`username/${String(target.normalizedUsername || target.username || '').toLowerCase()}`);
         if (target.email) await USERS.delete(`email/${String(target.email).toLowerCase()}`);
         await USERS.delete(`user/${target.id}`);

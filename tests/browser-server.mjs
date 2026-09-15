@@ -7,6 +7,14 @@ import feedbackHandler from '../netlify/functions/feedback.mjs';
 import featuresHandler from '../netlify/functions/features.mjs';
 import leaderboardHandler from '../netlify/functions/leaderboard.mjs';
 import presenceHandler from '../netlify/functions/presence.mjs';
+import communityHandler from '../netlify/functions/community.mjs';
+import calendarHandler from '../netlify/functions/calendar.mjs';
+import friendsHandler from '../netlify/functions/friends.mjs';
+import notificationsHandler from '../netlify/functions/notifications.mjs';
+import roadmapHandler from '../netlify/functions/roadmap.mjs';
+import searchHandler from '../netlify/functions/search.mjs';
+import moderationHandler from '../netlify/functions/moderation.mjs';
+import groupsHandler from '../netlify/functions/groups.mjs';
 import { USERS, createSession, setSessionCookie } from '../netlify/functions/_shared/auth.mjs';
 import { getStore } from '@netlify/blobs';
 
@@ -18,6 +26,14 @@ const handlers = new Map([
   ['/features', featuresHandler],
   ['/leaderboard', leaderboardHandler],
   ['/presence', presenceHandler],
+  ['/community', communityHandler],
+  ['/calendar', calendarHandler],
+  ['/friends', friendsHandler],
+  ['/notifications', notificationsHandler],
+  ['/roadmap', roadmapHandler],
+  ['/search', searchHandler],
+  ['/moderation', moderationHandler],
+  ['/groups', groupsHandler],
 ]);
 
 async function seedUser(user) {

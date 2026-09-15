@@ -9,6 +9,13 @@ export const RATE_POLICIES = Object.freeze({
   devLogin: { attempts: 5, windowMs: 15 * 60_000, cooldownMs: 30 * 60_000 },
   register: { attempts: 5, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
   feedback: { attempts: 6, windowMs: 15 * 60_000, cooldownMs: 30 * 60_000 },
+  contribution: { attempts: 8, windowMs: 15 * 60_000, cooldownMs: 15 * 60_000 },
+  confirmation: { attempts: 30, windowMs: 15 * 60_000, cooldownMs: 15 * 60_000 },
+  comment: { attempts: 20, windowMs: 15 * 60_000, cooldownMs: 15 * 60_000 },
+  friendRequest: { attempts: 12, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
+  calendarProposal: { attempts: 8, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
+  calendarEvent: { attempts: 20, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
+  report: { attempts: 8, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
 });
 
 function clientAddress(req) {

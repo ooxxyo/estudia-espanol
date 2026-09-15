@@ -2,13 +2,13 @@
 
 ## Estado actual
 
-`public/index.html` contiene estilos, catálogo, datos académicos de Español, renderizado, navegación, Study Engine y persistencia local. `public/history-data.js` contiene el paquete académico aprobado de Historia y `public/js/api-client.js` centraliza requests JSON, timeouts y errores de red. El estado se guarda bajo claves estables de `localStorage`, con respaldo en IndexedDB, y se sincroniza mediante `account.mjs`. Las Functions de cuenta, administración, leaderboard y presencia usan Netlify Blobs; autenticación y rate limiting compartidos viven en `netlify/functions/_shared/`.
+`public/index.html` conserva el catálogo y Study Engine heredados. `public/history-data.js` contiene Historia; `public/js/` separa cliente API, estado de formularios, migración local, planificación pura y vistas de plataforma. El estado académico conserva claves de `localStorage`, respaldo IndexedDB y sync por `account.mjs`. Community, Calendar, Friends, notificaciones, moderación, búsqueda y Roadmap usan Functions y stores versionados independientes. Autenticación, capabilities, validación académica, utilidades de plataforma y rate limiting viven en `_shared/`.
 
 La navegación académica sigue `Hub → Día → Materia → Unidad/Categoría → Tema`. En teléfono presenta cinco accesos (`Hub`, `Repasar`, `Practicar`, `Cuenta/Entrar`, `Más`); en desktop usa grupos directos de Estudio, Seguimiento, Personal y Gestión sin botón Más. Ambos conservan el contexto y la práctica pendiente. `SUBJECT_CATALOG` conserva metadata de materia y cada entrada declara unidades actuales, anteriores y completadas. Una unidad soporta `id`, `subjectId`, nombre neutral/configurado, tipo y fecha opcionales, estado, orden y topics. Un snapshot antiguo sin contexto se asocia automáticamente con Español y su unidad actual.
 
 La identidad de cuenta se normaliza en backend en seis dimensiones independientes: `username`, `displayName`, `securityRole`, `visibleRank`, entitlement y privacidad. Campos ausentes usan defaults seguros; una cuenta antigua no se reescribe ni duplica para poder mostrarse. `Veterano` representa entitlement gratuito y nunca eleva el rol.
 
-`feedback.mjs` conserva reportes privados en `study-hub-feedback-v1`; su lectura global y cambio de estado requieren rol administrativo. `features.mjs` centraliza Early Access en `study-hub-feature-flags-v1`. Solo registra UI Beta e IA y separa `status`, `audience`, `enabled`, `availability` y `location`. El endpoint decide acceso también ante consultas directas; ocultar controles nunca sustituye autorización. Ambos reutilizan sesiones y audit log. Los stores mantienen sus nombres.
+`feedback.mjs` conserva reportes privados en `study-hub-feedback-v1`; `features.mjs` centraliza Early Access. `community.mjs`, `friends.mjs`, `calendar.mjs`, `notifications.mjs`, `moderation.mjs`, `search.mjs` y `roadmap.mjs` forman una base social separada del contenido oficial. `calendar:create` autoriza Admin+ o Veterano sin elevar el rol. Los stores anteriores mantienen sus nombres.
 
 ## Límites que deben conservarse
 
@@ -38,7 +38,7 @@ UI Beta y Asistente IA continúan con `availability=unavailable`; no hay botones
 
 Extraer gradualmente módulos ES, manteniendo primero un único punto de entrada:
 
-1. `public/js/storage.js`: normalización, migraciones, localStorage e IndexedDB.
+1. `public/js/storage.js`: parseo, validación y migración de schema ya extraídos; localStorage e IndexedDB se moverán después.
 2. `public/js/api-client.js`: cliente JSON y errores comunes ya extraídos; los adaptadores de cuenta, sync, leaderboard, presencia y admin se migrarán gradualmente.
 3. `public/js/study-engine.js`: sesiones, intentos, navegación y resultados independientes de la materia.
 4. `public/js/catalog.js`: materias, unidades, temas y resolución de IDs.
@@ -47,13 +47,13 @@ Extraer gradualmente módulos ES, manteniendo primero un único punto de entrada
 
 El catálogo futuro debería referenciar `subjectId/topicId/questionId`. No se deben mover datos de usuario hasta que exista lectura dual y una prueba de ida/vuelta; el adaptador actual es la frontera compatible durante esa transición.
 
-## Contratos futuros, todavía no implementados
+## Contratos futuros y bases actuales
 
-- Estudio personalizado consumirá métricas por materia/unidad/tema y generará planes de 15, 30 o 60 minutos sin alterar contenido oficial.
-- Calendario referenciará opcionalmente `subjectId`, `unitId` y `topicId`; pruebas, tareas, proyectos y anuncios podrán enlazar material o iniciar una preparación.
-- Aportes comunitarios vivirán separados del banco oficial y pasarán por estados de moderación, deduplicación y revisión humana. Confirmar un aporte nunca permitirá editar el de otra persona.
+- `study-planner.js` calcula niveles y planes 15/30/60 con métricas reales; su integración completa en Dashboard continúa futura.
+- Calendar ya referencia materia/unidad/tema, admite propuestas y assignments; grupos, recordatorios y automatización avanzados continúan futuros.
+- Community vive separada del banco oficial y pasa por moderación, deduplicación conservadora y doble aprobación para llegar a `official`.
 - Contenido generado por IA siempre conservará procedencia y estado de borrador. Solo una aprobación administrativa explícita podrá convertirlo en material oficial.
 
 ## Deuda y riesgos
 
-Las funciones extensas de renderizado mezclan HTML, listeners y mutaciones. Se repiten guardado/renderizado, construcción de feedback y manejo de controles. Una extracción masiva elevaría el riesgo de perder listeners, reanudar en un estado incorrecto o sobrescribir progreso cloud. Conviene extraer una frontera por fase, añadir pruebas de regresión y mantener los formatos anteriores durante al menos una versión compatible.
+Las vistas académicas todavía mezclan HTML, listeners y mutaciones dentro de `index.html`. La plataforma nueva ya está aislada, pero listados Blob realizan scans acotados y necesitarán índices/paginación al crecer. Grupos aplica membresía backend y valida conjuntamente `classGroupId`, materia, `schoolYearId` y `termId`; Admin+ puede administrar grupos sin omitir esas relaciones. Los cambios de año vigente archivan metadata anterior sin borrar grupos, trimestres ni contenido. Conviene mantener extracción por fases, pruebas de regresión y lectura compatible durante al menos una versión.

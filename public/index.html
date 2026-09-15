@@ -587,6 +587,7 @@ body{line-height:1.55;}
 .leader-score{text-align:right;white-space:nowrap;}
 .sync-pill{font-size:.68rem;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-weight:700;}
 .nav-group{display:grid;gap:2px;margin-bottom:10px}.nav-group-title{padding:3px 12px;color:var(--ink-soft);font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.more-backdrop{display:none}.more-panel{width:100%;max-height:min(78vh,680px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:16px 16px calc(16px + env(safe-area-inset-bottom))}.more-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.more-head h2{margin:0;font-size:1.15rem}.more-list{display:grid;gap:8px}.more-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;width:100%;padding:12px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer;min-height:62px}.more-item:hover,.more-item:focus-visible{border-color:var(--accent);outline:2px solid var(--accent-soft)}.more-item .ic{font-size:1.15rem;text-align:center}.more-item b,.more-item span{display:block}.more-item span{font-size:.76rem;color:var(--ink-soft);margin-top:2px}.more-close{min-width:44px;min-height:44px}
+.platform-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.platform-list{display:grid;gap:12px}.platform-card h3,.roadmap-card h3,.notification-card h3{margin:4px 0 6px}.platform-copy{white-space:pre-wrap}.platform-form{display:grid;gap:12px}.platform-form label{display:grid;gap:5px;font-weight:700;font-size:.82rem}.platform-form input,.platform-form select,.platform-form textarea,.inline-form input,.inline-form select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}.platform-form textarea{min-height:110px;resize:vertical}.inline-form{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.inline-form label{display:grid;gap:5px;flex:1 1 220px;font-weight:700;font-size:.82rem}.community-label{display:inline-block;padding:3px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:800}.community-label.official{background:var(--good-soft);color:var(--good)}.comment-list{margin:12px 0;display:grid;gap:8px}.comment{border-left:3px solid var(--line);padding-left:10px}.comment p{margin:3px 0;white-space:pre-wrap}.friend-row{display:flex;justify-content:space-between;gap:10px;margin:10px 0}.friend-row .meta{display:block}.notification-card.unread{border-color:var(--accent)}.roadmap-card p{margin-bottom:0}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:820px){.more-backdrop{position:fixed;inset:0;z-index:90;background:rgba(20,24,27,.42);display:flex;align-items:flex-end;justify-content:center;padding:16px 0 0}}
 @media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-controls,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
 @media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}}
@@ -609,6 +610,10 @@ body{line-height:1.55;}
 <div id="moreMenuRoot"></div>
 
 <script src="js/api-client.js"></script>
+<script src="js/form-state.js"></script>
+<script src="js/storage.js"></script>
+<script src="js/study-planner.js"></script>
+<script src="js/platform-ui.js"></script>
 <script src="history-data.js"></script>
 <script>
 /* =========================================================
@@ -662,6 +667,18 @@ function subjectContent(subjectId){
   if(subject.contentKey==='legacy-espanol-v1') return {units,topics:TOPICS,reviewCards:REVIEW_CARDS,questions:Q};
   if(subject.contentKey==='historia-v1') return {units,topics:HISTORY_CONTENT.topics,reviewCards:HISTORY_CONTENT.reviewCards,questions:HISTORY_CONTENT.questions};
   return {units,topics:[],reviewCards:[],questions:[]};
+}
+function unitTopics(unitId){
+  for(const subject of SUBJECT_CATALOG){const unit=unitById(subject.id,unitId);if(unit){const ids=new Set(unit.topicIds||[]);return subjectContent(subject.id).topics.filter(topic=>ids.has(topic.id));}}
+  return [];
+}
+function topicCards(topicId){
+  for(const subject of SUBJECT_CATALOG){const cards=subjectContent(subject.id).reviewCards.filter(card=>(card.topicId||card.topic)===topicId);if(cards.length)return cards;}
+  return [];
+}
+function topicQuestions(topicId){
+  for(const subject of SUBJECT_CATALOG){const questions=subjectContent(subject.id).questions.filter(question=>(question.topicId||question.topic)===topicId);if(questions.length)return questions;}
+  return [];
 }
 function activeSubject(){return SUBJECT_BY_ID.get(state.activeSubjectId)||SUBJECT;}
 function activeContent(){return subjectContent(activeSubject().id);}
@@ -1320,6 +1337,7 @@ function findQuestionById(id){
 
 function snapshotState(){
   return {
+    schemaVersion:window.StudyHubStorage.CURRENT_SCHEMA_VERSION,
     version:APP_VERSION,
     savedAt:Date.now(),
     theme:state.theme,
@@ -1479,7 +1497,8 @@ function loadState(){
   }catch(e){}
   for(const raw of candidates){
     try{
-      const ok=applySavedData(JSON.parse(raw));
+      const parsed=window.StudyHubStorage.parse(raw);
+      const ok=window.StudyHubStorage.validate(parsed)&&applySavedData(parsed);
       if(ok){ hasLocalSavedState=true; return true; }
     }catch(e){}
   }
@@ -1487,8 +1506,8 @@ function loadState(){
 }
 async function restoreIndexedDBFallback(){
   if(hasLocalSavedState) return;
-  const data=await loadFromIndexedDB();
-  if(data && applySavedData(data)){
+  const data=window.StudyHubStorage.migrate(await loadFromIndexedDB());
+  if(window.StudyHubStorage.validate(data) && applySavedData(data)){
     hasLocalSavedState=true;
     try{ const raw=JSON.stringify(data); localStorage.setItem(STABLE_STORAGE_KEY,raw); localStorage.setItem(STORAGE_KEY,raw); localStorage.setItem(STORAGE_BACKUP_KEY,raw); }catch(e){}
     applyThemeMode();
@@ -1710,6 +1729,12 @@ const MORE_NAV_ITEMS=[
   {id:'errores',label:'Errores',icon:'✕',description:'Repasa lo que contestaste mal'},
   {id:'dashboard',label:'Progreso',icon:'📊',description:'Consulta tus estadísticas'},
   {id:'leaderboard',label:'Leaderboard',icon:'🏆',description:'Consulta la clasificación'},
+  {id:'community',label:'Comunidad',icon:'♧',description:'Aportes de estudiantes'},
+  {id:'calendar',label:'Calendario',icon:'▣',description:'Eventos, pruebas y tareas'},
+  {id:'friends',label:'Amigos',icon:'♢',description:'Solicitudes y conexiones'},
+  {id:'notifications',label:'Notificaciones',icon:'◉',description:'Avisos privados de tu cuenta'},
+  {id:'roadmap',label:'Roadmap',icon:'◇',description:'Próximas funciones del Hub'},
+  {id:'search',label:'Buscar',icon:'⌕',description:'Contenido permitido'},
   {id:'ajustes',label:'Configuración',icon:'⚙',description:'Apariencia y preferencias'},
   {id:'admin',label:'Administración',icon:'⚑',description:'Usuarios, sistema y Early Access',adminOnly:true},
   {id:'guardadas',label:'Guardadas',icon:'★',description:'Preguntas que marcaste para después'},
@@ -1719,7 +1744,8 @@ const MORE_NAV_ITEMS=[
 const DESKTOP_NAV_GROUPS=[
   {label:'Estudio',items:[{id:'hub',label:'Hub',icon:'⌂'},{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'}]},
   {label:'Seguimiento',items:[{id:'errores',label:'Errores',icon:'✕'},{id:'guardadas',label:'Guardadas',icon:'★'},{id:'historial',label:'Historial',icon:'▥'},{id:'dashboard',label:'Progreso',icon:'📊'},{id:'leaderboard',label:'Leaderboard',icon:'🏆'}]},
-  {label:'Personal',items:[{id:'cuenta',label:'Cuenta',icon:'●'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'novedades',label:'Novedades',icon:'✦'}]},
+  {label:'Comunidad',items:[{id:'community',label:'Comunidad',icon:'♧'},{id:'calendar',label:'Calendario',icon:'▣'},{id:'friends',label:'Amigos',icon:'♢'},{id:'notifications',label:'Notificaciones',icon:'◉'}]},
+  {label:'Herramientas',items:[{id:'search',label:'Buscar',icon:'⌕'},{id:'roadmap',label:'Roadmap',icon:'◇'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'novedades',label:'Novedades',icon:'✦'},{id:'cuenta',label:'Cuenta',icon:'●'}]},
 ];
 const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
 let moreOpen=false;
@@ -1853,11 +1879,16 @@ function discardPausedPractice(){
   saveState();
 }
 function goto(view){ setViewContext(view); saveState(); render(); window.scrollTo(0,0); }
+function platformUiContext(){return{user:accountSession.user,escape:escHtml,subjects:SUBJECT_CATALOG,subjectName:id=>escHtml(SUBJECT_BY_ID.get(id)?.name||id),goto,openSubject,toast:showToast};}
 function render(){
   if(state.view!=='admin'){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
   renderNav();
   const main = document.getElementById('main');
   main.innerHTML='';
+  if(window.StudyHubPlatform?.supports(state.view)){
+    window.StudyHubPlatform.render(state.view,main,platformUiContext());
+    return;
+  }
   const renderers = {
     hub:renderHub,
     dashboard: renderDashboard, cuenta: renderCuenta, repaso: renderRepasoHome, practica: renderPracticaHome,
@@ -1906,13 +1937,13 @@ function renderHub(main){
     ${pending?`<div class="card resume-card"><div class="system-row"><div><b>▶ Práctica pendiente en ${escHtml(pending.subjectName)}</b><div class="resume-meta"><span class="resume-pill">Pregunta ${pending.current} de ${pending.total}</span><span class="resume-pill">${pending.answered} contestadas</span><span class="resume-pill">${escHtml(pending.topic)}</span></div></div><button class="btn" id="resumeFromHub">Continuar práctica</button></div></div>`:''}
     <div class="grid grid-2 hub-summary">
       <div class="card"><p class="section-title">Progreso por materia</p>${summaries.map(({subject,mastery,metrics,history})=>`<div class="hub-progress"><strong>${mastery}%</strong><div><b>${subject.emoji} ${subject.name}</b><div class="account-sub">${metrics.answered} ${metrics.answered===1?'pregunta contestada':'preguntas contestadas'} · ${history.length} sesiones</div></div></div>`).join('')}<div class="btn-row" style="margin-top:15px;"><button class="btn primary" id="openSpanishQuick">Abrir Español</button><button class="btn ghost" id="openHistoryQuick">Abrir Historia</button></div></div>
-      <div class="card"><p class="section-title">Acceso rápido</p><h3 style="margin:0 0 6px;">Novedades del Hub</h3><p style="margin:0 0 15px;color:var(--ink-soft);font-size:.86rem;">Consulta las mejoras recientes y las funciones que están en preparación.</p><button class="btn ghost" id="openHubUpdates">Ver Novedades</button></div>
+      <div class="card"><p class="section-title">Hoy y comunidad</p><h3 style="margin:0 0 6px;">Organiza tu día</h3><p style="margin:0 0 15px;color:var(--ink-soft);font-size:.86rem;">Consulta aportes, eventos y avisos sin perder tu práctica.</p><div class="btn-row"><button class="btn ghost" data-hub-view="community">Comunidad</button><button class="btn ghost" data-hub-view="calendar">Calendario</button><button class="btn ghost" data-hub-view="notifications">Notificaciones</button><button class="btn ghost" data-hub-view="roadmap">Roadmap</button><button class="btn ghost" data-hub-view="novedades">Novedades</button></div></div>
     </div>
     ${STUDY_DAYS.map(day=>`<section class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h2 id="hub-day-${day.id}">${day.name}</h2><span>${subjectsForDay(day.id).length} materias</span></div><div class="subject-grid">${subjectsForDay(day.id).map(renderHubSubjectCard).join('')}</div></section>`).join('')}`;
   main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject)));
   document.getElementById('openSpanishQuick').addEventListener('click',()=>openSubject(SUBJECT.id));
   document.getElementById('openHistoryQuick').addEventListener('click',()=>openSubject('historia'));
-  document.getElementById('openHubUpdates').addEventListener('click',()=>goto('novedades'));
+  main.querySelectorAll('[data-hub-view]').forEach(button=>button.addEventListener('click',()=>goto(button.dataset.hubView)));
   const resumeFromHub=document.getElementById('resumeFromHub');
   if(resumeFromHub) resumeFromHub.addEventListener('click',resumeSavedPractice);
 }
@@ -3376,8 +3407,8 @@ function renderAccountPanel(mode){
   if(mode==='login'){
     box.innerHTML=`<div class="card"><form class="account-form" id="loginForm"><label>Username o email<input id="loginId" autocomplete="username" maxlength="120" placeholder="Tu username o email" required></label><label>Contraseña<div class="password-wrap"><input id="loginPass" type="password" autocomplete="current-password" minlength="8" maxlength="128" required><button class="show-pass" id="showLoginPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberLogin" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Entrar</button><span class="save-note" id="accountMsg"></span></div><div class="account-benefit">Puedes iniciar sesión con tu username. Si añadiste un email a tu cuenta, también puedes usar ese email.</div></form><div class="dev-login"><p class="section-title">🧪 Dev Login</p><p class="account-sub" style="margin-bottom:10px;">Acceso exclusivo del desarrollador.</p><form class="account-form" id="devLoginForm"><label>Código de desarrollador<input id="devCode" type="password" autocomplete="off" maxlength="256" required></label><label class="remember-row"><input id="rememberDev" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn ghost" type="submit">Entrar como Super Dev</button><span class="save-note" id="devMsg"></span></div></form></div></div>`;
     bindPasswordToggle('showLoginPass','loginPass');
-    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});
-    document.getElementById('devLoginForm').addEventListener('submit',async e=>{e.preventDefault();devMessage('Verificando…');try{const data=await accountRequest('POST',{action:'dev-login',code:document.getElementById('devCode').value,remember:document.getElementById('rememberDev').checked});document.getElementById('devCode').value='';accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){document.getElementById('devCode').value='';devMessage(err.message,true);}});
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Entrando…',async()=>{accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});});
+    document.getElementById('devLoginForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Verificando…',async()=>{devMessage('Verificando…');try{const data=await accountRequest('POST',{action:'dev-login',code:document.getElementById('devCode').value,remember:document.getElementById('rememberDev').checked});document.getElementById('devCode').value='';accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){document.getElementById('devCode').value='';devMessage(err.message,true);}});});
   }else if(mode==='register'){
     box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. usuario" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
     let regMode='basic';
@@ -3386,11 +3417,11 @@ function renderAccountPanel(mode){
     choices.forEach(btn=>btn.addEventListener('click',()=>{regMode=btn.dataset.regMode;choices.forEach(x=>x.classList.toggle('active',x===btn));const required=regMode==='email';emailInput.required=required;emailLabel.firstChild.textContent=required?'Email ':'Email (opcional)';emailInput.placeholder=required?'Tu email personal o escolar':'Puede ser personal o escolar';}));
     bindPasswordToggle('showRegPass','regPass');bindPasswordToggle('showRegPass2','regPass2');
     document.getElementById('regPass').addEventListener('input',e=>{const v=e.target.value;document.getElementById('passStrength').textContent=v.length?`Seguridad: ${passwordStrengthText(v)}.`:'Mínimo 8 caracteres.';});
-    document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPass').value;if(p!==document.getElementById('regPass2').value){accountMessage('Las contraseñas no coinciden.',true);return;}const email=document.getElementById('regEmail').value.trim();if(regMode==='email'&&!email){accountMessage('Escribe un email para este tipo de cuenta.',true);return;}accountMessage('Creando cuenta…');try{const data=await accountRequest('POST',{action:'register',username:document.getElementById('regUser').value,email,password:p,requireEmail:regMode==='email',remember:document.getElementById('rememberRegister').checked});accountSession={status:'ready',user:data.user};lastCloudHash='';await syncCloudState();box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Cuenta creada ✓</h2><p><b>Guarda este código de recuperación.</b> Te permite recuperar tu cuenta incluso si no puedes entrar.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. Guárdalo en un lugar seguro. El sitio no puede volver a mostrarlo después.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishAccount">Continuar</button></div></div>`;document.getElementById('finishAccount').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});
+    document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPass').value;if(p!==document.getElementById('regPass2').value){accountMessage('Las contraseñas no coinciden.',true);return;}const email=document.getElementById('regEmail').value.trim();if(regMode==='email'&&!email){accountMessage('Escribe un email para este tipo de cuenta.',true);return;}await window.StudyHubForms.run(e.currentTarget,'Creando…',async()=>{accountMessage('Creando cuenta…');try{const data=await accountRequest('POST',{action:'register',username:document.getElementById('regUser').value,email,password:p,requireEmail:regMode==='email',remember:document.getElementById('rememberRegister').checked});accountSession={status:'ready',user:data.user};lastCloudHash='';await syncCloudState();box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Cuenta creada ✓</h2><p><b>Guarda este código de recuperación.</b> Te permite recuperar tu cuenta incluso si no puedes entrar.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. Guárdalo en un lugar seguro. El sitio no puede volver a mostrarlo después.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishAccount">Continuar</button></div></div>`;document.getElementById('finishAccount').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});});
   }else{
     box.innerHTML=`<div class="card"><form class="account-form" id="recoverForm"><label>Username o email<input id="recId" autocomplete="username" maxlength="120" required></label><label>Código de recuperación<input id="recCode" autocomplete="off" maxlength="64" placeholder="XXXX-XXXX-XXXX-XXXX" required></label><label>Nueva contraseña<div class="password-wrap"><input id="recPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRecPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRecover" type="checkbox" checked> Mantener mi sesión iniciada después de recuperar la cuenta</label><div class="btn-row"><button class="btn" type="submit">Cambiar contraseña</button><span class="save-note" id="accountMsg"></span></div></form><p class="cloud-note">Por seguridad, conocer solo el username o email no permite cambiar una contraseña: también necesitas el código de recuperación.</p></div>`;
     bindPasswordToggle('showRecPass','recPass');
-    document.getElementById('recoverForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Verificando…');try{const data=await accountRequest('POST',{action:'reset-password',identifier:document.getElementById('recId').value,recoveryCode:document.getElementById('recCode').value,newPassword:document.getElementById('recPass').value,remember:document.getElementById('rememberRecover').checked});accountSession={status:'ready',user:data.user};box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Contraseña cambiada ✓</h2><p><b>Guarda tu nuevo código de recuperación.</b> El código anterior ya no funciona.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. No podrá volver a mostrarse.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishRecovery">Continuar</button></div></div>`;document.getElementById('finishRecovery').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});
+    document.getElementById('recoverForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Verificando…',async()=>{accountMessage('Verificando…');try{const data=await accountRequest('POST',{action:'reset-password',identifier:document.getElementById('recId').value,recoveryCode:document.getElementById('recCode').value,newPassword:document.getElementById('recPass').value,remember:document.getElementById('rememberRecover').checked});accountSession={status:'ready',user:data.user};box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Contraseña cambiada ✓</h2><p><b>Guarda tu nuevo código de recuperación.</b> El código anterior ya no funciona.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. No podrá volver a mostrarse.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishRecovery">Continuar</button></div></div>`;document.getElementById('finishRecovery').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});});
   }
 }
 
@@ -3473,6 +3504,7 @@ const ADMIN_SECTIONS=[
   {id:'users',label:'Usuarios',roles:['admin','owner','superdev']},
   {id:'connected',label:'Conectados',roles:['admin','owner','superdev']},
   {id:'feedback',label:'Feedback',roles:['admin','owner','superdev']},
+  {id:'moderation',label:'Moderación',roles:['admin','owner','superdev']},
   {id:'early',label:'Early Access',roles:['superdev']},
   {id:'sessions',label:'Sesiones',roles:['superdev']},
   {id:'system',label:'Sistema',roles:['superdev']},
@@ -3496,6 +3528,7 @@ async function loadAdminSection(section){
   if(section==='users'){renderAdminUsersShell(box,false);return;}
   if(section==='sessions'){renderAdminUsersShell(box,true);return;}
   if(section==='feedback'){renderAdminFeedbackShell(box);return;}
+  if(section==='moderation'){window.StudyHubPlatform.render('moderation',box,platformUiContext());return;}
   if(section==='early'){loadEarlyAccess(box);return;}
   if(section==='updates'){box.innerHTML='<div class="card"><h2 style="margin-top:0;">Novedades del Hub</h2><p>Revisa el registro visible sin abandonar la experiencia general.</p><button class="btn" id="openUpdatesFromAdmin">Abrir Novedades</button></div>';document.getElementById('openUpdatesFromAdmin').addEventListener('click',()=>goto('novedades'));return;}
   if(section==='connected'){renderConnectedUsersShell(box);adminRefreshTimer=setInterval(()=>{if(state.view==='admin'&&activeAdminSection==='connected')loadConnectedUsers();},30000);return;}
@@ -3505,9 +3538,9 @@ async function loadAdminSection(section){
 async function loadAdminSummary(box){
   try{
     const data=await adminRequest('GET',null,'section=summary');
-    const summary=data.summary||{};
-    const metrics=[['Usuarios',summary.users],['Online',summary.online],['Veteranos',summary.veterans],['Admins',summary.admins],['Suspendidos',summary.suspended],['Feedback nuevo',summary.newFeedback],['Features activas',summary.enabledFeatures],['Sesiones activas',summary.activeSessions]];
-    box.innerHTML=`<div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div><div class="card" style="margin-top:18px;"><h2 style="margin-top:0;">Estado del Hub</h2><p style="margin-bottom:0;">Study Hub v${APP_VERSION} · acceso público obligatorio y pagos continúan desactivados. Las autorizaciones se validan en backend.</p></div>`;
+    const summary=data.summary||{},health=data.health||{};
+    const metrics=[['Usuarios',summary.users],['Online',summary.online],['Veteranos',summary.veterans],['Admins',summary.admins],['Suspendidos',summary.suspended],['Feedback nuevo',summary.newFeedback],['Comunidad',summary.community],['Calendario',summary.calendar],['Amistades',summary.friends],['Moderación',summary.pendingModeration],['Features activas',summary.enabledFeatures],['Sesiones activas',summary.activeSessions]];
+    box.innerHTML=`<div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div><div class="card" style="margin-top:18px;"><h2 style="margin-top:0;">Estado del Hub</h2><div class="btn-row">${Object.entries(health).map(([name,status])=>`<span class="status-badge ${status==='OK'?'':'offline'}">${escHtml(name)}: ${escHtml(status)}</span>`).join('')}</div><p style="margin-bottom:0;">Study Hub v${APP_VERSION} · acceso público obligatorio y pagos continúan desactivados. Las autorizaciones se validan en backend.</p></div>`;
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 function renderAdminUsersShell(box,sessionsOnly){
@@ -3536,7 +3569,7 @@ async function loadAdminUsers(query='',filter='all',sessionsOnly=false){
     const actorRole=data.actor?.role||accountSession.user?.role||'member';
     box.innerHTML=users.length?users.map((user,index)=>adminUserCard(user,index,actorRole,sessionsOnly)).join(''):'<div class="empty-state"><span class="ic">○</span>No se encontraron usuarios.</div>';
     box.querySelectorAll('[data-user-detail]').forEach(button=>button.addEventListener('click',()=>{const detail=document.getElementById(`adminDetail${button.dataset.userDetail}`);detail.hidden=!detail.hidden;button.textContent=detail.hidden?'Abrir usuario':'Cerrar detalle';}));
-    box.querySelectorAll('[data-admin-action]').forEach(button=>button.addEventListener('click',async()=>{const index=Number(button.dataset.adminIndex),user=users[index];if(user)await runAdminAction(button.dataset.adminAction,user,query,filter,index,sessionsOnly);}));
+    box.querySelectorAll('[data-admin-action]').forEach(button=>button.addEventListener('click',async()=>{const index=Number(button.dataset.adminIndex),user=users[index];if(user)await window.StudyHubForms.run(button,'Procesando…',()=>runAdminAction(button.dataset.adminAction,user,query,filter,index,sessionsOnly));}));
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 async function runAdminAction(action,user,query,filter,index,sessionsOnly){
@@ -3580,7 +3613,7 @@ async function loadAdminFeedback(){
     const data=await feedbackRequest('GET',null,params.toString());
     const reports=Array.isArray(data.reports)?data.reports:[];
     box.innerHTML=reports.length?reports.map(report=>feedbackCard(report,true)).join(''):'<div class="empty-state"><span class="ic">✉</span>No hay feedback con estos filtros.</div>';
-    box.querySelectorAll('[data-save-feedback]').forEach(button=>button.addEventListener('click',async()=>{const id=button.dataset.saveFeedback,status=box.querySelector(`[data-feedback-status="${id}"]`)?.value;try{await feedbackRequest('POST',{action:'set-status',reportId:id,status});showToast('Estado actualizado ✓');await loadAdminFeedback();}catch(error){showToast(error.message,true);}}));
+    box.querySelectorAll('[data-save-feedback]').forEach(button=>button.addEventListener('click',()=>window.StudyHubForms.run(button,'Guardando…',async()=>{const id=button.dataset.saveFeedback,status=box.querySelector(`[data-feedback-status="${id}"]`)?.value;try{await feedbackRequest('POST',{action:'set-status',reportId:id,status});showToast('Estado actualizado ✓');await loadAdminFeedback();}catch(error){showToast(error.message,true);}})));
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 async function loadEarlyAccess(box){
@@ -3590,8 +3623,8 @@ async function loadEarlyAccess(box){
     const featurePayload=(index,enabled)=>{const feature=featureFlags[index],audience=box.querySelector(`[data-feature-audience="${index}"]`).value;return{id:feature.id,status:box.querySelector(`[data-feature-status="${index}"]`).value,audience,enabled,selectedUsers:audience==='selectedUsers'?(box.querySelector(`[data-feature-selected="${index}"]`)?.value||'').split(',').map(value=>value.trim()).filter(Boolean):[]};};
     const saveFeature=async(index,enabled)=>{try{const result=await featureRequest('POST',featurePayload(index,enabled));featureFlags[index]=result.feature;showToast('Feature Flag actualizada ✓');await loadEarlyAccess(box);}catch(error){showToast(error.message,true);}};
     box.querySelectorAll('[data-feature-audience]').forEach(select=>select.addEventListener('change',()=>{const wrap=box.querySelector(`[data-feature-selected-wrap="${select.dataset.featureAudience}"]`);if(wrap)wrap.hidden=select.value!=='selectedUsers';}));
-    box.querySelectorAll('[data-feature-save]').forEach(button=>button.addEventListener('click',()=>saveFeature(Number(button.dataset.featureSave),featureFlags[Number(button.dataset.featureSave)].enabled)));
-    box.querySelectorAll('[data-feature-toggle]').forEach(button=>button.addEventListener('click',()=>saveFeature(Number(button.dataset.featureToggle),!featureFlags[Number(button.dataset.featureToggle)].enabled)));
+    box.querySelectorAll('[data-feature-save]').forEach(button=>button.addEventListener('click',()=>window.StudyHubForms.run(button,'Guardando…',()=>saveFeature(Number(button.dataset.featureSave),featureFlags[Number(button.dataset.featureSave)].enabled))));
+    box.querySelectorAll('[data-feature-toggle]').forEach(button=>button.addEventListener('click',()=>window.StudyHubForms.run(button,'Guardando…',()=>saveFeature(Number(button.dataset.featureToggle),!featureFlags[Number(button.dataset.featureToggle)].enabled))));
     box.querySelectorAll('[data-feature-test]').forEach(button=>button.addEventListener('click',async()=>{const feature=featureFlags[Number(button.dataset.featureTest)];try{await featureRequest('GET',null,new URLSearchParams({id:feature.id}).toString());if(feature.location)goto(feature.location);}catch(error){showToast(error.message,true);}}));
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
@@ -3661,6 +3694,7 @@ function renderNovedades(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
     <div class="card">
+      <div class="update-item"><h3>Base de plataforma social <span class="new-pill">TESTING LOCAL</span></h3><p>Comunidad, Calendario, Amigos, Notificaciones, búsqueda y Roadmap ya tienen una base funcional con permisos backend, privacidad y moderación. Continúan en validación local y todavía no fueron desplegados.</p></div>
       <div class="update-item"><h3>Historia y navegación simplificada <span class="new-pill">TESTING</span></h3><p>Historia se incorpora como segunda materia real con la unidad Geografía y grandes civilizaciones, repaso, práctica y examen aislados de Español. En móvil, la navegación prioriza Hub, Repasar, Practicar, Cuenta y Más; en escritorio, muestra las herramientas agrupadas directamente. Ambos diseños conservan el contexto y las prácticas pendientes.</p></div>
       <div class="update-item"><h3>Early Access real y unidades</h3><p>Las flags separan estado, audiencia y publicación, y el backend valida el acceso directo. Early Access conserva únicamente UI Beta y el Asistente IA por materia, ambos identificados como todavía no disponibles. Español agrupa su material existente en una Unidad actual neutral sin cambiar preguntas, progreso ni prácticas.</p></div>
       <div class="update-item"><h3>Plataforma del Hub · Administración y feedback</h3><p>Super Dev incorpora resumen, usuarios, conectados, feedback, Early Access, sesiones y sistema. Veterano identifica el acceso gratuito sin conceder permisos Admin; las cuentas antiguas reciben defaults compatibles. También se añadió feedback privado con estados, Feature Flags centralizadas, sincronización con resultado real y la corrección académica Interfijo / MDI. El acceso obligatorio y los pagos continúan aplazados.</p></div>
