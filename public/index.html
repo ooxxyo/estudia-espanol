@@ -578,7 +578,7 @@ body{line-height:1.55;}
 .admin-tabs,.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.admin-tabs .chip,.filter-row .chip{min-height:38px}
 .admin-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.admin-metric{padding:16px;border:1px solid var(--line);border-radius:11px;background:var(--bg)}.admin-metric strong{display:block;font-family:'Fraunces',Georgia,serif;font-size:1.7rem}.admin-metric span{font-size:.76rem;color:var(--ink-soft)}
 .admin-list{display:grid;gap:10px}.admin-user-card,.feedback-card{padding:15px;border:1px solid var(--line);border-radius:11px;background:var(--card)}.admin-user-card h3,.feedback-card h3{margin:0 0 4px;font-size:1rem}.admin-user-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-top:8px}.admin-detail{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
-.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.admin-form-grid label,.feedback-form label{display:grid;gap:6px;font-size:.82rem;color:var(--ink-soft)}.admin-form-grid input,.feedback-form input,.feedback-form select,.feedback-form textarea,.admin-toolbar input,.admin-toolbar select,.feature-row select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}.feedback-form textarea{min-height:130px;resize:vertical}.admin-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) 180px auto;gap:10px;align-items:end}.admin-toolbar.feedback-filters{grid-template-columns:minmax(160px,1fr) repeat(3,minmax(120px,150px)) auto}.feature-list{display:grid;gap:10px}.feature-row{display:grid;grid-template-columns:minmax(0,1fr) 150px 130px auto;gap:10px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:11px}.feature-row h3{margin:0 0 4px;font-size:.95rem}.feedback-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px}.feedback-type{font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--accent)}
+.admin-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.admin-form-grid label,.feedback-form label{display:grid;gap:6px;font-size:.82rem;color:var(--ink-soft)}.admin-form-grid input,.feedback-form input,.feedback-form select,.feedback-form textarea,.admin-toolbar input,.admin-toolbar select,.feature-row input,.feature-row select{width:100%;padding:10px 11px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--ink);font:inherit}.feedback-form textarea{min-height:130px;resize:vertical}.admin-toolbar{display:grid;grid-template-columns:minmax(180px,1fr) 180px auto;gap:10px;align-items:end}.admin-toolbar.feedback-filters{grid-template-columns:minmax(160px,1fr) repeat(3,minmax(120px,150px)) auto}.feature-list{display:grid;gap:10px}.feature-row{padding:16px;border:1px solid var(--line);border-radius:11px}.feature-row h3{margin:0 0 4px;font-size:1rem}.feature-controls{display:grid;grid-template-columns:160px 160px minmax(180px,1fr);gap:10px;margin-top:14px}.feature-controls label{display:grid;gap:5px;font-size:.76rem;color:var(--ink-soft)}.feature-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}.feedback-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px}.feedback-type{font-size:.7rem;font-weight:800;text-transform:uppercase;color:var(--accent)}
 .nav-btn.feedback-nav{border:1px solid color-mix(in srgb,var(--accent) 35%,var(--line));background:var(--accent-soft);color:var(--accent);font-weight:800}
 .nav-btn.feedback-nav.active{background:var(--accent);color:#fff}
 .app-toast{position:fixed;right:18px;bottom:18px;z-index:200;max-width:360px;padding:12px 15px;border-radius:10px;background:var(--ink);color:var(--card);box-shadow:var(--shadow);font-size:.86rem}.app-toast.bad{background:var(--bad);color:#fff}
@@ -586,8 +586,9 @@ body{line-height:1.55;}
 .leader-meta{display:block;margin-top:3px;font-size:.72rem;color:var(--ink-soft);font-weight:500;}
 .leader-score{text-align:right;white-space:nowrap;}
 .sync-pill{font-size:.68rem;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-weight:700;}
-@media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-row,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
-@media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}}
+.more-backdrop{position:fixed;inset:0;z-index:90;background:rgba(20,24,27,.42);display:flex;align-items:flex-start;justify-content:flex-start;padding:72px 0 20px 232px}.more-panel{width:min(440px,calc(100vw - 252px));max-height:calc(100vh - 92px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:16px}.more-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.more-head h2{margin:0;font-size:1.15rem}.more-list{display:grid;gap:8px}.more-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;width:100%;padding:12px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer;min-height:58px}.more-item:hover,.more-item:focus-visible{border-color:var(--accent);outline:2px solid var(--accent-soft)}.more-item .ic{font-size:1.15rem;text-align:center}.more-item b,.more-item span{display:block}.more-item span{font-size:.76rem;color:var(--ink-soft);margin-top:2px}.more-close{min-width:44px;min-height:44px}
+@media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-controls,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
+@media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}.more-backdrop{align-items:flex-end;padding:16px 0 0}.more-panel{width:100%;max-height:min(78vh,680px);border-radius:18px 18px 0 0;border-bottom:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}.more-item{min-height:62px}}
 
 </style>
 </head>
@@ -604,7 +605,9 @@ body{line-height:1.55;}
     </main>
 </div>
 <nav class="mobile-nav" id="mobileNav"></nav>
+<div id="moreMenuRoot"></div>
 
+<script src="history-data.js"></script>
 <script>
 /* =========================================================
    DATOS: temas
@@ -616,31 +619,61 @@ const TOPICS = [
   {id:'cronica', name:'Crónica', icon:'📰'},
   {id:'figuras', name:'Figuras literarias', icon:'✦'},
 ];
+const HISTORY_CONTENT=window.HISTORY_CONTENT;
 
 const STUDY_DAYS=Object.freeze([
   {id:1,name:'Día 1'},
   {id:2,name:'Día 2'},
 ]);
 
-// Fuente única de verdad para la estructura del Hub. El motor heredado de
-// Español se adapta mediante contentKey; las demás materias no crean vistas
-// vacías y podrán activarse agregando su contenido al mismo contrato.
+// Fuente única de verdad para Hub → Día → Materia → Unidad → Tema. El motor
+// heredado de Español se adapta mediante contentKey sin cambiar IDs ni datos.
 const SUBJECT_CATALOG=Object.freeze([
-  {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
-  {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
-  {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
-  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
-  {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Próximamente',available:false,contentKey:null,topicGroups:{current:null,previous:[]}},
-  {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Disponible',available:true,contentKey:'legacy-espanol-v1',topicGroups:{current:{id:'espanol-v2',name:'Material actual',topicIds:TOPICS.map(t=>t.id)},previous:[]}},
+  {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
+  {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
+  {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Disponible',available:true,contentKey:'historia-v1',units:{current:HISTORY_CONTENT.unit,previous:[],completed:[]}},
+  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
+  {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
+  {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Disponible',available:true,contentKey:'legacy-espanol-v1',units:{current:{id:'espanol-unidad-actual',subjectId:'espanol',name:'Unidad actual',type:null,status:'current',date:null,order:1,topicIds:TOPICS.map(t=>t.id)},previous:[],completed:[]}},
 ]);
 const SUBJECT_BY_ID=new Map(SUBJECT_CATALOG.map(subject=>[subject.id,subject]));
 const SUBJECT=SUBJECT_BY_ID.get('espanol');
 const SUBJECT_VIEW_IDS=new Set(['dashboard','repaso','repasoCards','practica','experimental','examen','errores','guardadas','historial','session','results']);
 function subjectsForDay(day){return SUBJECT_CATALOG.filter(subject=>subject.day===day);}
+function subjectUnits(subjectId){
+  const subject=SUBJECT_BY_ID.get(subjectId);
+  if(!subject)return{current:null,previous:[],completed:[]};
+  if(subject.units)return subject.units;
+  // Adaptador seguro para catálogos legacy con topicGroups.
+  const legacy=subject.topicGroups||{};
+  return {current:legacy.current?{...legacy.current,subjectId:subject.id,status:'current',order:1,topicIds:legacy.current.topicIds||[]}:null,previous:legacy.previous||[],completed:[]};
+}
+function currentUnit(subjectId){return subjectUnits(subjectId).current||null;}
+function unitById(subjectId,unitId){
+  const units=subjectUnits(subjectId);return [units.current,...units.previous,...units.completed].filter(Boolean).find(unit=>unit.id===unitId)||null;
+}
 function subjectContent(subjectId){
   const subject=SUBJECT_BY_ID.get(subjectId);
-  if(!subject?.available || subject.contentKey!=='legacy-espanol-v1') return {topics:[],reviewCards:[],questions:[]};
-  return {topics:TOPICS,reviewCards:REVIEW_CARDS,questions:Q};
+  const units=subjectUnits(subjectId);
+  if(!subject?.available) return {units,topics:[],reviewCards:[],questions:[]};
+  if(subject.contentKey==='legacy-espanol-v1') return {units,topics:TOPICS,reviewCards:REVIEW_CARDS,questions:Q};
+  if(subject.contentKey==='historia-v1') return {units,topics:HISTORY_CONTENT.topics,reviewCards:HISTORY_CONTENT.reviewCards,questions:HISTORY_CONTENT.questions};
+  return {units,topics:[],reviewCards:[],questions:[]};
+}
+function activeSubject(){return SUBJECT_BY_ID.get(state.activeSubjectId)||SUBJECT;}
+function activeContent(){return subjectContent(activeSubject().id);}
+function activeTopics(){return activeContent().topics;}
+function activeReviewCards(){return activeContent().reviewCards;}
+function activeQuestions(){return activeContent().questions;}
+function allTopics(){return [...TOPICS,...HISTORY_CONTENT.topics];}
+function allQuestions(){return [...Q,...HISTORY_CONTENT.questions];}
+function questionSubjectId(question){return question?.subjectId||'espanol';}
+function topicForQuestion(question){return subjectContent(questionSubjectId(question)).topics.find(topic=>topic.id===question?.topic)||null;}
+function approvedAssistantContext(subjectId,unitId,topicId){
+  const subject=SUBJECT_BY_ID.get(subjectId),content=subjectContent(subjectId),unit=unitById(subjectId,unitId)||currentUnit(subjectId);
+  if(!subject?.available||!unit)return null;
+  const topic=content.topics.find(item=>item.id===topicId)||null;
+  return {subjectId:subject.id,subjectName:subject.name,unitId:unit.id,unitName:unit.name,topicId:topic?.id||'',topicName:topic?.name||'',approvedContent:content.reviewCards.filter(card=>!topic||card.topic===topic.id)};
 }
 
 /* =========================================================
@@ -1250,9 +1283,12 @@ const state = {
   theme:'light',
   view:'hub',
   activeSubjectId:null,
+  activeUnitId:null,
+  lastSubjectId:'espanol',
   stats:{}, // topicId -> {attempts, correct, recent:[bool], mastered:false}
   totalAnswered:0, totalCorrect:0, currentStreak:0, bestStreak:0,
   studySeconds:0,
+  subjectTotals:{historia:{answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0}},
   errors:[], // {qid, userAnswerText, times, last}
   saved:new Set(),
   history:[],
@@ -1261,6 +1297,7 @@ const state = {
     themeMode:'light',
     practiceCountsByDefault:true,
     examTopics:TOPICS.map(t=>t.id),
+    examTopicsBySubject:{historia:HISTORY_CONTENT.topics.map(t=>t.id)},
     lastSeenUpdate:'',
     accentColor:'#8B2635',
     leaderboardName:'',
@@ -1268,14 +1305,14 @@ const state = {
     hiddenWarnings:{}
   }
 };
-TOPICS.forEach(t=> state.stats[t.id] = {attempts:0, correct:0, recent:[]});
+allTopics().forEach(t=> state.stats[t.id] = {attempts:0, correct:0, recent:[]});
 
 // Los IDs q1, q2… son identificadores heredados y su orden no debe cambiarse.
 // Las futuras migraciones pueden añadir alias explícitos sin invalidar datos antiguos.
 const QUESTION_ID_ALIASES=Object.freeze({});
 function findQuestionById(id){
   const resolved=QUESTION_ID_ALIASES[id]||id;
-  return Q.find(question=>question.id===resolved);
+  return allQuestions().find(question=>question.id===resolved);
 }
 
 function snapshotState(){
@@ -1285,10 +1322,12 @@ function snapshotState(){
     theme:state.theme,
     view:state.view,
     activeSubjectId:state.activeSubjectId,
+    activeUnitId:state.activeUnitId,
+    lastSubjectId:state.lastSubjectId,
     stats:state.stats,
     totalAnswered:state.totalAnswered,totalCorrect:state.totalCorrect,
     currentStreak:state.currentStreak,bestStreak:state.bestStreak,
-    studySeconds:state.studySeconds,errors:state.errors,
+    studySeconds:state.studySeconds,subjectTotals:state.subjectTotals,errors:state.errors,
     saved:[...state.saved],history:state.history,lastResult:state.lastResult||null,
     settings:state.settings,
     session:state.session && !state.session.experimental?{...state.session,queueIds:state.session.queue.map(q=>q.id),queue:undefined}:null
@@ -1296,7 +1335,7 @@ function snapshotState(){
 }
 function applySavedData(d){
   if(!d || typeof d!=='object') return false;
-  if(d.stats && typeof d.stats==='object') TOPICS.forEach(t=>{
+  if(d.stats && typeof d.stats==='object') allTopics().forEach(t=>{
     const incoming=d.stats[t.id];
     if(!incoming || typeof incoming!=='object') return;
     state.stats[t.id]={
@@ -1306,18 +1345,27 @@ function applySavedData(d){
     };
   });
   ['totalAnswered','totalCorrect','currentStreak','bestStreak','studySeconds'].forEach(k=>{ if(Number.isFinite(d[k])) state[k]=d[k]; });
+  if(d.subjectTotals && typeof d.subjectTotals==='object' && !Array.isArray(d.subjectTotals)){
+    const row=d.subjectTotals.historia;
+    if(row && typeof row==='object') state.subjectTotals.historia={
+      answered:Math.max(0,Number(row.answered)||0),correct:Math.max(0,Number(row.correct)||0),
+      currentStreak:Math.max(0,Number(row.currentStreak)||0),bestStreak:Math.max(0,Number(row.bestStreak)||0),studySeconds:Math.max(0,Number(row.studySeconds)||0)
+    };
+  }
   if(Array.isArray(d.errors)) state.errors=d.errors.filter(e=>e&&typeof e.qid==='string').slice(-1000);
   if(Array.isArray(d.saved)) state.saved=new Set(d.saved.filter(id=>typeof id==='string').slice(-1000));
   if(Array.isArray(d.history)) state.history=d.history.filter(entry=>entry&&typeof entry==='object').slice(-500);
   if(d.lastResult && typeof d.lastResult==='object'){
     const result=d.lastResult;
     const byTopic={};
-    if(result.byTopic && typeof result.byTopic==='object') TOPICS.forEach(topic=>{
+    if(result.byTopic && typeof result.byTopic==='object') allTopics().forEach(topic=>{
       const row=result.byTopic[topic.id];
       if(row && typeof row==='object') byTopic[topic.id]={c:Math.max(0,Number(row.c)||0),t:Math.max(0,Number(row.t)||0)};
     });
     state.lastResult={
       ...result,
+      subjectId:SUBJECT_BY_ID.get(result.subjectId)?.available?result.subjectId:'espanol',
+      unitId:unitById(SUBJECT_BY_ID.get(result.subjectId)?.available?result.subjectId:'espanol',result.unitId)?.id||currentUnit(SUBJECT_BY_ID.get(result.subjectId)?.available?result.subjectId:'espanol')?.id||null,
       total:Math.max(0,Number(result.total)||0),
       correctCount:Math.max(0,Number(result.correctCount)||0),
       pct:Math.max(0,Math.min(100,Number(result.pct)||0)),
@@ -1333,6 +1381,12 @@ function applySavedData(d){
     if(['light','dark','auto'].includes(incoming.themeMode)) state.settings.themeMode=incoming.themeMode;
     if(typeof incoming.practiceCountsByDefault==='boolean') state.settings.practiceCountsByDefault=incoming.practiceCountsByDefault;
     if(Array.isArray(incoming.examTopics)) state.settings.examTopics=incoming.examTopics.filter(id=>TOPICS.some(t=>t.id===id));
+    if(incoming.examTopicsBySubject && typeof incoming.examTopicsBySubject==='object' && !Array.isArray(incoming.examTopicsBySubject)){
+      const historyTopics=HISTORY_CONTENT.topics.map(topic=>topic.id);
+      state.settings.examTopicsBySubject={
+        historia:Array.isArray(incoming.examTopicsBySubject.historia)?incoming.examTopicsBySubject.historia.filter(id=>historyTopics.includes(id)):historyTopics
+      };
+    }
     if(typeof incoming.lastSeenUpdate==='string') state.settings.lastSeenUpdate=incoming.lastSeenUpdate.slice(0,20);
     if(typeof incoming.accentColor==='string' && /^#[0-9A-Fa-f]{6}$/.test(incoming.accentColor)) state.settings.accentColor=incoming.accentColor;
     if(typeof incoming.leaderboardName==='string') state.settings.leaderboardName=incoming.leaderboardName.slice(0,40);
@@ -1340,17 +1394,24 @@ function applySavedData(d){
     if(incoming.hiddenWarnings && typeof incoming.hiddenWarnings==='object' && !Array.isArray(incoming.hiddenWarnings)) state.settings.hiddenWarnings={...incoming.hiddenWarnings};
   }
   if(typeof d.activeSubjectId==='string' && SUBJECT_BY_ID.get(d.activeSubjectId)?.available) state.activeSubjectId=d.activeSubjectId;
+  if(typeof d.lastSubjectId==='string' && SUBJECT_BY_ID.get(d.lastSubjectId)?.available) state.lastSubjectId=d.lastSubjectId;
+  const savedUnit=typeof d.activeUnitId==='string'?unitById(state.activeSubjectId,d.activeUnitId):null;
+  state.activeUnitId=savedUnit?.id||currentUnit(state.activeSubjectId)?.id||null;
   if(typeof d.view==='string' && d.view!=='session'){
     state.view=d.view;
-    if(SUBJECT_VIEW_IDS.has(d.view)) state.activeSubjectId=SUBJECT.id;
-    else if(d.view==='hub') state.activeSubjectId=null;
+    if(SUBJECT_VIEW_IDS.has(d.view)){
+      const compatibleSubject=SUBJECT_BY_ID.get(state.activeSubjectId)?.available?state.activeSubjectId:SUBJECT.id;
+      state.activeSubjectId=compatibleSubject;state.activeUnitId=unitById(compatibleSubject,state.activeUnitId)?.id||currentUnit(compatibleSubject)?.id||null;
+    }
+    else if(d.view==='hub'){state.activeSubjectId=null;state.activeUnitId=null;}
   }
   if(d.session && Array.isArray(d.session.queueIds)){
     const queue=d.session.queueIds.map(findQuestionById).filter(Boolean);
     if(queue.length){
       const idx=Math.max(0,Math.min(Number.isFinite(d.session.idx)?d.session.idx:0,queue.length-1));
       const answers=Array.isArray(d.session.answers)?d.session.answers.filter(a=>a&&typeof a==='object').slice(0,queue.length):[];
-      state.session={...d.session,idx,answers,queue};
+      const sessionSubjectId=SUBJECT_BY_ID.get(d.session.subjectId)?.available?d.session.subjectId:questionSubjectId(queue[0]);
+      state.session={...d.session,subjectId:sessionSubjectId,unitId:unitById(sessionSubjectId,d.session.unitId)?.id||currentUnit(sessionSubjectId)?.id||null,idx,answers,queue};
     }
   }
   lastSaveAt=Number.isFinite(d.savedAt)?d.savedAt:Date.now();
@@ -1470,6 +1531,7 @@ function stableCloudPayload(){
   // local, mientras versiones anteriores siguen cayendo en su Panel por defecto.
   snap.view='hub';
   snap.activeSubjectId=null;
+  snap.activeUnitId=null;
   if(!(state.session && state.session.mode==='practica' && !state.session.experimental)){
     snap.session=null;
   }
@@ -1525,10 +1587,12 @@ function applyCloudCanonical(cloudState){
   try{
     const currentView=state.view;
     const currentSubjectId=state.activeSubjectId;
+    const currentUnitId=state.activeUnitId;
     const localSession=state.session && state.session.mode==='practica' && !state.session.experimental?state.session:null;
     applySavedData(cloudState);
     state.view=currentView;
     state.activeSubjectId=currentSubjectId;
+    state.activeUnitId=currentUnitId;
     const cloudSession=state.session && state.session.mode==='practica' && !state.session.experimental?state.session:null;
     const localProgress=localSession?(localSession.answers?.length||0)*1000+(localSession.idx||0):-1;
     const cloudProgress=cloudSession?(cloudSession.answers?.length||0)*1000+(cloudSession.idx||0):-1;
@@ -1553,7 +1617,7 @@ async function restoreAccountSession(){
 }
 function accountLabel(){ return accountSession.user?accountSession.user.username:'Cuenta'; }
 function accountDisplayName(user=accountSession.user){return user?.displayName||user?.username||'Estudiante';}
-function featureEnabled(id){return featureFlags.some(feature=>feature.id===id && feature.enabled===true);}
+function featureEnabled(id){return featureFlags.some(feature=>feature.id===id&&feature.enabled===true&&feature.authorized===true&&feature.canLaunch===true);}
 async function loadFeatureFlagState(){
   try{
     const res=await fetch('/.netlify/functions/features',{credentials:'same-origin',cache:'no-store'});
@@ -1585,10 +1649,18 @@ function computeMastery(topicId){
   else status='progress';
   return {pct, status};
 }
-function overallMastery(){
-  const all = TOPICS.map(t=>computeMastery(t.id).pct);
+function overallMastery(subjectId=activeSubject().id){
+  const all = subjectContent(subjectId).topics.map(t=>computeMastery(t.id).pct);
+  if(!all.length)return 0;
   return Math.round(all.reduce((a,b)=>a+b,0)/all.length);
 }
+function subjectMetrics(subjectId){
+  if(subjectId==='espanol')return{answered:state.totalAnswered,correct:state.totalCorrect,currentStreak:state.currentStreak,bestStreak:state.bestStreak,studySeconds:state.studySeconds};
+  return state.subjectTotals[subjectId]||{answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0};
+}
+function subjectHistory(subjectId){return state.history.filter(entry=>(entry.subjectId||'espanol')===subjectId);}
+function subjectErrors(subjectId){return state.errors.filter(error=>questionSubjectId(findQuestionById(error.qid))===subjectId);}
+function subjectSaved(subjectId){return [...state.saved].filter(id=>questionSubjectId(findQuestionById(id))===subjectId);}
 function statusLabel(s){
   return {none:'No estudiado', progress:'En progreso', almost:'Casi dominado', mastered:'Dominado'}[s];
 }
@@ -1598,10 +1670,19 @@ function statusPillClass(s){
 
 function recordAnswer(q, correct){
   if(state.session && state.session.mode==='practica' && state.session.countStats===false) return;
-  state.totalAnswered++;
-  if(correct) state.totalCorrect++;
-  state.currentStreak = correct? state.currentStreak+1 : 0;
-  state.bestStreak = Math.max(state.bestStreak, state.currentStreak);
+  const subjectId=questionSubjectId(q);
+  if(subjectId==='espanol'){
+    state.totalAnswered++;
+    if(correct) state.totalCorrect++;
+    state.currentStreak=correct?state.currentStreak+1:0;
+    state.bestStreak=Math.max(state.bestStreak,state.currentStreak);
+  }else{
+    const totals=state.subjectTotals[subjectId]||(state.subjectTotals[subjectId]={answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0});
+    totals.answered++;
+    if(correct)totals.correct++;
+    totals.currentStreak=correct?totals.currentStreak+1:0;
+    totals.bestStreak=Math.max(totals.bestStreak,totals.currentStreak);
+  }
   const s = state.stats[q.topic];
   s.attempts++;
   if(correct) s.correct++;
@@ -1620,55 +1701,81 @@ function recordAnswer(q, correct){
 /* =========================================================
    NAV / RENDER SHELL
 ========================================================= */
-const HUB_NAV_ITEMS = [
-  {id:'hub', label:'Hub', icon:'⌂'},
+const PRIMARY_NAV_ITEMS=[
+  {id:'hub',label:'Hub',icon:'⌂'},
+  {id:'repaso',label:'Repasar',icon:'▤'},
+  {id:'practica',label:'Practicar',icon:'▶'},
+  {id:'cuenta',label:'Cuenta',icon:'●'},
+  {id:'more',label:'Más',icon:'⋯'},
 ];
-const STUDY_NAV_ITEMS = [
-  {id:'dashboard', label:'Panel', icon:SUBJECT.emoji},
-  {id:'repaso', label:'Repasar', icon:'▤'},
-  {id:'practica', label:'Practicar', icon:'✎'},
-  {id:'examen', label:'Examen', icon:'▦'},
-  {id:'errores', label:'Mis errores', icon:'✕'},
-  {id:'guardadas', label:'Guardadas', icon:'★'},
-  {id:'historial', label:'Historial', icon:'▥'},
+const MORE_NAV_ITEMS=[
+  {id:'examen',label:'Examen',icon:'▦',description:'Haz una prueba completa'},
+  {id:'errores',label:'Errores',icon:'✕',description:'Repasa lo que contestaste mal'},
+  {id:'guardadas',label:'Guardadas',icon:'★',description:'Preguntas que marcaste para después'},
+  {id:'historial',label:'Historial',icon:'▥',description:'Tus intentos anteriores'},
+  {id:'dashboard',label:'Progreso',icon:'📊',description:'Consulta tus estadísticas'},
+  {id:'feedback',label:'Feedback',icon:'✉',description:'Reporta problemas o sugerencias'},
+  {id:'leaderboard',label:'Leaderboard',icon:'🏆',description:'Consulta la clasificación'},
+  {id:'novedades',label:'Novedades',icon:'✦',description:'Revisa los cambios recientes'},
+  {id:'ajustes',label:'Configuración',icon:'⚙',description:'Apariencia y preferencias'},
+  {id:'admin',label:'Administración',icon:'⚑',description:'Usuarios, sistema y Early Access',adminOnly:true},
 ];
-const UTILITY_NAV_ITEMS = [
-  {id:'cuenta', label:'Cuenta', icon:'●'},
-  {id:'feedback', label:'Enviar feedback', icon:'✉', prominent:true},
-  {id:'leaderboard', label:'Leaderboard', icon:'🏆'},
-  {id:'admin', label:'Admin', icon:'⚑', adminOnly:true},
-  {id:'novedades', label:'Novedades', icon:'✦'},
-  {id:'ajustes', label:'Configuración', icon:'⚙'},
-];
-function visibleNavItems(){
+const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
+let moreOpen=false;
+function visibleMoreItems(){
   const role=accountSession.user?.role;
-  const items=state.activeSubjectId===SUBJECT.id
-    ? [...HUB_NAV_ITEMS,...STUDY_NAV_ITEMS,...UTILITY_NAV_ITEMS]
-    : [...HUB_NAV_ITEMS,...UTILITY_NAV_ITEMS];
-  return items.filter(item=>!item.adminOnly || ['admin','owner','superdev'].includes(role));
+  return MORE_NAV_ITEMS.filter(item=>!item.adminOnly||['admin','owner','superdev'].includes(role));
 }
+function primaryLabel(item){return item.id==='cuenta'?(accountSession.user?'Cuenta':'Entrar'):item.label;}
+function primaryActive(item){return item.id==='more'?MORE_VIEWS.has(state.view):state.view===item.id;}
+
+function closeMoreMenu(restoreFocus=true){
+  moreOpen=false;
+  document.getElementById('moreMenuRoot').innerHTML='';
+  document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded','false'));
+  if(restoreFocus)document.querySelector('[data-open-more]')?.focus();
+}
+function openMoreMenu(){
+  moreOpen=true;
+  document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded','true'));
+  const root=document.getElementById('moreMenuRoot');
+  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><h2 id="moreTitle">Más herramientas</h2><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más">✕</button></div><div class="more-list">${visibleMoreItems().map(item=>`<button class="more-item" data-more-view="${item.id}"><span class="ic" aria-hidden="true">${item.icon}</span><span><b>${item.label}</b><span>${item.description}</span></span></button>`).join('')}</div></section></div>`;
+  document.getElementById('closeMore').addEventListener('click',()=>closeMoreMenu());
+  document.getElementById('moreBackdrop').addEventListener('click',event=>{if(event.target.id==='moreBackdrop')closeMoreMenu();});
+  root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);navigateFromNav(view);}));
+  document.getElementById('closeMore').focus();
+}
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&moreOpen)closeMoreMenu();});
 
 function renderNav(){
   const rail = document.getElementById('rail');
   const activeSubject=SUBJECT_BY_ID.get(state.activeSubjectId);
+  const activeUnit=activeSubject?unitById(activeSubject.id,state.activeUnitId)||currentUnit(activeSubject.id):null;
   const role=accountSession.user?.role;
   rail.innerHTML = `
-    <div class="rail-brand"><div class="rail-brand-line">Study Hub <span class="version-badge">v${APP_VERSION}</span></div><span>${activeSubject?`${activeSubject.emoji} Día ${activeSubject.day} · ${activeSubject.name}`:'Estudio general'}</span></div>
-    ${visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''} ${n.prominent?'feedback-nav':''}" data-nav="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?accountLabel():n.id==='admin'&&role==='superdev'?'Super Dev':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('')}
+    <div class="rail-brand"><div class="rail-brand-line">Study Hub <span class="version-badge">v${APP_VERSION}</span></div><span>${activeSubject?`${activeSubject.emoji} Día ${activeSubject.day} · ${activeSubject.name}${activeUnit?` · ${activeUnit.name}`:''}`:'Estudio general'}</span></div>
+    ${PRIMARY_NAV_ITEMS.map(item=>`<button class="nav-btn ${primaryActive(item)?'active':''}" ${item.id==='more'?'data-open-more aria-expanded="false" aria-controls="morePanel"':`data-nav="${item.id}"`}><span class="ic">${item.icon}</span>${primaryLabel(item)}</button>`).join('')}
     <div class="rail-foot">
       <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
   rail.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.nav)));
+  rail.querySelector('[data-open-more]').addEventListener('click',()=>moreOpen?closeMoreMenu():openMoreMenu());
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
   const mob = document.getElementById('mobileNav');
-  mob.innerHTML = visibleNavItems().map(n=>`<button class="nav-btn ${state.view===n.id?'active':''} ${n.prominent?'feedback-nav':''}" data-navm="${n.id}"><span class="ic">${n.icon}</span>${n.id==='cuenta'?'Cuenta':n.id==='feedback'?'Feedback':n.id==='leaderboard'?'Ranking':n.id==='admin'&&role==='superdev'?'Dev':n.id==='novedades'?'Nuevo':n.id==='ajustes'?'Ajustes':n.label}${n.id==='novedades' && state.settings.lastSeenUpdate!==APP_VERSION?'<span class="nav-badge">NUEVO</span>':''}</button>`).join('');
+  mob.innerHTML = PRIMARY_NAV_ITEMS.map(item=>`<button class="nav-btn ${primaryActive(item)?'active':''}" ${item.id==='more'?'data-open-more aria-label="Abrir menú Más" aria-expanded="false" aria-controls="morePanel"':`data-navm="${item.id}"`}><span class="ic">${item.icon}</span>${primaryLabel(item)}</button>`).join('');
   mob.querySelectorAll('[data-navm]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.navm)));
+  mob.querySelector('[data-open-more]').addEventListener('click',()=>moreOpen?closeMoreMenu():openMoreMenu());
 }
 function setViewContext(view){
   state.view=view;
-  if(view==='hub') state.activeSubjectId=null;
-  else if(SUBJECT_VIEW_IDS.has(view)) state.activeSubjectId=SUBJECT.id;
+  if(view==='hub'){state.activeSubjectId=null;state.activeUnitId=null;}
+  else if(SUBJECT_VIEW_IDS.has(view)){
+    const sessionSubject=view==='session'?state.session?.subjectId:null;
+    const resultSubject=view==='results'?state.lastResult?.subjectId:null;
+    const selected=SUBJECT_BY_ID.get(sessionSubject||resultSubject||state.activeSubjectId||state.lastSubjectId)?.available?(sessionSubject||resultSubject||state.activeSubjectId||state.lastSubjectId):SUBJECT.id;
+    state.activeSubjectId=selected;state.lastSubjectId=selected;state.activeUnitId=unitById(selected,state.activeUnitId)?.id||currentUnit(selected)?.id||null;
+  }
 }
 function navigateFromNav(view){
   if(state.session){
@@ -1704,8 +1811,9 @@ function resumablePracticeProgress(){
   const current=Math.min((Number.isFinite(s.idx)?s.idx:0)+1,s.queue.length);
   const answered=Array.isArray(s.answers)?s.answers.length:0;
   const q=s.queue[Math.min(s.idx||0,s.queue.length-1)];
-  const topic=q?TOPICS.find(t=>t.id===q.topic):null;
-  return {current,total:s.queue.length,answered,topic:topic?topic.name:'Práctica'};
+  const topic=topicForQuestion(q);
+  const subject=SUBJECT_BY_ID.get(s.subjectId||questionSubjectId(q))||SUBJECT;
+  return {current,total:s.queue.length,answered,topic:topic?topic.name:'Práctica',subjectId:subject.id,subjectName:subject.name};
 }
 function saveAndExitPractice(){
   const s=state.session;
@@ -1749,8 +1857,9 @@ function localDateLabel(){
 }
 function renderHubSubjectCard(subject){
   const content=subjectContent(subject.id);
+  const unit=content.units.current;
   const detail=subject.available
-    ? `${content.topics.length} temas · ${content.questions.length} preguntas`
+    ? `${unit?.name||'Unidad disponible'}${unit?.type?` · ${unit.type}`:''} · ${subject.status}`
     : `Día ${subject.day} · contenido en preparación`;
   return `<article class="card hub-subject-card ${subject.available?'available':'unavailable'}" ${subject.available?'':'aria-disabled="true"'}>
     <div class="subject-card-top"><span class="subject-emoji" aria-hidden="true">${subject.emoji}</span><span class="subject-status">${subject.status}</span></div>
@@ -1763,26 +1872,29 @@ function openSubject(subjectId,view='dashboard'){
   const subject=SUBJECT_BY_ID.get(subjectId);
   if(!subject?.available) return false;
   state.activeSubjectId=subject.id;
+  state.lastSubjectId=subject.id;
+  state.activeUnitId=currentUnit(subject.id)?.id||null;
   goto(view);
   return true;
 }
 function renderHub(main){
   const date=localDateLabel();
   const pending=resumablePracticeProgress();
-  const mastery=overallMastery();
+  const summaries=SUBJECT_CATALOG.filter(subject=>subject.available).map(subject=>({subject,mastery:overallMastery(subject.id),metrics:subjectMetrics(subject.id),history:subjectHistory(subject.id)}));
   main.innerHTML=`
     <div class="pagehead hub-heading"><div><h1>Study Hub</h1><p>Tu espacio general para organizar y continuar el estudio.</p></div>${date?`<span class="hub-date">${escHtml(date)}</span>`:''}</div>
-    ${pending?`<div class="card resume-card"><div class="system-row"><div><b>▶ Práctica pendiente en ${SUBJECT.name}</b><div class="resume-meta"><span class="resume-pill">Pregunta ${pending.current} de ${pending.total}</span><span class="resume-pill">${pending.answered} contestadas</span><span class="resume-pill">${escHtml(pending.topic)}</span></div></div><button class="btn" id="resumeFromHub">Continuar práctica</button></div></div>`:''}
+    ${pending?`<div class="card resume-card"><div class="system-row"><div><b>▶ Práctica pendiente en ${escHtml(pending.subjectName)}</b><div class="resume-meta"><span class="resume-pill">Pregunta ${pending.current} de ${pending.total}</span><span class="resume-pill">${pending.answered} contestadas</span><span class="resume-pill">${escHtml(pending.topic)}</span></div></div><button class="btn" id="resumeFromHub">Continuar práctica</button></div></div>`:''}
     <div class="grid grid-2 hub-summary">
-      <div class="card"><p class="section-title">Progreso general disponible</p><div class="hub-progress"><strong>${mastery}%</strong><div><b>${SUBJECT.emoji} ${SUBJECT.name}</b><div class="account-sub">${state.totalAnswered} ${state.totalAnswered===1?'pregunta contestada':'preguntas contestadas'} · ${state.history.length} sesiones en historial</div></div></div><div class="btn-row" style="margin-top:15px;"><button class="btn primary" id="openSpanishQuick">Abrir Español</button></div></div>
+      <div class="card"><p class="section-title">Progreso por materia</p>${summaries.map(({subject,mastery,metrics,history})=>`<div class="hub-progress"><strong>${mastery}%</strong><div><b>${subject.emoji} ${subject.name}</b><div class="account-sub">${metrics.answered} ${metrics.answered===1?'pregunta contestada':'preguntas contestadas'} · ${history.length} sesiones</div></div></div>`).join('')}<div class="btn-row" style="margin-top:15px;"><button class="btn primary" id="openSpanishQuick">Abrir Español</button><button class="btn ghost" id="openHistoryQuick">Abrir Historia</button></div></div>
       <div class="card"><p class="section-title">Acceso rápido</p><h3 style="margin:0 0 6px;">Novedades del Hub</h3><p style="margin:0 0 15px;color:var(--ink-soft);font-size:.86rem;">Consulta las mejoras recientes y las funciones que están en preparación.</p><button class="btn ghost" id="openHubUpdates">Ver Novedades</button></div>
     </div>
     ${STUDY_DAYS.map(day=>`<section class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h2 id="hub-day-${day.id}">${day.name}</h2><span>${subjectsForDay(day.id).length} materias</span></div><div class="subject-grid">${subjectsForDay(day.id).map(renderHubSubjectCard).join('')}</div></section>`).join('')}`;
   main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject)));
   document.getElementById('openSpanishQuick').addEventListener('click',()=>openSubject(SUBJECT.id));
+  document.getElementById('openHistoryQuick').addEventListener('click',()=>openSubject('historia'));
   document.getElementById('openHubUpdates').addEventListener('click',()=>goto('novedades'));
   const resumeFromHub=document.getElementById('resumeFromHub');
-  if(resumeFromHub) resumeFromHub.addEventListener('click',()=>openSubject(SUBJECT.id,'session'));
+  if(resumeFromHub) resumeFromHub.addEventListener('click',()=>openSubject(pending.subjectId,'session'));
 }
 
 function ringSvg(pct, size=150, stroke=12){
@@ -1795,58 +1907,62 @@ function ringSvg(pct, size=150, stroke=12){
   </svg>`;
 }
 function weakestTopic(){
-  const studied=TOPICS.filter(t=>state.stats[t.id]?.attempts>0);
+  const studied=activeTopics().filter(t=>state.stats[t.id]?.attempts>0);
   if(!studied.length) return null;
   return studied.reduce((best,t)=>computeMastery(t.id).pct<computeMastery(best.id).pct?t:best, studied[0]);
 }
 function renderDashboard(main){
-  const pct = overallMastery();
-  const accPct = state.totalAnswered? Math.round(state.totalCorrect/state.totalAnswered*100):0;
+  const subject=activeSubject(),content=activeContent(),topics=content.topics;
+  const units=subjectUnits(subject.id),activeUnit=unitById(subject.id,state.activeUnitId)||units.current;
+  const metrics=subjectMetrics(subject.id),history=subjectHistory(subject.id),errors=subjectErrors(subject.id);
+  const pct = overallMastery(subject.id);
+  const accPct = metrics.answered? Math.round(metrics.correct/metrics.answered*100):0;
   const weak = weakestTopic();
-  const lastErrors = state.errors.slice(-3).reverse();
+  const lastErrors = errors.slice(-3).reverse();
   main.innerHTML = `
-    <div class="pagehead"><p class="subject-context">Study Hub → Día ${SUBJECT.day} → ${SUBJECT.emoji} ${SUBJECT.name}</p><div class="system-row"><div><h1>Panel de ${SUBJECT.name}</h1><p>Tu progreso y herramientas de esta materia.</p></div><button class="icon-btn" id="backToHub">← Volver al Hub</button></div></div>
+    <div class="pagehead"><p class="subject-context">Study Hub → Día ${subject.day} → ${subject.emoji} ${subject.name} → ${escHtml(activeUnit?.name||'Unidad')}</p><div class="system-row"><div><h1>Panel de ${subject.name}</h1><p>Tu progreso y herramientas de esta materia.</p></div><button class="icon-btn" id="backToHub">← Volver al Hub</button></div></div>
     ${!accountSession.user?`<div class="card" style="margin-bottom:20px;"><div class="account-status"><div><b>Guarda todo en tu cuenta</b><div class="account-sub">Sincroniza progreso, historial, guardadas y configuración entre dispositivos.</div></div><button class="btn" id="goAccount">Registrarme / Login</button></div></div>`:`<div class="cloud-note" style="margin:-14px 0 18px 0;">● Conectado como <b>${escHtml(accountSession.user.username)}</b> · <span id="cloudSyncStatus">Sincronización activa</span></div>`}
-    ${hasResumablePractice()?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><b>▶ Tienes una práctica sin terminar</b><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} de ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><button class="btn" id="resumeFromDash">Continuar práctica</button></div></div>`})():''}
+    ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><b>▶ Tienes una práctica sin terminar</b><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} de ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><button class="btn" id="resumeFromDash">Continuar práctica</button></div></div>`})():''}
     <div class="card dash-top" style="margin-bottom:20px;">
       <div class="ring-wrap">${ringSvg(pct)}<div class="ring-num"><b>${pct}%</b><span>dominado</span></div></div>
       <div class="grid grid-4" style="flex:1;">
-        <div class="stat-box"><b>${state.totalAnswered}</b><span>Preguntas contestadas</span></div>
-        <div class="stat-box"><b>${state.totalCorrect}</b><span>Correctas</span></div>
-        <div class="stat-box"><b>${state.totalAnswered-state.totalCorrect}</b><span>Incorrectas</span></div>
+        <div class="stat-box"><b>${metrics.answered}</b><span>Preguntas contestadas</span></div>
+        <div class="stat-box"><b>${metrics.correct}</b><span>Correctas</span></div>
+        <div class="stat-box"><b>${metrics.answered-metrics.correct}</b><span>Incorrectas</span></div>
         <div class="stat-box"><b>${accPct}%</b><span>Precisión</span></div>
-        <div class="stat-box"><b>${state.currentStreak}</b><span>Racha actual</span></div>
-        <div class="stat-box"><b>${state.bestStreak}</b><span>Mejor racha</span></div>
-        <div class="stat-box"><b>${fmtTime(state.studySeconds)}</b><span>Tiempo estudiando</span></div>
-        <div class="stat-box"><b>${state.errors.length}</b><span>Errores guardados</span></div>
+        <div class="stat-box"><b>${metrics.currentStreak}</b><span>Racha actual</span></div>
+        <div class="stat-box"><b>${metrics.bestStreak}</b><span>Mejor racha</span></div>
+        <div class="stat-box"><b>${fmtTime(metrics.studySeconds)}</b><span>Tiempo estudiando</span></div>
+        <div class="stat-box"><b>${errors.length}</b><span>Errores guardados</span></div>
       </div>
     </div>
     <div class="card subject-overview">
       <div class="system-row">
         <div>
-          <p class="section-title" style="margin-bottom:4px;">${SUBJECT.name}</p>
-          <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Primera materia activa del Study Hub.</p>
+          <p class="section-title" style="margin-bottom:4px;">${subject.name}</p>
+          <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Materia disponible del Study Hub.</p>
         </div>
         <span class="version-badge">v${APP_VERSION}</span>
       </div>
       <div class="subject-columns" style="margin-top:14px;">
         <div class="subject-block">
-          <h3>Tema actual · ${SUBJECT.topicGroups.current.name}</h3>
-          <div class="subject-tags">${TOPICS.filter(t=>SUBJECT.topicGroups.current.topicIds.includes(t.id)).map(t=>`<span class="subject-tag">${t.icon} ${t.name}</span>`).join('')}</div>
+          <div class="system-row"><h3 style="margin:0;">${escHtml(activeUnit?.name||'Unidad actual')}</h3><span class="subject-status">${activeUnit?.status==='completed'?'Completada':'Actual'}</span></div>
+          ${activeUnit?.type?`<p class="subject-empty" style="margin-top:7px;">${escHtml(activeUnit.type)}</p>`:''}
+          <div class="subject-tags" style="margin-top:10px;">${topics.filter(t=>activeUnit?.topicIds?.includes(t.id)).map(t=>`<span class="subject-tag">${t.icon} ${t.name}</span>`).join('')}</div>
           <div class="btn-row" style="margin-top:12px;"><button class="btn soft" id="openSubjectReview">Repasar temas</button><button class="btn ghost" id="openSubjectPractice">Practicar</button></div>
         </div>
         <div class="subject-block">
-          <h3>Temas anteriores</h3>
-          ${SUBJECT.topicGroups.previous.length
-            ? `<div class="subject-tags">${SUBJECT.topicGroups.previous.map(topic=>`<span class="subject-tag">${escHtml(topic.name)}</span>`).join('')}</div>`
-            : `<p class="subject-empty">Todavía no hay temas anteriores. Cuando se añada material nuevo, el contenido actual seguirá accesible aquí.</p>`}
+          <h3>Unidades anteriores</h3>
+          ${[...units.previous,...units.completed].length
+            ? `<div class="subject-tags">${[...units.previous,...units.completed].sort((a,b)=>(a.order||0)-(b.order||0)).map(unit=>`<span class="subject-tag">${escHtml(unit.name)}</span>`).join('')}</div>`
+            : `<p class="subject-empty">Todavía no hay unidades anteriores. El contenido actual seguirá accesible cuando se añada material nuevo.</p>`}
         </div>
       </div>
     </div>
     <div class="grid grid-2" style="align-items:start;margin-top:20px;">
       <div class="card">
         <p class="section-title">Progreso por tema</p>
-        ${TOPICS.map(t=>{ const m=computeMastery(t.id);
+        ${topics.map(t=>{ const m=computeMastery(t.id);
           return `<div class="topic-row"><div class="tname">${t.icon} ${t.name}</div>
           <div class="bar-track"><div class="bar-fill" style="width:${m.pct}%"></div></div>
           <span class="pill ${statusPillClass(m.status)}">${statusLabel(m.status)}</span></div>`; }).join('')}
@@ -2063,11 +2179,12 @@ function renderReviewExample(c){
 let repasoIndex = 0, repasoFilter=null;
 
 function renderRepasoHome(main){
+  const subject=activeSubject(),topics=activeTopics(),cards=activeReviewCards();
   main.innerHTML = `
-    <div class="pagehead"><h1>Modo repaso</h1><p>Revisa el contenido en tarjetas, a tu ritmo, antes de practicar.</p></div>
+    <div class="pagehead"><h1>Repaso de ${subject.name}</h1><p>Revisa el contenido en tarjetas, a tu ritmo, antes de practicar.</p></div>
     <div class="grid grid-3">
-      ${TOPICS.map(t=>`<div class="card mode-card" data-t="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${REVIEW_CARDS.filter(c=>c.topic===t.id).length} tarjetas</p></div>`).join('')}
-      <div class="card mode-card" data-t="all"><span class="ic">◎</span><h3>Todo el material</h3><p>${REVIEW_CARDS.length} tarjetas en total</p></div>
+      ${topics.map(t=>`<div class="card mode-card" data-t="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${cards.filter(c=>c.topic===t.id).length} tarjetas</p></div>`).join('')}
+      <div class="card mode-card" data-t="all"><span class="ic">◎</span><h3>Todo el material</h3><p>${cards.length} tarjetas en total</p></div>
     </div>`;
   main.querySelectorAll('[data-t]').forEach(c=>c.addEventListener('click', ()=>{
     repasoFilter = c.dataset.t==='all'? null : c.dataset.t;
@@ -2076,7 +2193,8 @@ function renderRepasoHome(main){
   }));
 }
 function renderRepasoCards(main){
-  const cards = repasoFilter? REVIEW_CARDS.filter(c=>c.topic===repasoFilter) : REVIEW_CARDS;
+  const reviewCards=activeReviewCards(),topics=activeTopics();
+  const cards = repasoFilter? reviewCards.filter(c=>c.topic===repasoFilter) : reviewCards;
   const c = cards[repasoIndex];
   main.innerHTML = `
     <div class="q-wrap">
@@ -2084,7 +2202,7 @@ function renderRepasoCards(main){
       <div class="q-progress"><div class="q-progress-fill" style="width:${(repasoIndex+1)/cards.length*100}%"></div></div>
       <div class="q-card review-card">
         <div style="text-align:center;">
-          <span class="q-topic-tag">${TOPICS.find(t=>t.id===c.topic).name}</span>
+          <span class="q-topic-tag">${topics.find(t=>t.id===c.topic).name}</span>
           <h2 class="serif" style="margin:6px 0 16px 0;">${c.title}</h2>
           <p class="review-definition">${c.def}</p>
         </div>
@@ -2110,25 +2228,26 @@ function renderRepasoCards(main){
    PRÁCTICA HOME
 ========================================================= */
 function renderPracticaHome(main){
+  const subject=activeSubject(),topics=activeTopics(),questions=activeQuestions(),isSpanish=subject.id==='espanol';
   let countPractice = state.settings.practiceCountsByDefault!==false;
   main.innerHTML = `
-    <div class="pagehead"><h1>Modo práctica</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
-    ${hasResumablePractice()?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><h3 style="margin:0 0 5px;">Práctica guardada</h3><p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Continúa exactamente donde la dejaste.</p><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></div>`})():''}
+    <div class="pagehead"><h1>Práctica de ${subject.name}</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
+    ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><h3 style="margin:0 0 5px;">Práctica guardada</h3><p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Continúa exactamente donde la dejaste.</p><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></div>`})():''}
     <label class="practice-count-box"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label>
     <p class="section-title">Por tema</p>
     <div class="grid grid-3" style="margin-bottom:24px;">
-      ${TOPICS.map(t=>{const m=computeMastery(t.id); return `<div class="card mode-card" data-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${Q.filter(q=>q.topic===t.id).length} preguntas</p></div>`}).join('')}
+      ${topics.map(t=>{const m=computeMastery(t.id); return `<div class="card mode-card" data-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></div>`}).join('')}
     </div>
     <p class="section-title">Modos especiales</p>
     <div class="grid grid-3">
       <div class="card mode-card" data-special="debiles"><span class="ic">⚠</span><h3>Temas débiles</h3><p>Preguntas centradas en tus temas con menor dominio.</p></div>
       <div class="card mode-card" data-special="rapido"><span class="ic">⚡</span><h3>Modo rápido</h3><p>10 preguntas mezcladas de todos los temas.</p></div>
       <div class="card mode-card" data-special="intermedio"><span class="ic">◫</span><h3>Modo intermedio <span class="new-pill">NUEVO</span></h3><p>25 preguntas mezcladas de todos los temas.</p></div>
-      <div class="card mode-card" data-special="figuras"><span class="ic">✦</span><h3>Solo figuras literarias</h3><p>Identificación de figuras literarias.</p></div>
+      ${isSpanish?`<div class="card mode-card" data-special="figuras"><span class="ic">✦</span><h3>Solo figuras literarias</h3><p>Identificación de figuras literarias.</p></div>
       <div class="card mode-card" data-special="morfologia"><span class="ic">🧩</span><h3>Solo morfología</h3><p>Análisis y segmentación de palabras.</p></div>
-      <div class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></div>
+      <div class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></div>`:''}
       <div class="card mode-card" data-special="adaptativo"><span class="ic">◈</span><h3>Adaptativo</h3><p>Se ajusta según lo que fallas o dominas.</p></div>
-      <div class="card mode-card experimental-card" data-special="experimental"><span class="ic">🧪</span><h3>Modo experimental <span class="new-pill">NUEVO</span></h3><p>Genera variaciones nuevas de ejemplos y preguntas. Puede contener errores.</p></div>
+      ${isSpanish?`<div class="card mode-card experimental-card" data-special="experimental"><span class="ic">🧪</span><h3>Modo experimental <span class="new-pill">NUEVO</span></h3><p>Genera variaciones nuevas de ejemplos y preguntas. Puede contener errores.</p></div>`:''}
     </div>`;
   const getCount=()=>document.getElementById('countPractice').checked;
   const resumePractice=document.getElementById('resumePractice');
@@ -2307,13 +2426,15 @@ function renderExperimentalHome(main){
    EXAMEN HOME
 ========================================================= */
 function renderExamenHome(main){
-  const defaults = new Set((state.settings.examTopics&&state.settings.examTopics.length?state.settings.examTopics:TOPICS.map(t=>t.id)));
+  const subject=activeSubject(),topics=activeTopics(),questions=activeQuestions();
+  const savedDefaults=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
+  const defaults = new Set(savedDefaults?.length?savedDefaults:topics.map(t=>t.id));
   main.innerHTML = `
-    <div class="pagehead"><h1>Modo examen</h1><p>Simula un examen real. Las respuestas se revelan solo al terminar.</p></div>
+    <div class="pagehead"><h1>Examen de ${subject.name}</h1><p>${subject.name} · ${escHtml(currentUnit(subject.id)?.name||'Unidad actual')}. Las respuestas se revelan solo al terminar.</p></div>
     <div class="card">
       <p class="section-title">Temas que quieres incluir <span class="new-pill">NUEVO</span></p>
       <div class="check-list" id="examTopics" style="margin-bottom:20px;">
-        ${TOPICS.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${defaults.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}
+        ${topics.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${defaults.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}
       </div>
       <p class="section-title">Número de preguntas</p>
       <div class="btn-row" id="examSize" style="margin-bottom:20px;">
@@ -2336,7 +2457,7 @@ function renderExamenHome(main){
   }));
   document.getElementById('startExam').addEventListener('click', ()=>{
     const topics=selectedTopics(); if(!chosen || !topics.length) return;
-    const available=Q.filter(q=>topics.includes(q.topic)).length;
+    const available=questions.filter(q=>topics.includes(q.topic)).length;
     startSession({mode:'examen', topics, limit: chosen==='all'? available : parseInt(chosen), fullExam:chosen==='all'});
   });
 }
@@ -2348,7 +2469,9 @@ function renderExamenHome(main){
 function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]); }
 
 function startSession(opts){
+  const subject=activeSubject(),content=activeContent(),topics=content.topics,questions=content.questions;
   if(opts.mode==='practica' && hasResumablePractice() && state.view!=='session' && !opts.forceNew){
+    if(state.session.subjectId!==subject.id){showToast(`Tienes una práctica pendiente en ${SUBJECT_BY_ID.get(state.session.subjectId)?.name||'otra materia'}. Continúala o descártala antes de iniciar otra.`,true);return;}
     const ok=confirm('Tienes una práctica guardada. Aceptar la descarta y comienza una nueva; Cancelar conserva la práctica para continuarla.');
     if(!ok) return;
     state.session=null;
@@ -2356,34 +2479,36 @@ function startSession(opts){
   attemptStage = 0;
   let pool;
   if(opts.special==='debiles'){
-    const sorted = [...TOPICS].sort((a,b)=>computeMastery(a.id).pct - computeMastery(b.id).pct);
+    const sorted = [...topics].sort((a,b)=>computeMastery(a.id).pct - computeMastery(b.id).pct);
     const weakIds = sorted.slice(0,2).map(t=>t.id);
-    pool = Q.filter(q=>weakIds.includes(q.topic));
+    pool = questions.filter(q=>weakIds.includes(q.topic));
   } else if(opts.special==='adaptativo'){
     // Prioriza temas débiles sin duplicar preguntas dentro de la misma sesión.
-    pool = Q.map(q=>{
+    pool = questions.map(q=>{
       const m=computeMastery(q.topic);
       const weight=m.pct<50?3:m.pct<80?2:1;
       const u=Math.max(Math.random(),1e-9);
       return {q, key:-Math.log(u)/weight};
     }).sort((a,b)=>a.key-b.key).map(x=>x.q);
   } else if(opts.topics && opts.topics.length){
-    pool = Q.filter(q=>opts.topics.includes(q.topic));
+    pool = questions.filter(q=>opts.topics.includes(q.topic));
   } else if(opts.topic){
-    pool = Q.filter(q=>q.topic===opts.topic);
+    pool = questions.filter(q=>q.topic===opts.topic);
   } else if(opts.errorsOnly){
-    pool = state.errors.map(e=>findQuestionById(e.qid)).filter(Boolean);
+    pool = state.errors.map(e=>findQuestionById(e.qid)).filter(q=>q&&questionSubjectId(q)===subject.id);
   } else if(opts.savedOnly){
-    pool = [...state.saved].map(findQuestionById).filter(Boolean);
+    pool = [...state.saved].map(findQuestionById).filter(q=>q&&questionSubjectId(q)===subject.id);
   } else {
-    pool = Q.slice();
+    pool = questions.slice();
   }
   pool = shuffle(pool);
   if(opts.limit) pool = pool.slice(0, Math.min(opts.limit, pool.length));
-  if(pool.length===0) pool = shuffle(Q).slice(0, opts.limit||10);
+  if(pool.length===0) pool = shuffle(questions).slice(0, opts.limit||10);
 
   state.session = {
     mode: opts.mode, // 'practica' | 'examen'
+    subjectId:subject.id,
+    unitId:currentUnit(subject.id)?.id||null,
     queue: pool,
     idx: 0,
     answers: [], // {qid, correct, userAnswer, usedHint}
@@ -2422,7 +2547,8 @@ function renderSession(main){
   attemptStage=Number.isFinite(s.attemptStage)?s.attemptStage:0;
   const q = currentQ();
   const total = s.queue.length;
-  const t = TOPICS.find(x=>x.id===q.topic);
+  const t = topicForQuestion(q);
+  const sessionCards=subjectContent(s.subjectId||questionSubjectId(q)).reviewCards;
   const finalizedAnswer=sessionAnswerAt(s,s.idx);
   const lastPreviousIndex=previousReviewIndex(s);
 
@@ -2432,7 +2558,7 @@ function renderSession(main){
 
   let bodyHtml = '';
   if(needsMini){
-    const card = REVIEW_CARDS.find(c=>c.topic===q.topic);
+    const card = sessionCards.find(c=>c.topic===q.topic);
     bodyHtml = `<div class="mini-review">
       <h4>Parece que necesitas repasar esto.</h4>
       <p style="margin:0 0 6px 0;"><b>${card.title}:</b> ${card.def}</p>
@@ -2519,7 +2645,7 @@ function renderAnsweredReview(answerIndex){
   if(!a || typeof a!=='object'){ render(); return; }
   const q=findQuestionById(a.qid);
   if(!q){ render(); return; }
-  const t=TOPICS.find(x=>x.id===q.topic);
+  const t=topicForQuestion(q);
   const main=document.getElementById('main');
   main.innerHTML=`
     <div class="q-wrap">
@@ -2725,7 +2851,7 @@ function correctAnswerLabel(q){
 function recognitionTip(q){
   const hs=(q.hints||[]).filter(Boolean);
   if(hs.length) return hs[hs.length-1];
-  const topic=TOPICS.find(t=>t.id===q.topic)?.name || 'este tema';
+  const topic=topicForQuestion(q)?.name || 'este tema';
   return `Relaciona la definición con la característica clave de ${topic}.`;
 }
 function normalizeConceptText(v){
@@ -2787,9 +2913,10 @@ function conceptCardMatches(card, source, topic){
   });
 }
 function findConceptCard(q, ans, correct){
+  const reviewCards=subjectContent(questionSubjectId(q)).reviewCards;
   if(q.type==='seg'){
-    return REVIEW_CARDS.find(c=>c.topic==='gramatica' && c.title==='Morfología')
-      || REVIEW_CARDS.find(c=>c.title==='Lexema o raíz')
+    return reviewCards.find(c=>c.topic==='gramatica' && c.title==='Morfología')
+      || reviewCards.find(c=>c.title==='Lexema o raíz')
       || null;
   }
 
@@ -2805,11 +2932,11 @@ function findConceptCard(q, ans, correct){
   // Primero busca dentro del tema de la pregunta para evitar ambigüedades
   // como "testigo" en Narrador y "autor testigo" en Crónica.
   for(const source of sources){
-    const card=REVIEW_CARDS.find(c=>conceptCardMatches(c,source,q.topic));
+    const card=reviewCards.find(c=>conceptCardMatches(c,source,q.topic));
     if(card) return card;
   }
   for(const source of sources){
-    const card=REVIEW_CARDS.find(c=>conceptCardMatches(c,source,null));
+    const card=reviewCards.find(c=>conceptCardMatches(c,source,null));
     if(card) return card;
   }
 
@@ -2820,7 +2947,7 @@ function findConceptCard(q, ans, correct){
     narrativa:'Género narrativo',
     cronica:'Crónica'
   }[q.topic];
-  return fallbackTitle ? REVIEW_CARDS.find(c=>c.title===fallbackTitle) || null : null;
+  return fallbackTitle ? reviewCards.find(c=>c.title===fallbackTitle) || null : null;
 }
 function segmentationExample(q){
   if(q.type!=='seg' || !Array.isArray(q.parts)) return '';
@@ -3005,7 +3132,10 @@ function finishSession(){
   const pct = total? Math.round(correctCount/total*100):0;
   const elapsed = Math.round((Date.now()-s.startedAt)/1000);
   const countsTowardProgress = s.mode==='examen' || s.countStats!==false;
-  if(countsTowardProgress) state.studySeconds += elapsed;
+  if(countsTowardProgress){
+    if(s.subjectId==='espanol') state.studySeconds += elapsed;
+    else (state.subjectTotals[s.subjectId]||(state.subjectTotals[s.subjectId]={answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0})).studySeconds += elapsed;
+  }
   if(s.mode==='examen'){
     s.answers.filter(a=>!a.skipped).forEach(a=>{
       const q=findQuestionById(a.qid);
@@ -3025,13 +3155,13 @@ function finishSession(){
     id:`${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
     date:new Date().toLocaleDateString('es-ES', {day:'2-digit',month:'2-digit',year:'numeric'}),
     time: new Date().toLocaleTimeString('es-ES',{hour:'2-digit',minute:'2-digit'}),
-    mode:s.mode, total, correct:correctCount, pct, seconds:elapsed,
+    mode:s.mode,subjectId:s.subjectId||'espanol',unitId:s.unitId||currentUnit(s.subjectId||'espanol')?.id||null,total, correct:correctCount, pct, seconds:elapsed,
     byTopic, countsTowardProgress,
     examTopics:s.examTopics||[], examFull:!!s.examFull,
     answers:s.answers.map(a=>({qid:a.qid,correct:!!a.correct,skipped:!!a.skipped,hintsUsed:a.hintsUsed||0,userAnswer:a.userAnswer??null}))
   });
 
-  state.lastResult = {total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, countsTowardProgress, examTopics:s.examTopics||[], examFull:!!s.examFull, experimental:!!s.experimental};
+  state.lastResult = {subjectId:s.subjectId||'espanol',unitId:s.unitId||currentUnit(s.subjectId||'espanol')?.id||null,total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, countsTowardProgress, examTopics:s.examTopics||[], examFull:!!s.examFull, experimental:!!s.experimental};
   const completedResult=state.lastResult;
   state.session=null;
   saveState();
@@ -3047,10 +3177,11 @@ function renderResults(main){
   if(!r){ goto('dashboard'); return; }
   const wrong = r.answers.filter(a=>!a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
   const good = r.answers.filter(a=>a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
+  const subject=SUBJECT_BY_ID.get(r.subjectId||'espanol')||SUBJECT;
   const topicNames = Object.keys(r.byTopic);
 
   main.innerHTML = `
-    <div class="pagehead"><h1>Resultados</h1><p>${r.experimental?'Sesión experimental completada':r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
+    <div class="pagehead"><h1>Resultados de ${subject.name}</h1><p>${r.experimental?'Sesión experimental completada':r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
     ${r.experimental?`<div class="experimental-warning" style="margin-bottom:20px;"><b>🧪 Resultado experimental</b>Esta nota no se añadió a tus estadísticas, errores, historial ni leaderboard porque el contenido puede contener errores.</div>`:''}
     <div class="card results-hero" style="margin-bottom:20px;">
       <div class="big">${r.pct}%</div>
@@ -3063,21 +3194,21 @@ function renderResults(main){
     <div class="grid grid-2" style="align-items:start;">
       <div class="card">
         <p class="section-title">Desempeño por tema</p>
-        ${topicNames.map(tid=>{ const t=TOPICS.find(x=>x.id===tid); const d=r.byTopic[tid]; const p=Math.round(d.c/d.t*100);
+        ${topicNames.map(tid=>{ const t=subjectContent(subject.id).topics.find(x=>x.id===tid); const d=r.byTopic[tid]; const p=Math.round(d.c/d.t*100);
           return `<div class="topic-row"><div class="tname">${t.icon} ${t.name}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><span class="pill pill-progress">${d.c}/${d.t}</span></div>`; }).join('')}
       </div>
       <div class="card">
         <p class="section-title">Lo que hiciste bien</p>
-        <p style="font-size:.88rem;">${good.length? `Dominas bien: ${[...new Set(good.map(q=>TOPICS.find(t=>t.id===q.topic).name))].join(', ')}.` : 'Sigue practicando para ver tus fortalezas aquí.'}</p>
+        <p style="font-size:.88rem;">${good.length? `Dominas bien: ${[...new Set(good.map(q=>topicForQuestion(q)?.name).filter(Boolean))].join(', ')}.` : 'Sigue practicando para ver tus fortalezas aquí.'}</p>
         <p class="section-title" style="margin-top:16px;">Necesitas repasar</p>
-        <p style="font-size:.88rem;">${wrong.length? `Revisa: ${[...new Set(wrong.map(q=>TOPICS.find(t=>t.id===q.topic).name))].join(', ')}.` : '¡No fallaste ninguna pregunta!'}</p>
+        <p style="font-size:.88rem;">${wrong.length? `Revisa: ${[...new Set(wrong.map(q=>topicForQuestion(q)?.name).filter(Boolean))].join(', ')}.` : '¡No fallaste ninguna pregunta!'}</p>
         <p class="section-title" style="margin-top:16px;">Próximo paso recomendado</p>
         <p style="font-size:.88rem;">${wrong.length>2? 'Practica el modo "Temas débiles" antes de intentar otro examen.' : 'Estás listo para intentar un examen más largo.'}</p>
       </div>
     </div>
     ${wrong.length? `<div class="card" style="margin-top:20px;">
       <p class="section-title">Preguntas falladas</p>
-      ${wrong.map(q=>`<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${TOPICS.find(t=>t.id===q.topic).name}</div></div>`).join('')}
+      ${wrong.map(q=>`<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${topicForQuestion(q)?.name||''}</div></div>`).join('')}
     </div>`:''}
     ${r.mode==='examen'? `<div class="card" style="margin-top:20px;">
       <p class="section-title">Explicación de cada respuesta</p>
@@ -3093,7 +3224,7 @@ function renderResults(main){
     const ids = wrong.map(q=>q.id);
     state.session=null;
     const pool = ids.map(findQuestionById).filter(Boolean);
-    state.session = {mode:'practica', queue:shuffle(pool), idx:0, answers:[], hintLevel:0, hintsUsed:0, startedAt:Date.now(), miniReviewShown:false, countStats:state.settings.practiceCountsByDefault!==false, returnView:'practica'};
+    state.session = {mode:'practica',subjectId:subject.id,unitId:r.unitId||currentUnit(subject.id)?.id||null,queue:shuffle(pool), idx:0, answers:[], hintLevel:0, hintsUsed:0, startedAt:Date.now(), miniReviewShown:false, countStats:state.settings.practiceCountsByDefault!==false, returnView:'practica'};
     saveState();
     goto('session');
   });
@@ -3103,14 +3234,15 @@ function renderResults(main){
    ERRORES
 ========================================================= */
 function renderErrores(main){
-  const list = state.errors.slice().sort((a,b)=>b.last-a.last);
+  const subject=activeSubject();
+  const list = subjectErrors(subject.id).slice().sort((a,b)=>b.last-a.last);
   main.innerHTML = `
-    <div class="pagehead"><h1>Mis errores</h1><p>Preguntas que has fallado, guardadas para reforzar.</p></div>
+    <div class="pagehead"><h1>Errores de ${subject.name}</h1><p>Preguntas que has fallado, guardadas para reforzar.</p></div>
     ${list.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practErr">Practicar mis errores (${list.length})</button></div>` : ''}
     ${list.length? list.map(e=>{
       const q=findQuestionById(e.qid); if(!q) return '';
       return `<div class="err-item"><div class="q">${q.prompt}</div>
-      <div class="meta">${TOPICS.find(t=>t.id===q.topic).name} · Fallada ${Math.max(0,Number(e.times)||0)} ${Number(e.times)===1?'vez':'veces'} · Última vez: ${Number.isFinite(Number(e.last))?new Date(Number(e.last)).toLocaleDateString('es-ES'):'sin fecha'}</div></div>`;
+      <div class="meta">${topicForQuestion(q)?.name||''} · Fallada ${Math.max(0,Number(e.times)||0)} ${Number(e.times)===1?'vez':'veces'} · Última vez: ${Number.isFinite(Number(e.last))?new Date(Number(e.last)).toLocaleDateString('es-ES'):'sin fecha'}</div></div>`;
     }).join('') : `<div class="empty-state"><span class="ic">✕</span>Todavía no tienes errores guardados. ¡Sigue así!</div>`}
   `;
   if(list.length) document.getElementById('practErr').addEventListener('click', ()=>startSession({mode:'practica', errorsOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
@@ -3120,12 +3252,13 @@ function renderErrores(main){
    GUARDADAS
 ========================================================= */
 function renderGuardadas(main){
-  const ids=[...state.saved];
+  const subject=activeSubject();
+  const ids=subjectSaved(subject.id);
   main.innerHTML = `
-    <div class="pagehead"><h1>Preguntas guardadas</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p></div>
+    <div class="pagehead"><h1>Guardadas de ${subject.name}</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p></div>
     ${ids.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practSaved">Practicar guardadas (${ids.length})</button></div>` : ''}
     ${ids.length? ids.map(id=>{ const q=findQuestionById(id); if(!q) return '';
-      return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${TOPICS.find(t=>t.id===q.topic).name}</div></div>`;
+      return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${topicForQuestion(q)?.name||''}</div></div>`;
     }).join('') : `<div class="empty-state"><span class="ic">★</span>No has guardado preguntas todavía. Usa el botón "Guardar" durante la práctica.</div>`}
   `;
   if(ids.length) document.getElementById('practSaved').addEventListener('click', ()=>startSession({mode:'practica', savedOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
@@ -3135,9 +3268,10 @@ function renderGuardadas(main){
    HISTORIAL
 ========================================================= */
 function renderHistorial(main){
-  const h = state.history.slice().reverse();
+  const subject=activeSubject();
+  const h = subjectHistory(subject.id).slice().reverse();
   main.innerHTML = `
-    <div class="pagehead"><h1>Historial</h1><p>Tus exámenes y sesiones de práctica anteriores. Toca una sesión para revisar sus preguntas.</p></div>
+    <div class="pagehead"><h1>Historial de ${subject.name}</h1><p>Tus exámenes y sesiones de práctica anteriores. Toca una sesión para revisar sus preguntas.</p></div>
     ${h.length? `<div class="card" style="margin-bottom:20px;">
       <p class="section-title">Progreso reciente (%)</p>
       <div class="spark">${h.slice(0,14).reverse().map(x=>{const pct=Math.max(0,Math.min(100,Number(x.pct)||0));return `<div style="height:${pct}%" title="${pct}%"></div>`;}).join('')}</div>
@@ -3159,7 +3293,7 @@ function renderHistoryDetail(entry){
     <div class="pagehead"><h1>Revisión de sesión</h1><p>${entry.mode==='examen'?'Examen':'Práctica'} · ${escHtml(String(entry.date||''))} ${escHtml(String(entry.time||''))} · ${Number(entry.correct)||0}/${Number(entry.total)||0} (${Number(entry.pct)||0}%)</p></div>
     <div class="btn-row" style="margin-bottom:18px;"><button class="icon-btn" id="backHistory">← Volver al historial</button></div>
     ${answers.length? `<div class="card">
-      ${answers.map((a,i)=>{const q=findQuestionById(a.qid);if(!q)return'';const t=TOPICS.find(x=>x.id===q.topic);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
+      ${answers.map((a,i)=>{const q=findQuestionById(a.qid);if(!q)return'';const t=topicForQuestion(q);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
     </div>` : `<div class="empty-state"><span class="ic">▥</span>Esta sesión es de una versión anterior y solo guardó el resultado general. Las sesiones nuevas sí guardarán cada pregunta y tu respuesta.</div>`}
   `;
   document.getElementById('backHistory').addEventListener('click',()=>goto('historial'));
@@ -3227,7 +3361,7 @@ function renderAccountPanel(mode){
     document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});
     document.getElementById('devLoginForm').addEventListener('submit',async e=>{e.preventDefault();devMessage('Verificando…');try{const data=await accountRequest('POST',{action:'dev-login',code:document.getElementById('devCode').value,remember:document.getElementById('rememberDev').checked});document.getElementById('devCode').value='';accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){document.getElementById('devCode').value='';devMessage(err.message,true);}});
   }else if(mode==='register'){
-    box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. sebas10" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
+    box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. usuario" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
     let regMode='basic';
     const choices=[...box.querySelectorAll('[data-reg-mode]')];
     const emailInput=document.getElementById('regEmail'), emailLabel=document.getElementById('emailLabel');
@@ -3268,14 +3402,18 @@ function renderFeedback(main){
   const activeSubject=SUBJECT_BY_ID.get(state.activeSubjectId);
   const activeQuestion=state.session?.queue?.[state.session.idx];
   const activeTopicId=activeQuestion?.topic||'';
-  main.innerHTML=`<div class="pagehead"><h1>Enviar feedback</h1><p>Reporta un problema o comparte una idea. La app añadirá automáticamente tu contexto actual.</p></div><div class="feedback-layout"><div class="card"><form class="feedback-form account-form" id="feedbackForm"><label>Tipo<select id="feedbackType">${Object.entries(FEEDBACK_TYPES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('')}</select></label><label>Título<input id="feedbackTitle" maxlength="100" minlength="4" required placeholder="Resumen breve"></label><label>Mensaje<textarea id="feedbackMessage" maxlength="4000" minlength="10" required placeholder="Qué ocurrió o qué te gustaría mejorar"></textarea></label><label>Materia (opcional)<select id="feedbackSubject"><option value="">General</option>${SUBJECT_CATALOG.map(subject=>`<option value="${subject.id}" ${activeSubject?.id===subject.id?'selected':''}>${subject.emoji} ${subject.name}</option>`).join('')}</select></label><label>Tema (opcional)<select id="feedbackTopic"><option value="">Sin tema</option>${TOPICS.map(topic=>`<option value="${topic.id}" ${activeTopicId===topic.id?'selected':''}>${topic.icon} ${topic.name}</option>`).join('')}</select></label><div class="cloud-note">Se incluirán tu cuenta, fecha, sección actual y materia/tema seleccionados. Nunca se envían contraseñas, respuestas ni tokens.</div><div class="btn-row"><button class="btn primary" type="submit" id="sendFeedback">Enviar feedback</button><span class="save-note" id="feedbackMessageState"></span></div></form></div><div><div class="system-row" style="margin-bottom:12px;"><div><h2 style="margin:0;">Mis feedbacks</h2><p class="cloud-note">Solo tú y el personal autorizado pueden verlos.</p></div><button class="icon-btn" id="refreshFeedback">Actualizar</button></div><div class="admin-list" id="myFeedbackList"><div class="empty-state"><span class="ic">…</span>Cargando…</div></div></div></div>`;
+  const feedbackTopics=activeSubject?subjectContent(activeSubject.id).topics:[];
+  main.innerHTML=`<div class="pagehead"><h1>Enviar feedback</h1><p>Reporta un problema o comparte una idea. La app añadirá automáticamente tu contexto actual.</p></div><div class="feedback-layout"><div class="card"><form class="feedback-form account-form" id="feedbackForm"><label>Tipo<select id="feedbackType">${Object.entries(FEEDBACK_TYPES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('')}</select></label><label>Título<input id="feedbackTitle" maxlength="100" minlength="4" required placeholder="Resumen breve"></label><label>Mensaje<textarea id="feedbackMessage" maxlength="4000" minlength="10" required placeholder="Qué ocurrió o qué te gustaría mejorar"></textarea></label><label>Materia (opcional)<select id="feedbackSubject"><option value="">General</option>${SUBJECT_CATALOG.map(subject=>`<option value="${subject.id}" ${activeSubject?.id===subject.id?'selected':''}>${subject.emoji} ${subject.name}</option>`).join('')}</select></label><label>Tema (opcional)<select id="feedbackTopic"><option value="">Sin tema</option>${feedbackTopics.map(topic=>`<option value="${topic.id}" ${activeTopicId===topic.id?'selected':''}>${topic.icon} ${topic.name}</option>`).join('')}</select></label><div class="cloud-note">Se incluirán tu cuenta, fecha, sección actual y materia/tema seleccionados. Nunca se envían contraseñas, respuestas ni tokens.</div><div class="btn-row"><button class="btn primary" type="submit" id="sendFeedback">Enviar feedback</button><span class="save-note" id="feedbackMessageState"></span></div></form></div><div><div class="system-row" style="margin-bottom:12px;"><div><h2 style="margin:0;">Mis feedbacks</h2><p class="cloud-note">Solo tú y el personal autorizado pueden verlos.</p></div><button class="icon-btn" id="refreshFeedback">Actualizar</button></div><div class="admin-list" id="myFeedbackList"><div class="empty-state"><span class="ic">…</span>Cargando…</div></div></div></div>`;
+  const feedbackSubject=document.getElementById('feedbackSubject'),feedbackTopic=document.getElementById('feedbackTopic');
+  feedbackSubject.addEventListener('change',()=>{const topics=subjectContent(feedbackSubject.value).topics;feedbackTopic.innerHTML='<option value="">Sin tema</option>'+topics.map(topic=>`<option value="${topic.id}">${topic.icon} ${topic.name}</option>`).join('');});
   document.getElementById('feedbackForm').addEventListener('submit',async event=>{
     event.preventDefault();
     const button=document.getElementById('sendFeedback');
     const note=document.getElementById('feedbackMessageState');
     button.disabled=true;note.textContent='Enviando…';
     try{
-      await feedbackRequest('POST',{action:'create',type:document.getElementById('feedbackType').value,title:document.getElementById('feedbackTitle').value,message:document.getElementById('feedbackMessage').value,subjectId:document.getElementById('feedbackSubject').value,topicId:document.getElementById('feedbackTopic').value,section:state.view});
+      const subjectId=feedbackSubject.value;
+      await feedbackRequest('POST',{action:'create',type:document.getElementById('feedbackType').value,title:document.getElementById('feedbackTitle').value,message:document.getElementById('feedbackMessage').value,subjectId,unitId:currentUnit(subjectId)?.id||'',topicId:feedbackTopic.value,section:state.view});
       document.getElementById('feedbackTitle').value='';document.getElementById('feedbackMessage').value='';
       note.textContent='Enviado ✓';showToast('Feedback enviado ✓');await loadOwnFeedback();
     }catch(error){note.textContent=error.message;showToast(error.message,true);}finally{button.disabled=false;}
@@ -3304,12 +3442,12 @@ async function adminRequest(method='GET',body=null,query=''){
   if(!res.ok){const error=new Error(data.error||`Admin ${res.status}`);error.status=res.status;throw error;}
   return data;
 }
-async function featureRequest(method='GET',body=null){
+async function featureRequest(method='GET',body=null,query=''){
   const opts={method,headers:{'Content-Type':'application/json'},credentials:'same-origin'};
   if(body)opts.body=JSON.stringify(body);
-  const res=await fetch('/.netlify/functions/features',opts);
+  const res=await fetch(`/.netlify/functions/features${query?`?${query}`:''}`,opts);
   const data=await res.json().catch(()=>({}));
-  if(!res.ok)throw new Error(data.error||'No se pudieron cargar Early Access y Feature Flags.');
+  if(!res.ok){const error=new Error(data.error||'No se pudieron cargar Early Access y Feature Flags.');error.status=res.status;error.data=data;throw error;}
   return data;
 }
 function roleLabel(role){return role==='superdev'?'Super Dev':role==='owner'?'Owner':role==='admin'?'Admin':'Member';}
@@ -3421,7 +3559,7 @@ async function loadConnectedUsers(){
     const data=await adminRequest('GET',null,new URLSearchParams({section:'connected',q:query,filter}).toString());
     const users=Array.isArray(data.users)?data.users:[];
     const count=document.getElementById('connectedCount');if(count)count.textContent=`${Number(data.count)||0} online`;
-    box.innerHTML=users.length?users.map(user=>`<article class="admin-user-card"><div class="system-row"><div><h3>${escHtml(user.displayName||user.username)} ${user.veteran?'<span class="veteran-badge">Veterano</span>':''}</h3><div class="meta">@${escHtml(user.username)} · ${roleLabel(user.role)} · ${escHtml(user.visibleRank||'Estudiante')}</div></div><span class="status-badge">Online</span></div><div class="meta" style="margin-top:8px;">${relativeActivity(user.lastActivityAt)}${user.section?` · ${escHtml(user.section)}`:''}${user.subjectId?` · ${escHtml(SUBJECT_BY_ID.get(user.subjectId)?.name||user.subjectId)}`:''}${user.clientKind?` · ${escHtml(user.clientKind)}`:''}</div></article>`).join(''):'<div class="empty-state"><span class="ic">○</span>No hay cuentas identificadas con estos filtros.</div>';
+    box.innerHTML=users.length?users.map(user=>`<article class="admin-user-card"><div class="system-row"><div><h3>${escHtml(user.displayName||user.username)} ${user.veteran?'<span class="veteran-badge">Veterano</span>':''}</h3><div class="meta">@${escHtml(user.username)} · ${roleLabel(user.role)} · ${escHtml(user.visibleRank||'Estudiante')}</div></div><span class="status-badge">Online</span></div><div class="meta" style="margin-top:8px;">${relativeActivity(user.lastActivityAt)}${user.section?` · ${escHtml(user.section)}`:''}${user.subjectId?` · ${escHtml(SUBJECT_BY_ID.get(user.subjectId)?.name||user.subjectId)}`:''}${user.unitId?` · ${escHtml(unitById(user.subjectId,user.unitId)?.name||user.unitId)}`:''}${user.clientKind?` · ${escHtml(user.clientKind)}`:''}</div></article>`).join(''):'<div class="empty-state"><span class="ic">○</span>No hay cuentas identificadas con estos filtros.</div>';
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 function renderAdminFeedbackShell(box){
@@ -3445,8 +3583,13 @@ async function loadAdminFeedback(){
 async function loadEarlyAccess(box){
   try{
     const data=await featureRequest();featureFlags=Array.isArray(data.features)?data.features:[];
-    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Laboratorio Super Dev</h2><p style="margin-bottom:0;">Las funciones hidden nunca se exponen a usuarios normales. Activar una flag no sustituye validaciones backend.</p></div><div class="feature-list">${featureFlags.map((feature,index)=>`<article class="feature-row"><div><h3>${escHtml(feature.name)}</h3><p class="cloud-note">${escHtml(feature.description)}</p></div><select data-feature-state="${index}">${['hidden','development','experimental','preview','ready'].map(value=>`<option value="${value}" ${feature.state===value?'selected':''}>${value}</option>`).join('')}</select><select data-feature-audience="${index}">${['superdev','staff','all'].map(value=>`<option value="${value}" ${feature.audience===value?'selected':''}>${value}</option>`).join('')}</select><button class="btn ${feature.enabled?'soft':'ghost'}" data-feature-toggle="${index}">${feature.enabled?'Desactivar':'Activar'}</button></article>`).join('')}</div>`;
-    box.querySelectorAll('[data-feature-toggle]').forEach(button=>button.addEventListener('click',async()=>{const index=Number(button.dataset.featureToggle),feature=featureFlags[index];const state=box.querySelector(`[data-feature-state="${index}"]`).value,audience=box.querySelector(`[data-feature-audience="${index}"]`).value;try{const result=await featureRequest('POST',{id:feature.id,state,audience,enabled:!feature.enabled});featureFlags[index]=result.feature;showToast('Feature Flag actualizada ✓');await loadEarlyAccess(box);}catch(error){showToast(error.message,true);}}));
+    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Laboratorio Super Dev</h2><p style="margin-bottom:0;">Estado, audiencia y publicación son controles independientes. Ready no significa publicada y el backend valida también el acceso directo.</p></div><div class="feature-list">${featureFlags.map((feature,index)=>`<article class="feature-row"><div class="system-row"><div><h3>${escHtml(feature.name)}</h3><p class="cloud-note">${escHtml(feature.description)}</p></div><div class="admin-user-meta"><span class="status-badge">${escHtml(feature.status)}</span><span class="status-badge ${feature.enabled?'':'offline'}">${feature.enabled?'Published':'Disabled'}</span></div></div><div class="feature-controls"><label>Estado<select data-feature-status="${index}">${['development','experimental','preview','ready'].map(value=>`<option value="${value}" ${feature.status===value?'selected':''}>${value}</option>`).join('')}</select></label><label>Audiencia<select data-feature-audience="${index}">${['superdev','admins','veterans','selectedUsers','members'].map(value=>`<option value="${value}" ${feature.audience===value?'selected':''}>${value}</option>`).join('')}</select></label><label data-feature-selected-wrap="${index}" ${feature.audience==='selectedUsers'?'':'hidden'}>Usuarios seleccionados<input data-feature-selected="${index}" value="${escHtml((feature.selectedUsers||[]).join(', '))}" placeholder="username1, username2"></label></div><div class="feature-actions"><button class="btn ghost" data-feature-save="${index}">Guardar configuración</button><button class="btn ${feature.enabled?'soft':'ghost'}" data-feature-toggle="${index}">${feature.enabled?'Despublicar':'Publicar'}</button>${feature.canLaunch?`<button class="btn" data-feature-test="${index}">Probar ahora</button>`:'<span class="cloud-note">Todavía no disponible para pruebas.</span>'}</div></article>`).join('')}</div>`;
+    const featurePayload=(index,enabled)=>{const feature=featureFlags[index],audience=box.querySelector(`[data-feature-audience="${index}"]`).value;return{id:feature.id,status:box.querySelector(`[data-feature-status="${index}"]`).value,audience,enabled,selectedUsers:audience==='selectedUsers'?(box.querySelector(`[data-feature-selected="${index}"]`)?.value||'').split(',').map(value=>value.trim()).filter(Boolean):[]};};
+    const saveFeature=async(index,enabled)=>{try{const result=await featureRequest('POST',featurePayload(index,enabled));featureFlags[index]=result.feature;showToast('Feature Flag actualizada ✓');await loadEarlyAccess(box);}catch(error){showToast(error.message,true);}};
+    box.querySelectorAll('[data-feature-audience]').forEach(select=>select.addEventListener('change',()=>{const wrap=box.querySelector(`[data-feature-selected-wrap="${select.dataset.featureAudience}"]`);if(wrap)wrap.hidden=select.value!=='selectedUsers';}));
+    box.querySelectorAll('[data-feature-save]').forEach(button=>button.addEventListener('click',()=>saveFeature(Number(button.dataset.featureSave),featureFlags[Number(button.dataset.featureSave)].enabled)));
+    box.querySelectorAll('[data-feature-toggle]').forEach(button=>button.addEventListener('click',()=>saveFeature(Number(button.dataset.featureToggle),!featureFlags[Number(button.dataset.featureToggle)].enabled)));
+    box.querySelectorAll('[data-feature-test]').forEach(button=>button.addEventListener('click',async()=>{const feature=featureFlags[Number(button.dataset.featureTest)];try{await featureRequest('GET',null,new URLSearchParams({id:feature.id}).toString());if(feature.location)goto(feature.location);}catch(error){showToast(error.message,true);}}));
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 async function loadAdminAudit(box){
@@ -3454,8 +3597,9 @@ async function loadAdminAudit(box){
     const data=await adminRequest('GET',null,'section=audit');
     const events=Array.isArray(data.events)?data.events:[];
     const audit=auditQuestionOptions(Q.filter(question=>!question.experimental));
+    const historyAudit=auditQuestionOptions(HISTORY_CONTENT.questions);
     const experimentalAudit=auditQuestionOptions(TOPICS.flatMap(topic=>experimentalBank(topic.id)),{includeExperimental:true});
-    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Sistema y audit log</h2><p style="margin-bottom:0;">No contiene contraseñas, códigos de recuperación, tokens de sesión ni DEV_LOGIN_CODE.</p></div><div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Auditoría de preguntas</h2><p>${audit.total} preguntas · ${audit.multipleChoice} de selección múltiple · ${audit.flagged.length} candidatas para revisión humana.</p><div class="meta">Distribución correcta: A ${audit.distribution.A} · B ${audit.distribution.B} · C ${audit.distribution.C} · D ${audit.distribution.D} · E ${audit.distribution.E}</div><p class="cloud-note">Modo Experimental: ${experimentalAudit.total} plantillas · ${experimentalAudit.flagged.length} candidatas en esta generación.</p><p class="cloud-note">La auditoría solo detecta patrones; no reescribe contenido ni decide exactitud académica.</p>${audit.flagged.length?`<details><summary>Ver primeras candidatas</summary><div class="meta" style="margin-top:8px;">${audit.flagged.slice(0,12).map(row=>`${escHtml(row.id)}: ${row.reasons.map(escHtml).join(', ')}`).join('<br>')}</div></details>`:''}</div><div class="admin-list">${events.length?events.map(event=>`<article class="admin-user-card"><h3>${escHtml(event.action||'Acción administrativa')}</h3><div class="meta">${escHtml(event.actorUsername||'sistema')} · ${roleLabel(event.actorRole)} · ${new Date(Number(event.timestamp)||Date.now()).toLocaleString('es-ES')} · ${escHtml(event.outcome||'')}</div>${event.targetUsername?`<p class="cloud-note">Objetivo: @${escHtml(event.targetUsername)}</p>`:''}</article>`).join(''):'<div class="empty-state"><span class="ic">○</span>No hay acciones administrativas registradas.</div>'}</div>`;
+    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Sistema y audit log</h2><p style="margin-bottom:0;">No contiene contraseñas, códigos de recuperación, tokens de sesión ni DEV_LOGIN_CODE.</p></div><div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Auditoría de preguntas</h2><p>Español: ${audit.total} preguntas · ${audit.multipleChoice} de selección múltiple · ${audit.flagged.length} candidatas.</p><div class="meta">Español A ${audit.distribution.A} · B ${audit.distribution.B} · C ${audit.distribution.C} · D ${audit.distribution.D} · E ${audit.distribution.E}</div><p>Historia: ${historyAudit.total} preguntas · ${historyAudit.multipleChoice} de selección múltiple · ${historyAudit.flagged.length} candidatas.</p><div class="meta">Historia A ${historyAudit.distribution.A} · B ${historyAudit.distribution.B} · C ${historyAudit.distribution.C} · D ${historyAudit.distribution.D}</div><p class="cloud-note">Modo Experimental: ${experimentalAudit.total} plantillas · ${experimentalAudit.flagged.length} candidatas en esta generación.</p><p class="cloud-note">La auditoría solo detecta patrones; no reescribe contenido ni decide exactitud académica.</p>${[...audit.flagged,...historyAudit.flagged].length?`<details><summary>Ver primeras candidatas</summary><div class="meta" style="margin-top:8px;">${[...audit.flagged,...historyAudit.flagged].slice(0,12).map(row=>`${escHtml(row.id)}: ${row.reasons.map(escHtml).join(', ')}`).join('<br>')}</div></details>`:''}</div><div class="admin-list">${events.length?events.map(event=>`<article class="admin-user-card"><h3>${escHtml(event.action||'Acción administrativa')}</h3><div class="meta">${escHtml(event.actorUsername||'sistema')} · ${roleLabel(event.actorRole)} · ${new Date(Number(event.timestamp)||Date.now()).toLocaleString('es-ES')} · ${escHtml(event.outcome||'')}</div>${event.targetUsername?`<p class="cloud-note">Objetivo: @${escHtml(event.targetUsername)}</p>`:''}</article>`).join(''):'<div class="empty-state"><span class="ic">○</span>No hay acciones administrativas registradas.</div>'}</div>`;
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 
@@ -3471,7 +3615,7 @@ async function leaderboardRequest(method='GET', body=null){
   return data;
 }
 async function submitLeaderboardScore(result){
-  if(!result || result.mode!=='examen' || !accountSession.user) return;
+  if(!result || result.mode!=='examen' || result.subjectId!=='espanol' || !accountSession.user) return;
   try{
     await leaderboardRequest('POST',{
       score:result.correctCount,total:result.total,pct:result.pct,
@@ -3480,7 +3624,7 @@ async function submitLeaderboardScore(result){
   }catch(e){}
 }
 function topicNamesCompact(ids){
-  const names=(ids||[]).map(id=>TOPICS.find(t=>t.id===id)?.name).filter(Boolean);
+  const names=(ids||[]).map(id=>allTopics().find(t=>t.id===id)?.name).filter(Boolean);
   return names.length?names.join(', '):'Temas no disponibles';
 }
 function renderLeaderboard(main){
@@ -3519,6 +3663,8 @@ function renderNovedades(main){
   main.innerHTML = `
     <div class="pagehead"><h1>Novedades ${wasNew?'<span class="new-pill">NUEVO</span>':''}</h1><p>Registro de cambios y funciones añadidas al cuaderno.</p></div>
     <div class="card">
+      <div class="update-item"><h3>Historia y navegación simplificada <span class="new-pill">TESTING</span></h3><p>Historia se incorpora como segunda materia real con la unidad Geografía y grandes civilizaciones, repaso, práctica y examen aislados de Español. La navegación prioriza Hub, Repasar, Practicar, Cuenta y Más, conservando el contexto y las prácticas pendientes.</p></div>
+      <div class="update-item"><h3>Early Access real y unidades</h3><p>Las flags separan estado, audiencia y publicación, y el backend valida el acceso directo. Early Access conserva únicamente UI Beta y el Asistente IA por materia, ambos identificados como todavía no disponibles. Español agrupa su material existente en una Unidad actual neutral sin cambiar preguntas, progreso ni prácticas.</p></div>
       <div class="update-item"><h3>Plataforma del Hub · Administración y feedback</h3><p>Super Dev incorpora resumen, usuarios, conectados, feedback, Early Access, sesiones y sistema. Veterano identifica el acceso gratuito sin conceder permisos Admin; las cuentas antiguas reciben defaults compatibles. También se añadió feedback privado con estados, Feature Flags centralizadas, sincronización con resultado real y la corrección académica Interfijo / MDI. El acceso obligatorio y los pagos continúan aplazados.</p></div>
       <div class="update-item"><h3>Study Hub · Base general</h3><p>La entrada ahora organiza Día 1 y Día 2 con seis materias. Español conserva todas sus herramientas y progreso como primera materia activa; Inglés, Salud, Historia, Ciencia y Matemáticas aparecen como Próximamente hasta incorporar contenido real. La versión visible permanece en v2.0.</p></div>
       <div class="update-item"><h3>Práctica y apariencia más estables</h3><p>La práctica conserva la selección, el intento y el feedback al pausar o recargar; la revisión permite navegar con Anterior y Siguiente sin perder la pregunta actual. También se corrigieron Claro, Oscuro, Automático y el color personalizado, manteniendo el diseño y la compatibilidad del progreso.</p></div>
@@ -3542,12 +3688,14 @@ function renderNovedades(main){
    CONFIGURACIÓN
 ========================================================= */
 function renderAjustes(main){
-  const selected=new Set(state.settings.examTopics||TOPICS.map(t=>t.id));
+  const subject=activeSubject(),topics=activeTopics();
+  const savedTopics=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
+  const selected=new Set(savedTopics?.length?savedTopics:topics.map(t=>t.id));
   main.innerHTML = `
     <div class="pagehead"><h1>Configuración</h1><p>Personaliza cómo funciona tu cuaderno.${accountSession.user?' Estos ajustes se sincronizan con tu cuenta.':' Inicia sesión para sincronizarlos entre dispositivos.'}</p></div>
     <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Apariencia</p>
-      <div class="setting-row"><div class="setting-copy"><b>Tema</b><span>Escoge claro, oscuro o automático según tu iPhone.</span></div><div class="setting-control"><select id="themeMode"><option value="light" ${state.settings.themeMode==='light'?'selected':''}>Claro</option><option value="dark" ${state.settings.themeMode==='dark'?'selected':''}>Oscuro</option><option value="auto" ${state.settings.themeMode==='auto'?'selected':''}>Automático</option></select></div></div>
+      <div class="setting-row"><div class="setting-copy"><b>Tema</b><span>Escoge claro, oscuro o automático según tu dispositivo.</span></div><div class="setting-control"><select id="themeMode"><option value="light" ${state.settings.themeMode==='light'?'selected':''}>Claro</option><option value="dark" ${state.settings.themeMode==='dark'?'selected':''}>Oscuro</option><option value="auto" ${state.settings.themeMode==='auto'?'selected':''}>Automático</option></select></div></div>
       <div class="setting-row"><div class="setting-copy"><b>Color de la interfaz</b><span>Personaliza el color principal de botones, barras y selecciones.</span></div><div class="setting-control"><input id="accentColor" type="color" value="${escHtml(state.settings.accentColor||'#8B2635')}" style="width:52px;height:40px;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:3px;"></div></div>
     </div>
     <div class="card" style="margin-bottom:20px;">
@@ -3555,8 +3703,8 @@ function renderAjustes(main){
       <div class="setting-row"><div class="setting-copy"><b>Contar prácticas en el Panel por defecto</b><span>También puedes cambiarlo antes de cada práctica.</span></div><div class="setting-control"><label class="check-line"><input id="defaultCount" type="checkbox" ${state.settings.practiceCountsByDefault!==false?'checked':''}> Activado</label></div></div>
     </div>
     <div class="card" style="margin-bottom:20px;">
-      <p class="section-title">Examen · temas predeterminados</p>
-      <div class="check-list" id="defaultTopics">${TOPICS.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}</div>
+      <p class="section-title">Examen de ${subject.name} · temas predeterminados</p>
+      <div class="check-list" id="defaultTopics">${topics.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}</div>
     </div>
     <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Avisos</p>
@@ -3594,7 +3742,8 @@ function renderAjustes(main){
     if(!topics.length){ alert('Selecciona al menos un tema para el examen.'); return; }
     state.settings.themeMode=themeMode.value;
     state.settings.practiceCountsByDefault=document.getElementById('defaultCount').checked;
-    state.settings.examTopics=topics;
+    if(subject.id==='espanol') state.settings.examTopics=topics;
+    else state.settings.examTopicsBySubject={...(state.settings.examTopicsBySubject||{}),[subject.id]:topics};
     state.settings.accentColor=accentColor.value||'#8B2635';
     applyThemeMode(); saveState(); renderNav();
     document.getElementById('savedNote').textContent='Guardado ✓';
@@ -3673,7 +3822,7 @@ async function heartbeatPresence(){
     const activeQuestion=state.session?.queue?.[state.session.idx];
     const res=await fetch('/.netlify/functions/presence',{
       method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({clientId:presenceClientId(),section:state.view,subjectId:state.activeSubjectId||'',topicId:activeQuestion?.topic||''}),cache:'no-store',credentials:'same-origin'
+      body:JSON.stringify({clientId:presenceClientId(),section:state.view,subjectId:state.activeSubjectId||'',unitId:state.activeUnitId||'',topicId:activeQuestion?.topic||''}),cache:'no-store',credentials:'same-origin'
     });
     const data=await res.json().catch(()=>({}));
     if(res.ok && Number.isFinite(data.count)) updateOnlineBadge(data.count);

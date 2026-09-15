@@ -22,6 +22,7 @@ const FEATURES = getStore('study-hub-feature-flags-v1');
 const MAX_SCAN = 1000;
 const MAX_RESULTS = 200;
 const ACTIVE_MS = 90_000;
+const EARLY_ACCESS_FEATURE_IDS = new Set(['ui-beta', 'ai-assistant']);
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {
@@ -42,6 +43,7 @@ function adminUser(user, presence = null, sessions = 0) {
     lastActivityAt: Math.max(safe.lastActivityAt, Number(presence?.at || 0)),
     section: cleanText(presence?.section, 80),
     subjectId: cleanText(presence?.subjectId, 40),
+    unitId: cleanText(presence?.unitId, 80),
     topicId: cleanText(presence?.topicId, 80),
     clientKind: cleanText(presence?.clientKind, 20),
     activeSessions: Math.max(0, Number(sessions || 0)),
@@ -101,6 +103,8 @@ async function countEnabledFeatures() {
   const { blobs } = await FEATURES.list({ prefix: 'flags/' });
   let enabled = 0;
   for (const item of blobs.slice(0, 100)) {
+    const featureId = item.key.split('/').pop();
+    if (!EARLY_ACCESS_FEATURE_IDS.has(featureId)) continue;
     const row = await FEATURES.get(item.key, { type: 'json', consistency: 'strong' });
     if (row?.enabled === true) enabled++;
   }

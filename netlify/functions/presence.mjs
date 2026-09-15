@@ -64,6 +64,7 @@ export default async (req) => {
         at: now,
         section: cleanContext(body.section),
         subjectId: cleanContext(body.subjectId, 40),
+        unitId: cleanContext(body.unitId),
         topicId: cleanContext(body.topicId),
         clientKind: clientKind(req),
       };

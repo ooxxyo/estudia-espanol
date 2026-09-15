@@ -5,18 +5,21 @@
 - Día 1 contiene: Inglés, Salud e Historia.
 - Día 2 contiene: Ciencia, Matemáticas y Español.
 - Español pertenece a Día 2 y no se archiva como materia.
-- Cada materia tendrá un menú o listado de temas.
-- Los temas anteriores permanecen accesibles; añadir material no reemplaza ni oculta el histórico.
+- Cada materia organiza su contenido como Unidad/Categoría → Tema.
+- Las unidades anteriores y completadas permanecen accesibles; añadir material no reemplaza ni oculta el histórico.
+- El nombre y propósito de una unidad provienen de metadata o material real; no se inventan automáticamente.
 - Todas las materias reutilizan el motor de estudio actualmente usado por Español.
 - No se crean aplicaciones independientes por materia.
 
 ## Identidad y navegación del Hub
 
 - El nombre general provisional es `Study Hub`; la versión visible permanece en `v2.0`.
-- La jerarquía del producto es `Hub → Día → Materia → Tema`.
+- La jerarquía del producto es `Hub → Día → Materia → Unidad/Categoría → Tema`.
 - Existe un único catálogo de materias como fuente de nombre, emoji, día, estado y disponibilidad.
-- Español es la primera implementación real del Study Engine.
-- Inglés, Salud, Historia, Ciencia y Matemáticas permanecen como `Próximamente` hasta tener contenido real.
+- Español e Historia son implementaciones reales del mismo Study Engine. Historia usa la unidad `Geografía y grandes civilizaciones` (`Prueba`, `current`).
+- Inglés, Salud, Ciencia y Matemáticas permanecen como `Próximamente` hasta tener contenido real.
+- La navegación primaria tiene exactamente cinco destinos: Hub, Repasar, Practicar, Cuenta/Entrar y Más. Cuenta nunca se oculta dentro de Más.
+- Más contiene Examen, Errores, Guardadas, Historial, Progreso, Feedback y Configuración; Administración se muestra solo a Admin, Owner y Super Dev.
 - Entrar o salir de una materia no elimina una práctica ni modifica su progreso.
 - La metadata nueva es opcional; las claves e IDs históricos conservan su significado.
 
@@ -42,13 +45,18 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - `Veterano` es el único nombre visible para el acceso gratuito por whitelist; no es un rol de seguridad.
 - Super Dev puede administrar cuentas antiguas y nuevas, Veteranía y roles inferiores. Ningún rol inferior puede modificar Super Dev.
 - El login obligatorio, pagos, paquetes, expiraciones y Preview pública completa pertenecen a `PUBLIC LAUNCH ACCESS` y permanecen desactivados hasta aprobación explícita.
-- Early Access usa una fuente central de Feature Flags con estados `hidden`, `development`, `experimental`, `preview` y `ready`.
+- Early Access contiene únicamente UI Beta / Design Lab y Asistente IA mientras sean experimentales.
+- Feature Flags separa estado (`development`, `experimental`, `preview`, `ready`), audiencia, publicación y disponibilidad. `ready` no implica `enabled` ni publicación.
+- Las audiencias mínimas son `superdev`, `admins`, `veterans`, `selectedUsers` y `members`; el backend valida también el acceso directo.
+- “Probar ahora” solo aparece cuando existe implementación y ubicación reales.
 - Los reportes de feedback son visibles para su autor y personal autorizado. Cambios de estado y acciones administrativas quedan auditados.
 - La navegación normal guarda prácticas recuperables sin pedir confirmación; las acciones irreversibles o administrativas críticas siempre la exigen.
 - El término académico correcto es `Interfijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`. `INF` solo se acepta internamente como alias de sesiones antiguas.
 - El Study Engine es universal y admite extensiones por materia sin duplicar la aplicación.
-- Una IA futura se limita al material aprobado de la materia y tema activos.
+- Cada materia tendrá un asistente propio, nunca un chatbot general. La materia activa limita la respuesta; el tema activo da prioridad y solo se usa material aprobado de esa materia.
 - Design Lab permitirá comparar Classic UI con New UI Beta mediante Early Access; no forma parte de la interfaz estable actual.
+- El nombre futuro es `Estudio Hub` y el slug preferido `estudio-hub`; repositorio, remote, dominio y nombre actual no cambian sin autorización.
+- El copy genérico usa “dispositivo”, no “iPhone”, salvo instrucciones específicas de compatibilidad.
 
 ## Registro de decisiones
 

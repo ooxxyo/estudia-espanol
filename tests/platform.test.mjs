@@ -1,15 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import vm from 'node:vm';
 import { getStore, __resetAll } from '@netlify/blobs';
 import accountHandler from '../netlify/functions/account.mjs';
 import adminHandler from '../netlify/functions/admin.mjs';
 import feedbackHandler from '../netlify/functions/feedback.mjs';
 import featuresHandler from '../netlify/functions/features.mjs';
+import leaderboardHandler from '../netlify/functions/leaderboard.mjs';
 import presenceHandler from '../netlify/functions/presence.mjs';
 import { COOKIE, createSession, publicUser } from '../netlify/functions/_shared/auth.mjs';
+import { authorizeAssistantSubject, normalizeAssistantContext, OTHER_SUBJECT_MESSAGE } from '../netlify/functions/_shared/study-context.mjs';
 
 const USERS = getStore('study-hub-users-v1');
 const PRESENCE = getStore('study-hub-presence-v1');
+const FEATURES = getStore('study-hub-feature-flags-v1');
+const LEADERBOARD = getStore('study-hub-leaderboard-v2');
+const historyContext = { window: {} };
+vm.runInNewContext(await readFile(new URL('../public/history-data.js', import.meta.url), 'utf8'), historyContext);
+const HISTORY = historyContext.window.HISTORY_CONTENT;
 
 function request(path, { method = 'GET', body, token, ip = '127.0.0.1' } = {}) {
   const headers = { 'content-type': 'application/json', 'x-forwarded-for': ip, 'user-agent': 'StudyHubTest/desktop' };
@@ -36,6 +45,18 @@ async function putUser(user) {
 
 async function authToken(user, superdevAuthenticated = false) {
   return await createSession(user, true, { superdevAuthenticated });
+}
+
+async function configureFeature(token, overrides = {}) {
+  return await payload(await featuresHandler(request('features', {
+    method: 'POST',
+    token,
+    body: { id: 'ui-beta', status: 'development', audience: 'superdev', enabled: false, selectedUsers: [], ...overrides },
+  })));
+}
+
+async function featureList(token) {
+  return await payload(await featuresHandler(request('features', { token })));
 }
 
 test.beforeEach(() => {
@@ -115,12 +136,13 @@ test('presence identifica cuentas sin exponer sesión y respeta timeout', async 
   const userToken = await authToken(user);
   const devToken = await authToken(superdev, true);
   await PRESENCE.setJSON('heartbeat/stale_client_123', { at: Date.now() - 91_000, userId: user.id });
-  const heartbeat = await payload(await presenceHandler(request('presence', { method: 'POST', token: userToken, body: { clientId: 'client_online_123', section: 'dashboard', subjectId: 'espanol', topicId: 'morfologia' } })));
+  const heartbeat = await payload(await presenceHandler(request('presence', { method: 'POST', token: userToken, body: { clientId: 'client_online_123', section: 'dashboard', subjectId: 'espanol', unitId: 'espanol-unidad-actual', topicId: 'morfologia' } })));
   assert.equal(heartbeat.status, 200);
   const connected = await payload(await adminHandler(request('admin?section=connected', { token: devToken })));
   assert.equal(connected.status, 200);
   assert.equal(connected.data.users[0].username, 'online');
   assert.equal(connected.data.users[0].section, 'dashboard');
+  assert.equal(connected.data.users[0].unitId, 'espanol-unidad-actual');
   assert.equal('token' in connected.data.users[0], false);
   assert.equal(connected.data.count, 1);
   const filtered = await payload(await adminHandler(request('admin?section=connected&q=nadie&filter=member', { token: devToken })));
@@ -158,18 +180,195 @@ test('feedback aplica rate limiting server-side', async () => {
   assert.equal(last.status, 429);
 });
 
-test('Feature Flags hidden solo aparecen para Super Dev', async () => {
-  const member = await putUser({ id: 'member-1', username: 'member' });
+test('Super Dev ve solo features reales y controla status sin publicarlas', async () => {
   const superdev = await putUser({ id: 'super-1', username: 'superdev' });
-  const memberToken = await authToken(member);
   const devToken = await authToken(superdev, true);
-  let result = await payload(await featuresHandler(request('features', { token: memberToken })));
-  assert.equal(result.data.features.length, 0);
-  result = await payload(await featuresHandler(request('features', { token: devToken })));
-  assert.equal(result.data.features.length, 4);
-  const updated = await payload(await featuresHandler(request('features', { method: 'POST', token: devToken, body: { id: 'ui-beta', state: 'preview', enabled: true, audience: 'superdev' } })));
-  assert.equal(updated.status, 200);
-  assert.equal(updated.data.feature.enabled, true);
+  const listed = await featureList(devToken);
+  assert.deepEqual(listed.data.features.map(feature => feature.id), ['ui-beta', 'ai-assistant']);
+  assert.equal(listed.data.features.every(feature => feature.availability === 'unavailable' && feature.canLaunch === false), true);
+  for (const status of ['development', 'experimental', 'preview', 'ready']) {
+    const updated = await configureFeature(devToken, { status });
+    assert.equal(updated.status, 200);
+    assert.equal(updated.data.feature.status, status);
+    assert.equal(updated.data.feature.enabled, false);
+  }
+  const direct = await payload(await featuresHandler(request('features?id=ui-beta', { token: devToken })));
+  assert.equal(direct.status, 409);
+  assert.equal(direct.data.feature.authorized, true);
+});
+
+test('audience admins autoriza Admin pero no Member ni Veterano', async () => {
+  const superdev = await putUser({ id: 'super-1', username: 'superdev' });
+  const admin = await putUser({ id: 'admin-1', username: 'admin', securityRole: 'admin' });
+  const member = await putUser({ id: 'member-1', username: 'member' });
+  const veteran = await putUser({ id: 'veteran-1', username: 'veteran', veteran: true, entitlement: 'veteran' });
+  const devToken = await authToken(superdev, true), adminToken = await authToken(admin), memberToken = await authToken(member), veteranToken = await authToken(veteran);
+  await configureFeature(devToken, { status: 'experimental', audience: 'admins', enabled: true });
+  assert.equal((await featureList(adminToken)).data.features.length, 1);
+  assert.equal((await featureList(memberToken)).data.features.length, 0);
+  assert.equal((await featureList(veteranToken)).data.features.length, 0);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: adminToken })))).status, 409);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: memberToken })))).status, 403);
+});
+
+test('audience veterans y members se evalúan por separado', async () => {
+  const superdev = await putUser({ id: 'super-1', username: 'superdev' });
+  const member = await putUser({ id: 'member-1', username: 'member' });
+  const veteran = await putUser({ id: 'veteran-1', username: 'veteran', veteran: true, entitlement: 'veteran' });
+  const devToken = await authToken(superdev, true), memberToken = await authToken(member), veteranToken = await authToken(veteran);
+  await configureFeature(devToken, { audience: 'veterans', enabled: true });
+  assert.equal((await featureList(veteranToken)).data.features.length, 1);
+  assert.equal((await featureList(memberToken)).data.features.length, 0);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: veteranToken })))).status, 409);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: memberToken })))).status, 403);
+  await configureFeature(devToken, { audience: 'members', enabled: true });
+  assert.equal((await featureList(memberToken)).data.features.length, 1);
+  assert.equal((await featureList(veteranToken)).data.features.length, 0);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: memberToken })))).status, 409);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: veteranToken })))).status, 403);
+});
+
+test('selectedUsers autoriza solo usernames seleccionados', async () => {
+  const superdev = await putUser({ id: 'super-1', username: 'superdev' });
+  const selected = await putUser({ id: 'selected-1', username: 'seleccionada' });
+  const other = await putUser({ id: 'other-1', username: 'otra' });
+  const devToken = await authToken(superdev, true), selectedToken = await authToken(selected), otherToken = await authToken(other);
+  const configured = await configureFeature(devToken, { status: 'preview', audience: 'selectedUsers', enabled: true, selectedUsers: ['Seleccionada'] });
+  assert.deepEqual(configured.data.feature.selectedUsers, ['seleccionada']);
+  assert.equal((await featureList(selectedToken)).data.features.length, 1);
+  assert.equal((await featureList(otherToken)).data.features.length, 0);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: selectedToken })))).status, 409);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: otherToken })))).status, 403);
+});
+
+test('ready disabled y feature superdev bloquean acceso directo normal', async () => {
+  const superdev = await putUser({ id: 'super-1', username: 'superdev' });
+  const member = await putUser({ id: 'member-1', username: 'member' });
+  const admin = await putUser({ id: 'admin-1', username: 'admin', securityRole: 'admin' });
+  const devToken = await authToken(superdev, true), memberToken = await authToken(member), adminToken = await authToken(admin);
+  await configureFeature(devToken, { status: 'ready', audience: 'members', enabled: false });
+  assert.equal((await featureList(memberToken)).data.features.length, 0);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: memberToken })))).status, 403);
+  await configureFeature(devToken, { status: 'ready', audience: 'superdev', enabled: true });
+  assert.equal((await featureList(adminToken)).data.features.length, 0);
+  assert.equal((await payload(await featuresHandler(request('features?id=ui-beta', { token: adminToken })))).status, 403);
+});
+
+test('flags legacy conservan status y traducen audiencias antiguas', async () => {
+  const superdev = await putUser({ id: 'super-1', username: 'superdev' });
+  const admin = await putUser({ id: 'admin-1', username: 'admin', securityRole: 'admin' });
+  const devToken = await authToken(superdev, true);
+  const adminToken = await authToken(admin);
+  await FEATURES.setJSON('flags/ui-beta', { state: 'preview', audience: 'staff', enabled: true, updatedAt: 123 });
+  const listed = await featureList(devToken);
+  assert.equal(listed.data.features[0].status, 'preview');
+  assert.equal(listed.data.features[0].audience, 'admins');
+  assert.equal((await featureList(adminToken)).data.features.length, 1);
+});
+
+test('una cuenta suspendida no puede publicar en leaderboard', async () => {
+  const user = await putUser({ id: 'suspended-1', username: 'suspendida' });
+  const token = await authToken(user);
+  await USERS.setJSON(`user/${user.id}`, { ...user, status: 'suspended', updatedAt: 2 });
+  const result = await payload(await leaderboardHandler(request('leaderboard', {
+    method: 'POST', token, body: { score: 8, total: 10, pct: 80, topics: ['morfologia'], fullExam: false },
+  })));
+  assert.equal(result.status, 401);
+  assert.equal(await LEADERBOARD.get(`players/${user.id}`, { type: 'json', consistency: 'strong' }), null);
+});
+
+test('contexto de IA conserva materia, unidad, tema y contenido aprobado', () => {
+  const context = normalizeAssistantContext({
+    subjectId: 'espanol', subjectName: 'Español', unitId: 'espanol-unidad-actual', unitName: 'Unidad actual',
+    topicId: 'morfologia', topicName: 'Morfología', approvedContent: [{ title: 'Interfijo' }],
+  });
+  assert.equal(context.source, 'approved');
+  assert.equal(context.approvedContent.length, 1);
+  assert.equal(authorizeAssistantSubject(context, 'espanol').allowed, true);
+  const blocked = authorizeAssistantSubject(context, 'historia');
+  assert.equal(blocked.allowed, false);
+  assert.equal(blocked.message, OTHER_SUBJECT_MESSAGE);
+});
+
+test('Historia está disponible en Día 1 con su unidad Prueba actual', async () => {
+  const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+  assert.match(html, /id:'historia'.*day:1.*status:'Disponible'.*available:true/);
+  assert.equal(HISTORY.subjectId, 'historia');
+  assert.equal(HISTORY.unit.name, 'Geografía y grandes civilizaciones');
+  assert.equal(HISTORY.unit.type, 'Prueba');
+  assert.equal(HISTORY.unit.status, 'current');
+});
+
+test('Historia contiene ocho topics estables y 25 tarjetas de repaso', () => {
+  assert.deepEqual(Array.from(HISTORY.topics, topic => topic.id), [
+    'geografia', 'civilizaciones', 'mayas', 'aztecas', 'incas', 'religion-inca', 'mapas-localizacion', 'ciclo-naturaleza',
+  ]);
+  assert.equal(HISTORY.reviewCards.length, 25);
+  assert.equal(HISTORY.reviewCards.every(card => HISTORY.topics.some(topic => topic.id === card.topic)), true);
+});
+
+test('banco de Historia está aislado y balancea respuestas A/B/C/D', () => {
+  assert.equal(HISTORY.questions.length, 82);
+  assert.equal(HISTORY.questions.every(question => question.id.startsWith('hist-') && question.subjectId === 'historia' && question.unitId === HISTORY.unit.id), true);
+  const multipleChoice = HISTORY.questions.filter(question => question.type === 'mc');
+  const trueFalse = HISTORY.questions.filter(question => question.type === 'tf');
+  assert.equal(multipleChoice.length, 72);
+  assert.equal(trueFalse.length, 10);
+  assert.deepEqual([0, 1, 2, 3].map(index => multipleChoice.filter(question => question.correct === index).length), [18, 18, 18, 18]);
+  assert.equal(new Set(HISTORY.questions.map(question => question.id)).size, HISTORY.questions.length);
+});
+
+test('Historia no inventa el tercer mundo', () => {
+  const related = HISTORY.questions.filter(question => /tercer mundo/i.test(question.prompt));
+  assert.equal(related.length, 1);
+  assert.equal(related[0].type, 'tf');
+  assert.equal(related[0].correct, false);
+  assert.match(related[0].exp, /información sobre el tercero está incompleta/i);
+  assert.equal(HISTORY.reviewCards.some(card => /tercer mundo/i.test(`${card.title} ${card.def} ${card.example}`)), false);
+});
+
+test('contexto de IA de Historia autoriza Mayas y rechaza Español', () => {
+  const context = normalizeAssistantContext({
+    subjectId: 'historia', subjectName: 'Historia', unitId: HISTORY.unit.id, unitName: HISTORY.unit.name,
+    topicId: 'mayas', topicName: 'Mayas', approvedContent: HISTORY.reviewCards.filter(card => card.topic === 'mayas'),
+  });
+  assert.equal(context.approvedContent.length > 0, true);
+  assert.equal(authorizeAssistantSubject(context, 'historia').allowed, true);
+  const blocked = authorizeAssistantSubject(context, 'espanol');
+  assert.equal(blocked.allowed, false);
+  assert.equal(blocked.message, OTHER_SUBJECT_MESSAGE);
+});
+
+test('progreso y snapshots separan Historia sin romper Español legacy', async () => {
+  const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+  assert.match(html, /subjectTotals:\{historia:/);
+  assert.match(html, /questionSubjectId\(question\)\{return question\?\.subjectId\|\|'espanol';\}/);
+  assert.match(html, /subjectId:sessionSubjectId,unitId:/);
+  assert.match(html, /subjectId:s\.subjectId\|\|'espanol'/);
+  assert.match(html, /state\.session\.subjectId!==subject\.id/);
+});
+
+test('navegación primaria tiene cinco accesos, Cuenta dinámica y Más condicional', async () => {
+  const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+  const primary = html.match(/const PRIMARY_NAV_ITEMS=\[([\s\S]*?)\];/)?.[1] || '';
+  assert.equal((primary.match(/\{id:/g) || []).length, 5);
+  for (const id of ['hub', 'repaso', 'practica', 'cuenta', 'more']) assert.match(primary, new RegExp(`id:'${id}'`));
+  assert.match(html, /item\.id==='cuenta'\?\(accountSession\.user\?'Cuenta':'Entrar'\)/);
+  for (const id of ['examen', 'errores', 'guardadas', 'historial', 'dashboard', 'feedback', 'ajustes']) assert.match(html, new RegExp(`id:'${id}'`));
+  assert.match(html, /\['admin','owner','superdev'\]\.includes\(role\)/);
+  assert.match(html, /aria-expanded="false" aria-controls="morePanel"/);
+});
+
+test('catálogo adapta Español a una unidad sin alterar banco ni claves', async () => {
+  const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+  assert.match(html, /id:'espanol-unidad-actual',subjectId:'espanol',name:'Unidad actual'/);
+  assert.match(html, /activeUnitId/);
+  assert.equal((html.match(/id:nid\(\)/g) || []).length, 75);
+  assert.doesNotMatch(html, />5 temas</);
+  assert.match(html, /const STABLE_STORAGE_KEY = 'cuaderno_espanol_hub_progress_v1'/);
+  assert.match(html, /según tu dispositivo/);
+  assert.doesNotMatch(html, /sebas10|Sebastián/);
+  assert.match(html, /role==='INF'\?'MDI'/);
 });
 
 test('sync mantiene progreso y una práctica recuperable', async () => {
@@ -181,4 +380,11 @@ test('sync mantiene progreso y una práctica recuperable', async () => {
   const restored = await payload(await accountHandler(request('account', { token })));
   assert.deepEqual(restored.data.cloudState.session.queueIds, ['q1']);
   assert.equal(restored.data.cloudState.totalAnswered, 7);
+
+  const conflict = await payload(await accountHandler(request('account', {
+    method: 'POST', token, body: { action: 'sync', state: { ...state, totalAnswered: 8 }, baseUpdatedAt: 0 },
+  })));
+  assert.equal(conflict.status, 409);
+  assert.equal(conflict.data.conflict, true);
+  assert.deepEqual(conflict.data.cloudState.session.queueIds, ['q1']);
 });

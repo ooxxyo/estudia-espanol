@@ -51,10 +51,13 @@
 
 - No actives login obligatorio, pagos, paquetes ni expiraciones hasta que el lanzamiento público sea aprobado explícitamente.
 - Mantén `PUBLIC LAUNCH ACCESS` como fase futura; el Hub actual no debe bloquearse por pago o entitlement.
-- Centraliza Feature Flags y oculta a usuarios normales las funciones con estado `hidden`.
+- Early Access contiene únicamente funciones experimentales reales: por ahora UI Beta / Design Lab y Asistente IA.
+- En Feature Flags mantén separados `status`, `audience`, `enabled/published` y `availability`; `ready` nunca significa publicada.
+- Soporta audiencias `superdev`, `admins`, `veterans`, `selectedUsers` y `members`, con autorización backend para acceso directo.
+- No muestres “Probar ahora” si una feature no tiene implementación y ruta reales.
 - El feedback de cada usuario es privado salvo para personal autorizado; nunca adjuntes secretos, tokens, contraseñas ni respuestas de examen.
 - Protege el envío de feedback con rate limiting server-side.
-- Una IA futura solo podrá responder sobre la materia y el tema activos usando material académico aprobado.
+- Cada materia tendrá su propio asistente futuro: la materia activa es el límite, el tema activo da prioridad y solo se usa contenido académico aprobado.
 
 ## Super Dev
 
@@ -80,6 +83,7 @@
 ## Académico
 
 - No cambies definiciones del material sin mi permiso.
+- No inventes unidades, categorías, vocabulario ni ejercicios; el contenido nuevo debe provenir de material real proporcionado.
 - No añadas contenido de monólogo.
 - Usa siempre `Interfijo`, nunca `infijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`.
 - Crónica tiene exactamente:
@@ -97,6 +101,10 @@
 
 ## Documentación del proyecto
 
+- La jerarquía de contenido es `Hub → Día → Materia → Unidad/Categoría → Tema`; conserva unidades anteriores y completadas.
+- No uses el conteo bruto de temas como información principal de una materia; muestra su unidad, propósito configurado y estado.
+- `Estudio Hub` y el slug `estudio-hub` son el rebranding futuro; no renombres repositorio, remote ni dominio sin autorización.
+- Usa “dispositivo” en textos genéricos y no asumas iPhone salvo que la instrucción sea específica de esa plataforma.
 - Consulta `DECISIONS.md` antes de cambiar materias, roles, identidad, acceso o privacidad.
 - Mantén `ROADMAP.md` con estados `Planned`, `In Progress`, `Testing` o `Completed`.
 - Actualiza `ARCHITECTURE.md` cuando cambien límites entre frontend, motor de estudio, persistencia o backend.

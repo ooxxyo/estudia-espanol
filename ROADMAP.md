@@ -13,7 +13,7 @@
 | --- | --- | --- |
 | Documentación permanente | Testing | Reglas, arquitectura, decisiones y matriz de pruebas pendientes de aprobación. |
 | Estabilidad de práctica y apariencia | Testing | Respuestas, reanudación, navegación, tema y color. |
-| Study Engine reutilizable | In Progress | Catálogo y adaptador inicial creados; falta extraer sesión, evaluación, revisión y resultados. |
+| Study Engine reutilizable | Testing | Español e Historia comparten sesión, evaluación, revisión y resultados con contenido aislado por materia. |
 | Modularización del frontend | Planned | Reducir gradualmente el `public/index.html` monolítico. |
 | Migración compatible de datos | Planned | Versionar esquemas y conservar claves, IDs y stores existentes. |
 | UI Refresh | Planned | Actualización futura, sin sustituir el diseño actual sin aprobación. |
@@ -23,7 +23,8 @@
 | Iniciativa | Estado | Alcance |
 | --- | --- | --- |
 | Hub general | Testing | Home común con Día 1, Día 2, progreso disponible y accesos rápidos. |
-| Materias y temas | Testing | Catálogo único; Español activo y cinco materias preparadas como Próximamente. |
+| Materias, unidades y temas | Testing | Español conserva su unidad neutral; Historia incorpora Geografía y grandes civilizaciones; las otras cuatro materias siguen Próximamente. |
+| Navegación simplificada | Testing | Cinco accesos primarios y menú Más responsive sin perder materia ni práctica pendiente. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
 | Calendario completo | Planned | Agenda escolar y automatización futura, fuera de la base actual. |
 | Novedades | In Progress | Registro visible de cambios aprobados y experimentos. |
@@ -37,7 +38,8 @@
 | Rangos | Planned | Progresión visible independiente de permisos backend. |
 | Veteranos | Testing | Nombre visible del acceso gratuito por whitelist, separado del rol Admin y revocable sin borrar progreso. |
 | Super Dev avanzado | Testing | Resumen, usuarios, conectados, feedback, Early Access, sesiones, sistema y acciones auditadas. |
-| Feature Flags / Early Access | Testing | Flags centralizadas con estados y audiencia; Design Lab e IA permanecen desactivados. |
+| Feature Flags / Early Access | Testing | UI Beta e IA únicamente; status, audiencia, publicación y disponibilidad independientes con acceso backend comprobable. |
+| Asistente IA por materia | Planned | Contrato de contexto aprobado y límite por materia preparados; sin proveedor, API ni interfaz activa. |
 | Creación rápida de estudiantes | Planned | Alta segura y auditable por personal autorizado. |
 | Comunidad/chat y moderación | Planned | Privacidad, reporte, bloqueo y herramientas de moderación. |
 | Feedback | Testing | Reportes privados, tipos, estados, filtros, gestión autorizada y rate limiting. |
@@ -49,4 +51,6 @@ La transformación completa del hub no forma parte de esta fase. Cada materia re
 
 ## Fase actual: base Hub
 
-La jerarquía implementada es `Hub → Día → Materia → Tema`. Español conserva el motor y los datos históricos mediante el adaptador `legacy-espanol-v1`. Inglés, Salud, Historia, Ciencia y Matemáticas están registrados en el catálogo, pero permanecen deshabilitados hasta disponer de contenido real y pruebas propias.
+La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español conserva el motor y los datos históricos mediante `legacy-espanol-v1`; Historia lo reutiliza mediante `historia-v1` con ocho topics, tarjetas y banco aislado. Inglés, Salud, Ciencia y Matemáticas permanecen deshabilitados hasta recibir contenido real.
+
+El rebranding futuro será `Estudio Hub` con slug preferido `estudio-hub`. Repositorio, remote, dominio y nombre visible actual no cambian en esta fase.

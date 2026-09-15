@@ -33,8 +33,8 @@ await seedUser({ id: 'old-test', username: 'cuentaantigua', email: 'antigua@exam
 await seedUser({ id: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', email: 'nueva@example.test', veteran: true, entitlement: 'veteran', visibleRank: 'Veterano' });
 await seedUser({ id: 'admin-test', username: 'adminamigo', displayName: 'Admin Amigo', securityRole: 'admin' });
 const token = await createSession(superdev, true, { superdevAuthenticated: true });
-await getStore('study-hub-presence-v1').setJSON('heartbeat/friend_online_test', { at: Date.now(), userId: 'new-test', section: 'dashboard', subjectId: 'espanol', clientKind: 'mobile' });
-await getStore('study-hub-feedback-v1').setJSON('reports/feedback-test', { id: 'feedback-test', type: 'suggestion', title: 'Mejorar acceso rápido', message: 'Sería útil mantener visible el acceso durante la práctica.', userId: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', status: 'new', subjectId: 'espanol', createdAt: Date.now(), updatedAt: Date.now() });
+await getStore('study-hub-presence-v1').setJSON('heartbeat/friend_online_test', { at: Date.now(), userId: 'new-test', section: 'dashboard', subjectId: 'espanol', unitId: 'espanol-unidad-actual', clientKind: 'mobile' });
+await getStore('study-hub-feedback-v1').setJSON('reports/feedback-test', { id: 'feedback-test', type: 'suggestion', title: 'Mejorar acceso rápido', message: 'Sería útil mantener visible el acceso durante la práctica.', userId: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', status: 'new', subjectId: 'espanol', unitId: 'espanol-unidad-actual', createdAt: Date.now(), updatedAt: Date.now() });
 
 async function asRequest(req, body) {
   const url = new URL(req.url, `http://${req.headers.host || '127.0.0.1:8765'}`);
@@ -70,7 +70,7 @@ http.createServer(async (req, res) => {
     const file = path.resolve(root, relative);
     if (!file.startsWith(path.resolve(root, 'public'))) { res.writeHead(403); res.end('Forbidden'); return; }
     const data = await readFile(file);
-    const type = file.endsWith('.html') ? 'text/html; charset=utf-8' : file.endsWith('.css') ? 'text/css' : 'application/octet-stream';
+    const type = file.endsWith('.html') ? 'text/html; charset=utf-8' : file.endsWith('.css') ? 'text/css' : file.endsWith('.js') ? 'text/javascript; charset=utf-8' : 'application/octet-stream';
     res.writeHead(200, { 'content-type': type });
     res.end(data);
   } catch (error) {
