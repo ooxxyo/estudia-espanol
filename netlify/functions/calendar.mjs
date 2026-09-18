@@ -4,7 +4,7 @@ import { authenticateRequest, canAccessAdmin } from './_shared/auth.mjs';
 import { RateLimitError, enforceRateLimit, recordRateLimitFailure } from './_shared/rate-limit.mjs';
 import {
   CALENDAR_TYPES, PROPOSAL_STATUSES, SUBJECTS, auditEvent, cleanText, createNotification,
-  hasCapability, json, listRows, possibleDuplicate, readBody, validDate,
+  hasCapability, json, listRows, paginateRows, possibleDuplicate, readBody, validDate,
 } from './_shared/platform.mjs';
 import { validateAcademicScope } from './groups.mjs';
 
@@ -26,15 +26,19 @@ function publicEvent(row) { return { eventId: row.eventId, subjectId: row.subjec
 function publicProposal(row, auth) { return { proposalId: row.proposalId, subjectId: row.subjectId, unitId: row.unitId || '', topicId: row.topicId || '', classGroupId: row.classGroupId || '', schoolYearId: row.schoolYearId || '', termId: row.termId || '', type: row.type, title: row.title, description: row.description, date: row.date, createdAt: row.createdAt, status: row.status, possibleDuplicate: row.possibleDuplicate === true, own: row.authorId === auth.user.id }; }
 
 async function createEvent(auth, input, extra = {}) {
+  const eventId = extra.proposalId ? `proposal-${extra.proposalId}` : randomUUID();
+  const existing = await CALENDAR.get(`events/${eventId}`, { type: 'json', consistency: 'strong' });
+  if (existing) return existing;
   const rows = await listRows(CALENDAR, 'events/'); const now = Date.now();
-  const row = { schemaVersion: 1, eventId: randomUUID(), ...input, createdBy: auth.user.id, createdAt: now, updatedAt: now, status: 'active', source: extra.source || 'admin_created', visibility: 'members', proposalId: extra.proposalId || '', originalAuthor: extra.originalAuthor || '', approvedBy: extra.approvedBy || '', possibleDuplicate: possibleDuplicate(rows, input), removed: false };
+  const row = { schemaVersion: 1, eventId, ...input, createdBy: auth.user.id, createdAt: now, updatedAt: now, status: 'active', source: extra.source || 'admin_created', visibility: 'members', proposalId: extra.proposalId || '', originalAuthor: extra.originalAuthor || '', approvedBy: extra.approvedBy || '', possibleDuplicate: possibleDuplicate(rows, input), removed: false };
   await CALENDAR.setJSON(`events/${row.eventId}`, row); return row;
 }
 
 async function listCalendar(req, auth) {
   const url = new URL(req.url); const date = validDate(url.searchParams.get('date')); const subjectId = cleanText(url.searchParams.get('subject'), 40); const classGroupId = cleanText(url.searchParams.get('classGroupId'), 80); const schoolYearId = cleanText(url.searchParams.get('schoolYearId'), 80); const termId = cleanText(url.searchParams.get('termId'), 80);
   if (classGroupId || schoolYearId || termId) { const scope = await validateAcademicScope(auth, { classGroupId, schoolYearId, termId, subjectId }); if (!scope.ok) return json({ error: scope.error }, scope.status); }
-  const rows = (await listRows(CALENDAR, 'events/')).filter(row => !row.removed && (!date || row.date === date) && (!SUBJECTS.has(subjectId) || row.subjectId === subjectId) && (!row.classGroupId || row.classGroupId === classGroupId) && (!schoolYearId || row.schoolYearId === schoolYearId) && (!termId || row.termId === termId)).sort((a, b) => a.date.localeCompare(b.date) || a.createdAt - b.createdAt);
+  const type = cleanText(url.searchParams.get('type'), 30);
+  const rows = (await listRows(CALENDAR, 'events/', 1000)).filter(row => !row.removed && (!date || row.date === date) && (!SUBJECTS.has(subjectId) || row.subjectId === subjectId) && (!CALENDAR_TYPES.has(type) || row.type === type) && (!row.classGroupId || row.classGroupId === classGroupId) && (!schoolYearId || row.schoolYearId === schoolYearId) && (!termId || row.termId === termId)).sort((a, b) => a.date.localeCompare(b.date) || a.createdAt - b.createdAt);
   const proposals = [];
   for (const row of await listRows(PROPOSALS, 'proposals/')) {
     if (!canAccessAdmin(auth.role) && row.authorId !== auth.user.id) continue;
@@ -44,12 +48,13 @@ async function listCalendar(req, auth) {
     if (termId && row.termId !== termId) continue;
     proposals.push(publicProposal(row, auth));
   }
-  const assignments = (await listRows(ASSIGNMENTS, 'assignments/')).filter(row => !row.removed && (!date || row.dueDate === date || row.assignedDate === date) && (!row.classGroupId || row.classGroupId === classGroupId) && (!schoolYearId || row.schoolYearId === schoolYearId) && (!termId || row.termId === termId));
+  const assignments = (await listRows(ASSIGNMENTS, 'assignments/')).filter(row => !row.removed && (!date || row.dueDate === date || row.assignedDate === date) && (!SUBJECTS.has(subjectId) || row.subjectId === subjectId) && (!row.classGroupId || row.classGroupId === classGroupId) && (!schoolYearId || row.schoolYearId === schoolYearId) && (!termId || row.termId === termId)).sort((a, b) => (a.dueDate || a.assignedDate).localeCompare(b.dueDate || b.assignedDate));
   const safeAssignments = await Promise.all(assignments.map(async row => {
     const personal = await ASSIGNMENT_PROGRESS.get(`progress/${auth.user.id}/${row.assignmentId}`, { type: 'json', consistency: 'strong' });
     return { assignmentId: row.assignmentId, subjectId: row.subjectId, unitId: row.unitId || '', topicId: row.topicId || '', classGroupId: row.classGroupId || '', schoolYearId: row.schoolYearId || '', termId: row.termId || '', title: row.title, description: row.description, assignedDate: row.assignedDate, dueDate: row.dueDate || '', source: row.source, status: row.status, personalStatus: personal?.status || 'pending' };
   }));
-  return json({ events: rows.map(publicEvent), proposals, assignments: safeAssignments, capabilities: { create: hasCapability(auth, 'calendar:create'), moderate: hasCapability(auth, 'moderation:global') } });
+  const page = paginateRows(rows, url.searchParams);
+  return json({ events: page.items.map(publicEvent), nextCursor: page.nextCursor, limit: page.limit, proposals: proposals.slice(0, 50), assignments: safeAssignments.slice(0, 50), capabilities: { create: hasCapability(auth, 'calendar:create'), moderate: hasCapability(auth, 'moderation:global') } });
 }
 
 export default async (req) => {
@@ -84,9 +89,13 @@ export default async (req) => {
       const id = cleanText(body.proposalId, 80); const status = cleanText(body.status, 30); const row = await PROPOSALS.get(`proposals/${id}`, { type: 'json', consistency: 'strong' });
       if (!row) return json({ error: 'Propuesta no encontrada.' }, 404);
       if (!PROPOSAL_STATUSES.has(status) || status === 'pending') return json({ error: 'Estado de propuesta inválido.' }, 400);
+      if (['approved', 'rejected', 'duplicate'].includes(row.status)) return json({ error: 'Esta propuesta ya tiene una decisión final.' }, 409);
+      let approvedScope = null;
+      if (status === 'approved') { approvedScope = await validateAcademicScope(auth, row); if (!approvedScope.ok) return json({ error: approvedScope.error }, approvedScope.status); }
+      let event = null;
+      if (status === 'approved') { event = await createEvent(auth, { ...eventInput(row), classGroupId: approvedScope.classGroupId, schoolYearId: approvedScope.schoolYearId, termId: approvedScope.termId }, { source: 'community_proposal', proposalId: id, originalAuthor: row.authorId, approvedBy: auth.user.id }); }
       row.status = status; row.reviewedAt = Date.now(); row.reviewedBy = auth.user.id; row.updatedAt = row.reviewedAt;
-      await PROPOSALS.setJSON(`proposals/${id}`, row); let event = null;
-      if (status === 'approved') { const scope = await validateAcademicScope(auth, row); if (!scope.ok) return json({ error: scope.error }, scope.status); event = await createEvent(auth, { ...eventInput(row), classGroupId: scope.classGroupId, schoolYearId: scope.schoolYearId, termId: scope.termId }, { source: 'community_proposal', proposalId: id, originalAuthor: row.authorId, approvedBy: auth.user.id }); }
+      await PROPOSALS.setJSON(`proposals/${id}`, row);
       await auditEvent(auth, `calendar-proposal-${status}`, { targetProposalId: id, createdEventId: event?.eventId || '' });
       await createNotification(row.authorId, { type: status === 'approved' ? 'calendar_proposal_approved' : status === 'needs_info' ? 'calendar_needs_info' : 'calendar_proposal_rejected', title: 'Actualización de propuesta', message: `Tu propuesta cambió a ${status}.`, resourceType: 'calendar_proposal', resourceId: id });
       return json({ ok: true, proposal: publicProposal(row, auth), event: event ? publicEvent(event) : null });
@@ -94,8 +103,9 @@ export default async (req) => {
     if (action === 'create-assignment') {
       if (!hasCapability(auth, 'calendar:create')) return json({ error: 'No tienes permiso para publicar assignments.' }, 403);
       const subjectId = cleanText(body.subjectId, 40); const title = cleanText(body.title, 140); const assignedDate = validDate(body.assignedDate); const dueDate = body.dueDate ? validDate(body.dueDate) : '';
-      if (!SUBJECTS.has(subjectId) || title.length < 4 || !assignedDate || (body.dueDate && !dueDate)) return json({ error: 'Assignment inválido.' }, 400);
-      const scope = await validateAcademicScope(auth, { classGroupId: body.classGroupId, schoolYearId: body.schoolYearId, termId: body.termId, subjectId }); if (!scope.ok) return json({ error: scope.error }, scope.status);
+      if (!SUBJECTS.has(subjectId) || title.length < 4 || !assignedDate || (body.dueDate && !dueDate) || (dueDate && dueDate < assignedDate)) return json({ error: 'Assignment inválido.' }, 400);
+      const scope = await validateAcademicScope(auth, { classGroupId: body.classGroupId, schoolYearId: body.schoolYearId, termId: body.termId, subjectId, assignedDate }); if (!scope.ok) return json({ error: scope.error }, scope.status);
+      if (dueDate) { const dueScope = await validateAcademicScope(auth, { classGroupId: body.classGroupId, schoolYearId: body.schoolYearId, termId: body.termId, subjectId, date: dueDate }); if (!dueScope.ok) return json({ error: dueScope.error }, dueScope.status); }
       const now = Date.now(); const row = { schemaVersion: 1, assignmentId: randomUUID(), subjectId, unitId: cleanText(body.unitId, 80), topicId: cleanText(body.topicId, 80), classGroupId: scope.classGroupId, schoolYearId: scope.schoolYearId, termId: scope.termId, title, description: cleanText(body.description, 3000), assignedDate, dueDate, createdBy: auth.user.id, source: 'calendar', status: 'active', createdAt: now, updatedAt: now, removed: false };
       await ASSIGNMENTS.setJSON(`assignments/${row.assignmentId}`, row); return json({ ok: true, assignmentId: row.assignmentId }, 201);
     }

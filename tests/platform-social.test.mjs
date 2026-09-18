@@ -283,11 +283,16 @@ test('UI centraliza loading, escapa contenido y conserva cinco accesos móviles'
   for (const id of ['community', 'calendar', 'friends', 'notifications', 'roadmap', 'search']) assert.match(html, new RegExp(`id:'${id}'`));
 });
 
-test('Admin summary expone salud sin secretos y cuenta módulos de plataforma', async () => {
+test('System Health es exclusivo de Super Dev y no expone secretos', async () => {
   const admin = await putUser({ id: 'a1', username: 'staff', securityRole: 'admin' }); const adminToken = await token(admin);
   const summary = await payload(await adminHandler(request('admin?section=summary', { token: adminToken })));
-  assert.equal(summary.status, 200); assert.equal(summary.data.health.community, 'OK'); assert.equal(summary.data.summary.community, 0);
+  assert.equal(summary.status, 200); assert.equal('health' in summary.data, false); assert.equal(summary.data.summary.community, 0);
+  assert.equal((await payload(await adminHandler(request('admin?section=health', { token: adminToken })))).status, 403);
+  const superdev = await putUser({ id: 's1', username: 'superdev' }); const superToken = await token(superdev, true);
+  const health = await payload(await adminHandler(request('admin?section=health', { token: superToken })));
+  assert.equal(health.status, 200); assert.equal(health.data.health.Community, 'Disponible');
   assert.doesNotMatch(JSON.stringify(summary.data), /password|cookie|token|DEV_LOGIN_CODE/i);
+  assert.doesNotMatch(JSON.stringify(health.data), /password|cookie|token|DEV_LOGIN_CODE/i);
 });
 
 test('endpoints privados rechazan acceso anónimo y cuentas suspendidas', async () => {
@@ -307,4 +312,75 @@ test('borrar cuenta limpia relaciones privadas y retira aportes sin tocar stores
   const row = await getStore('study-hub-community-v1').get(`contributions/${created.data.contribution.contributionId}`, { type: 'json' });
   assert.equal(row.removed, true); assert.equal(row.authorDisplayName, 'Cuenta eliminada');
   assert.equal((await payload(await friendsHandler(request('friends', { token: peerToken })))).data.received.length, 0);
+});
+
+test('feeds, búsqueda, notificaciones y moderación paginan sin duplicar filas', async () => {
+  const member = await putUser({ id: 'u1', username: 'member' }); const admin = await putUser({ id: 'a1', username: 'staff', securityRole: 'admin' });
+  const memberToken = await token(member); const adminToken = await token(admin);
+  for (let index = 0; index < 3; index++) {
+    await getStore('study-hub-community-v1').setJSON(`contributions/c${index}`, { schemaVersion: 1, contributionId: `c${index}`, authorId: member.id, authorDisplayName: 'Member', subjectId: 'historia', date: '2026-09-18', type: 'class_notes', title: `Paginable ${index}`, text: 'Texto', status: 'community', createdAt: index + 1 });
+    await getStore('study-hub-calendar-v1').setJSON(`events/e${index}`, { schemaVersion: 1, eventId: `e${index}`, subjectId: 'historia', date: `2026-09-${20 + index}`, type: 'test', title: `Paginable evento ${index}`, description: '', status: 'active', source: 'admin_created', createdAt: index + 1 });
+    await getStore('study-hub-notifications-v1').setJSON(`notifications/${member.id}/${index}`, { schemaVersion: 1, notificationId: `n${index}`, userId: member.id, title: `Aviso ${index}`, message: 'Mensaje', createdAt: index + 1, status: 'active', readAt: null });
+  }
+  for (const [name, handler, field, tokenValue] of [['community', communityHandler, 'contributions', memberToken], ['calendar', calendarHandler, 'events', memberToken], ['notifications', notificationsHandler, 'notifications', memberToken], ['moderation', moderationHandler, 'items', adminToken]]) {
+    const first = await payload(await handler(request(`${name}?limit=2`, { token: tokenValue })));
+    assert.equal(first.status, 200, name); assert.equal(first.data[field].length, 2, name); assert.ok(first.data.nextCursor, name);
+    const second = await payload(await handler(request(`${name}?limit=2&cursor=${first.data.nextCursor}`, { token: tokenValue })));
+    assert.equal(second.data[field].length, 1, name);
+    assert.equal(second.data.nextCursor, null, name);
+  }
+  const first = await payload(await searchHandler(request('search?q=paginable&type=community&limit=2', { token: memberToken })));
+  assert.equal(first.data.results.length, 2); assert.ok(first.data.nextCursor);
+  const second = await payload(await searchHandler(request(`search?q=paginable&type=community&limit=2&cursor=${first.data.nextCursor}`, { token: memberToken })));
+  assert.equal(second.data.results.length, 1);
+  const byDate = await payload(await searchHandler(request('search?q=paginable&date=2026-09-18', { token: memberToken })));
+  assert.equal(byDate.data.results.every(row => row.date === '2026-09-18'), true);
+  const otherDate = await payload(await searchHandler(request('search?q=paginable&date=2026-09-19', { token: memberToken })));
+  assert.equal(otherDate.data.results.length, 0);
+});
+
+test('perfil limitado excluye identificadores privados y respeta bloqueo', async () => {
+  const viewer = await putUser({ id: 'u1', username: 'viewer' }); const target = await putUser({ id: 'u2', username: 'target', displayName: 'Nombre Visible', email: 'hidden@example.test', visibleRank: 'Estudiante', socialPrivacy: { profileVisibility: 'limited' } });
+  const viewerToken = await token(viewer); const targetToken = await token(target);
+  const profile = await payload(await friendsHandler(request('friends?action=profile&username=target', { token: viewerToken })));
+  assert.equal(profile.status, 200); assert.equal(profile.data.profile.displayName, 'Nombre Visible');
+  assert.doesNotMatch(JSON.stringify(profile.data), /hidden@example\.test|"u2"|session|progress/i);
+  await USERS.setJSON(`user/${target.id}`, { ...target, socialPrivacy: { profileVisibility: 'private' } });
+  assert.equal((await payload(await friendsHandler(request('friends?action=profile&username=target', { token: viewerToken })))).status, 403);
+  await USERS.setJSON(`user/${target.id}`, target);
+  await friendsHandler(request('friends', { method: 'POST', token: targetToken, body: { action: 'block', username: 'viewer' } }));
+  assert.equal((await payload(await friendsHandler(request('friends?action=profile&username=target', { token: viewerToken })))).status, 403);
+});
+
+test('fechas de grupo respetan año y trimestre incluso en vencimientos', async () => {
+  const admin = await putUser({ id: 'a1', username: 'staff', securityRole: 'admin' }); const adminToken = await token(admin);
+  const year = (await payload(await groupsHandler(request('groups', { method: 'POST', token: adminToken, body: { action: 'create-year', label: '2026–2027', startDate: '2026-08-01', endDate: '2027-06-30' } })))).data.schoolYear;
+  const term = (await payload(await groupsHandler(request('groups', { method: 'POST', token: adminToken, body: { action: 'add-term', schoolYearId: year.schoolYearId, label: 'T1', startDate: '2026-08-01', endDate: '2026-11-30' } })))).data.term;
+  const group = (await payload(await groupsHandler(request('groups', { method: 'POST', token: adminToken, body: { action: 'create-group', name: 'Historia A', subjectId: 'historia', schoolYearId: year.schoolYearId } })))).data.group;
+  const scope = { classGroupId: group.classGroupId, termId: term.termId };
+  assert.equal((await payload(await communityHandler(request('community', { method: 'POST', token: adminToken, body: contribution({ ...scope, date: '2027-01-10' }) })))).status, 400);
+  assert.equal((await payload(await calendarHandler(request('calendar', { method: 'POST', token: adminToken, body: { action: 'create-event', ...event({ ...scope, date: '2027-01-10' }) } })))).status, 400);
+  assert.equal((await payload(await calendarHandler(request('calendar', { method: 'POST', token: adminToken, body: { action: 'create-assignment', subjectId: 'historia', title: 'Tarea grupal', assignedDate: '2026-09-18', dueDate: '2027-01-10', ...scope } })))).status, 400);
+});
+
+test('aprobar una propuesta dos veces no duplica el evento', async () => {
+  const member = await putUser({ id: 'u1', username: 'member' }); const admin = await putUser({ id: 'a1', username: 'staff', securityRole: 'admin' });
+  const memberToken = await token(member); const adminToken = await token(admin);
+  const proposed = await payload(await calendarHandler(request('calendar', { method: 'POST', token: memberToken, body: { action: 'create-proposal', ...event() } })));
+  assert.equal(proposed.status, 201);
+  const body = { action: 'moderate-proposal', proposalId: proposed.data.proposal.proposalId, status: 'approved' };
+  const first = await payload(await calendarHandler(request('calendar', { method: 'POST', token: adminToken, body })));
+  assert.equal(first.status, 200);
+  const second = await payload(await calendarHandler(request('calendar', { method: 'POST', token: adminToken, body })));
+  assert.equal(second.status, 409);
+  const listed = await payload(await calendarHandler(request('calendar', { token: memberToken })));
+  assert.equal(listed.data.events.filter(row => row.proposalId === body.proposalId).length, 1);
+});
+
+test('UI nueva conserva favoritas, flashcards y categorías sin alterar Guardadas', async () => {
+  const [html, platform, extras] = await Promise.all([readFile(new URL('../public/index.html', import.meta.url), 'utf8'), readFile(new URL('../public/js/platform-ui.js', import.meta.url), 'utf8'), readFile(new URL('../public/js/platform-extras.js', import.meta.url), 'utf8')]);
+  for (const marker of ['savedCategories', 'flashcards', 'cardKnown', 'cardUnknown', 'topicFavorite', 'practSaved']) assert.match(html, new RegExp(marker));
+  for (const marker of ['Lo que dieron hoy', 'Cargar más', 'Falté hoy', 'Ver perfil limitado']) assert.match(platform, new RegExp(marker));
+  for (const marker of ['Qué estudiar hoy', 'data-prepare', 'Mis grupos', 'Favoritos']) assert.match(extras, new RegExp(marker));
+  assert.match(html, /saved:\[\.\.\.state\.saved\]/);
 });

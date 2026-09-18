@@ -27,8 +27,10 @@
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
 | Calendario base | Testing | Eventos, capability Veterano, propuestas moderadas, assignments y detección conservadora de duplicados. |
-| Estudio personalizado | In Progress | Métricas y planes puros 15/30/60 preparados; falta experiencia completa de usuario. |
-| Lo que dieron hoy / Falté hoy | Testing | Aportes y eventos por fecha; ponerse al día todavía no crea sesión automática. |
+| Estudio personalizado | In Progress | UI determinista, practicar débiles y preparar 15/30/60 con contenido oficial; falta priorización avanzada y seguimiento temporal. |
+| Lo que dieron hoy / Falté hoy | Testing | Aportes y eventos por fecha y grupo; ponerse al día abre repaso oficial, sin generar preguntas desde aportes. |
+| Dashboard Hoy y grupos propios | Testing | Vista transversal compacta y lista de membresías/años; gestión avanzada de grupos sigue futura. |
+| Flashcards y favoritos | Testing | Primera interacción Lo sé/No lo sé, categorías compatibles de Guardadas y marcadores privados. |
 | Novedades | In Progress | Registro visible de cambios aprobados y experimentos. |
 | Progreso y leaderboard | In Progress | Compatibilidad actual y futura agregación por materia. |
 
@@ -43,10 +45,11 @@
 | Feature Flags / Early Access | Testing | UI Beta e IA únicamente; status, audiencia, publicación y disponibilidad independientes con acceso backend comprobable. |
 | Asistente IA por materia | Planned | Contrato de contexto aprobado y límite por materia preparados; sin proveedor, API ni interfaz activa. |
 | Creación rápida de estudiantes | Planned | Alta segura y auditable por personal autorizado. |
-| Comunidad y moderación | Testing | Aportes, comentarios, reportes, cola central y doble aprobación; sin chat global ni DMs. |
+| Comunidad y moderación | Testing | Feed por materia/fecha/tipo/grupo, aportes, comentarios, reportes, cola filtrable y doble aprobación; sin chat global ni DMs. |
 | Amigos y privacidad | Testing | Solicitudes, amistades, bloqueo global y perfil limitado. |
 | Notificaciones | Testing | Listado privado, unread, lectura, preferencias y eventos implementados. |
-| Roadmap público y búsqueda | Testing | Dataset no sensible y búsqueda filtrada por permisos; Roadmap no concede acceso. |
+| Roadmap público y búsqueda | Testing | Dataset no sensible, búsqueda académica local y social filtrada por permisos; Roadmap no concede acceso. |
+| Paginación social | In Progress | `limit`/`cursor` en cinco endpoints y UI; faltan índices Blob para eliminar scans acotados. |
 | Feedback | Testing | Reportes privados, tipos, estados, filtros, gestión autorizada y rate limiting. |
 | Public Launch Access | Planned | Login obligatorio, paquetes, expiraciones y acceso público; no se activa durante el desarrollo privado. |
 | Pagos futuros | Planned | Integración posterior, aislada de roles y progreso. |

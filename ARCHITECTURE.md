@@ -56,4 +56,8 @@ El catálogo futuro debería referenciar `subjectId/topicId/questionId`. No se d
 
 ## Deuda y riesgos
 
+`public/js/platform-ui.js` concentra las vistas sociales y `public/js/platform-extras.js` añade Hoy, grupos propios, Favoritos y Qué estudiar hoy sin mover el Study Engine académico. Favoritos, categorías de Guardadas y estado de tarjetas se guardan dentro de `settings`; snapshots anteriores siguen legibles. System Health es una lectura técnica de stores restringida a Super Dev, no un indicador de salud funcional integral.
+
+Community, Calendar, Notifications, Search y Moderation devuelven `limit`/`cursor`. La paginación limita el payload, pero los listados siguen escaneando hasta 1000 filas; antes de crecer se necesitan índices y cursores nativos de Blob.
+
 Las vistas académicas todavía mezclan HTML, listeners y mutaciones dentro de `index.html`. La plataforma nueva ya está aislada, pero listados Blob realizan scans acotados y necesitarán índices/paginación al crecer. Grupos aplica membresía backend y valida conjuntamente `classGroupId`, materia, `schoolYearId` y `termId`; Admin+ puede administrar grupos sin omitir esas relaciones. Los cambios de año vigente archivan metadata anterior sin borrar grupos, trimestres ni contenido. Conviene mantener extracción por fases, pruebas de regresión y lectura compatible durante al menos una versión.

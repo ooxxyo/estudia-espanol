@@ -59,6 +59,8 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - Los aportes comunitarios permanecen separados del contenido oficial; requieren verificación y una segunda aprobación para ser oficiales. Las confirmaciones de estudiantes no equivalen a publicación.
 - `calendar:create` es una capability explícita de Admin+, Owner, Super Dev o Veterano; nunca convierte Veteranía en rol ni concede moderación.
 - Roadmap público informa estado y nunca sustituye una Feature Flag ni concede acceso.
+- Favoritos de temas, tarjetas, aportes y eventos viven en configuración sincronizada; las preguntas Guardadas conservan sus IDs y estructura anterior. Las tarjetas guardan `known/unknown`, `lastReviewed` y `reviewCount` sin modificar el contenido académico.
+- System Health se consulta solo con rol Super Dev validado en backend; una lectura de store muestra disponibilidad técnica, no una prueba funcional completa.
 - Design Lab permitirá comparar Classic UI con New UI Beta mediante Early Access; no forma parte de la interfaz estable actual.
 - El nombre futuro es `Estudio Hub` y el slug preferido `estudio-hub`; repositorio, remote, dominio y nombre actual no cambian sin autorización.
 - El copy genérico usa “dispositivo”, no “iPhone”, salvo instrucciones específicas de compatibilidad.

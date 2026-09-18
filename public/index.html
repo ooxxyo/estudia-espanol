@@ -588,6 +588,7 @@ body{line-height:1.55;}
 .sync-pill{font-size:.68rem;padding:3px 7px;border-radius:999px;background:var(--good-soft);color:var(--good);font-weight:700;}
 .nav-group{display:grid;gap:2px;margin-bottom:10px}.nav-group-title{padding:3px 12px;color:var(--ink-soft);font-size:.64rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.more-backdrop{display:none}.more-panel{width:100%;max-height:min(78vh,680px);overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:18px 18px 0 0;box-shadow:var(--shadow);padding:16px 16px calc(16px + env(safe-area-inset-bottom))}.more-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.more-head h2{margin:0;font-size:1.15rem}.more-list{display:grid;gap:8px}.more-item{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;width:100%;padding:12px;text-align:left;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink);cursor:pointer;min-height:62px}.more-item:hover,.more-item:focus-visible{border-color:var(--accent);outline:2px solid var(--accent-soft)}.more-item .ic{font-size:1.15rem;text-align:center}.more-item b,.more-item span{display:block}.more-item span{font-size:.76rem;color:var(--ink-soft);margin-top:2px}.more-close{min-width:44px;min-height:44px}
 .platform-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.platform-list{display:grid;gap:12px}.platform-card h3,.roadmap-card h3,.notification-card h3{margin:4px 0 6px}.platform-copy{white-space:pre-wrap}.platform-form{display:grid;gap:12px}.platform-form label{display:grid;gap:5px;font-weight:700;font-size:.82rem}.platform-form input,.platform-form select,.platform-form textarea,.inline-form input,.inline-form select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}.platform-form textarea{min-height:110px;resize:vertical}.inline-form{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.inline-form label{display:grid;gap:5px;flex:1 1 220px;font-weight:700;font-size:.82rem}.community-label{display:inline-block;padding:3px 7px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:.68rem;font-weight:800}.community-label.official{background:var(--good-soft);color:var(--good)}.comment-list{margin:12px 0;display:grid;gap:8px}.comment{border-left:3px solid var(--line);padding-left:10px}.comment p{margin:3px 0;white-space:pre-wrap}.friend-row{display:flex;justify-content:space-between;gap:10px;margin:10px 0}.friend-row .meta{display:block}.notification-card.unread{border-color:var(--accent)}.roadmap-card p{margin-bottom:0}.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.platform-filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,170px),1fr));gap:12px;align-items:end;margin-bottom:18px}.platform-filters label{display:grid;gap:5px;font-weight:700;font-size:.82rem;min-width:0}.platform-filters input,.platform-filters select{width:100%;min-width:0;min-height:44px;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit}.platform-filters .btn-row{grid-column:1/-1}.platform-tabs .chip,.platform-card .icon-btn,.platform-filters .icon-btn{min-height:40px}@media(max-width:480px){.platform-filters{grid-template-columns:1fr}.platform-tabs .chip{min-height:44px}}
 @media(max-width:820px){.more-backdrop{position:fixed;inset:0;z-index:90;background:rgba(20,24,27,.42);display:flex;align-items:flex-end;justify-content:center;padding:16px 0 0}}
 @media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-controls,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
 @media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}}
@@ -614,6 +615,7 @@ body{line-height:1.55;}
 <script src="js/storage.js"></script>
 <script src="js/study-planner.js"></script>
 <script src="js/platform-ui.js"></script>
+<script src="js/platform-extras.js"></script>
 <script src="history-data.js"></script>
 <script>
 /* =========================================================
@@ -1322,7 +1324,10 @@ const state = {
     accentColor:'#8B2635',
     leaderboardName:'',
     leaderboardDeviceId:'',
-    hiddenWarnings:{}
+    hiddenWarnings:{},
+    favorites:[],
+    flashcards:{},
+    savedCategories:{}
   }
 };
 allTopics().forEach(t=> state.stats[t.id] = {attempts:0, correct:0, recent:[]});
@@ -1413,6 +1418,9 @@ function applySavedData(d){
     if(typeof incoming.leaderboardName==='string') state.settings.leaderboardName=incoming.leaderboardName.slice(0,40);
     if(typeof incoming.leaderboardDeviceId==='string') state.settings.leaderboardDeviceId=incoming.leaderboardDeviceId.slice(0,120);
     if(incoming.hiddenWarnings && typeof incoming.hiddenWarnings==='object' && !Array.isArray(incoming.hiddenWarnings)) state.settings.hiddenWarnings={...incoming.hiddenWarnings};
+    if(Array.isArray(incoming.favorites)) state.settings.favorites=incoming.favorites.filter(item=>item&&['topic','card','reviewCard','contribution','calendar'].includes(item.type)&&typeof item.id==='string').slice(0,300).map(item=>({type:item.type,id:item.id,subjectId:typeof item.subjectId==='string'?item.subjectId:'',title:typeof item.title==='string'?item.title.slice(0,140):''}));
+    if(incoming.flashcards&&typeof incoming.flashcards==='object'&&!Array.isArray(incoming.flashcards)) state.settings.flashcards=Object.fromEntries(Object.entries(incoming.flashcards).slice(0,500).filter(([id,row])=>id.length<=200&&row&&['known','unknown'].includes(row.status)).map(([id,row])=>[id,{status:row.status,lastReviewed:Math.max(0,Number(row.lastReviewed)||0),reviewCount:Math.max(0,Number(row.reviewCount)||0)}]));
+    if(incoming.savedCategories&&typeof incoming.savedCategories==='object'&&!Array.isArray(incoming.savedCategories)) state.settings.savedCategories=Object.fromEntries(Object.entries(incoming.savedCategories).slice(0,1000).filter(([id,value])=>typeof id==='string'&&['dificil','importante','manana'].includes(value)));
   }
   if(typeof d.activeSubjectId==='string' && SUBJECT_BY_ID.get(d.activeSubjectId)?.available) state.activeSubjectId=d.activeSubjectId;
   if(typeof d.lastSubjectId==='string' && SUBJECT_BY_ID.get(d.lastSubjectId)?.available) state.lastSubjectId=d.lastSubjectId;
@@ -1725,16 +1733,20 @@ const PRIMARY_NAV_ITEMS=[
   {id:'more',label:'Más',icon:'⋯'},
 ];
 const MORE_NAV_ITEMS=[
+  {id:'today',label:'Hoy',icon:'◷',description:'Resumen de estudio y clases'},
   {id:'examen',label:'Examen',icon:'▦',description:'Haz una prueba completa'},
   {id:'errores',label:'Errores',icon:'✕',description:'Repasa lo que contestaste mal'},
   {id:'dashboard',label:'Progreso',icon:'📊',description:'Consulta tus estadísticas'},
   {id:'leaderboard',label:'Leaderboard',icon:'🏆',description:'Consulta la clasificación'},
   {id:'community',label:'Comunidad',icon:'♧',description:'Aportes de estudiantes'},
+  {id:'groups',label:'Mis grupos',icon:'▣',description:'Clases y años escolares'},
   {id:'calendar',label:'Calendario',icon:'▣',description:'Eventos, pruebas y tareas'},
   {id:'friends',label:'Amigos',icon:'♢',description:'Solicitudes y conexiones'},
   {id:'notifications',label:'Notificaciones',icon:'◉',description:'Avisos privados de tu cuenta'},
   {id:'roadmap',label:'Roadmap',icon:'◇',description:'Próximas funciones del Hub'},
   {id:'search',label:'Buscar',icon:'⌕',description:'Contenido permitido'},
+  {id:'favorites',label:'Favoritos',icon:'♡',description:'Temas y recursos personales'},
+  {id:'studyToday',label:'Qué estudiar hoy',icon:'✧',description:'Plan basado en tu progreso'},
   {id:'ajustes',label:'Configuración',icon:'⚙',description:'Apariencia y preferencias'},
   {id:'admin',label:'Administración',icon:'⚑',description:'Usuarios, sistema y Early Access',adminOnly:true},
   {id:'guardadas',label:'Guardadas',icon:'★',description:'Preguntas que marcaste para después'},
@@ -1742,10 +1754,10 @@ const MORE_NAV_ITEMS=[
   {id:'feedback',label:'Feedback',icon:'✉',description:'Reporta problemas o sugerencias'},
 ];
 const DESKTOP_NAV_GROUPS=[
-  {label:'Estudio',items:[{id:'hub',label:'Hub',icon:'⌂'},{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'}]},
+  {label:'Estudio',items:[{id:'hub',label:'Hub',icon:'⌂'},{id:'today',label:'Hoy',icon:'◷'},{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'},{id:'studyToday',label:'Qué estudiar hoy',icon:'✧'}]},
   {label:'Seguimiento',items:[{id:'errores',label:'Errores',icon:'✕'},{id:'guardadas',label:'Guardadas',icon:'★'},{id:'historial',label:'Historial',icon:'▥'},{id:'dashboard',label:'Progreso',icon:'📊'},{id:'leaderboard',label:'Leaderboard',icon:'🏆'}]},
-  {label:'Comunidad',items:[{id:'community',label:'Comunidad',icon:'♧'},{id:'calendar',label:'Calendario',icon:'▣'},{id:'friends',label:'Amigos',icon:'♢'},{id:'notifications',label:'Notificaciones',icon:'◉'}]},
-  {label:'Herramientas',items:[{id:'search',label:'Buscar',icon:'⌕'},{id:'roadmap',label:'Roadmap',icon:'◇'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'novedades',label:'Novedades',icon:'✦'},{id:'cuenta',label:'Cuenta',icon:'●'}]},
+  {label:'Comunidad',items:[{id:'community',label:'Comunidad',icon:'♧'},{id:'calendar',label:'Calendario',icon:'▣'},{id:'groups',label:'Mis grupos',icon:'▣'},{id:'friends',label:'Amigos',icon:'♢'},{id:'notifications',label:'Notificaciones',icon:'◉'}]},
+  {label:'Herramientas',items:[{id:'search',label:'Buscar',icon:'⌕'},{id:'favorites',label:'Favoritos',icon:'♡'},{id:'roadmap',label:'Roadmap',icon:'◇'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'novedades',label:'Novedades',icon:'✦'},{id:'cuenta',label:'Cuenta',icon:'●'}]},
 ];
 const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
 let moreOpen=false;
@@ -1879,12 +1891,19 @@ function discardPausedPractice(){
   saveState();
 }
 function goto(view){ setViewContext(view); saveState(); render(); window.scrollTo(0,0); }
-function platformUiContext(){return{user:accountSession.user,escape:escHtml,subjects:SUBJECT_CATALOG,subjectName:id=>escHtml(SUBJECT_BY_ID.get(id)?.name||id),goto,openSubject,toast:showToast};}
+function platformUiContext(){return{user:accountSession.user,escape:escHtml,subjects:SUBJECT_CATALOG,subjectName:id=>escHtml(SUBJECT_BY_ID.get(id)?.name||id),goto,openSubject,toast:showToast,
+  favorites:()=>state.settings.favorites||[],toggleFavorite:item=>{const rows=state.settings.favorites||[];const index=rows.findIndex(row=>row.type===item.type&&row.id===item.id);if(index>=0)rows.splice(index,1);else rows.push(item);state.settings.favorites=rows.slice(0,300);saveState();return index<0;},
+  academicEntries:()=>SUBJECT_CATALOG.filter(subject=>subject.available).flatMap(subject=>{const content=subjectContent(subject.id);return [{type:'subject',id:subject.id,subjectId:subject.id,title:subject.name},...[content.units.current,...content.units.previous,...content.units.completed].filter(Boolean).map(unit=>({type:'unit',id:unit.id,subjectId:subject.id,title:unit.name})),...content.topics.map(topic=>({type:'topic',id:topic.id,subjectId:subject.id,title:topic.name}))];}),
+  studyData:()=>SUBJECT_CATALOG.filter(subject=>subject.available).map(subject=>({subjectId:subject.id,subjectName:subject.name,topics:subjectContent(subject.id).topics.map(topic=>({id:topic.id,name:topic.name,attempts:state.stats[topic.id]?.attempts||0,correct:state.stats[topic.id]?.correct||0})),errors:subjectErrors(subject.id).length,lastPractice:subjectHistory(subject.id).at(-1)?.date||''})),
+  practiceWeak:subjectId=>{if(openSubject(subjectId,'practica'))startSession({mode:'practica',special:'debiles'});},prepareTest:(subjectId,minutes)=>{if(openSubject(subjectId,'practica')){const plan=window.StudyHubPlanner.prepareTest(activeTopics(),state.stats,minutes);startSession({mode:'practica',topics:plan.topicIds,limit:plan.questionTarget});}},
+  reviewTopic:(subjectId,topicId)=>{if(openSubject(subjectId,'repaso')){repasoFilter=topicId;repasoIndex=0;goto('repasoCards');}},
+  reviewCard:(subjectId,cardId)=>{if(openSubject(subjectId,'repaso')){const [,topic,title]=cardId.split('|');repasoFilter=topic;repasoIndex=Math.max(0,activeReviewCards().filter(card=>card.topic===topic).findIndex(card=>card.title===title));goto('repasoCards');}}};}
 function render(){
   if(state.view!=='admin'){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
   renderNav();
   const main = document.getElementById('main');
   main.innerHTML='';
+  if(window.StudyHubExtras?.supports(state.view)){window.StudyHubExtras.render(state.view,main,platformUiContext());return;}
   if(window.StudyHubPlatform?.supports(state.view)){
     window.StudyHubPlatform.render(state.view,main,platformUiContext());
     return;
@@ -2247,6 +2266,8 @@ function renderRepasoCards(main){
   const reviewCards=activeReviewCards(),topics=activeTopics();
   const cards = repasoFilter? reviewCards.filter(c=>c.topic===repasoFilter) : reviewCards;
   const c = cards[repasoIndex];
+  const cardId=`${activeSubject().id}|${c.topic}|${c.title}`;
+  const cardProgress=state.settings.flashcards?.[cardId];
   main.innerHTML = `
     <div class="q-wrap">
       <div class="q-topbar"><button class="icon-btn" id="backRep">← Volver</button><span>${repasoIndex+1} / ${cards.length}</span></div>
@@ -2259,6 +2280,7 @@ function renderRepasoCards(main){
         </div>
         ${renderReviewExample(c)}
       </div>
+      <div class="btn-row" aria-label="Mi repaso de esta tarjeta"><button class="icon-btn" id="cardKnown" aria-pressed="${cardProgress?.status==='known'}">Lo sé</button><button class="icon-btn" id="cardUnknown" aria-pressed="${cardProgress?.status==='unknown'}">No lo sé</button><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button><span class="meta">${cardProgress?.reviewCount||0} ${cardProgress?.reviewCount===1?'repaso':'repasos'}</span></div>
       <div class="q-actions">
         <button class="icon-btn" id="prevRep" ${repasoIndex===0?'disabled':''}>← Anterior</button>
         <div class="btn-row">
@@ -2273,6 +2295,20 @@ function renderRepasoCards(main){
     if(repasoIndex<cards.length-1){ repasoIndex++; render(); } else { goto('repaso'); }
   });
   document.getElementById('practThis').addEventListener('click', ()=> startSession({mode:'practica', topic:c.topic, countStats:state.settings.practiceCountsByDefault!==false}));
+  for(const [buttonId,status] of [['cardKnown','known'],['cardUnknown','unknown']]) document.getElementById(buttonId).addEventListener('click',()=>{
+    state.settings.flashcards ||= {};
+    const previous=state.settings.flashcards[cardId]||{};
+    state.settings.flashcards[cardId]={status,lastReviewed:Date.now(),reviewCount:(previous.reviewCount||0)+1};
+    saveState();render();
+  });
+  document.getElementById('cardFavorite').addEventListener('click',()=>{
+    const added=platformUiContext().toggleFavorite({type:'reviewCard',id:cardId,title:c.title,subjectId:activeSubject().id});
+    showToast(added?'Tarjeta añadida a Favoritos':'Tarjeta quitada de Favoritos');
+  });
+  document.getElementById('topicFavorite').addEventListener('click',()=>{
+    const added=platformUiContext().toggleFavorite({type:'topic',id:c.topic,title:topics.find(t=>t.id===c.topic)?.name||c.topic,subjectId:activeSubject().id});
+    showToast(added?'Tema añadido a Favoritos':'Tema quitado de Favoritos');
+  });
 }
 
 /* =========================================================
@@ -3307,10 +3343,16 @@ function renderGuardadas(main){
     <div class="pagehead"><h1>Guardadas de ${subject.name}</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p></div>
     ${ids.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practSaved">Practicar guardadas (${ids.length})</button></div>` : ''}
     ${ids.length? ids.map(id=>{ const q=findQuestionById(id); if(!q) return '';
-      return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${topicForQuestion(q)?.name||''}</div></div>`;
+      return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${topicForQuestion(q)?.name||''}</div><label>Categoría<select data-saved-category="${escHtml(id)}">${[['','Sin categoría'],['dificil','Difícil'],['importante','Importante'],['manana','Revisar mañana']].map(([value,label])=>`<option value="${value}" ${state.settings.savedCategories?.[id]===value?'selected':''}>${label}</option>`).join('')}</select></label></div>`;
     }).join('') : `<div class="empty-state"><span class="ic">★</span>No has guardado preguntas todavía. Usa el botón "Guardar" durante la práctica.</div>`}
   `;
   if(ids.length) document.getElementById('practSaved').addEventListener('click', ()=>startSession({mode:'practica', savedOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
+  main.querySelectorAll('[data-saved-category]').forEach(select=>select.addEventListener('change',()=>{
+    state.settings.savedCategories ||= {};
+    if(select.value) state.settings.savedCategories[select.dataset.savedCategory]=select.value;
+    else delete state.settings.savedCategories[select.dataset.savedCategory];
+    saveState();
+  }));
 }
 
 /* =========================================================
@@ -3532,15 +3574,18 @@ async function loadAdminSection(section){
   if(section==='early'){loadEarlyAccess(box);return;}
   if(section==='updates'){box.innerHTML='<div class="card"><h2 style="margin-top:0;">Novedades del Hub</h2><p>Revisa el registro visible sin abandonar la experiencia general.</p><button class="btn" id="openUpdatesFromAdmin">Abrir Novedades</button></div>';document.getElementById('openUpdatesFromAdmin').addEventListener('click',()=>goto('novedades'));return;}
   if(section==='connected'){renderConnectedUsersShell(box);adminRefreshTimer=setInterval(()=>{if(state.view==='admin'&&activeAdminSection==='connected')loadConnectedUsers();},30000);return;}
-  if(section==='system'){await loadAdminAudit(box);return;}
+  if(section==='system'){
+    try{const data=await adminRequest('GET',null,'section=health');box.innerHTML=`<div class="card"><h2>System Health</h2><p class="cloud-note">Lectura de stores en ${new Date(data.checkedAt).toLocaleString('es-ES')}. No representa una prueba funcional completa.</p><div class="btn-row">${Object.entries(data.health||{}).map(([name,status])=>`<span class="status-badge ${status==='Disponible'?'':'offline'}">${escHtml(name)}: ${escHtml(status)}</span>`).join('')}</div></div><section id="systemAudit"></section>`;await loadAdminAudit(box.querySelector('#systemAudit'));}catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
+    return;
+  }
   await loadAdminSummary(box);
 }
 async function loadAdminSummary(box){
   try{
     const data=await adminRequest('GET',null,'section=summary');
-    const summary=data.summary||{},health=data.health||{};
+    const summary=data.summary||{};
     const metrics=[['Usuarios',summary.users],['Online',summary.online],['Veteranos',summary.veterans],['Admins',summary.admins],['Suspendidos',summary.suspended],['Feedback nuevo',summary.newFeedback],['Comunidad',summary.community],['Calendario',summary.calendar],['Amistades',summary.friends],['Moderación',summary.pendingModeration],['Features activas',summary.enabledFeatures],['Sesiones activas',summary.activeSessions]];
-    box.innerHTML=`<div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div><div class="card" style="margin-top:18px;"><h2 style="margin-top:0;">Estado del Hub</h2><div class="btn-row">${Object.entries(health).map(([name,status])=>`<span class="status-badge ${status==='OK'?'':'offline'}">${escHtml(name)}: ${escHtml(status)}</span>`).join('')}</div><p style="margin-bottom:0;">Study Hub v${APP_VERSION} · acceso público obligatorio y pagos continúan desactivados. Las autorizaciones se validan en backend.</p></div>`;
+    box.innerHTML=`<div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div><div class="card" style="margin-top:18px;"><p style="margin-bottom:0;">Study Hub v${APP_VERSION} · acceso público obligatorio y pagos continúan desactivados. Las autorizaciones se validan en backend.</p></div>`;
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 function renderAdminUsersShell(box,sessionsOnly){
@@ -3742,6 +3787,7 @@ function renderAjustes(main){
       <p class="section-title">Avisos</p>
       <div class="setting-row"><div class="setting-copy"><b>Restablecer avisos y confirmaciones</b><span>Vuelve a mostrar avisos recuperables que hayas ocultado. Las confirmaciones destructivas siempre permanecen activas.</span></div><div class="setting-control"><button class="icon-btn" id="resetWarnings">Restablecer</button></div></div>
     </div>
+    <div class="card" id="notificationPreferences" style="margin-bottom:20px;"></div>
     <div class="card" style="margin-bottom:20px;">
       <p class="section-title">Open Source</p>
       <p style="margin:0 0 12px;color:var(--ink-soft);font-size:.88rem;">Consulta el código, el historial de cambios y los reportes del proyecto.</p>
@@ -3769,6 +3815,7 @@ function renderAjustes(main){
     saveState();
     showToast('Avisos restablecidos ✓');
   });
+  window.StudyHubExtras?.mountNotificationPreferences(document.getElementById('notificationPreferences'),platformUiContext());
   document.getElementById('saveSettings').addEventListener('click',()=>{
     const topics=[...document.querySelectorAll('#defaultTopics input:checked')].map(x=>x.value);
     if(!topics.length){ alert('Selecciona al menos un tema para el examen.'); return; }

@@ -4,7 +4,7 @@ import { authenticateRequest, canAccessAdmin, resolveUser } from './_shared/auth
 import { RateLimitError, enforceRateLimit, recordRateLimitFailure } from './_shared/rate-limit.mjs';
 import {
   COMMUNITY_STATUSES, COMMUNITY_TYPES, REPORT_REASONS, SUBJECTS, auditEvent, cleanText,
-  createNotification, isBlockedBetween, json, listRows, possibleDuplicate, readBody, safeActor, validDate,
+  createNotification, isBlockedBetween, json, listRows, paginateRows, possibleDuplicate, readBody, safeActor, validDate,
 } from './_shared/platform.mjs';
 import { validateAcademicScope } from './groups.mjs';
 
@@ -55,11 +55,13 @@ async function resourceAccess(auth, row) {
 async function listContributions(req, auth) {
   const url = new URL(req.url); const date = validDate(url.searchParams.get('date')); const subjectId = cleanText(url.searchParams.get('subject'), 40); const classGroupId = cleanText(url.searchParams.get('classGroupId'), 80); const schoolYearId = cleanText(url.searchParams.get('schoolYearId'), 80); const termId = cleanText(url.searchParams.get('termId'), 80);
   if (classGroupId || schoolYearId || termId) { const scope = await validateAcademicScope(auth, { classGroupId, schoolYearId, termId, subjectId }); if (!scope.ok) return json({ error: scope.error }, scope.status); }
-  const rows = (await listRows(COMMUNITY, 'contributions/')).filter(row => !row.removed && !['rejected', 'duplicate'].includes(row.status));
+  const type = cleanText(url.searchParams.get('type'), 30);
+  const rows = (await listRows(COMMUNITY, 'contributions/', 1000)).filter(row => !row.removed && (!['rejected', 'duplicate'].includes(row.status) || row.authorId === auth.user.id || canAccessAdmin(auth.role)));
   const visible = [];
   for (const row of rows) {
     if (date && row.date !== date) continue;
     if (SUBJECTS.has(subjectId) && row.subjectId !== subjectId) continue;
+    if (COMMUNITY_TYPES.has(type) && row.type !== type) continue;
     if (row.classGroupId && row.classGroupId !== classGroupId) continue;
     if (schoolYearId && row.schoolYearId !== schoolYearId) continue;
     if (termId && row.termId !== termId) continue;
@@ -67,7 +69,8 @@ async function listContributions(req, auth) {
     visible.push(publicContribution(row, auth));
   }
   visible.sort((a, b) => b.createdAt - a.createdAt);
-  return json({ contributions: visible });
+  const page = paginateRows(visible, url.searchParams);
+  return json({ contributions: page.items, nextCursor: page.nextCursor, limit: page.limit });
 }
 
 async function listComments(req, auth) {
@@ -93,7 +96,7 @@ export default async (req) => {
       const rate = await enforceRateLimit(req, 'contribution', auth.user.id, { strict: true });
       const subjectId = cleanText(body.subjectId, 40); const type = cleanText(body.type, 30); const title = cleanText(body.title, 140); const text = cleanText(body.text, 5000); const date = validDate(body.date);
       if (!SUBJECTS.has(subjectId) || !COMMUNITY_TYPES.has(type) || title.length < 4 || text.length < 5 || !date) { await recordRateLimitFailure(rate); return json({ error: 'Completa materia, fecha, tipo, título y notas válidas.' }, 400); }
-      const scope = await validateAcademicScope(auth, { classGroupId: body.classGroupId, schoolYearId: body.schoolYearId, termId: body.termId, subjectId });
+      const scope = await validateAcademicScope(auth, { classGroupId: body.classGroupId, schoolYearId: body.schoolYearId, termId: body.termId, subjectId, date });
       if (!scope.ok) return json({ error: scope.error }, scope.status);
       const prior = await listRows(COMMUNITY, 'contributions/'); const actor = safeActor(auth); const now = Date.now();
       const row = { schemaVersion: 1, contributionId: randomUUID(), authorId: actor.userId, authorDisplayName: actor.displayName, subjectId, unitId: cleanText(body.unitId, 80), topicId: cleanText(body.topicId, 80), classGroupId: scope.classGroupId, schoolYearId: scope.schoolYearId, termId: scope.termId, date, type, title, text, attachments: attachmentsMetadata(body.attachments), status: 'community', createdAt: now, updatedAt: now, confirmationsCount: 0, commentsCount: 0, reportsCount: 0, possibleDuplicate: possibleDuplicate(prior, { subjectId, date, type, title }) };
@@ -122,7 +125,7 @@ export default async (req) => {
       const access = await resourceAccess(auth, target); if (!access.ok) return json({ error: access.error }, access.status);
       if (ownerId && await isBlockedBetween(auth.user.id, ownerId)) return json({ error: 'Esta interacción no está disponible.' }, 403);
       const rate = await enforceRateLimit(req, 'comment', auth.user.id, { strict: true }); const now = Date.now(); const actor = safeActor(auth);
-      const row = { schemaVersion: 1, commentId: randomUUID(), resourceType, resourceId, authorId: actor.userId, authorDisplayName: actor.displayName, text, createdAt: now, updatedAt: now, status: 'active', removed: false };
+      const row = { schemaVersion: 1, commentId: randomUUID(), resourceType, resourceId, authorId: actor.userId, authorDisplayName: actor.displayName, classGroupId: cleanText(target.classGroupId, 80), schoolYearId: cleanText(target.schoolYearId, 80), termId: cleanText(target.termId, 80), text, createdAt: now, updatedAt: now, status: 'active', removed: false };
       await recordRateLimitFailure(rate); await COMMENTS.setJSON(`comments/${resourceType}/${resourceId}/${now}_${row.commentId}`, row);
       if (resourceType === 'contribution') { const target = await getContribution(resourceId); target.commentsCount = Number(target.commentsCount || 0) + 1; target.updatedAt = now; await COMMUNITY.setJSON(`contributions/${resourceId}`, target); if (target.authorId !== auth.user.id) await createNotification(target.authorId, { type: 'comment', title: 'Nuevo comentario', message: `${actor.displayName} comentó tu aporte.`, resourceType, resourceId }); }
       return json({ ok: true, comment: publicComment(row, auth) }, 201);
@@ -131,6 +134,9 @@ export default async (req) => {
     if (action === 'remove-comment') {
       const id = cleanText(body.commentId, 80); const rows = await listRows(COMMENTS, 'comments/'); const row = rows.find(item => item.commentId === id);
       if (!row) return json({ error: 'Comentario no encontrado.' }, 404);
+      const parent = await socialResource(row.resourceType, row.resourceId);
+      if (!parent || parent.removed) return json({ error: 'Recurso no encontrado.' }, 404);
+      const access = await resourceAccess(auth, parent); if (!access.ok) return json({ error: access.error }, access.status);
       if (row.authorId !== auth.user.id && !canAccessAdmin(auth.role)) return json({ error: 'No puedes eliminar comentarios ajenos.' }, 403);
       row.removed = true; row.status = 'removed'; row.deletedAt = Date.now(); row.deletedBy = auth.user.id; row.deletionReason = cleanText(body.reason, 200); row.updatedAt = row.deletedAt;
       await COMMENTS.setJSON(`comments/${row.resourceType}/${row.resourceId}/${row.createdAt}_${row.commentId}`, row);

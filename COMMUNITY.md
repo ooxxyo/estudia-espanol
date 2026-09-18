@@ -20,3 +20,5 @@ Cada fila nueva declara `schemaVersion: 1`. `classGroupId`, `schoolYearId` y `te
 El pipeline es `Contribution → revisión → admin_verified → segunda aprobación → official`. Convertir a oficial requiere dos acciones explícitas y se registra en `study-hub-admin-audit-v1`. Un borrador generado en el futuro tendrá procedencia `generated_draft` y nunca será oficial automáticamente.
 
 Adjuntos de foto/PDF solo tienen contrato de metadata en esta fase. No hay upload remoto, chat global ni mensajes directos.
+
+La UI local ofrece feed, “Lo que dieron hoy” por materia, Hoy/Ayer/fecha, filtros de materia/tipo/grupo, detalle, confirmaciones, comentarios, reportes y favoritos. `limit`/`cursor` paginan la respuesta; la lectura sigue acotada a 1000 filas y requiere un índice para mayor escala.

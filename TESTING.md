@@ -50,6 +50,7 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 - **Notificaciones:** cada usuario ve solo las propias; unread, mark read, mark all read y preferencias.
 - **Roadmap/Search:** Roadmap no concede acceso; búsqueda excluye contenido restringido o autores bloqueados.
 - **Responsive plataforma:** Community, Calendar, Amigos, Notificaciones y Roadmap a 1280×720, 390×844 y 320×568, sin overflow ni errores de consola.
+- **Esta fase local:** paginar Community, Calendar, Notifications, Search y Moderation; probar perfil limitado y bloqueo, filtros de fecha/año/trimestre, Dashboard Hoy, favoritos, flashcards, categorías de Guardadas y System Health exclusivo de Super Dev.
 
 ## Evidencia de entrega
 

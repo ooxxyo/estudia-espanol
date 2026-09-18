@@ -48,6 +48,15 @@ export async function listRows(store, prefix, limit = MAX_RESULTS) {
   return rows.filter(Boolean);
 }
 
+export function paginateRows(rows, searchParams, defaultLimit = 20) {
+  const requested = Number(searchParams.get('limit'));
+  const limit = Number.isInteger(requested) && requested > 0 ? Math.min(requested, 50) : defaultLimit;
+  const requestedCursor = Number(searchParams.get('cursor'));
+  const offset = Number.isInteger(requestedCursor) && requestedCursor >= 0 && requestedCursor <= MAX_SCAN ? requestedCursor : 0;
+  const items = rows.slice(offset, offset + limit);
+  return { items, nextCursor: offset + limit < rows.length ? String(offset + limit) : null, limit };
+}
+
 export function hasCapability(auth, capability) {
   if (!auth?.ok) return false;
   if (capability === 'calendar:create') return canAccessAdmin(auth.role) || publicUser(auth.user, auth.role).veteran === true;

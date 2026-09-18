@@ -15,6 +15,8 @@ La jerarquía es `Subject → Unit → Topic → Review Card / Question`. El fro
 
 El flujo futuro es `material recibido → organize → parse → validate → preview → approve → activate`; nunca publica directamente.
 
+Las primeras tarjetas interactivas usan exclusivamente review cards aprobadas: “Lo sé”/“No lo sé” guarda estado, última revisión y contador. “Preparar prueba” y “Practicar débiles” usan preguntas oficiales existentes; no generan material nuevo.
+
 ## Versionado y procedencia
 
 Las unidades conservan `current`, `previous`, `completed` o `archived`; nunca se borran al avanzar. El versionado futuro usará revisiones inmutables con snapshot, autor, fecha y motivo. Procedencias previstas: `teacher_material`, `admin_created`, `community_contribution`, `admin_verified`, `imported`, `legacy` y `generated_draft`. Esta última jamás se presenta como material oficial.

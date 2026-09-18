@@ -88,6 +88,8 @@
 - Los aportes, comentarios y eventos usan soft delete cuando corresponda. Acciones de moderación importantes deben quedar auditadas.
 - No renombres los stores sociales versionados. Todo modelo persistente nuevo debe declarar schema y migración compatible.
 - Roadmap público informa estado, pero nunca concede Feature Access.
+- Las vistas sociales deben filtrar y paginar en backend; conocer un `classGroupId` no sustituye la comprobación de membresía.
+- Favoritos, categorías de Guardadas y progreso de tarjetas deben conservar snapshots antiguos y seguir siendo privados.
 
 ## Académico
 

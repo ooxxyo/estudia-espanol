@@ -33,6 +33,9 @@ export async function validateAcademicScope(auth, input = {}) {
   if (schoolYearId && !schoolYear) return { ok: false, status: 404, error: 'Año escolar no encontrado.' };
   const term = termId ? (Array.isArray(schoolYear.terms) ? schoolYear.terms : []).find(item => item.termId === termId) : null;
   if (termId && !term) return { ok: false, status: 404, error: 'Trimestre no encontrado en este año escolar.' };
+  const contentDate = validDate(input.date || input.assignedDate);
+  if (contentDate && schoolYear && (contentDate < schoolYear.startDate || contentDate > schoolYear.endDate)) return { ok: false, status: 400, error: 'La fecha no corresponde al año escolar.' };
+  if (contentDate && term && (contentDate < term.startDate || contentDate > term.endDate)) return { ok: false, status: 400, error: 'La fecha no corresponde al trimestre.' };
   return { ok: true, classGroupId, schoolYearId, termId, group, schoolYear, term };
 }
 

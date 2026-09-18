@@ -217,6 +217,16 @@ export default async (req) => {
       const section = cleanText(url.searchParams.get('section'), 30) || 'users';
       const actor = publicUser(auth.user, auth.role);
 
+      if (section === 'health') {
+        if (auth.role !== 'superdev') return json({ error: 'Solo Super Dev puede consultar el estado del sistema.' }, 403);
+        const stores = { Account: USERS, Auth: SESSIONS, Sync: PROGRESS, Community: COMMUNITY, Calendar: CALENDAR, Friends: FRIENDS, Notifications: NOTIFICATIONS, Feedback: FEEDBACK, Leaderboard: LEADERBOARD, 'Feature Flags': FEATURES };
+        const checks = await Promise.all(Object.entries(stores).map(async ([name, store]) => {
+          try { await store.list({ prefix: '__health_check__', limit: 1 }); return [name, 'Disponible']; }
+          catch { return [name, 'Error de lectura']; }
+        }));
+        return json({ health: Object.fromEntries(checks), checkedAt: Date.now() });
+      }
+
       if (section === 'summary') {
         const [users, presence, sessions, feedback, enabledFeatures, community, calendar, friends, notifications, proposals, reports] = await Promise.all([
           listUsersRaw(), presenceSnapshot(), sessionCounts(), countFeedback(), countEnabledFeatures(),
@@ -241,10 +251,6 @@ export default async (req) => {
             friends,
             notifications,
             pendingModeration: proposals + reports,
-          },
-          health: {
-            account: 'OK', auth: 'OK', sync: 'OK', community: 'OK', calendar: 'OK', friends: 'OK',
-            feedback: 'OK', leaderboard: 'OK', featureFlags: 'OK',
           },
         });
       }

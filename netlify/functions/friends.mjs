@@ -47,7 +47,19 @@ export default async (req) => {
   try {
     const auth = await authenticateRequest(req);
     if (!auth.ok) return json({ error: 'Inicia sesión para usar Amigos.' }, 401);
-    if (req.method === 'GET') return await listFriends(auth);
+    if (req.method === 'GET') {
+      const url = new URL(req.url);
+      if (url.searchParams.get('action') === 'profile') {
+        const username = cleanText(url.searchParams.get('username'), 120);
+        const target = await resolveUser(username);
+        if (!target || target.status === 'suspended') return json({ error: 'Perfil no encontrado.' }, 404);
+        if (await isBlockedBetween(auth.user.id, target.id)) return json({ error: 'Perfil no disponible.' }, 403);
+        const relation = target.id === auth.user.id ? 'self' : await relationship(auth.user.id, target.id);
+        if (target.socialPrivacy?.profileVisibility !== 'limited' && !['self', 'friend'].includes(relation)) return json({ error: 'Perfil privado.' }, 403);
+        return json({ profile: safeSocialProfile(target, relation) });
+      }
+      return await listFriends(auth);
+    }
     if (req.method !== 'POST') return json({ error: 'Método no permitido.' }, 405);
     const body = await readBody(req);
     const action = cleanText(body.action, 30);
