@@ -380,7 +380,7 @@ test('aprobar una propuesta dos veces no duplica el evento', async () => {
 test('UI nueva conserva favoritas, flashcards y categorías sin alterar Guardadas', async () => {
   const [html, platform, extras] = await Promise.all([readFile(new URL('../public/index.html', import.meta.url), 'utf8'), readFile(new URL('../public/js/platform-ui.js', import.meta.url), 'utf8'), readFile(new URL('../public/js/platform-extras.js', import.meta.url), 'utf8')]);
   for (const marker of ['savedCategories', 'flashcards', 'cardKnown', 'cardUnknown', 'topicFavorite', 'practSaved']) assert.match(html, new RegExp(marker));
-  for (const marker of ['Lo que dieron hoy', 'Cargar más', 'Falté hoy', 'Ver perfil limitado']) assert.match(platform, new RegExp(marker));
+  for (const marker of ['Lo que dieron hoy', 'Cargar más', 'Falté hoy', 'Filtrar personas', 'data-person-request']) assert.match(platform, new RegExp(marker));
   for (const marker of ['Qué estudiar hoy', 'data-prepare', 'Mis grupos', 'Favoritos']) assert.match(extras, new RegExp(marker));
   assert.match(html, /saved:\[\.\.\.state\.saved\]/);
 });

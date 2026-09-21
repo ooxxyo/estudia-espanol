@@ -1,9 +1,9 @@
 import { randomUUID } from 'node:crypto';
-import { USERS, authenticateRequest, readUserById, resolveUser } from './_shared/auth.mjs';
+import { USERS, authenticateRequest, isSuspended, readUserById, resolveUser } from './_shared/auth.mjs';
 import { RateLimitError, enforceRateLimit, recordRateLimitFailure } from './_shared/rate-limit.mjs';
 import {
   FRIENDS, FRIEND_REQUEST_VALUES, PROFILE_VISIBILITY_VALUES, cleanText, createNotification,
-  isBlockedBetween, json, listRows, readBody, safeSocialProfile,
+  isBlockedBetween, json, listRows, paginateRows, readBody, safeSocialProfile,
 } from './_shared/platform.mjs';
 
 function pairKey(a, b) { return [a, b].sort().join('_'); }
@@ -49,6 +49,20 @@ export default async (req) => {
     if (!auth.ok) return json({ error: 'Inicia sesión para usar Amigos.' }, 401);
     if (req.method === 'GET') {
       const url = new URL(req.url);
+      if (url.searchParams.get('action') === 'people') {
+        const query=cleanText(url.searchParams.get('q'),60).toLowerCase();
+        const users=await listRows(USERS,'user/',1000); const visible=[];
+        for(const target of users){
+          if(!target||target.id===auth.user.id||isSuspended(target)||target.deletedAt||target.socialPrivacy?.profileVisibility!=='limited'||target.socialPrivacy?.friendRequests==='nobody')continue;
+          if(await isBlockedBetween(auth.user.id,target.id))continue;
+          const relation=await relationship(auth.user.id,target.id);
+          const profile=safeSocialProfile(target,relation);
+          if(!query||`${profile.displayName} ${profile.username}`.toLowerCase().includes(query))visible.push(profile);
+        }
+        visible.sort((a,b)=>a.displayName.localeCompare(b.displayName,'es',{sensitivity:'base'}));
+        const page=paginateRows(visible,url.searchParams,20);
+        return json({people:page.items,nextCursor:page.nextCursor,limit:page.limit});
+      }
       if (url.searchParams.get('action') === 'profile') {
         const username = cleanText(url.searchParams.get('username'), 120);
         const target = await resolveUser(username);

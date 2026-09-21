@@ -16,13 +16,15 @@ La identidad de cuenta se normaliza en backend en seis dimensiones independiente
 - Los IDs de preguntas, claves locales y nombres de Blob stores son contratos de compatibilidad.
 - Una sesión guarda cola, posición real, respuestas y estado del intento. Revisar preguntas nunca modifica esa posición ni estadísticas.
 - Español e Historia siguen disponibles durante cualquier migración al hub y nunca mezclan bancos ni progreso.
-- Una materia no disponible solo se muestra como `Próximamente`; nunca abre una vista sin motor o contenido.
+- Una materia no disponible se muestra como `Próximamente`. Ciencia y Matemáticas pueden abrir su contenedor activo, pero las herramientas académicas muestran un empty state hasta recibir contenido aprobado.
 - Presence guarda únicamente contexto general saneado, nunca tokens, respuestas, cookies ni IP completa; un heartbeat vence a los 90 segundos.
 - Acciones de rol, Veteranía, suspensión, sesiones y borrado se autorizan otra vez en backend. Super Dev es inmutable para roles inferiores.
 
 ## Adaptadores actuales
 
-Español usa `contentKey: legacy-espanol-v1`. `subjectContent()` expone `TOPICS`, `REVIEW_CARDS` y `Q` sin moverlos, renombrarlos o duplicarlos. Los cinco temas existentes pertenecen a `espanol-unidad-actual`, mostrada como `Unidad actual`; no se le asigna examen, quiz u otro propósito que no venga de metadata oficial. Historia usa `historia-v1` y la unidad `historia-geografia-civilizaciones`, de tipo `Prueba` y estado `current`. El mismo motor recibe sus ocho topics, tarjetas y preguntas. Las sesiones e historial nuevos guardan `subjectId` y `unitId`; su ausencia se interpreta como Español para conservar snapshots anteriores. `subjectUnits()` también interpreta el contrato anterior `topicGroups`.
+Español usa `contentKey: spanish-v2`. `spanish-vocabulary.js` aporta la unidad actual Competencia en Español, 20 tarjetas y un banco validado; `spanish-legacy-content.js` conserva sin renombrar los 75 IDs anteriores como unidad `test_taken` con fecha 2026-09-14. Historia mantiene `historia-v1` y la unidad `historia-geografia-civilizaciones`. El mismo motor recibe contenido de las tres fuentes. Las sesiones e historial guardan `subjectId` y `unitId`; su ausencia se interpreta como Español para conservar snapshots anteriores.
+
+Los módulos `hub-ui.js`, `bug-report-ui.js` y `platform-ui.js` contienen Novedades/anuncios, reportes de error y vistas sociales. `index.html` conserva el shell y el Study Engine. Los reportes usan `study-hub-bug-reports-v1`, schema 1, saneamiento doble (cliente/servidor), lectura privada por autor y administración backend para Admin+. El motor mantiene separados el estado del tema, sus evaluaciones y el estado personal de estudio; las sesiones descartadas se registran de forma compacta sin entrar en estadísticas ni historial completado.
 
 Para activar otra materia se debe añadir metadata de materia y unidad, y registrar temas, tarjetas y preguntas bajo una nueva `contentKey`. El mismo Study Engine resuelve el contenido; no se copia el shell ni se inventan ejemplos antes de recibir material real.
 

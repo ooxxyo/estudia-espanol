@@ -20,6 +20,12 @@
     name: 'Geografía y grandes civilizaciones',
     type: 'Prueba',
     status: 'current',
+    topicStatus: 'in_progress',
+    canGrow: true,
+    assessments: [
+      { type: 'test', label: 'Prueba', status: 'taken', date: null },
+      { type: 'exam', label: 'Examen', status: 'pending', date: null },
+    ],
     date: null,
     order: 1,
     topicIds: topics.map(topic => topic.id),

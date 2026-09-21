@@ -40,7 +40,7 @@
     const todayDate = day();
     const summaries = context.studyData();
     if (!context.user) {
-      panel.innerHTML = `<div class="card"><h2>Qué estudiar hoy</h2><p>Tu progreso local está disponible. Inicia sesión para ver Comunidad, Calendario y avisos privados.</p><button class="btn" data-view="studyToday">Ver recomendaciones</button></div>`;
+      panel.innerHTML = `<div class="card priority-card"><span class="status-badge">URGENTE</span><h2>Competencia en Español</h2><p>El vocabulario nuevo tiene repaso pendiente. Tu progreso local está disponible.</p><button class="btn" data-review-spanish>Repasar ahora</button></div><div class="card"><p>Inicia sesión para ver Comunidad, Calendario y avisos privados.</p></div>`;
     } else {
       try {
         const [community, calendar, notifications] = await Promise.all([api(`community?date=${todayDate}&limit=5`), api('calendar?limit=20'), api('notifications?limit=5')]);
@@ -52,6 +52,7 @@
       } catch (error) { panelError(panel, context, error); }
     }
     panel.querySelectorAll('[data-view]').forEach(button => button.addEventListener('click', () => context.goto(button.dataset.view)));
+    panel.querySelectorAll('[data-review-spanish]').forEach(button => button.addEventListener('click', () => context.reviewTopic('espanol', 'vocabulario')));
   }
 
   async function studyToday(main, context) {
@@ -62,12 +63,14 @@
     if (context.user) { try { const calendar = await api('calendar?limit=50'); upcoming = calendar.events || []; } catch { /* el plan local sigue disponible */ } }
     if (!panel.isConnected) return;
     panel.innerHTML = `<div class="platform-list">${data.map(subject => {
-      const sorted = [...subject.topics].sort((a, b) => (a.attempts ? a.correct / a.attempts : -1) - (b.attempts ? b.correct / b.attempts : -1));
+      const sorted = [...subject.topics].sort((a, b) => Number(b.priority === 'urgent' && b.studyStatus === 'pending_review') - Number(a.priority === 'urgent' && a.studyStatus === 'pending_review') || (a.attempts ? a.correct / a.attempts : -1) - (b.attempts ? b.correct / b.attempts : -1));
       const weak = sorted[0]; const nextTest = upcoming.find(row => row.subjectId === subject.subjectId && ['test', 'quiz'].includes(row.type) && row.date >= day());
-      const reason = !weak?.attempts ? 'Este tema aún no tiene práctica registrada.' : subject.errors ? `Tienes ${subject.errors} errores guardados en esta materia.` : 'Este tema tiene el menor dominio registrado.';
-      return `<article class="card platform-card"><h2>${safe(context, subject.subjectName)}</h2><p><b>${safe(context, weak?.name || 'Sin temas disponibles')}</b> · ${safe(context, reason)}</p>${nextTest ? `<p class="cloud-note">Próxima prueba: ${safe(context, nextTest.title)} · ${safe(context, nextTest.date)}</p>` : ''}<div class="btn-row"><button class="icon-btn" data-weak="${subject.subjectId}">Practicar débiles</button>${[15, 30, 60].map(minutes => `<button class="icon-btn" data-prepare="${subject.subjectId}" data-minutes="${minutes}">Preparar ${minutes} min</button>`).join('')}</div></article>`;
+      const urgent=weak?.priority==='urgent'&&weak?.studyStatus==='pending_review';
+      const reason = urgent?'Repaso pendiente para la Competencia en Español.':!weak?.attempts ? 'Este tema aún no tiene práctica registrada.' : subject.errors ? `Tienes ${subject.errors} errores guardados en esta materia.` : 'Este tema tiene el menor dominio registrado.';
+      return `<article class="card platform-card ${urgent?'priority-card':''}">${urgent?'<span class="status-badge">URGENTE</span>':''}<h2>${safe(context, subject.subjectName)}</h2><p><b>${safe(context, weak?.name || 'Sin temas disponibles')}</b> · ${safe(context, reason)}</p>${nextTest ? `<p class="cloud-note">Próxima prueba: ${safe(context, nextTest.title)} · ${safe(context, nextTest.date)}</p>` : ''}<div class="btn-row"><button class="icon-btn" ${urgent?'data-review-spanish':'data-weak="'+subject.subjectId+'"'}>${urgent?'Repasar ahora':'Practicar débiles'}</button>${[15, 30, 60].map(minutes => `<button class="icon-btn" data-prepare="${subject.subjectId}" data-minutes="${minutes}">Preparar ${minutes} min</button>`).join('')}</div></article>`;
     }).join('')}</div>`;
     panel.querySelectorAll('[data-weak]').forEach(button => button.addEventListener('click', () => context.practiceWeak(button.dataset.weak)));
+    panel.querySelectorAll('[data-review-spanish]').forEach(button => button.addEventListener('click', () => context.reviewTopic('espanol', 'vocabulario')));
     panel.querySelectorAll('[data-prepare]').forEach(button => button.addEventListener('click', () => context.prepareTest(button.dataset.prepare, Number(button.dataset.minutes))));
   }
 

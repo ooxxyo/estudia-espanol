@@ -3,7 +3,7 @@ import { json } from './_shared/platform.mjs';
 export const PUBLIC_ROADMAP = Object.freeze([
   ['community', 'Comunidad', 'Comparte apuntes, tareas y anuncios con revisión.', 'testing', 'community'],
   ['calendar', 'Calendario', 'Organiza pruebas, tareas y fechas importantes.', 'testing', 'organization'],
-  ['friends', 'Amigos', 'Conecta con compañeros usando controles de privacidad.', 'testing', 'social'],
+  ['friends', 'Personas', 'Descubre estudiantes y conecta con controles de privacidad.', 'testing', 'social'],
   ['today', 'Lo que dieron hoy', 'Consulta aportes y eventos del día por materia.', 'testing', 'community'],
   ['missed-today', 'Falté hoy', 'Reúne eventos y materiales de una fecha para ponerse al día.', 'development', 'study'],
   ['notifications', 'Centro de notificaciones', 'Avisos privados sobre solicitudes, aportes y calendario.', 'testing', 'account'],
@@ -24,6 +24,8 @@ export const PUBLIC_ROADMAP = Object.freeze([
   ['offline', 'Modo sin conexión', 'Práctica offline y sincronización posterior.', 'future', 'platform'],
   ['ai-assistant', 'Asistente IA por materia', 'Ayuda restringida al contenido académico aprobado.', 'development', 'experimental'],
   ['profiles', 'Mejoras de perfil', 'Perfil limitado con privacidad y rango visible; edición propia futura.', 'testing', 'account'],
+  ['bug-reports', 'Reportar un error', 'Envía reportes privados y consulta su estado.', 'testing', 'platform'],
+  ['chat', 'Mensajes y Chat', 'Conversaciones privadas con controles de amistad y bloqueo.', 'future', 'social'],
   ['friend-activity', 'Actividad de amigos', 'Actividad opt-in y privada por defecto.', 'future', 'social'],
   ['academic-tools', 'Más herramientas académicas', 'Nuevos modos sobre el motor universal.', 'future', 'study'],
 ].map(([id, title, description, status, category]) => ({ id, title, description, status, category, visible: true, earlyAccessAvailable: false, updatedAt: 0 })));

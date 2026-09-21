@@ -22,14 +22,14 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 ## Matriz de regresión
 
 - **Hub:** Día 1 y Día 2, seis tarjetas, estados, fecha local, progreso y acceso a Novedades.
-- **Materias y unidades:** Hub → Español/Historia → unidad → tema → herramienta → Hub; las otras cuatro materias `Próximamente` permanecen vacías y deshabilitadas.
-- **Historia:** ocho topics, 27 tarjetas, 82 preguntas (72 selección múltiple y 10 verdadero/falso), respuestas A/B/C/D balanceadas y tercer mundo marcado como información incompleta.
+- **Materias y unidades:** Hub → Español/Historia → unidad → tema → herramienta → Hub; Inglés/Salud siguen `Próximamente`; Ciencia/Matemáticas están activas con empty states y sin contenido inventado.
+- **Historia:** ocho topics, 27 tarjetas, 82 preguntas (72 selección múltiple y 10 verdadero/falso), respuestas A/B/C/D balanceadas, tercer mundo marcado como información incompleta, prueba tomada sin fecha inventada, examen pendiente y tema todavía en progreso.
 - **Contexto:** navegación desktop y móvil conserva materia, unidad, tema, filtros, respuestas y posición al pasar por Hub o Más.
 - **Navegación:** en teléfono, exactamente Hub, Repasar, Practicar, Cuenta/Entrar y Más; verificar bottom sheet a 390×844, safe area, Escape, foco, scroll, ausencia de overflow y Admin condicional. En desktop, verificar grupos directos y ausencia de Más.
 - **Práctica:** rápida (10), intermedia (25), normal, por tema, errores y guardadas.
 - **Respuesta:** selección múltiple, verdadero/falso, texto, segmentación y evidencia; primer error, segundo intento, pista, salto y feedback.
 - **Navegación:** Anterior, Siguiente y Volver a pregunta actual sin alterar cola, respuestas ni estadísticas.
-- **Persistencia:** pausar antes y después de responder, recargar, reanudar y terminar; comprobar historial, errores, guardadas y configuración.
+- **Persistencia:** pausar antes y después de responder, recargar, reanudar y terminar; ante otra práctica o examen comprobar Continuar/Descartar y empezar/Cancelar, foco/Escape, registro `discarded` y conservación de historial, errores, guardadas y configuración.
 - **Apariencia:** Claro, Oscuro, Automático y color personalizado en desktop y viewport móvil; recarga y cambio del esquema del sistema.
 - **Cuenta/cloud:** login por username/email, remember me, logout/login, sync, resolución de conflicto y usuario antiguo sin campos nuevos.
 - **Identidad:** cuenta antigua/nueva, fallback de displayName, rango, Veterano independiente de Admin y entitlement sin paywall.
@@ -49,7 +49,11 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 - **Calendar y grupos:** member propone; Veterano publica sin ser Admin; Admin+ aprueba; duplicate flag y assignments con estado personal separado. Verificar miembro/no miembro, acceso directo con `classGroupId`, búsqueda privada, “Lo que dieron hoy”, relaciones grupo–materia–año–trimestre y conservación histórica al cambiar el año vigente.
 - **Notificaciones:** cada usuario ve solo las propias; unread, mark read, mark all read y preferencias.
 - **Roadmap/Search:** Roadmap no concede acceso; búsqueda excluye contenido restringido o autores bloqueados.
-- **Responsive plataforma:** Community, Calendar, Amigos, Notificaciones y Roadmap a 1280×720, 390×844 y 320×568, sin overflow ni errores de consola.
+- **Responsive plataforma:** Community, Calendar, Personas, Notificaciones, Roadmap y Bug Center a 1280×720, 390×844 y 320×568, sin overflow ni errores de consola.
+- **Competencia:** validar 20 entradas, ≥120 preguntas, cobertura por tipo y significado, distribución A/B/C/D, duplicados, respuestas flexible/estricta, mini exámenes 5/10/15/20 y revisión previa.
+- **Contexto:** acceso directo a Repasar/Practicar/Examen no recupera `lastVisitedTopicId`; seleccionar, salir, cambiar materia y continuar requieren acciones explícitas sin borrar progreso ni sesión.
+- **Bugs:** reporte normal/automático, saneamiento, privacidad por autor, administración, auditoría y candidato duplicado sin cierre automático.
+- **Guest/account:** Hub público, CTA Crear cuenta e Iniciar sesión, selección correcta de pestaña y práctica local sin crear un sistema de auth paralelo.
 - **Esta fase local:** paginar Community, Calendar, Notifications, Search y Moderation; probar perfil limitado y bloqueo, filtros de fecha/año/trimestre, Dashboard Hoy, favoritos, flashcards, categorías de Guardadas y System Health exclusivo de Super Dev.
 
 ## Evidencia de entrega

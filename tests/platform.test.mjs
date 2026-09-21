@@ -347,7 +347,7 @@ test('progreso y snapshots separan Historia sin romper Español legacy', async (
   assert.match(html, /questionSubjectId\(question\)\{return question\?\.subjectId\|\|'espanol';\}/);
   assert.match(html, /subjectId:sessionSubjectId,unitId:/);
   assert.match(html, /subjectId:s\.subjectId\|\|'espanol'/);
-  assert.match(html, /state\.session\.subjectId!==subject\.id/);
+  assert.match(html, /showPendingPracticeDecision\(opts\);return/);
   assert.match(html, /s\.startedAt\+=Math\.max\(0,Date\.now\(\)-s\.pausedAt\)/);
   assert.doesNotMatch(html, /s\.miniReviewShown=false;\s*\n\s*const isExam/);
 });
@@ -391,16 +391,19 @@ test('cliente API centraliza timeout y mensajes de red sin exponer errores técn
   assert.doesNotMatch(source, /DEV_LOGIN_CODE|password|token/i);
 });
 
-test('catálogo adapta Español a una unidad sin alterar banco ni claves', async () => {
-  const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
-  assert.match(html, /id:'espanol-unidad-actual',subjectId:'espanol',name:'Unidad actual'/);
+test('catálogo conserva Español anterior y añade Competencia sin alterar claves legacy', async () => {
+  const [html,legacy] = await Promise.all([readFile(new URL('../public/index.html', import.meta.url), 'utf8'),readFile(new URL('../public/js/spanish-legacy-content.js', import.meta.url), 'utf8')]);
+  assert.match(html, /id:'espanol-unidad-anterior',subjectId:'espanol',name:'Contenido anterior de Español'/);
+  assert.match(html, /examTaken:true,examTakenDate:'2026-09-14'/);
+  assert.match(html, /contentKey:'spanish-v2'/);
+  assert.match(html, /SPANISH_VOCABULARY\.unit/);
   assert.match(html, /activeUnitId/);
-  assert.equal((html.match(/id:nid\(\)/g) || []).length, 75);
+  assert.equal((legacy.match(/id:nid\(\)/g) || []).length, 75);
   assert.doesNotMatch(html, />5 temas</);
   assert.match(html, /const STABLE_STORAGE_KEY = 'cuaderno_espanol_hub_progress_v1'/);
   assert.match(html, /según tu dispositivo/);
   assert.doesNotMatch(html, /sebas10|Sebastián/);
-  assert.match(html, /role==='INF'\?'MDI'/);
+  assert.match(legacy, /role==='INF'\?'MDI'/);
 });
 
 test('sync mantiene progreso y una práctica recuperable', async () => {

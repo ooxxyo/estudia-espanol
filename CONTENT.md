@@ -20,3 +20,6 @@ Las primeras tarjetas interactivas usan exclusivamente review cards aprobadas: �
 ## Versionado y procedencia
 
 Las unidades conservan `current`, `previous`, `completed` o `archived`; nunca se borran al avanzar. El versionado futuro usará revisiones inmutables con snapshot, autor, fecha y motivo. Procedencias previstas: `teacher_material`, `admin_created`, `community_contribution`, `admin_verified`, `imported`, `legacy` y `generated_draft`. Esta última jamás se presenta como material oficial.
+# Competencia en Español — Vocabulario
+
+La unidad actual de Español contiene las 20 palabras proporcionadas el 19 de septiembre de 2026. El banco vive en `public/js/spanish-vocabulary.js` y debe superar validación de entradas, referencias, categorías, significados múltiples y distribución de respuestas. El contenido anterior se presenta como un único bloque `Tema pasado`, con `Examen tomado` el 14 de septiembre de 2026. Sus temas legacy continúan internamente como secciones para conservar progreso, errores, Guardadas e historial.

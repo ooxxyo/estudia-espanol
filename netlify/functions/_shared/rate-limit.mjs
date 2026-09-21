@@ -16,6 +16,7 @@ export const RATE_POLICIES = Object.freeze({
   calendarProposal: { attempts: 8, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
   calendarEvent: { attempts: 20, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
   report: { attempts: 8, windowMs: 60 * 60_000, cooldownMs: 60 * 60_000 },
+  bugReport: { attempts: 8, windowMs: 30 * 60_000, cooldownMs: 30 * 60_000 },
 });
 
 function clientAddress(req) {

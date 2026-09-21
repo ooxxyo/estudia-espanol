@@ -29,6 +29,7 @@ const COMMUNITY_COMMENTS = getStore('study-hub-community-comments-v1');
 const COMMUNITY_CONFIRMATIONS = getStore('study-hub-community-confirmations-v1');
 const ASSIGNMENT_PROGRESS = getStore('study-hub-assignment-progress-v1');
 const CLASS_GROUPS = getStore('study-hub-class-groups-v1');
+const BUG_REPORTS = getStore('study-hub-bug-reports-v1');
 const MAX_SCAN = 1000;
 const MAX_RESULTS = 200;
 const ACTIVE_MS = 90_000;
@@ -219,7 +220,7 @@ export default async (req) => {
 
       if (section === 'health') {
         if (auth.role !== 'superdev') return json({ error: 'Solo Super Dev puede consultar el estado del sistema.' }, 403);
-        const stores = { Account: USERS, Auth: SESSIONS, Sync: PROGRESS, Community: COMMUNITY, Calendar: CALENDAR, Friends: FRIENDS, Notifications: NOTIFICATIONS, Feedback: FEEDBACK, Leaderboard: LEADERBOARD, 'Feature Flags': FEATURES };
+        const stores = { Account: USERS, Auth: SESSIONS, Sync: PROGRESS, Community: COMMUNITY, Calendar: CALENDAR, Friends: FRIENDS, Notifications: NOTIFICATIONS, Feedback: FEEDBACK, Bugs: BUG_REPORTS, Leaderboard: LEADERBOARD, 'Feature Flags': FEATURES };
         const checks = await Promise.all(Object.entries(stores).map(async ([name, store]) => {
           try { await store.list({ prefix: '__health_check__', limit: 1 }); return [name, 'Disponible']; }
           catch { return [name, 'Error de lectura']; }
@@ -228,10 +229,10 @@ export default async (req) => {
       }
 
       if (section === 'summary') {
-        const [users, presence, sessions, feedback, enabledFeatures, community, calendar, friends, notifications, proposals, reports] = await Promise.all([
+        const [users, presence, sessions, feedback, enabledFeatures, community, calendar, friends, notifications, proposals, reports, bugs] = await Promise.all([
           listUsersRaw(), presenceSnapshot(), sessionCounts(), countFeedback(), countEnabledFeatures(),
           countPrefix(COMMUNITY, 'contributions/'), countPrefix(CALENDAR, 'events/'), countPrefix(FRIENDS, 'friendships/'),
-          countPrefix(NOTIFICATIONS, 'notifications/'), countPrefix(CALENDAR_PROPOSALS, 'proposals/'), countPrefix(COMMUNITY_REPORTS, 'reports/'),
+          countPrefix(NOTIFICATIONS, 'notifications/'), countPrefix(CALENDAR_PROPOSALS, 'proposals/'), countPrefix(COMMUNITY_REPORTS, 'reports/'), countPrefix(BUG_REPORTS, 'reports/'),
         ]);
         const safeUsers = users.map(user => publicUser(user));
         return json({
@@ -251,6 +252,7 @@ export default async (req) => {
             friends,
             notifications,
             pendingModeration: proposals + reports,
+            bugs,
           },
         });
       }

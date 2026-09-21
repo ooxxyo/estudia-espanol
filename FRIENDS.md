@@ -15,3 +15,6 @@ El bloqueo se guarda en `study-hub-friends-v1` y se aplica a Friends, comentario
 ## Persistencia
 
 Solicitudes, amistades y bloqueos tienen `schemaVersion: 1`. Una eliminación cambia el estado de la relación; no borra cuentas ni progreso. No existen chat global ni mensajes directos.
+# Personas
+
+La entrada visible se llama Personas. `GET friends?action=people` descubre únicamente perfiles limitados permitidos, excluye la cuenta actual, suspendidos, eliminados, privados y bloqueados, y nunca devuelve email, ID interno, sesión, IP o progreso. Todas las acciones reutilizan el backend de Friends existente.

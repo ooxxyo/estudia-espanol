@@ -17,11 +17,14 @@
 - La jerarquía del producto es `Hub → Día → Materia → Unidad/Categoría → Tema`.
 - Existe un único catálogo de materias como fuente de nombre, emoji, día, estado y disponibilidad.
 - Español e Historia son implementaciones reales del mismo Study Engine. Historia usa la unidad `Geografía y grandes civilizaciones` (`Prueba`, `current`).
-- Inglés, Salud, Ciencia y Matemáticas permanecen como `Próximamente` hasta tener contenido real.
+- Inglés y Salud permanecen como `Próximamente`. Ciencia y Matemáticas están activas como contenedores del Study Engine, pero muestran un estado vacío hasta recibir contenido real; no inventan unidades, temas ni preguntas.
 - En teléfono, la navegación primaria tiene exactamente cinco destinos: Hub, Repasar, Practicar, Cuenta/Entrar y Más. Cuenta nunca se oculta dentro de Más.
-- Más es exclusivo del layout móvil; contiene Examen, Errores, Progreso, Leaderboard, Comunidad, Calendario, Amigos, Notificaciones, Roadmap, Buscar, Configuración, Guardadas, Historial y Feedback, con Administración solo para Admin, Owner y Super Dev.
+- Más es exclusivo del layout móvil; contiene Examen, Errores, Progreso, Leaderboard, Comunidad, Calendario, Personas, Notificaciones, Roadmap, Buscar, Configuración, Guardadas, Historial, Feedback y Reportar error, con Administración solo para Admin, Owner y Super Dev.
+- `activeTopicId` representa solo una selección explícita actual. `lastVisitedTopicBySubject` conserva memoria para la tarjeta Continuar, pero nunca reactiva un tema automáticamente.
 - En desktop no existe Más: las herramientas se muestran directamente en grupos de Estudio, Seguimiento, Personal y Gestión.
 - Entrar o salir de una materia no elimina una práctica ni modifica su progreso.
+- `topicStatus` (`current/previous/completed/archived`) y `assessment.status` (`pending/scheduled/taken/cancelled`) son independientes. Un tema puede mantener varias evaluaciones sin cerrar su ciclo.
+- Una sesión pausada no se sustituye silenciosamente: se continúa, se cancela o se marca `discarded` antes de iniciar otra práctica o examen.
 - La metadata nueva es opcional; las claves e IDs históricos conservan su significado.
 
 ## Identidad, permisos y acceso
@@ -52,6 +55,8 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - “Probar ahora” solo aparece cuando existe implementación y ubicación reales.
 - Los reportes de feedback son visibles para su autor y personal autorizado. Cambios de estado y acciones administrativas quedan auditados.
 - La navegación normal guarda prácticas recuperables sin pedir confirmación; las acciones irreversibles o administrativas críticas siempre la exigen.
+- Visitar un tema no cuenta como estudio: `pending_review` solo pasa a `in_progress` por práctica válida y a `reviewed` al terminar el repaso; nunca se marca `mastered` automáticamente.
+- La prueba tomada de Historia y su examen pendiente conviven con el tema en progreso. No se inventa una fecha y añadir material aprobado no reinicia sus datos.
 - El término académico correcto es `Interfijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`. `INF` solo se acepta internamente como alias de sesiones antiguas.
 - El Study Engine es universal y admite extensiones por materia sin duplicar la aplicación.
 - Cada materia tendrá un asistente propio, nunca un chatbot general. La materia activa limita la respuesta; el tema activo da prioridad y solo se usa material aprobado de esa materia.

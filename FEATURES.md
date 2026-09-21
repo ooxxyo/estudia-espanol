@@ -15,3 +15,8 @@ El Asistente IA por materia conserva la frontera `subjectId`, `subjectName`, `un
 ## Recuperación y backups
 
 La estrategia futura debe respaldar contenido académico, calendario y metadata de moderación conservando schema y procedencia. No debe exportar sesiones, secretos, datos de otros usuarios ni auditoría interna. Los cambios destructivos o rollback requieren confirmación.
+# Estado de la fase local final
+
+- Competencia en Español, Personas, anuncios del Hub, Novedades y Reportar error están en `Testing` local.
+- Ciencia y Matemáticas están activas como contenedores sin contenido inventado.
+- Mensajes/Chat continúa futuro y no tiene acceso ni ruta publicada.

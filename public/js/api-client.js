@@ -9,6 +9,10 @@
     409: 'Hay cambios más recientes. Actualiza e inténtalo otra vez.',
     429: 'Demasiados intentos. Espera un momento.',
   });
+  function signalFailure(url, type, message, status = 0) {
+    if (String(url).includes('/bugs')) return;
+    try { window.dispatchEvent(new CustomEvent('studyhub:api-error', { detail: { type, message, status, path: new URL(url, location.origin).pathname } })); } catch {}
+  }
 
   async function requestJson(url, { method = 'GET', body = null, cache = 'no-store', timeoutMs = 12000, fallbackMessage = 'No se pudo completar la solicitud.' } = {}) {
     const controller = new AbortController();
@@ -22,7 +26,8 @@
         signal: controller.signal,
         body: body == null ? undefined : JSON.stringify(body),
       });
-      const data = await response.json().catch(() => ({}));
+      const raw = await response.text(); let data = {};
+      if (raw) { try { data = JSON.parse(raw); } catch { signalFailure(url, 'parse', 'La respuesta del servicio no era válida.', response.status); } }
       if (!response.ok) {
         const message = typeof data.error === 'string' && data.error.trim()
           ? data.error
@@ -30,6 +35,7 @@
         const error = new Error(message);
         error.status = response.status;
         error.data = data;
+        if (response.status >= 500) signalFailure(url, 'backend', message, response.status);
         throw error;
       }
       return data;
@@ -38,6 +44,7 @@
       const message = error?.name === 'AbortError'
         ? 'La solicitud tardó demasiado. Inténtalo otra vez.'
         : 'No hay conexión con el servicio. Revisa tu red e inténtalo otra vez.';
+      signalFailure(url, error?.name === 'AbortError' ? 'timeout' : 'network', message);
       const friendly = new Error(message);
       friendly.cause = error;
       throw friendly;

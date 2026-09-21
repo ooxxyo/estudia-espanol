@@ -23,7 +23,7 @@
 | Iniciativa | Estado | Alcance |
 | --- | --- | --- |
 | Hub general | Testing | Home común con Día 1, Día 2, progreso disponible y accesos rápidos. |
-| Materias, unidades y temas | Testing | Español conserva su unidad neutral; Historia incorpora Geografía y grandes civilizaciones; las otras cuatro materias siguen Próximamente. |
+| Materias, unidades y temas | Testing | Español incorpora Competencia en Español y archiva el examen anterior; Historia conserva su material; Ciencia y Matemáticas están activas sin contenido inventado. |
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
 | Calendario base | Testing | Eventos, capability Veterano, propuestas moderadas, assignments y detección conservadora de duplicados. |
@@ -31,7 +31,8 @@
 | Lo que dieron hoy / Falté hoy | Testing | Aportes y eventos por fecha y grupo; ponerse al día abre repaso oficial, sin generar preguntas desde aportes. |
 | Dashboard Hoy y grupos propios | Testing | Vista transversal compacta y lista de membresías/años; gestión avanzada de grupos sigue futura. |
 | Flashcards y favoritos | Testing | Primera interacción Lo sé/No lo sé, categorías compatibles de Guardadas y marcadores privados. |
-| Novedades | In Progress | Registro visible de cambios aprobados y experimentos. |
+| Novedades | Testing | Changelog estudiantil central, 3–5 entradas recientes y estado visto por dispositivo/cuenta sincronizada. |
+| Reportar error / Bug Center | Testing | Reporte saneado, posibles duplicados, estados, severidad administrada y auditoría de cambios. |
 | Progreso y leaderboard | In Progress | Compatibilidad actual y futura agregación por materia. |
 
 ## Identidad, acceso y comunidad
@@ -46,7 +47,7 @@
 | Asistente IA por materia | Planned | Contrato de contexto aprobado y límite por materia preparados; sin proveedor, API ni interfaz activa. |
 | Creación rápida de estudiantes | Planned | Alta segura y auditable por personal autorizado. |
 | Comunidad y moderación | Testing | Feed por materia/fecha/tipo/grupo, aportes, comentarios, reportes, cola filtrable y doble aprobación; sin chat global ni DMs. |
-| Amigos y privacidad | Testing | Solicitudes, amistades, bloqueo global y perfil limitado. |
+| Personas y privacidad | Testing | Descubrimiento seguro, solicitudes, amistades, bloqueo global y perfil limitado; chat permanece futuro. |
 | Notificaciones | Testing | Listado privado, unread, lectura, preferencias y eventos implementados. |
 | Roadmap público y búsqueda | Testing | Dataset no sensible, búsqueda académica local y social filtrada por permisos; Roadmap no concede acceso. |
 | Paginación social | In Progress | `limit`/`cursor` en cinco endpoints y UI; faltan índices Blob para eliminar scans acotados. |
@@ -59,6 +60,6 @@ La transformación completa del hub no forma parte de esta fase. Cada materia re
 
 ## Fase actual: base Hub
 
-La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español conserva el motor y los datos históricos mediante `legacy-espanol-v1`; Historia lo reutiliza mediante `historia-v1` con ocho topics, tarjetas y banco aislado. Inglés, Salud, Ciencia y Matemáticas permanecen deshabilitados hasta recibir contenido real.
+La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español combina `spanish-v2` con un módulo legacy compatible; Historia reutiliza el motor mediante `historia-v1`. Inglés y Salud siguen deshabilitados. Ciencia y Matemáticas abren el motor con empty states y permanecen sin contenido académico hasta recibir material real.
 
 El rebranding futuro será `Estudio Hub` con slug preferido `estudio-hub`. Repositorio, remote, dominio y nombre visible actual no cambian en esta fase.

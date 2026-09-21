@@ -15,6 +15,7 @@ import roadmapHandler from '../netlify/functions/roadmap.mjs';
 import searchHandler from '../netlify/functions/search.mjs';
 import moderationHandler from '../netlify/functions/moderation.mjs';
 import groupsHandler from '../netlify/functions/groups.mjs';
+import bugsHandler from '../netlify/functions/bugs.mjs';
 import { USERS, createSession, setSessionCookie } from '../netlify/functions/_shared/auth.mjs';
 import { getStore } from '@netlify/blobs';
 
@@ -34,6 +35,7 @@ const handlers = new Map([
   ['/search', searchHandler],
   ['/moderation', moderationHandler],
   ['/groups', groupsHandler],
+  ['/bugs', bugsHandler],
 ]);
 
 async function seedUser(user) {
