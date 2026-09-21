@@ -336,7 +336,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .hint-box b{color:var(--amber);}
 
 .q-actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;flex-wrap:wrap;gap:10px;}
-.icon-btn{background:none;border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;color:var(--ink-soft);font-size:.85rem;display:flex;align-items:center;gap:6px;}
+.icon-btn{background:none;border:1px solid var(--line);border-radius:9px;padding:8px 12px;cursor:pointer;color:var(--ink-soft);font-size:.85rem;display:flex;align-items:center;gap:6px;min-height:44px;min-width:44px;}
 .icon-btn:hover{color:var(--ink);border-color:var(--ink-soft);}
 .icon-btn.starred{color:var(--amber);border-color:var(--amber);}
 
@@ -596,6 +596,7 @@ body{line-height:1.55;}
 @media(max-width:760px){.admin-metrics{grid-template-columns:1fr 1fr}.admin-toolbar,.admin-toolbar.feedback-filters,.feature-controls,.feedback-layout{grid-template-columns:1fr}.feature-row .btn{width:100%}}
 @media(max-width:640px){.account-grid,.admin-form-grid{grid-template-columns:1fr}.leader-score{text-align:left}.hist-row{align-items:flex-start;gap:8px;flex-direction:column;}.admin-tabs{flex-wrap:nowrap;overflow-x:auto;padding-bottom:5px;scrollbar-width:none}.admin-tabs::-webkit-scrollbar{display:none}.admin-tabs .chip{white-space:nowrap}.admin-metrics{grid-template-columns:1fr 1fr}}
 
+.ui-disclosure{margin-bottom:16px}.ui-disclosure>summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:700}.ui-disclosure[open]>summary{margin-bottom:12px}.more-group h3{font-size:.82rem;margin:16px 0 8px;color:var(--ink-soft)}.more-group .more-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.more-group .more-item{grid-template-columns:22px minmax(0,1fr);gap:6px;min-height:48px;padding:9px;font-size:.8rem}.more-group .more-item b{overflow-wrap:anywhere}.guest-banner{border-bottom:1px solid var(--line);padding:0 0 16px;margin-bottom:20px}.guest-banner p{margin:0;max-width:42ch;font-size:.85rem;color:var(--ink-soft)}.study-today-row{margin-bottom:24px}.study-today-row h2{margin:0;font-size:1.2rem}.hub-footer{margin-top:20px}.platform-card .ui-disclosure{margin:12px 0 0}.platform-card .ui-disclosure>summary{font-size:.85rem}.platform-card .icon-btn{min-height:44px}
 </style>
 </head>
 <body data-theme="light">
@@ -1188,6 +1189,7 @@ const PRIMARY_NAV_ITEMS=[
   {id:'more',label:'Más',icon:'⋯'},
 ];
 const MORE_NAV_ITEMS=[
+  {id:'novedades',label:'Novedades',icon:'✦',description:'Cambios del Hub'},
   {id:'today',label:'Hoy',icon:'◷',description:'Resumen de estudio y clases'},
   {id:'examen',label:'Examen',icon:'▦',description:'Haz una prueba completa'},
   {id:'errores',label:'Errores',icon:'✕',description:'Repasa lo que contestaste mal'},
@@ -1216,6 +1218,13 @@ const DESKTOP_NAV_GROUPS=[
   {label:'Herramientas',items:[{id:'search',label:'Buscar',icon:'⌕'},{id:'favorites',label:'Favoritos',icon:'♡'},{id:'roadmap',label:'Roadmap',icon:'◇'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'bugReport',label:'Reportar error',icon:'!'},{id:'novedades',label:'Novedades',icon:'✦'},{id:'cuenta',label:'Cuenta',icon:'●'}]},
 ];
 const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
+const MORE_NAV_GROUPS=[
+  {label:'Estudiar',ids:['studyToday','examen','errores','search']},
+  {label:'Organizar',ids:['today','calendar','groups','guardadas','favorites']},
+  {label:'Social',ids:['community','friends','notifications']},
+  {label:'Progreso',ids:['dashboard','historial','leaderboard','novedades','roadmap']},
+  {label:'Cuenta',ids:['ajustes','feedback','bugReport','admin']},
+];
 let moreOpen=false;
 function visibleMoreItems(){
   const role=accountSession.user?.role;
@@ -1227,18 +1236,21 @@ function primaryActive(item){return item.id==='more'?MORE_VIEWS.has(state.view):
 
 function closeMoreMenu(restoreFocus=true){
   moreOpen=false;
+  ['main','rail','mobileNav'].forEach(id=>{const element=document.getElementById(id);if(element)element.inert=false;});
   document.getElementById('moreMenuRoot').innerHTML='';
   document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded','false'));
   if(restoreFocus)document.querySelector('[data-open-more]')?.focus();
 }
 function openMoreMenu(){
   moreOpen=true;
+  ['main','rail','mobileNav'].forEach(id=>{const element=document.getElementById(id);if(element)element.inert=true;});
   document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded','true'));
   const root=document.getElementById('moreMenuRoot');
-  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><h2 id="moreTitle">Más herramientas</h2><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más">✕</button></div><div class="more-list">${visibleMoreItems().map(item=>`<button class="more-item" data-more-view="${item.id}"><span class="ic" aria-hidden="true">${item.icon}</span><span><b>${navLabel(item)}</b><span>${item.description}</span></span></button>`).join('')}</div></section></div>`;
+  const items=visibleMoreItems();
+  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><h2 id="moreTitle">Más herramientas</h2><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más">✕</button></div>${MORE_NAV_GROUPS.map(group=>`<section class="more-group"><h3>${group.label}</h3><div class="more-list">${group.ids.map(id=>items.find(item=>item.id===id)).filter(Boolean).map(item=>`<button class="more-item" data-more-view="${item.id}" title="${item.description}"><span class="ic" aria-hidden="true">${item.icon}</span><b>${navLabel(item)}</b></button>`).join('')}</div></section>`).join('')}</section></div>`;
   document.getElementById('closeMore').addEventListener('click',()=>closeMoreMenu());
   document.getElementById('moreBackdrop').addEventListener('click',event=>{if(event.target.id==='moreBackdrop')closeMoreMenu();});
-  root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);navigateFromNav(view);}));
+  root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);navigateFromNav(view);const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}}));
   document.getElementById('closeMore').focus();
 }
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&moreOpen)closeMoreMenu();});
@@ -1423,6 +1435,7 @@ function localDateLabel(){
   catch{return '';}
 }
 function renderHubSubjectCard(subject){
+  if(!subject.available)return `<article class="card hub-subject-card unavailable" aria-disabled="true"><div class="system-row"><h3><span aria-hidden="true">${subject.emoji}</span> ${subject.name}</h3><span class="subject-status">Próximamente</span></div></article>`;
   const content=subjectContent(subject.id);
   const unit=content.units.current;
   const newContent=subject.id==='espanol'&&!state.settings.seenContentAt?.[SPANISH_VOCABULARY.unit.id];
@@ -1431,10 +1444,10 @@ function renderHubSubjectCard(subject){
     : `Día ${subject.day} · contenido en preparación`;
   const spanishStatus=state.settings.topicStudyStatus?.vocabulario||'pending_review';
   return `<article class="card hub-subject-card ${subject.available?'available':'unavailable'} ${subject.id==='espanol'&&spanishStatus==='pending_review'?'priority-card':''}" ${subject.available?'':'aria-disabled="true"'}>
-    <div class="subject-card-top"><span class="subject-emoji" aria-hidden="true">${subject.emoji}</span><span class="subject-status">${subject.status}</span>${subject.id==='espanol'&&spanishStatus==='pending_review'?'<span class="status-badge">URGENTE</span><span class="status-badge">Pendiente de repasar para Competencia</span>':''}${newContent?'<span class="new-pill">NUEVO</span>':''}</div>
+    <div class="subject-card-top"><span class="subject-emoji" aria-hidden="true">${subject.emoji}</span>${newContent?'<span class="new-pill">NUEVO</span>':`<span class="subject-status">${subject.status}</span>`}</div>
     <h3>${subject.name}</h3>
     <p>${subject.id==='espanol'?'Competencia en Español · Vocabulario listo para estudiar':detail}</p>
-    <div class="btn-row"><button class="btn ${subject.available?'':'ghost'}" ${subject.available?`data-open-subject="${subject.id}"`:'disabled'}>${subject.id==='espanol'&&spanishStatus==='pending_review'?'Repasar ahora':subject.available?'Abrir materia':'Próximamente'}</button>${subject.id==='espanol'&&subject.available?'<button class="icon-btn" data-open-spanish-topic>Ver tema</button>':''}</div>
+    <div class="btn-row"><button class="btn" data-open-subject="${subject.id}">Abrir materia</button></div>
   </article>`;
 }
 function openSubject(subjectId,view='dashboard'){
@@ -1453,22 +1466,18 @@ function renderHub(main){
   const pending=resumablePracticeProgress();
   const rememberedSubject=SUBJECT_BY_ID.get(state.lastSubjectId);
   const rememberedTopic=rememberedSubject?subjectContent(rememberedSubject.id).topics.find(topic=>topic.id===state.lastVisitedTopicBySubject?.[rememberedSubject.id]):null;
-  const summaries=SUBJECT_CATALOG.filter(subject=>subject.available).map(subject=>({subject,mastery:overallMastery(subject.id),metrics:subjectMetrics(subject.id),history:subjectHistory(subject.id)}));
   main.innerHTML=`
-    <div class="pagehead hub-heading"><div><h1>Study Hub</h1><p>Tu espacio general para organizar y continuar el estudio.</p></div>${date?`<span class="hub-date">${escHtml(date)}</span>`:''}</div>
-    ${!accountSession.user?`<section class="card priority-card" aria-label="Cuenta de Study Hub"><h2>Crea tu cuenta en Study Hub</h2><p>Guarda tu progreso, prácticas, errores, calendario y estadísticas para continuar en otros dispositivos.</p><div class="btn-row"><button class="btn" id="createAccountFromHub">Crear cuenta</button><button class="icon-btn" id="loginFromHub">Iniciar sesión</button></div></section>`:''}
-    <section id="hubSignals" aria-live="polite"></section>
+    <div class="pagehead hub-heading"><div><h1>Study Hub</h1></div>${date?`<span class="hub-date">${escHtml(date)}</span>`:''}</div>
+    ${(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='pending_review'?`<section class="card system-row"><div><b>Competencia en Español · Vocabulario</b><p class="cloud-note">Urgente · pendiente de repasar</p></div><button class="btn" id="hubReviewVocabulary">Repasar ahora</button></section>`:''}
+    ${!accountSession.user?`<section class="guest-banner system-row" aria-label="Cuenta de Study Hub"><p>Estudia sin cuenta. Regístrate para sincronizar tu progreso.</p><div class="btn-row"><button class="btn" id="createAccountFromHub">Crear cuenta</button><button class="icon-btn" id="loginFromHub">Iniciar sesión</button></div></section>`:''}
     ${pending?`<div class="card resume-card"><div class="system-row"><div><b>▶ Práctica pendiente en ${escHtml(pending.subjectName)}</b><div class="resume-meta"><span class="resume-pill">Pregunta ${pending.current} de ${pending.total}</span><span class="resume-pill">${pending.answered} contestadas</span><span class="resume-pill">${escHtml(pending.topic)}</span></div></div><button class="btn" id="resumeFromHub">Continuar práctica</button></div></div>`:''}
     ${!pending&&rememberedTopic?`<div class="card resume-card"><div class="system-row"><div><b>Continuar donde lo dejaste</b><p class="cloud-note">${rememberedSubject.emoji} ${escHtml(rememberedSubject.name)} · ${escHtml(rememberedTopic.name)}</p></div><button class="btn" id="continueLastTopic">Continuar</button></div></div>`:''}
-    <div class="grid grid-2 hub-summary">
-      <div class="card"><p class="section-title">Progreso por materia</p>${summaries.map(({subject,mastery,metrics,history})=>`<div class="hub-progress"><strong>${mastery}%</strong><div><b>${subject.emoji} ${subject.name}</b><div class="account-sub">${metrics.answered} ${metrics.answered===1?'pregunta contestada':'preguntas contestadas'} · ${history.length} sesiones</div></div></div>`).join('')}<div class="btn-row" style="margin-top:15px;"><button class="btn primary" id="openSpanishQuick">Abrir Español</button><button class="btn ghost" id="openHistoryQuick">Abrir Historia</button></div></div>
-      <div class="card"><p class="section-title">Hoy y comunidad</p><h3 style="margin:0 0 6px;">Organiza tu día</h3><p style="margin:0 0 15px;color:var(--ink-soft);font-size:.86rem;">Consulta aportes, eventos y avisos sin perder tu práctica.</p><div class="btn-row"><button class="btn ghost" data-hub-view="community">Comunidad</button><button class="btn ghost" data-hub-view="calendar">Calendario</button><button class="btn ghost" data-hub-view="notifications">Notificaciones</button><button class="btn ghost" data-hub-view="roadmap">Roadmap</button><button class="btn ghost" data-hub-view="novedades">Novedades</button></div></div>
-    </div>
-    ${STUDY_DAYS.map(day=>`<section class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h2 id="hub-day-${day.id}">${day.name}</h2><span>${subjectsForDay(day.id).length} materias</span></div><div class="subject-grid">${subjectsForDay(day.id).map(renderHubSubjectCard).join('')}</div></section>`).join('')}`;
-  main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>{if(button.dataset.openSubject==='espanol'&&(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='pending_review')platformUiContext().reviewTopic('espanol','vocabulario');else openSubject(button.dataset.openSubject);}));
-  main.querySelectorAll('[data-open-spanish-topic]').forEach(button=>button.addEventListener('click',()=>openSubject('espanol')));
-  document.getElementById('openSpanishQuick').addEventListener('click',()=>openSubject(SUBJECT.id));
-  document.getElementById('openHistoryQuick').addEventListener('click',()=>openSubject('historia'));
+    <div class="study-today-row system-row"><div><h2>Qué estudiar hoy</h2><p class="cloud-note">Continúa un tema o consulta tu plan de repaso.</p></div><button class="btn" data-hub-view="studyToday">Ver mi plan</button></div>
+    ${STUDY_DAYS.map(day=>`<section class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h2 id="hub-day-${day.id}">${day.name}</h2><span>${subjectsForDay(day.id).length} materias</span></div><div class="subject-grid">${subjectsForDay(day.id).map(renderHubSubjectCard).join('')}</div></section>`).join('')}
+    <section id="hubSignals" aria-live="polite"></section>
+    <div class="btn-row hub-footer"><button class="icon-btn" data-hub-view="calendar">Calendario</button><button class="icon-btn" data-hub-view="novedades">Novedades</button></div>`;
+  main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject)));
+  main.querySelector('#hubReviewVocabulary')?.addEventListener('click',()=>platformUiContext().reviewTopic('espanol','vocabulario'));
   main.querySelectorAll('[data-hub-view]').forEach(button=>button.addEventListener('click',()=>goto(button.dataset.hubView)));
   window.StudyHubHubUI.mountHub(main,platformUiContext());
   const resumeFromHub=document.getElementById('resumeFromHub');
@@ -1743,7 +1752,7 @@ function renderRepasoCards(main){
   const cardProgress=state.settings.flashcards?.[cardId];
   main.innerHTML = `
     <div class="q-wrap">
-      <div class="q-topbar"><button class="icon-btn" id="backRep">← Volver</button><span>${repasoIndex+1} / ${cards.length}</span></div>
+      <div class="q-topbar"><button class="icon-btn" id="exitTopic">← Salir del tema</button><span>${repasoIndex+1} / ${cards.length}</span></div>
       <div class="q-progress"><div class="q-progress-fill" style="width:${(repasoIndex+1)/cards.length*100}%"></div></div>
       <div class="q-card review-card">
         <div style="text-align:center;">
@@ -1753,16 +1762,15 @@ function renderRepasoCards(main){
         </div>
         ${renderReviewExample(c)}
       </div>
-      <div class="btn-row" aria-label="Mi repaso de esta tarjeta"><button class="icon-btn" id="cardKnown" aria-pressed="${cardProgress?.status==='known'}">Lo sé</button><button class="icon-btn" id="cardUnknown" aria-pressed="${cardProgress?.status==='unknown'}">No lo sé</button><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button><span class="meta">${cardProgress?.reviewCount||0} ${cardProgress?.reviewCount===1?'repaso':'repasos'}</span></div>
+      <div class="btn-row" aria-label="Mi repaso de esta tarjeta"><button class="icon-btn" id="cardKnown" aria-pressed="${cardProgress?.status==='known'}">Lo sé</button><button class="icon-btn" id="cardUnknown" aria-pressed="${cardProgress?.status==='unknown'}">No lo sé</button><span class="meta">${cardProgress?.reviewCount||0} ${cardProgress?.reviewCount===1?'repaso':'repasos'}</span></div>
       <div class="q-actions">
-        <div class="btn-row"><button class="icon-btn" id="prevRep" ${repasoIndex===0?'disabled':''}>← Anterior</button><button class="icon-btn" id="exitTopic">Salir del tema</button></div>
+        <div class="btn-row"><button class="icon-btn" id="prevRep" ${repasoIndex===0?'disabled':''}>← Anterior</button></div>
         <div class="btn-row">
-          <button class="btn soft" id="practThis">Practicar este tema</button>
           <button class="btn" id="nextRep">${repasoIndex===cards.length-1?'Terminar':'Siguiente →'}</button>
         </div>
       </div>
+      <details class="ui-disclosure"><summary>Opciones de repaso</summary><div class="btn-row"><button class="icon-btn" id="practThis">Practicar este tema</button><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button></div></details>
     </div>`;
-  document.getElementById('backRep').addEventListener('click', ()=>goto('repaso'));
   document.getElementById('exitTopic').addEventListener('click',()=>{state.activeTopicId=null;repasoFilter=null;saveState();goto('repaso');});
   document.getElementById('prevRep').addEventListener('click', ()=>{ repasoIndex=Math.max(0,repasoIndex-1); render(); });
   document.getElementById('nextRep').addEventListener('click', ()=>{
@@ -1790,19 +1798,21 @@ function renderRepasoCards(main){
 ========================================================= */
 function renderPracticaHome(main){
   const subject=activeSubject(),topics=activeTopics(),questions=activeQuestions(),isSpanish=subject.id==='espanol';
+  const selectedTopic=topics.find(topic=>topic.id===state.activeTopicId);
   if(!questions.length){main.innerHTML=`<div class="pagehead"><h1>Práctica de ${subject.name}</h1><p>El motor está disponible, pero todavía no hay preguntas académicas aprobadas.</p></div><div class="empty-state"><span class="ic">○</span>Contenido listo para incorporarse cuando sea proporcionado.</div>`;return;}
   let countPractice = state.settings.practiceCountsByDefault!==false;
   main.innerHTML = `
     <div class="pagehead"><h1>Práctica de ${subject.name}</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
     ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><h3 style="margin:0 0 5px;">Práctica guardada</h3><p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Continúa exactamente donde la dejaste.</p><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></div>`})():''}
-    <label class="practice-count-box"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label>
-    <p class="section-title">Por tema</p>
+    ${selectedTopic?`<section class="card"><h2 id="practiceTopicTitle" tabindex="-1">${escHtml(selectedTopic.name)}</h2><p class="cloud-note">${computeMastery(selectedTopic.id).pct}% dominado</p><div class="btn-row"><button class="btn" id="reviewPracticeTopic">Repasar ahora</button><button class="icon-btn" data-topic="${selectedTopic.id}">Practicar</button><button class="icon-btn" id="practiceTopicProgress">Ver progreso</button></div></section>`:'<p>Selecciona un tema para comenzar.</p>'}
+    <details class="ui-disclosure" id="practiceTopicPicker"><summary>${selectedTopic?'Cambiar de tema':'Elegir tema'}</summary>
     <div class="grid grid-3" style="margin-bottom:24px;">
-      ${(isSpanish?[VOCAB_TOPIC]:topics).map(t=>{const m=computeMastery(t.id); return `<button type="button" class="card mode-card" data-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></button>`}).join('')}
+      ${(isSpanish?[VOCAB_TOPIC]:topics).map(t=>{const m=computeMastery(t.id); return `<button type="button" class="card mode-card" data-select-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></button>`}).join('')}
     </div>
     ${isSpanish?`<details class="card" style="margin-bottom:24px"><summary><b>Tema pasado · Examen tomado el 14 de septiembre de 2026</b></summary><p class="cloud-note">Estas secciones se conservan dentro del bloque académico anterior.</p><div class="btn-row">${TOPICS.map(t=>`<button type="button" class="icon-btn" data-topic="${t.id}">${t.icon} ${t.name}</button>`).join('')}</div></details>`:''}
-    <p class="section-title">Modos especiales</p>
-    ${isSpanish?`<div class="card" style="margin-bottom:18px"><p class="section-title">Competencia en Español — Vocabulario</p><div class="btn-row">${SPANISH_VOCABULARY.modes.map(mode=>`<button class="icon-btn" data-vocab-mode="${mode.id}">${mode.label}</button>`).join('')}</div></div>`:''}
+    </details>
+    ${isSpanish&&selectedTopic?.id==='vocabulario'?`<details class="card ui-disclosure"><summary>Más modos de vocabulario</summary><div class="btn-row">${SPANISH_VOCABULARY.modes.filter(mode=>!['study','general'].includes(mode.id)).map(mode=>`<button class="icon-btn" data-vocab-mode="${mode.id}">${mode.label}</button>`).join('')}</div></details>`:''}
+    <details class="card ui-disclosure"><summary>Práctica combinada y modos especiales</summary>
     <div class="grid grid-3">
       <button type="button" class="card mode-card" data-special="debiles"><span class="ic">⚠</span><h3>Temas débiles</h3><p>Preguntas centradas en tus temas con menor dominio.</p></button>
       <button type="button" class="card mode-card" data-special="rapido"><span class="ic">⚡</span><h3>Modo rápido</h3><p>10 preguntas mezcladas de todos los temas.</p></button>
@@ -1812,8 +1822,13 @@ function renderPracticaHome(main){
       <button type="button" class="card mode-card" data-special="cronica"><span class="ic">📰</span><h3>Solo crónica</h3><p>Lecturas completas con preguntas de análisis.</p></button>`:''}
       <button type="button" class="card mode-card" data-special="adaptativo"><span class="ic">◈</span><h3>Adaptativo</h3><p>Se ajusta según lo que fallas o dominas.</p></button>
       ${isSpanish?`<button type="button" class="card mode-card experimental-card" data-special="experimental"><span class="ic">🧪</span><h3>Modo experimental <span class="new-pill">NUEVO</span></h3><p>Genera variaciones nuevas de ejemplos y preguntas. Puede contener errores.</p></button>`:''}
-    </div>`;
+    </div></details>
+    <details class="ui-disclosure"><summary>Opciones de práctica</summary><label class="practice-count-box"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label></details>
+    `;
   const getCount=()=>document.getElementById('countPractice').checked;
+  main.querySelectorAll('[data-select-topic]').forEach(button=>button.addEventListener('click',()=>{const countStats=getCount();state.activeTopicId=button.dataset.selectTopic;renderPracticaHome(main);main.querySelector('#countPractice').checked=countStats;main.querySelector('#practiceTopicTitle')?.focus();}));
+  main.querySelector('#reviewPracticeTopic')?.addEventListener('click',()=>platformUiContext().reviewTopic(subject.id,selectedTopic.id));
+  main.querySelector('#practiceTopicProgress')?.addEventListener('click',()=>goto('dashboard'));
   const resumePractice=document.getElementById('resumePractice');
   if(resumePractice) resumePractice.addEventListener('click',resumeSavedPractice);
   const discardPractice=document.getElementById('discardPractice');
@@ -3070,7 +3085,7 @@ function renderAdmin(main){
   const sections=ADMIN_SECTIONS.filter(section=>section.roles.includes(role));
   if(!sections.some(section=>section.id===activeAdminSection))activeAdminSection=sections[0].id;
   clearInterval(adminRefreshTimer);adminRefreshTimer=null;
-  main.innerHTML=`<div class="pagehead"><h1>${role==='superdev'?'Super Dev':'Administración'} <span class="role-badge">${roleLabel(role)}</span></h1><p>Centro seguro de usuarios, presencia, feedback y funciones del Hub.</p></div><div class="admin-tabs">${sections.map(section=>`<button class="chip ${section.id===activeAdminSection?'active':''}" data-admin-section="${section.id}">${section.label}</button>`).join('')}</div><div id="adminContent"><div class="empty-state"><span class="ic">…</span>Cargando…</div></div>`;
+  main.innerHTML=`<div class="pagehead"><h1>Administración <span class="role-badge">${roleLabel(role)}</span></h1><p>Usuarios, actividad y herramientas del Hub.</p></div><div class="admin-tabs">${sections.map(section=>`<button class="chip ${section.id===activeAdminSection?'active':''}" data-admin-section="${section.id}">${section.label}</button>`).join('')}</div><div id="adminContent"><div class="empty-state"><span class="ic">…</span>Cargando…</div></div>`;
   main.querySelectorAll('[data-admin-section]').forEach(button=>button.addEventListener('click',()=>{activeAdminSection=button.dataset.adminSection;render();}));
   loadAdminSection(activeAdminSection);
 }
@@ -3094,8 +3109,12 @@ async function loadAdminSummary(box){
   try{
     const data=await adminRequest('GET',null,'section=summary');
     const summary=data.summary||{};
-    const metrics=[['Usuarios',summary.users],['Online',summary.online],['Veteranos',summary.veterans],['Admins',summary.admins],['Suspendidos',summary.suspended],['Feedback nuevo',summary.newFeedback],['Bugs',summary.bugs],['Comunidad',summary.community],['Calendario',summary.calendar],['Amistades',summary.friends],['Moderación',summary.pendingModeration],['Features activas',summary.enabledFeatures],['Sesiones activas',summary.activeSessions]];
-    box.innerHTML=`<div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div><div class="card" style="margin-top:18px;"><p style="margin-bottom:0;">Study Hub v${APP_VERSION} · acceso público obligatorio y pagos continúan desactivados. Las autorizaciones se validan en backend.</p></div>`;
+    const groups=[
+      ['Personas',[['Usuarios',summary.users],['Online',summary.online],['Veteranos',summary.veterans],['Admins',summary.admins],['Suspendidos',summary.suspended],['Sesiones activas',summary.activeSessions]]],
+      ['Pendientes',[['Feedback nuevo',summary.newFeedback],['Bugs',summary.bugs],['Moderación',summary.pendingModeration]]],
+      ['Plataforma',[['Comunidad',summary.community],['Calendario',summary.calendar],['Amistades',summary.friends],['Features activas',summary.enabledFeatures]]],
+    ];
+    box.innerHTML=groups.map(([title,metrics])=>`<section><h2>${title}</h2><div class="admin-metrics">${metrics.map(([label,value])=>`<div class="admin-metric"><strong>${Number(value)||0}</strong><span>${label}</span></div>`).join('')}</div></section>`).join('')+`<p class="cloud-note">Study Hub v${APP_VERSION} · login obligatorio y pagos desactivados. Estos conteos no miden retención ni uso de funciones.</p>`;
   }catch(error){box.innerHTML=`<div class="empty-state"><span class="ic">!</span>${escHtml(error.message)}</div>`;}
 }
 function renderAdminUsersShell(box,sessionsOnly){

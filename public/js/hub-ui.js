@@ -14,17 +14,16 @@
   const localDate=offset=>{const value=new Date();value.setDate(value.getDate()+offset);return `${value.getFullYear()}-${String(value.getMonth()+1).padStart(2,'0')}-${String(value.getDate()).padStart(2,'0')}`;};
   async function mountHub(root,context){
     const panel=root.querySelector('#hubSignals');if(!panel)return;
-    if(!context.user){panel.innerHTML='<article class="card motion-card priority-card"><span class="status-badge">URGENTE</span><p class="section-title">Competencia en Español</p><h2>Vocabulario</h2><p>Pendiente de repasar para Competencia.</p><button class="btn">Repasar ahora</button></article>';panel.querySelector('button').addEventListener('click',()=>context.reviewTopic('espanol','vocabulario'));return;}
+    if(!context.user){panel.innerHTML='';return;}
     panel.innerHTML='<div class="empty-state"><span class="ic">…</span>Cargando anuncios…</div>';
     try{
       const [calendar,notifications]=await Promise.all([api('calendar?limit=50'),api('notifications?limit=10')]);if(!panel.isConnected)return;
       const today=localDate(0),tomorrow=localDate(1),week=localDate(7);const events=calendar.events||[],assignments=calendar.assignments||[];
       const buckets=[['Hoy',events.filter(row=>row.date===today)],['Mañana',events.filter(row=>row.date===tomorrow)],['Esta semana',events.filter(row=>row.date>tomorrow&&row.date<=week)]];
       const due=assignments.filter(row=>!['completed','submitted'].includes(row.personalStatus)&&row.dueDate&&row.dueDate<=week);
-      panel.innerHTML=`<article class="card motion-card priority-card"><span class="status-badge">URGENTE</span><h2>Competencia en Español — Vocabulario</h2><p>Pendiente de repasar para Competencia.</p><button class="btn" data-signal-subject="espanol">Repasar ahora</button></article><div class="grid grid-3">${buckets.map(([label,rows])=>`<article class="card motion-card"><p class="section-title">${label}</p>${rows.length?rows.slice(0,3).map(row=>`<p><b>${context.escape(row.title)}</b><br><span class="meta">${context.escape(row.date)}</span></p>`).join(''):`<p class="cloud-note">No tienes nada para ${label.toLowerCase()}.</p>`}</article>`).join('')}</div>${due.length?`<article class="card motion-card" style="margin-top:14px"><span class="status-badge">DUE</span><h3>Pendientes próximos</h3>${due.slice(0,4).map(row=>`<p>${context.escape(row.title)} · ${context.escape(row.dueDate)}</p>`).join('')}</article>`:''}${notifications.unreadCount?`<button class="icon-btn soft-pulse" data-signal-view="notifications">${notifications.unreadCount} notificaciones nuevas</button>`:''}`;
+      const upcoming=buckets.filter(([,rows])=>rows.length);
+      panel.innerHTML=`<section class="card motion-card"><h2>Próximos eventos</h2>${upcoming.length?`<div class="grid grid-3">${upcoming.map(([label,rows])=>`<div><h3>${label}</h3>${rows.slice(0,3).map(row=>`<p><b>${context.escape(row.title)}</b><br><span class="meta">${context.escape(row.date)}</span></p>`).join('')}</div>`).join('')}</div>`:'<p class="cloud-note">No hay eventos próximos en esta página de la agenda.</p>'}${due.length?`<h3>Mis pendientes</h3>${due.slice(0,4).map(row=>`<p>${context.escape(row.title)} · ${context.escape(row.dueDate)}</p>`).join('')}`:''}${notifications.unreadCount?`<button class="icon-btn" data-signal-view="notifications">${notifications.unreadCount} notificaciones nuevas</button>`:''}</section>`;
       panel.querySelectorAll('[data-signal-view]').forEach(button=>button.addEventListener('click',()=>context.goto(button.dataset.signalView)));
-      panel.querySelectorAll('[data-signal-subject]').forEach(button=>button.addEventListener('click',()=>context.reviewTopic(button.dataset.signalSubject,'vocabulario')));
-      if(events.some(row=>row.date>=today&&row.date<=week))document.querySelectorAll('[data-nav="calendar"],[data-more-view="calendar"]').forEach(button=>button.classList.add('soft-pulse'));
     }catch{panel.innerHTML='<div class="empty-state"><span class="ic">○</span>Los anuncios sincronizados estarán disponibles al recuperar la conexión.</div>';}
   }
   function renderUpdates(main,context){

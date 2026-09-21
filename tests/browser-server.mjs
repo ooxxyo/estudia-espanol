@@ -16,7 +16,7 @@ import searchHandler from '../netlify/functions/search.mjs';
 import moderationHandler from '../netlify/functions/moderation.mjs';
 import groupsHandler from '../netlify/functions/groups.mjs';
 import bugsHandler from '../netlify/functions/bugs.mjs';
-import { USERS, createSession, setSessionCookie } from '../netlify/functions/_shared/auth.mjs';
+import { USERS, COOKIE, createSession, setSessionCookie } from '../netlify/functions/_shared/auth.mjs';
 import { getStore } from '@netlify/blobs';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -51,6 +51,11 @@ await seedUser({ id: 'old-test', username: 'cuentaantigua', email: 'antigua@exam
 await seedUser({ id: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', email: 'nueva@example.test', veteran: true, entitlement: 'veteran', visibleRank: 'Veterano' });
 await seedUser({ id: 'admin-test', username: 'adminamigo', displayName: 'Admin Amigo', securityRole: 'admin' });
 const token = await createSession(superdev, true, { superdevAuthenticated: true });
+// Synthetic UI fixtures; the loader keeps these outside real Netlify stores.
+const fixtureDate = offset => { const date = new Date(); date.setDate(date.getDate() + offset); return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; };
+const fixtureRequest = body => new Request('http://127.0.0.1:8765/.netlify/functions/fixture', { method: 'POST', headers: { 'content-type': 'application/json', cookie: `${COOKIE}=${token}` }, body: JSON.stringify(body) });
+await communityHandler(fixtureRequest({ action: 'create', subjectId: 'historia', date: fixtureDate(0), type: 'announcement', title: 'Ejemplo local de comunidad', text: 'Datos sintéticos para revisar diseño, autor, comentarios y acciones. No es material académico.' }));
+for (const offset of [-1,0,1]) await calendarHandler(fixtureRequest({ action: 'create-event', subjectId: 'historia', date: fixtureDate(offset), type: 'announcement', title: `Evento local de prueba (${offset})`, description: 'Ejemplo visual en memoria; no representa una fecha escolar real.' }));
 await getStore('study-hub-presence-v1').setJSON('heartbeat/friend_online_test', { at: Date.now(), userId: 'new-test', section: 'dashboard', subjectId: 'espanol', unitId: 'espanol-unidad-actual', clientKind: 'mobile' });
 await getStore('study-hub-feedback-v1').setJSON('reports/feedback-test', { id: 'feedback-test', type: 'suggestion', title: 'Mejorar acceso rápido', message: 'Sería útil mantener visible el acceso durante la práctica.', userId: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', status: 'new', subjectId: 'espanol', unitId: 'espanol-unidad-actual', createdAt: Date.now(), updatedAt: Date.now() });
 
