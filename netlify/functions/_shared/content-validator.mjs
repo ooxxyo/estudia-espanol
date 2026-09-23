@@ -43,6 +43,7 @@ export function validateAcademicCatalog(subjects = []) {
       if (question?.subjectId && question.subjectId !== subject?.id) errors.push(`question ${question?.id || index} pertenece a otra materia.`);
       if (question?.type === 'mc' && (!Array.isArray(question.options) || !Number.isInteger(question.correct) || question.correct < 0 || question.correct >= question.options.length)) errors.push(`question ${question?.id || index} tiene respuesta inválida.`);
       if (question?.type === 'tf' && typeof question.correct !== 'boolean') errors.push(`question ${question?.id || index} no tiene respuesta booleana.`);
+      if (question?.type === 'numeric' && (!Number.isFinite(question.answer) || typeof question.unitSymbol !== 'string' || !question.unitSymbol)) errors.push(`question ${question?.id || index} no tiene respuesta numérica y unidad válidas.`);
       const signature = JSON.stringify([question?.topicId || question?.topic, question?.type, question?.prompt, question?.options, question?.correct]);
       if (questionSignatures.has(signature)) errors.push(`question duplicada estructuralmente: ${question?.id || index}.`); else questionSignatures.add(signature);
     });

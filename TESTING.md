@@ -22,7 +22,8 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 ## Matriz de regresión
 
 - **Hub:** Día 1 y Día 2, seis tarjetas, estados, fecha local, progreso y acceso a Novedades.
-- **Materias y unidades:** Hub → Español/Historia → unidad → tema → herramienta → Hub; Inglés/Salud siguen `Próximamente`; Ciencia/Matemáticas están activas con empty states y sin contenido inventado.
+- **Materias y unidades:** Hub → Español/Historia/Ciencia → unidad → tema → herramienta → Hub; Inglés/Salud siguen `Próximamente`; Matemáticas permanece activa con empty state y sin contenido inventado.
+- **Ciencia:** tres bancos aislados (SI ≥25, Densidad ≥35, Temperatura ≥35); prueba del 2026-09-24 balanceada solo entre Densidad/Temperatura; SI separado para 2026-09-28; examen mixto únicamente explícito; tres fórmulas de densidad, seis de temperatura, `K` sin grado, procedimiento detallado, tolerancia numérica y unidad obligatoria. En toda pregunta numérica, comprobar fórmula/ayuda y calculadora sin perder respuesta; Mini examen, Examen y Examen mixto muestran “Examen de práctica”.
 - **Historia:** ocho topics, 27 tarjetas, 82 preguntas (72 selección múltiple y 10 verdadero/falso), respuestas A/B/C/D balanceadas, tercer mundo marcado como información incompleta, prueba tomada sin fecha inventada, examen pendiente y tema todavía en progreso.
 - **Contexto:** navegación desktop y móvil conserva materia, unidad, tema, filtros, respuestas y posición al pasar por Hub o Más.
 - **Navegación:** en teléfono, exactamente Hub, Repasar, Practicar, Cuenta/Entrar y Más; verificar bottom sheet a 390×844, safe area, Escape, foco, scroll, ausencia de overflow y Admin condicional. En desktop, verificar grupos directos y ausencia de Más.

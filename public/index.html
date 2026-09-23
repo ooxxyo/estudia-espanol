@@ -330,6 +330,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   margin-top:10px;
   line-height:1.6;
 }
+.numeric-answer{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.45fr);gap:12px}.numeric-answer label{display:grid;gap:6px;font-weight:700;font-size:.82rem}@media(max-width:520px){.numeric-answer{grid-template-columns:1fr}}
+.science-practice-tools{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+.science-tool-panel{margin-top:10px;border:1px solid var(--line);border-radius:12px;padding:14px;background:var(--paper-soft)}
+.science-tool-panel[hidden]{display:none}.science-tool-panel p{margin:6px 0;color:var(--ink-soft);line-height:1.5}
+.practice-exam-note{margin:10px 0 14px;padding:9px 12px;border-left:3px solid var(--accent);color:var(--ink-soft);font-size:.82rem;display:grid;gap:2px}
+.practice-exam-note b{color:var(--ink)}
+.calculator-display{display:block;width:100%;min-height:48px;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font:700 1.05rem/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right;overflow-wrap:anywhere}
+.calculator-grid{display:grid;grid-template-columns:repeat(4,minmax(48px,1fr));gap:8px;margin-top:10px}
+.calculator-key{min-height:46px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-weight:700;font-size:1rem;cursor:pointer;touch-action:manipulation}
+.calculator-key:hover{border-color:var(--accent);color:var(--accent)}.calculator-key.equals{background:var(--accent);border-color:var(--accent);color:white}
+.calculator-message{min-height:1.2em;margin:8px 0 0!important;font-size:.78rem}
+@media(max-width:520px){.science-practice-tools>.btn-row{display:grid;grid-template-columns:1fr 1fr}.science-practice-tools .icon-btn{justify-content:center;width:100%}.calculator-grid{gap:7px}.calculator-key{min-height:48px}}
 
 
 .hint-box{margin-top:14px;background:var(--amber-soft);border-radius:10px;padding:12px 15px;font-size:.87rem;color:var(--ink);}
@@ -622,6 +634,8 @@ body{line-height:1.55;}
 <script src="js/platform-ui.js"></script>
 <script src="js/platform-extras.js"></script>
 <script src="history-data.js"></script>
+<script src="js/science-data.js"></script>
+<script src="js/science-practice-tools.js"></script>
 <script src="js/spanish-legacy-content.js"></script>
 <script src="js/spanish-vocabulary.js"></script>
 <script src="js/bug-report-ui.js"></script>
@@ -638,6 +652,7 @@ const TOPICS = [
   {id:'figuras', name:'Figuras literarias', icon:'✦'},
 ];
 const HISTORY_CONTENT=window.HISTORY_CONTENT;
+const SCIENCE_CONTENT=window.SCIENCE_CONTENT;
 const SPANISH_VOCABULARY=window.SpanishVocabulary;
 const VOCAB_TOPIC={id:'vocabulario',name:'Vocabulario',icon:'🗂️',topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true};
 const VOCAB_CARDS=SPANISH_VOCABULARY.entries.map(entry=>({id:entry.id,topic:'vocabulario',topicId:'vocabulario',title:`${entry.word.toLocaleUpperCase('es')} (${entry.grammar})`,def:entry.definition,example:[entry.synonyms.length?`Sinónimos: ${entry.synonyms.join(', ')}.`:'',entry.antonyms.length?`Antónimos: ${entry.antonyms.join(', ')}.`:'',entry.example].filter(Boolean).join(' ')}));
@@ -654,13 +669,13 @@ const SUBJECT_CATALOG=Object.freeze([
   {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
   {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
   {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Disponible',available:true,contentKey:'historia-v1',units:{current:HISTORY_CONTENT.unit,previous:[],completed:[]}},
-  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Activa',available:true,contentKey:'empty-approved',units:{current:null,previous:[],completed:[]}},
+  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Prueba mañana',available:true,contentKey:'science-v1',units:{current:SCIENCE_CONTENT.unit,previous:[],completed:[]}},
   {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Activa',available:true,contentKey:'empty-approved',units:{current:null,previous:[],completed:[]}},
   {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Nuevo',available:true,contentKey:'spanish-v2',units:{current:{...SPANISH_VOCABULARY.unit,topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true,assessments:[{type:'competition',label:'Competencia',status:'pending',date:null}]},previous:[{id:'espanol-unidad-anterior',subjectId:'espanol',name:'Contenido anterior de Español',displayName:'✅ Tema pasado',type:'Tema pasado',status:'previous',topicStatus:'previous',examTaken:true,examTakenDate:'2026-09-14',date:'2026-09-14',order:1,topicIds:TOPICS.map(t=>t.id),assessments:[{type:'exam',label:'Examen',status:'taken',date:'2026-09-14'}]}],completed:[]}},
 ]);
 const SUBJECT_BY_ID=new Map(SUBJECT_CATALOG.map(subject=>[subject.id,subject]));
 const SUBJECT=SUBJECT_BY_ID.get('espanol');
-const SUBJECT_VIEW_IDS=new Set(['dashboard','repaso','repasoCards','practica','experimental','examen','errores','guardadas','historial','session','results']);
+const SUBJECT_VIEW_IDS=new Set(['dashboard','repaso','repasoCards','practica','experimental','examen','scienceFormulas','errores','guardadas','historial','session','results']);
 function subjectsForDay(day){return SUBJECT_CATALOG.filter(subject=>subject.day===day);}
 function subjectUnits(subjectId){
   const subject=SUBJECT_BY_ID.get(subjectId);
@@ -680,6 +695,7 @@ function subjectContent(subjectId){
   if(!subject?.available) return {units,topics:[],reviewCards:[],questions:[]};
   if(subject.contentKey==='spanish-v2') return {units,topics:[VOCAB_TOPIC,...TOPICS],reviewCards:[...VOCAB_CARDS,...REVIEW_CARDS],questions:[...SPANISH_VOCABULARY.questions,...Q]};
   if(subject.contentKey==='historia-v1') return {units,topics:HISTORY_CONTENT.topics,reviewCards:HISTORY_CONTENT.reviewCards,questions:HISTORY_CONTENT.questions};
+  if(subject.contentKey==='science-v1') return {units,topics:SCIENCE_CONTENT.topics,reviewCards:SCIENCE_CONTENT.reviewCards,questions:SCIENCE_CONTENT.questions};
   return {units,topics:[],reviewCards:[],questions:[]};
 }
 function unitTopics(unitId){
@@ -699,8 +715,8 @@ function activeContent(){return subjectContent(activeSubject().id);}
 function activeTopics(){return activeContent().topics;}
 function activeReviewCards(){return activeContent().reviewCards;}
 function activeQuestions(){return activeContent().questions;}
-function allTopics(){return [VOCAB_TOPIC,...TOPICS,...HISTORY_CONTENT.topics];}
-function allQuestions(){return [...SPANISH_VOCABULARY.questions,...Q,...HISTORY_CONTENT.questions];}
+function allTopics(){return [VOCAB_TOPIC,...TOPICS,...HISTORY_CONTENT.topics,...SCIENCE_CONTENT.topics];}
+function allQuestions(){return [...SPANISH_VOCABULARY.questions,...Q,...HISTORY_CONTENT.questions,...SCIENCE_CONTENT.questions];}
 function questionSubjectId(question){return question?.subjectId||'espanol';}
 function topicForQuestion(question){return subjectContent(questionSubjectId(question)).topics.find(topic=>topic.id===question?.topic)||null;}
 function approvedAssistantContext(subjectId,unitId,topicId){
@@ -750,7 +766,7 @@ const state = {
   stats:{}, // topicId -> {attempts, correct, recent:[bool], mastered:false}
   totalAnswered:0, totalCorrect:0, currentStreak:0, bestStreak:0,
   studySeconds:0,
-  subjectTotals:{historia:{answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0}},
+  subjectTotals:{historia:{answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0},ciencia:{answered:0,correct:0,currentStreak:0,bestStreak:0,studySeconds:0}},
   errors:[], // {qid, userAnswerText, times, last}
   saved:new Set(),
   history:[],
@@ -760,7 +776,7 @@ const state = {
     practiceCountsByDefault:true,
     strictWrittenAnswers:false,
     examTopics:[VOCAB_TOPIC,...TOPICS].map(t=>t.id),
-    examTopicsBySubject:{historia:HISTORY_CONTENT.topics.map(t=>t.id)},
+    examTopicsBySubject:{historia:HISTORY_CONTENT.topics.map(t=>t.id),ciencia:SCIENCE_CONTENT.topics.map(t=>t.id)},
     lastSeenUpdate:'',
     seenUpdateIds:[],
     seenCalendarIds:[],
@@ -820,11 +836,13 @@ function applySavedData(d){
   });
   ['totalAnswered','totalCorrect','currentStreak','bestStreak','studySeconds'].forEach(k=>{ if(Number.isFinite(d[k])) state[k]=d[k]; });
   if(d.subjectTotals && typeof d.subjectTotals==='object' && !Array.isArray(d.subjectTotals)){
-    const row=d.subjectTotals.historia;
-    if(row && typeof row==='object') state.subjectTotals.historia={
-      answered:Math.max(0,Number(row.answered)||0),correct:Math.max(0,Number(row.correct)||0),
-      currentStreak:Math.max(0,Number(row.currentStreak)||0),bestStreak:Math.max(0,Number(row.bestStreak)||0),studySeconds:Math.max(0,Number(row.studySeconds)||0)
-    };
+    for(const subjectId of ['historia','ciencia']){
+      const row=d.subjectTotals[subjectId];
+      if(row && typeof row==='object') state.subjectTotals[subjectId]={
+        answered:Math.max(0,Number(row.answered)||0),correct:Math.max(0,Number(row.correct)||0),
+        currentStreak:Math.max(0,Number(row.currentStreak)||0),bestStreak:Math.max(0,Number(row.bestStreak)||0),studySeconds:Math.max(0,Number(row.studySeconds)||0)
+      };
+    }
   }
   if(Array.isArray(d.errors)) state.errors=d.errors.filter(e=>e&&typeof e.qid==='string').slice(-1000);
   if(Array.isArray(d.saved)) state.saved=new Set(d.saved.filter(id=>typeof id==='string').slice(-1000));
@@ -857,9 +875,10 @@ function applySavedData(d){
     if(typeof incoming.strictWrittenAnswers==='boolean')state.settings.strictWrittenAnswers=incoming.strictWrittenAnswers;
     if(Array.isArray(incoming.examTopics)) state.settings.examTopics=incoming.examTopics.filter(id=>[VOCAB_TOPIC,...TOPICS].some(t=>t.id===id));
     if(incoming.examTopicsBySubject && typeof incoming.examTopicsBySubject==='object' && !Array.isArray(incoming.examTopicsBySubject)){
-      const historyTopics=HISTORY_CONTENT.topics.map(topic=>topic.id);
+      const historyTopics=HISTORY_CONTENT.topics.map(topic=>topic.id),scienceTopics=SCIENCE_CONTENT.topics.map(topic=>topic.id);
       state.settings.examTopicsBySubject={
-        historia:Array.isArray(incoming.examTopicsBySubject.historia)?incoming.examTopicsBySubject.historia.filter(id=>historyTopics.includes(id)):historyTopics
+        historia:Array.isArray(incoming.examTopicsBySubject.historia)?incoming.examTopicsBySubject.historia.filter(id=>historyTopics.includes(id)):historyTopics,
+        ciencia:Array.isArray(incoming.examTopicsBySubject.ciencia)?incoming.examTopicsBySubject.ciencia.filter(id=>scienceTopics.includes(id)):scienceTopics
       };
     }
     if(typeof incoming.lastSeenUpdate==='string') state.settings.lastSeenUpdate=incoming.lastSeenUpdate.slice(0,20);
@@ -1170,8 +1189,9 @@ function recordAnswer(q, correct){
   if(s.recent.length>20) s.recent.shift();
   if(!correct){
     let ex = state.errors.find(e=>e.qid===q.id);
-    if(ex){ ex.times++; ex.last=Date.now(); }
-    else state.errors.push({qid:q.id, times:1, last:Date.now()});
+    const scienceError={userAnswer:sessionSelection,correctAnswer:correctAnswerLabel(q),formula:q.formula||'',errorType:q.type==='numeric'?(SCIENCE_CONTENT.checkNumericAnswer(q,sessionSelection).errorType||q.errorType):q.errorType||'',explanation:q.simpleExplanation||q.exp||''};
+    if(ex){ ex.times++; ex.last=Date.now();Object.assign(ex,scienceError); }
+    else state.errors.push({qid:q.id, times:1, last:Date.now(),...scienceError});
   } else {
     // remove from errors after 2 consecutive later correct answers handled elsewhere; keep simple: leave record but could be re-practiced
   }
@@ -1422,7 +1442,7 @@ function render(){
     dashboard: renderDashboard, cuenta: renderCuenta, repaso: renderRepasoHome, practica: renderPracticaHome,
     experimental: renderExperimentalHome, examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
     historial: renderHistorial, feedback:renderFeedback, leaderboard: renderLeaderboard, admin: renderAdmin, novedades: renderNovedades, ajustes: renderAjustes,
-    session: renderSession, results: renderResults, repasoCards: renderRepasoCards,
+    session: renderSession, results: renderResults, repasoCards: renderRepasoCards, scienceFormulas:renderScienceFormulas,
   };
   (renderers[state.view]||renderHub)(main);
 }
@@ -1503,9 +1523,21 @@ function weakestTopic(){
   return studied.reduce((best,t)=>computeMastery(t.id).pct<computeMastery(best.id).pct?t:best, studied[0]);
 }
 function assessmentStatusLabel(assessment){
-  const status=assessment.status==='taken'?`✅ ${assessment.label} ${assessment.label==='Prueba'?'tomada':'tomado'}`:assessment.status==='pending'?`⏳ ${assessment.label} pendiente`:`${assessment.label}: ${assessment.status}`;
+  const status=assessment.status==='taken'
+    ? `✅ ${assessment.label} ${assessment.label==='Prueba'?'tomada':'tomado'}`
+    : assessment.status==='pending'
+      ? `⏳ ${assessment.label} pendiente`
+      : assessment.status==='scheduled'
+        ? `📅 ${assessment.label} programado`
+        : `${assessment.label}: ${assessment.status}`;
   const date=assessment.date?` · ${new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${assessment.date}T00:00:00Z`))}`:'';
   return `${status}${date}`;
+}
+function assessmentStatusBadge(assessment){
+  if(assessment.status==='pending') return '<span class="status-badge offline">PENDIENTE</span>';
+  if(assessment.status==='scheduled') return '<span class="status-badge">PROGRAMADO</span>';
+  if(assessment.status==='taken') return '<span class="status-badge">TOMADA</span>';
+  return `<span class="status-badge">${escHtml(String(assessment.status||'').toUpperCase())}</span>`;
 }
 function renderDashboard(main){
   const subject=activeSubject(),content=activeContent(),topics=content.topics;
@@ -1519,6 +1551,7 @@ function renderDashboard(main){
     <div class="pagehead"><p class="subject-context">Study Hub → Día ${subject.day} → ${subject.emoji} ${subject.name} → ${escHtml(activeUnit?.name||'Unidad')}</p><div class="system-row"><div><h1>Panel de ${subject.name}</h1><p>Tu progreso y herramientas de esta materia.</p></div><button class="icon-btn" id="backToHub">← Volver al Hub</button></div></div>
     ${!accountSession.user?`<div class="card" style="margin-bottom:20px;"><div class="account-status"><div><b>Guarda todo en tu cuenta</b><div class="account-sub">Sincroniza progreso, historial, guardadas y configuración entre dispositivos.</div></div><button class="btn" id="goAccount">Registrarme / Login</button></div></div>`:`<div class="cloud-note" style="margin:-14px 0 18px 0;">● Conectado como <b>${escHtml(accountSession.user.username)}</b> · <span id="cloudSyncStatus">Sincronización activa</span></div>`}
     ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><b>▶ Tienes una práctica sin terminar</b><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} de ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><button class="btn" id="resumeFromDash">Continuar práctica</button></div></div>`})():''}
+    ${subject.id==='ciencia'?`<section class="card priority-card science-menu" aria-labelledby="scienceMenuTitle"><div class="system-row"><div><p class="section-title">Prueba corta · 24 de septiembre de 2026</p><h2 id="scienceMenuTitle">Densidad + Temperatura</h2><p class="cloud-note">Urgente · pendiente de repasar. Conversiones SI queda separada para el 28 de septiembre.</p></div><button class="btn" data-science-action="tomorrow">Prepararme para mañana</button></div><div class="btn-row"><button class="icon-btn" data-science-action="density">Densidad</button><button class="icon-btn" data-science-action="temperature">Temperatura</button><button class="icon-btn" data-science-action="si">Conversiones SI</button><button class="icon-btn" data-science-action="formulas">Repasar fórmulas</button><button class="icon-btn" data-science-action="errors">Practicar errores</button><button class="icon-btn" data-science-action="mixed">Examen mixto</button></div><button class="link-button" data-science-action="tomorrow-formulas">Repasar primero las fórmulas de mañana</button></section>`:''}
     <div class="card dash-top" style="margin-bottom:20px;">
       <div class="ring-wrap">${ringSvg(pct)}<div class="ring-num"><b>${pct}%</b><span>dominado</span></div></div>
       <div class="grid grid-4" style="flex:1;">
@@ -1546,7 +1579,7 @@ function renderDashboard(main){
           ${activeUnit?.type?`<p class="subject-empty" style="margin-top:7px;">${escHtml(activeUnit.type)}</p>`:''}
           ${activeUnit?.topicStatus?`<p class="cloud-note">${activeUnit.topicStatus==='in_progress'?'📌 Tema en progreso':activeUnit.topicStatus==='current'?'Tema actual':escHtml(activeUnit.topicStatus)}${activeUnit.canGrow?' · Se seguirá añadiendo contenido aprobado.':''}</p>`:''}
           ${subject.id==='espanol'?`<p class="cloud-note">${(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='pending_review'?'Pendiente de repasar para Competencia':(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='in_progress'?'Repaso en progreso':'Repasado'}</p>`:''}
-          ${activeUnit?.assessments?.length?`<div class="assessment-list">${activeUnit.assessments.map(item=>`<div class="assessment-row"><span>${escHtml(assessmentStatusLabel(item))}</span><span class="status-badge ${item.status==='pending'?'offline':''}">${item.status==='pending'?'PENDIENTE':'TOMADA'}</span></div>`).join('')}</div>`:''}
+          ${activeUnit?.assessments?.length?`<div class="assessment-list">${activeUnit.assessments.map(item=>`<div class="assessment-row"><span>${escHtml(assessmentStatusLabel(item))}</span>${assessmentStatusBadge(item)}</div>`).join('')}</div>`:''}
           <div class="subject-tags" style="margin-top:10px;">${topics.filter(t=>activeUnit?.topicIds?.includes(t.id)).map(t=>`<span class="subject-tag">${t.icon} ${t.name}</span>`).join('')}</div>
           <div class="btn-row" style="margin-top:12px;"><button class="btn soft" id="openSubjectReview">Repasar temas</button><button class="btn ghost" id="openSubjectPractice">Practicar</button></div>
         </div>
@@ -1584,12 +1617,34 @@ function renderDashboard(main){
   const ga=document.getElementById('goAccount'); if(ga) ga.addEventListener('click',()=>goto('cuenta')); 
   const resumeFromDash=document.getElementById('resumeFromDash');
   if(resumeFromDash) resumeFromDash.addEventListener('click',resumeSavedPractice);
+  main.querySelectorAll('[data-science-action]').forEach(button=>button.addEventListener('click',()=>{
+    const action=button.dataset.scienceAction;
+    if(action==='tomorrow'){startSession({mode:'practica',topics:['densidad','temperatura'],balancedTopics:true,limit:20,countStats:true});return;}
+    if(action==='density'){startSession({mode:'practica',topic:'densidad',limit:10,countStats:true});return;}
+    if(action==='temperature'){startSession({mode:'practica',topic:'temperatura',limit:10,countStats:true});return;}
+    if(action==='si'){startSession({mode:'practica',topic:'ciencia-si',limit:10,countStats:true});return;}
+    if(action==='errors'){startSession({mode:'practica',errorsOnly:true,countStats:true});return;}
+    if(action==='mixed'){startSession({mode:'examen',topics:['ciencia-si','densidad','temperatura'],limit:30,fullExam:false});return;}
+    scienceFormulaScope=action==='tomorrow-formulas'?'tomorrow':'all';goto('scienceFormulas');
+  }));
 }
 function fmtTime(sec){
   const m = Math.floor(sec/60), s=sec%60;
   return m>0? `${m}m ${s}s` : `${s}s`;
 }
 function truncate(s,n){ return s.length>n? s.slice(0,n)+'…' : s; }
+
+let scienceFormulaScope='all';
+function renderScienceFormulas(main){
+  if(activeSubject().id!=='ciencia'){goto('dashboard');return;}
+  const filters={density:['densidad'],temperature:['temperatura'],si:['ciencia-si'],tomorrow:['densidad','temperatura'],all:['ciencia-si','densidad','temperatura']};
+  const topicIds=filters[scienceFormulaScope]||filters.all;
+  const cards=SCIENCE_CONTENT.reviewCards.filter(card=>topicIds.includes(card.topic));
+  main.innerHTML=`<div class="pagehead"><div class="system-row"><div><h1>Repasar fórmulas</h1><p>${scienceFormulaScope==='tomorrow'?'Para mañana: solo Densidad y Temperatura.':'Elige un bloque o repasa los tres de forma explícita.'}</p></div><button class="icon-btn" id="backScience">← Volver a Ciencia</button></div></div><div class="btn-row" style="margin-bottom:18px"><button class="chip" data-formula-scope="density">Densidad</button><button class="chip" data-formula-scope="temperature">Temperatura</button><button class="chip" data-formula-scope="si">Conversiones SI</button><button class="chip" data-formula-scope="all">Todas</button></div><div class="grid grid-2">${cards.map(card=>`<article class="card"><p class="section-title">${escHtml(SCIENCE_CONTENT.topics.find(topic=>topic.id===card.topic)?.name||'Ciencia')}</p><h2>${escHtml(card.title)}</h2><p>${escHtml(card.def)}</p><div class="learning-box example-box"><span class="learning-label">Ejemplo corto</span>${escHtml(card.example)}</div><details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Qué significa y cuándo usarla</span></summary><p>${escHtml(card.detail)}</p></details></article>`).join('')}</div><section class="card" style="margin-top:18px"><h2>¿Qué fórmula uso?</h2><p>Practica primero cómo identificar la fórmula y después resuelve el procedimiento completo.</p><button class="btn" id="practiceScienceFormulas">Practicar fórmulas</button></section>`;
+  document.getElementById('backScience').addEventListener('click',()=>goto('dashboard'));
+  main.querySelectorAll('[data-formula-scope]').forEach(button=>button.addEventListener('click',()=>{scienceFormulaScope=button.dataset.formulaScope;renderScienceFormulas(main);}));
+  document.getElementById('practiceScienceFormulas').addEventListener('click',()=>startSession({mode:'practica',topics:topicIds,limit:topicIds.length===2?20:10,balancedTopics:topicIds.length>1,countStats:true}));
+}
 
 /* =========================================================
    REPASO (flashcards)
@@ -1761,6 +1816,7 @@ function renderRepasoCards(main){
           <p class="review-definition">${c.def}</p>
         </div>
         ${renderReviewExample(c)}
+        ${c.detail?`<details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Qué significa, cuándo usarla y error común</span></summary><p>${escHtml(c.detail)}</p></details>`:''}
       </div>
       <div class="btn-row" aria-label="Mi repaso de esta tarjeta"><button class="icon-btn" id="cardKnown" aria-pressed="${cardProgress?.status==='known'}">Lo sé</button><button class="icon-btn" id="cardUnknown" aria-pressed="${cardProgress?.status==='unknown'}">No lo sé</button><span class="meta">${cardProgress?.reviewCount||0} ${cardProgress?.reviewCount===1?'repaso':'repasos'}</span></div>
       <div class="q-actions">
@@ -1769,7 +1825,7 @@ function renderRepasoCards(main){
           <button class="btn" id="nextRep">${repasoIndex===cards.length-1?'Terminar':'Siguiente →'}</button>
         </div>
       </div>
-      <details class="ui-disclosure"><summary>Opciones de repaso</summary><div class="btn-row"><button class="icon-btn" id="practThis">Practicar este tema</button><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button></div></details>
+      <details class="ui-disclosure"><summary><b>Más opciones de repaso</b><span class="cloud-note">Cambia cómo quieres estudiar · Ver opciones ▾</span></summary><div class="btn-row"><button class="icon-btn" id="practThis">Practicar este tema</button><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button></div></details>
     </div>`;
   document.getElementById('exitTopic').addEventListener('click',()=>{state.activeTopicId=null;repasoFilter=null;saveState();goto('repaso');});
   document.getElementById('prevRep').addEventListener('click', ()=>{ repasoIndex=Math.max(0,repasoIndex-1); render(); });
@@ -2084,6 +2140,9 @@ function startSession(opts){
     pool = state.errors.map(e=>findQuestionById(e.qid)).filter(q=>q&&questionSubjectId(q)===subject.id&&(!opts.vocabularyErrorsOnly||q.topic==='vocabulario'));
   } else if(opts.savedOnly){
     pool = [...state.saved].map(findQuestionById).filter(q=>q&&questionSubjectId(q)===subject.id);
+  } else if(opts.balancedTopics&&opts.topics?.length){
+    const perTopic=Math.max(1,Math.floor((opts.limit||opts.topics.length)/opts.topics.length));
+    pool=opts.topics.flatMap(topic=>shuffle(questions.filter(q=>q.topic===topic)).slice(0,perTopic));
   } else if(opts.topics && opts.topics.length){
     pool = questions.filter(q=>opts.topics.includes(q.topic));
   } else if(opts.topic){
@@ -2114,6 +2173,7 @@ function startSession(opts){
     returnView: opts.mode==='examen' ? 'examen' : 'practica',
     examTopics: opts.mode==='examen' ? (opts.topics||[]).slice() : [],
     examFull: opts.mode==='examen' ? !!opts.fullExam : false,
+    practiceToolsEnabled:true,
   };
   state.activeTopicId=opts.topic||((opts.topics||[]).length===1?opts.topics[0]:null);
   if(state.activeTopicId){state.lastVisitedTopicBySubject[subject.id]=state.activeTopicId;state.settings.topicStudyStatus[state.activeTopicId]='in_progress';}
@@ -2164,6 +2224,7 @@ function renderSession(main){
     return;
   }
   const isExam = s.mode==='examen';
+  const isSciencePracticeExam = isExam && s.subjectId==='ciencia';
   const isExperimental = !!s.experimental;
   const starred = !isExperimental && state.saved.has(q.id);
 
@@ -2179,6 +2240,7 @@ function renderSession(main){
         <span>${t.icon} ${t.name} · ${s.idx+1} / ${total} ${isExam?'':''}</span>
       </div>
       <div class="q-progress"><div class="q-progress-fill" style="width:${(s.idx)/total*100}%"></div></div>
+      ${isSciencePracticeExam?'<div class="practice-exam-note"><b>Examen de práctica</b><span>Puedes usar la fórmula y la calculadora para practicar el procedimiento.</span></div>':''}
       <div class="q-card">
         <span class="q-topic-tag">${t.name} · ${q.dif}</span>
         <div id="qBody"></div>
@@ -2286,6 +2348,58 @@ function confirmQuit(){
 
 let sessionSelection = null; // holds current user selection before submit
 
+function sciencePracticeToolsMarkup(q){
+  if(!window.SCIENCE_PRACTICE_TOOLS?.toolsEnabled(q,state.session)) return '';
+  const help=window.SCIENCE_PRACTICE_TOOLS.helpForQuestion(q);
+  const calculatorKeys=['C','⌫','÷','×','7','8','9','−','4','5','6','+','1','2','3','=','0','.'];
+  return `<div class="science-practice-tools" data-science-practice-tools>
+    <div class="btn-row">
+      <button type="button" class="icon-btn" id="scienceFormulaToggle" aria-expanded="false" aria-controls="scienceFormulaPanel">${escHtml(help.buttonLabel)}</button>
+      <button type="button" class="icon-btn" id="scienceCalculatorToggle" aria-expanded="false" aria-controls="scienceCalculatorPanel">Calculadora</button>
+    </div>
+    <section class="science-tool-panel" id="scienceFormulaPanel" hidden><b>${escHtml(help.heading)}</b>${help.lines.map(line=>`<p>${escHtml(line)}</p>`).join('')}</section>
+    <section class="science-tool-panel" id="scienceCalculatorPanel" hidden aria-label="Calculadora básica">
+      <output class="calculator-display" id="calculatorDisplay" aria-live="polite">0</output>
+      <div class="calculator-grid">${calculatorKeys.map(key=>`<button type="button" class="calculator-key ${key==='='?'equals':''}" data-calculator-key="${escHtml(key)}">${escHtml(key)}</button>`).join('')}</div>
+      <p class="calculator-message" id="calculatorMessage" aria-live="polite"></p>
+    </section>
+  </div>`;
+}
+
+function wireSciencePracticeTools(){
+  const formulaToggle=document.getElementById('scienceFormulaToggle');
+  const calculatorToggle=document.getElementById('scienceCalculatorToggle');
+  if(!formulaToggle || !calculatorToggle) return;
+  const togglePanel=(button,panel)=>{
+    panel.hidden=!panel.hidden;
+    button.setAttribute('aria-expanded',String(!panel.hidden));
+    button.textContent=panel.hidden?button.dataset.closedLabel:`Ocultar ${button.dataset.panelName}`;
+  };
+  const formulaPanel=document.getElementById('scienceFormulaPanel');
+  const calculatorPanel=document.getElementById('scienceCalculatorPanel');
+  formulaToggle.dataset.closedLabel=formulaToggle.textContent;
+  formulaToggle.dataset.panelName=formulaToggle.textContent.replace(/^Ver\s+/,'').toLowerCase();
+  calculatorToggle.dataset.closedLabel='Calculadora';
+  calculatorToggle.dataset.panelName='calculadora';
+  formulaToggle.addEventListener('click',()=>togglePanel(formulaToggle,formulaPanel));
+  calculatorToggle.addEventListener('click',()=>togglePanel(calculatorToggle,calculatorPanel));
+  let expression='';
+  const display=document.getElementById('calculatorDisplay');
+  const message=document.getElementById('calculatorMessage');
+  const refresh=()=>{display.textContent=expression||'0';};
+  calculatorPanel.querySelectorAll('[data-calculator-key]').forEach(button=>button.addEventListener('click',()=>{
+    const key=button.dataset.calculatorKey;
+    message.textContent='';
+    if(key==='C') expression='';
+    else if(key==='⌫') expression=expression.slice(0,-1);
+    else if(key==='='){
+      try{expression=String(window.SCIENCE_PRACTICE_TOOLS.evaluateExpression(expression));}
+      catch(error){message.textContent=error.message;}
+    } else expression+=key;
+    refresh();
+  }));
+}
+
 function renderQuestionBody(q, isExam){
   let savedSelection=state.session.currentSelection??null;
   if(q.type==='seg'&&Array.isArray(savedSelection))savedSelection=savedSelection.map(normalizeMorphRole);
@@ -2326,6 +2440,13 @@ function renderQuestionBody(q, isExam){
       saveState();
       enableSubmit();
     });
+  } else if(q.type==='numeric'){
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="numeric-answer"><label>Resultado<input class="fill-input" id="numericValue" inputmode="decimal" placeholder="Número"></label><label>Unidad<input class="fill-input" id="numericUnit" placeholder="${escHtml(q.unitSymbol)}"></label></div><p class="cloud-note">Se acepta un redondeo razonable; la unidad también se evalúa.</p>${sciencePracticeToolsMarkup(q)}`;
+    const valueInput=document.getElementById('numericValue'),unitInput=document.getElementById('numericUnit');
+    if(savedSelection&&typeof savedSelection==='object'){valueInput.value=savedSelection.value??'';unitInput.value=savedSelection.unit??'';}
+    const updateNumeric=()=>{sessionSelection={value:valueInput.value,unit:unitInput.value};state.session.currentSelection=sessionSelection;saveState();enableSubmit(valueInput.value.trim()!==''&&unitInput.value.trim()!=='');};
+    valueInput.addEventListener('input',updateNumeric);unitInput.addEventListener('input',updateNumeric);
+    wireSciencePracticeTools();
   } else if(q.type==='seg'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
       <p class="seg-key">MDP = prefijo · LEX = lexema · MDI = interfijo · MDS = sufijo · MF = morfema flexivo</p>
@@ -2381,7 +2502,9 @@ function renderQuestionBody(q, isExam){
   }
   if(q.type==='seg') enableSubmit(Array.isArray(savedSelection) && savedSelection.length===q.parts.length && savedSelection.every(Boolean));
   else if(q.type==='eviden') enableSubmit(Number.isInteger(savedSelection?.sentence) && (!q.followup || Number.isInteger(savedSelection?.follow)));
+  else if(q.type==='numeric') enableSubmit(savedSelection&&String(savedSelection.value??'').trim()!==''&&String(savedSelection.unit??'').trim()!=='');
   else enableSubmit(savedSelection!==null && savedSelection!=='');
+  if(q.type==='numeric'&&window.SCIENCE_PRACTICE_TOOLS?.toolsEnabled(q,state.session)) document.getElementById('submitBtn').textContent='Comprobar';
 }
 function enableSubmit(force){
   const btn=document.getElementById('submitBtn');
@@ -2409,6 +2532,7 @@ function checkCorrectness(q, ans){
     const normalize=window.SpanishVocabulary?.normalizeAnswer||((value)=>String(value??'').trim().toLowerCase());
     return ans && [q.answer,...(q.acceptedAnswers||[])].some(answer=>normalize(ans,strict)===normalize(answer,strict));
   }
+  if(q.type==='numeric') return SCIENCE_CONTENT.checkNumericAnswer(q,ans).correct;
   if(q.type==='seg') return Array.isArray(ans) && q.parts.every((p,i)=>normalizeMorphRole(ans[i])===normalizeMorphRole(p.role));
   if(q.type==='eviden'){
     const okSentence = ans?.sentence===q.correctSentence;
@@ -2425,6 +2549,7 @@ function answerLabel(q, ans){
   if(q.type==='mc') return q.options?.[ans] ?? 'Sin respuesta';
   if(q.type==='tf') return ans===true?'Verdadero':ans===false?'Falso':'Sin respuesta';
   if(q.type==='fill') return ans || 'Sin respuesta';
+  if(q.type==='numeric') return ans?`${ans.value||'?'} ${ans.unit||'(sin unidad)'}`:'Sin respuesta';
   if(q.type==='seg') return Array.isArray(ans)? ans.map(normalizeMorphRole).join(' · ') : 'Sin respuesta';
   if(q.type==='eviden'){
     const sent = Number.isInteger(ans?.sentence) ? q.reading?.[ans.sentence] : null;
@@ -2437,6 +2562,7 @@ function correctAnswerLabel(q){
   if(q.type==='mc') return q.options?.[q.correct] ?? '';
   if(q.type==='tf') return q.correct?'Verdadero':'Falso';
   if(q.type==='fill') return q.answer || '';
+  if(q.type==='numeric') return `${q.answer} ${q.unitSymbol}`;
   if(q.type==='seg') return q.parts?.map(p=>`${p.text || p.part || p.segment || ''} = ${p.role}`).join(' · ') || '';
   if(q.type==='eviden'){
     const sent=q.reading?.[q.correctSentence];
@@ -2569,6 +2695,11 @@ function detailedExplanation(q, ans, correct){
   const selected=answerLabel(q, ans);
   const right=correctAnswerLabel(q);
   const why=escHtml(q.exp || recognitionTip(q));
+  if(q.type==='numeric'){
+    const result=SCIENCE_CONTENT.checkNumericAnswer(q,ans);
+    const errorLabel=result.numberCorrect&&!result.unitCorrect?'UNIDAD':q.errorType||'OPERACIÓN';
+    return `<div class="detail-block"><div class="detail-title">${correct?'Explicación':'Respuesta correcta'}</div><div class="why-box">${escHtml(q.simpleExplanation||q.exp)}</div>${correct?'':`<p><b>Error detectado: ${escHtml(errorLabel)}</b> · Tu respuesta: ${escHtml(selected)} · Correcta: ${escHtml(right)}</p>`}<details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Fórmula, sustitución, procedimiento y unidades</span></summary><p>${escHtml(q.detailedExplanation)}</p></details></div>`;
+  }
   let out='<div class="detail-block">';
 
   if(correct){
@@ -2615,7 +2746,7 @@ function submitAnswer(){
     recordAnswer(q, true);
     if(s.countStats===false) saveState();
     finalizeStep();
-  } else if(attemptStage===0){
+  } else if(attemptStage===0 && q.type!=='numeric'){
     attemptStage=1;
     s.attemptStage=1;
     fb.innerHTML = `<div class="feedback bad"><b>✗ Incorrecto</b>Inténtalo otra vez. ${q.hints?'Puedes usar una pista.':''}</div>`;
@@ -2640,6 +2771,7 @@ function reenableInputs(q){
   box.querySelectorAll('.opt').forEach(o=>{ o.classList.remove('selected','correct','incorrect'); o.style.pointerEvents='auto'; });
   box.querySelectorAll('select').forEach(s=>{ s.disabled=false; s.classList.remove('correct','incorrect'); s.value=''; });
   const fillEl = document.getElementById('fillInput'); if(fillEl){ fillEl.disabled=false; fillEl.classList.remove('correct','incorrect'); fillEl.value=''; }
+  for(const id of ['numericValue','numericUnit']){const el=document.getElementById(id);if(el){el.disabled=false;el.classList.remove('correct','incorrect');el.value='';}}
   box.querySelectorAll('.sent').forEach(s=>{ s.style.pointerEvents='auto'; s.classList.remove('picked','correct','incorrect'); });
   document.getElementById('submitBtn').disabled=true;
 }
@@ -2679,6 +2811,8 @@ function markAnswerVisual(q, ans, correct){
   } else if(q.type==='fill'){
     const el=document.getElementById('fillInput'); el.disabled=true;
     el.classList.add(correct?'correct':'incorrect');
+  } else if(q.type==='numeric'){
+    for(const id of ['numericValue','numericUnit']){const el=document.getElementById(id);if(el){el.disabled=true;el.classList.add(correct?'correct':'incorrect');}}
   } else if(q.type==='seg'){
     box.querySelectorAll('select').forEach((sel,i)=>{
       sel.disabled=true;
@@ -2848,7 +2982,8 @@ function renderErrores(main){
     ${list.length? list.map(e=>{
       const q=findQuestionById(e.qid); if(!q) return '';
       return `<div class="err-item"><div class="q">${q.prompt}</div>
-      <div class="meta">${topicForQuestion(q)?.name||''}${q.word?` · Palabra: ${escHtml(q.word)}`:''} · Fallada ${Math.max(0,Number(e.times)||0)} ${Number(e.times)===1?'vez':'veces'} · Última vez: ${Number.isFinite(Number(e.last))?new Date(Number(e.last)).toLocaleDateString('es-ES'):'sin fecha'}</div></div>`;
+      <div class="meta">${topicForQuestion(q)?.name||''}${q.word?` · Palabra: ${escHtml(q.word)}`:''} · Fallada ${Math.max(0,Number(e.times)||0)} ${Number(e.times)===1?'vez':'veces'} · Última vez: ${Number.isFinite(Number(e.last))?new Date(Number(e.last)).toLocaleDateString('es-ES'):'sin fecha'}</div>
+      ${e.errorType?`<div class="cloud-note"><b>Tipo de error:</b> ${escHtml(e.errorType)}${e.formula?` · <b>Fórmula:</b> ${escHtml(e.formula)}`:''}</div>`:''}</div>`;
     }).join('') : `<div class="empty-state"><span class="ic">✕</span>Todavía no tienes errores guardados. ¡Sigue así!</div>`}
   `;
   if(list.length) document.getElementById('practErr').addEventListener('click', ()=>startSession({mode:'practica', errorsOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));

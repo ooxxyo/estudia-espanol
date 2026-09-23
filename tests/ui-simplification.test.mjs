@@ -80,7 +80,8 @@ test('repaso conserva favoritos en disclosure y una única salida del tema', () 
   const review = html.slice(html.indexOf('function renderRepasoCards('), html.indexOf('function renderPracticaHome('));
   assert.equal((review.match(/id="exitTopic"/g) || []).length, 1);
   assert.doesNotMatch(review, /backRep/);
-  assert.match(review, /<summary>Opciones de repaso<\/summary>/);
+  assert.match(review, /<summary><b>Más opciones de repaso<\/b>/);
+  assert.match(review, /Cambia cómo quieres estudiar · Ver opciones/);
   for (const id of ['cardKnown','cardUnknown','cardFavorite','topicFavorite','practThis','prevRep','nextRep']) assert.ok(review.includes(`id="${id}"`));
 });
 

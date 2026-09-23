@@ -23,7 +23,7 @@
 | Iniciativa | Estado | Alcance |
 | --- | --- | --- |
 | Hub general | Testing | Home común con Día 1, Día 2, progreso disponible y accesos rápidos. |
-| Materias, unidades y temas | Testing | Español incorpora Competencia en Español y archiva el examen anterior; Historia conserva su material; Ciencia y Matemáticas están activas sin contenido inventado. |
+| Materias, unidades y temas | Testing | Español e Historia conservan su material; Ciencia incorpora SI, Densidad y Temperatura en bancos separados; Matemáticas sigue activa sin contenido inventado. |
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
 | Calendario base | Testing | Eventos, capability Veterano, propuestas moderadas, assignments y detección conservadora de duplicados. |
@@ -60,6 +60,6 @@ La transformación completa del hub no forma parte de esta fase. Cada materia re
 
 ## Fase actual: base Hub
 
-La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español combina `spanish-v2` con un módulo legacy compatible; Historia reutiliza el motor mediante `historia-v1`. Inglés y Salud siguen deshabilitados. Ciencia y Matemáticas abren el motor con empty states y permanecen sin contenido académico hasta recibir material real.
+La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español combina `spanish-v2` con un módulo legacy compatible; Historia reutiliza el motor mediante `historia-v1`; Ciencia usa `science-v1` con SI, Densidad y Temperatura separados. Inglés y Salud siguen deshabilitados. Matemáticas conserva su empty state hasta recibir material real.
 
 El rebranding futuro será `Estudio Hub` con slug preferido `estudio-hub`. Repositorio, remote, dominio y nombre visible actual no cambian en esta fase.
