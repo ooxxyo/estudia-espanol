@@ -151,6 +151,16 @@ test('presence identifica cuentas sin exponer sesión y respeta timeout', async 
   assert.equal(filtered.data.users.length, 0);
 });
 
+test('presence cuenta usuarios únicos aunque la misma cuenta tenga varias pestañas', async () => {
+  const user = await putUser({ id: 'user-presence-dedupe', username: 'dedupe' });
+  const token = await authToken(user);
+  const first = await payload(await presenceHandler(request('presence', { method: 'POST', token, body: { clientId: 'dedupe_client_001', section: 'hub' } })));
+  assert.equal(first.status, 200);
+  const second = await payload(await presenceHandler(request('presence', { method: 'POST', token, body: { clientId: 'dedupe_client_002', section: 'practicar' } })));
+  assert.equal(second.status, 200);
+  assert.equal(second.data.count, 1);
+});
+
 test('feedback es privado por usuario y Admin puede cambiar su estado', async () => {
   const first = await putUser({ id: 'user-1', username: 'first' });
   const second = await putUser({ id: 'user-2', username: 'second' });

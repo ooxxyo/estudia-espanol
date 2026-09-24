@@ -31,7 +31,7 @@ function clientKind(req) {
 }
 async function activeCount(now) {
   const { blobs } = await PRESENCE.list({ prefix: 'heartbeat/' });
-  let count = 0;
+  const activeIdentities = new Set();
   let cleaned = 0;
   for (const item of blobs.slice(0, MAX_SCAN)) {
     const row = await PRESENCE.get(item.key, { type: 'json', consistency: 'strong' });
@@ -43,13 +43,18 @@ async function activeCount(now) {
       continue;
     }
     const age = now - row.at;
-    if (age <= ACTIVE_MS) count++;
-    else if (age > CLEANUP_MS && cleaned < MAX_CLEANUP) {
+    if (age <= ACTIVE_MS) {
+      // Una cuenta autenticada cuenta una sola vez aunque tenga varias pestañas,
+      // sesiones o heartbeats. Los guests se mantienen separados por clientId.
+      const clientId = item.key.slice('heartbeat/'.length);
+      const identity = row.userId ? `user:${row.userId}` : `guest:${clientId}`;
+      activeIdentities.add(identity);
+    } else if (age > CLEANUP_MS && cleaned < MAX_CLEANUP) {
       cleaned++;
       try { await PRESENCE.delete(item.key); } catch {}
     }
   }
-  return count;
+  return activeIdentities.size;
 }
 
 export default async (req) => {

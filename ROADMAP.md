@@ -23,7 +23,7 @@
 | Iniciativa | Estado | Alcance |
 | --- | --- | --- |
 | Hub general | Testing | Home común con Día 1, Día 2, progreso disponible y accesos rápidos. |
-| Materias, unidades y temas | Testing | Español e Historia conservan su material; Ciencia incorpora SI, Densidad y Temperatura en bancos separados; Matemáticas sigue activa sin contenido inventado. |
+| Materias, unidades y temas | Testing | Español e Historia conservan su material; Ciencia incorpora SI, Densidad y Temperatura en bancos separados y un Formula Workspace guiado reutilizable; Matemáticas sigue activa sin contenido inventado. |
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
 | Calendario base | Testing | Eventos, capability Veterano, propuestas moderadas, assignments y detección conservadora de duplicados. |

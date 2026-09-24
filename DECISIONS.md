@@ -62,6 +62,7 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - Cada materia tendrá un asistente propio, nunca un chatbot general. La materia activa limita la respuesta; el tema activo da prioridad y solo se usa material aprobado de esa materia.
 - Ciencia contiene únicamente tres bloques aprobados: Conversiones SI, Densidad y Temperatura. La prueba corta del 2026-09-24 mezcla solo Densidad y Temperatura; SI permanece separado con referencia 2026-09-28 y solo entra en un examen mixto elegido explícitamente.
 - En respuestas numéricas de Ciencia se acepta redondeo razonable, pero el valor y la unidad se validan por separado. Kelvin se escribe `K`, sin símbolo de grado.
+- Las preguntas numéricas de Ciencia usan un Formula Workspace guiado con configuración por materia sobre un núcleo matemático reutilizable. Los bancos e IDs no cambian; la calculadora sigue siendo una ayuda secundaria y Matemáticas no recibe contenido hasta contar con material aprobado.
 - Community, Calendario, “Lo que dieron hoy” y “Falté hoy” usan bases separadas que referencian materia/unidad/tema sin duplicar el motor; automatización avanzada continúa futura.
 - Los aportes comunitarios permanecen separados del contenido oficial; requieren verificación y una segunda aprobación para ser oficiales. Las confirmaciones de estudiantes no equivalen a publicación.
 - `calendar:create` es una capability explícita de Admin+, Owner, Super Dev o Veterano; nunca convierte Veteranía en rol ni concede moderación.

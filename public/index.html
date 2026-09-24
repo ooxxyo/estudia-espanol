@@ -342,6 +342,19 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .calculator-key:hover{border-color:var(--accent);color:var(--accent)}.calculator-key.equals{background:var(--accent);border-color:var(--accent);color:white}
 .calculator-message{min-height:1.2em;margin:8px 0 0!important;font-size:.78rem}
 @media(max-width:520px){.science-practice-tools>.btn-row{display:grid;grid-template-columns:1fr 1fr}.science-practice-tools .icon-btn{justify-content:center;width:100%}.calculator-grid{gap:7px}.calculator-key{min-height:48px}}
+.formula-workspace{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--paper-soft);display:grid;gap:14px}
+.workspace-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.workspace-head h3{margin:0;font-size:1rem}.workspace-target{font-size:.78rem;color:var(--ink-soft);font-weight:700}
+.workspace-step{display:grid;gap:7px}.workspace-step-title{display:flex;align-items:center;gap:8px;font-size:.78rem;font-weight:800;color:var(--ink-soft)}.workspace-step-letter{display:inline-grid;place-items:center;width:25px;height:25px;border-radius:999px;background:var(--accent);color:#fff;font-size:.74rem}.workspace-formula{padding:10px 12px;border-radius:10px;background:var(--bg-soft);font:700 .95rem/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
+.workspace-meta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.workspace-meta>div{padding:9px 10px;border:1px solid var(--line);border-radius:9px}.workspace-meta b{display:block;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-soft)}
+.workspace-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.workspace-field{display:grid;gap:6px;font-size:.78rem;font-weight:750;color:var(--ink-soft)}
+.workspace-equation{display:flex;align-items:end;flex-wrap:wrap;gap:7px;padding:12px;border-left:3px solid var(--accent);background:var(--paper);border-radius:10px;font:700 .95rem/1.4 ui-monospace,SFMono-Regular,Consolas,monospace}
+.workspace-inline-field{display:grid;gap:4px;min-width:88px;max-width:132px}.workspace-inline-field span{font:700 .66rem/1.2 system-ui,sans-serif;color:var(--ink-soft)}
+.workspace-field input,.workspace-field select,.workspace-inline-field input,.workspace-result input,.workspace-result select{min-height:46px;width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 10px;background:var(--paper);color:var(--ink);font:600 .95rem/1.3 system-ui,sans-serif}
+.workspace-field input[aria-invalid="true"],.workspace-field select[aria-invalid="true"],.workspace-inline-field input[aria-invalid="true"]{border-color:var(--red);box-shadow:0 0 0 2px color-mix(in srgb,var(--red) 16%,transparent)}
+.workspace-result{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.45fr);gap:10px}.workspace-result label{display:grid;gap:6px;font-size:.78rem;font-weight:750;color:var(--ink-soft)}
+.workspace-feedback{min-height:1.2em;font-size:.8rem;font-weight:700;color:var(--ink-soft)}.workspace-feedback.bad{color:var(--red)}.workspace-feedback.good{color:var(--green)}
+.math-keyboard summary{cursor:pointer;font-weight:750;color:var(--ink-soft);min-height:44px;display:flex;align-items:center}.math-key-grid{display:grid;grid-template-columns:repeat(4,minmax(48px,1fr));gap:7px;margin-top:8px}.math-key{min-height:46px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-weight:750;font-size:.95rem;cursor:pointer;touch-action:manipulation}.math-key:hover{border-color:var(--accent);color:var(--accent)}
+@media(max-width:520px){.formula-workspace{padding:13px}.workspace-head{display:grid}.workspace-meta,.workspace-fields,.workspace-result{grid-template-columns:1fr}.workspace-equation{gap:6px}.workspace-inline-field{min-width:76px;max-width:112px}.math-key{min-height:48px}}
 
 
 .hint-box{margin-top:14px;background:var(--amber-soft);border-radius:10px;padding:12px 15px;font-size:.87rem;color:var(--ink);}
@@ -635,6 +648,8 @@ body{line-height:1.55;}
 <script src="js/platform-extras.js"></script>
 <script src="history-data.js"></script>
 <script src="js/science-data.js"></script>
+<script src="js/math-workspace.js"></script>
+<script src="js/science-workspace-config.js"></script>
 <script src="js/science-practice-tools.js"></script>
 <script src="js/spanish-legacy-content.js"></script>
 <script src="js/spanish-vocabulary.js"></script>
@@ -2174,6 +2189,7 @@ function startSession(opts){
     examTopics: opts.mode==='examen' ? (opts.topics||[]).slice() : [],
     examFull: opts.mode==='examen' ? !!opts.fullExam : false,
     practiceToolsEnabled:true,
+    workspaceByQuestion:{},
   };
   state.activeTopicId=opts.topic||((opts.topics||[]).length===1?opts.topics[0]:null);
   if(state.activeTopicId){state.lastVisitedTopicBySubject[subject.id]=state.activeTopicId;state.settings.topicStudyStatus[state.activeTopicId]='in_progress';}
@@ -2348,6 +2364,87 @@ function confirmQuit(){
 
 let sessionSelection = null; // holds current user selection before submit
 
+function workspaceFieldControl(field,value='',inline=false){
+  const fieldId=escHtml(field.id),label=escHtml(field.label),safeValue=escHtml(String(value??''));
+  if(field.type==='select'){
+    return `<label class="workspace-field"><span>${label}</span><select data-workspace-field="${fieldId}"><option value="">Elige una opción</option>${field.options.map(option=>`<option value="${escHtml(option)}" ${String(value)===String(option)?'selected':''}>${escHtml(option)}</option>`).join('')}</select></label>`;
+  }
+  if(inline) return `<label class="workspace-inline-field"><span>${label}</span><input type="text" inputmode="decimal" autocomplete="off" data-workspace-field="${fieldId}" value="${safeValue}" aria-label="${label}"></label>`;
+  return `<label class="workspace-field"><span>${label}</span><input type="text" inputmode="decimal" autocomplete="off" data-workspace-field="${fieldId}" value="${safeValue}"></label>`;
+}
+
+function scienceWorkspaceMarkup(q,savedSelection){
+  const config=window.SCIENCE_WORKSPACE_CONFIG?.forQuestion(q);
+  if(!config) return `<div class="numeric-answer"><label>Resultado<input class="fill-input" id="numericValue" inputmode="decimal" placeholder="Número"></label><label>Unidad<input class="fill-input" id="numericUnit" placeholder="${escHtml(q.unitSymbol)}"></label></div>`;
+  const workspace=state.session.workspaceByQuestion?.[q.id]||{};
+  const tokenFields=new Set(config.tokens.filter(token=>token.field).map(token=>token.field));
+  const separateFields=config.fields.filter(field=>!tokenFields.has(field.id));
+  const metadata=(config.metadata||[]).map(item=>`<div><b>${escHtml(item.label)}</b>${escHtml(item.value)}</div>`).join('');
+  const equation=config.tokens.map(token=>token.text!==undefined?`<span>${escHtml(token.text)}</span>`:workspaceFieldControl(config.fields.find(field=>field.id===token.field),workspace[token.field],true)).join('');
+  const keys=window.MATH_WORKSPACE?.keyboardProfiles?.[config.keyboardProfile]||[];
+  const selectedUnit=String(savedSelection?.unit??'');
+  return `<section class="formula-workspace" data-formula-workspace data-workspace-kind="${escHtml(config.kind)}">
+    <div class="workspace-head"><div><h3>${escHtml(config.title)}</h3><div class="workspace-target">Busca: ${escHtml(config.search)}</div></div><span class="status-tag">Procedimiento guiado</span></div>
+    <div class="workspace-step">
+      <div class="workspace-step-title"><span class="workspace-step-letter">A</span><span>${config.kind==='conversion'?'Regla / fórmula':'Fórmula'}</span></div>
+      <div class="workspace-formula"><span class="sr-only">Fórmula o regla: </span>${escHtml(config.formula)}</div>
+    </div>
+    ${metadata?`<div class="workspace-meta">${metadata}</div>`:''}
+    <div class="workspace-step">
+      <div class="workspace-step-title"><span class="workspace-step-letter">B</span><span>Sustituir · método de casita / procedimiento</span></div>
+      ${separateFields.length?`<div class="workspace-fields">${separateFields.map(field=>workspaceFieldControl(field,workspace[field.id])).join('')}</div>`:''}
+      <div class="workspace-equation">${equation}</div>
+      <p class="cloud-note">Rellena los datos que vienen del problema. Las constantes que pertenecen a la fórmula ya aparecen escritas.</p>
+    </div>
+    <div class="workspace-step">
+      <div class="workspace-step-title"><span class="workspace-step-letter">C</span><span>Contestación</span></div>
+      <div class="workspace-result">
+        <label>Resultado<input type="text" id="numericValue" inputmode="decimal" autocomplete="off" placeholder="Número" value="${escHtml(String(savedSelection?.value??''))}"></label>
+        <label>Unidad<select id="numericUnit"><option value="">Elige la unidad</option>${config.unitOptions.map(unit=>`<option value="${escHtml(unit)}" ${selectedUnit===unit?'selected':''}>${escHtml(unit)}</option>`).join('')}</select></label>
+      </div>
+    </div>
+    <div class="workspace-feedback" id="workspaceFeedback" aria-live="polite"></div>
+    <details class="math-keyboard"><summary>Teclado matemático</summary><div class="math-key-grid">${keys.map(key=>`<button type="button" class="math-key" data-math-key="${escHtml(key)}" aria-label="Tecla ${escHtml(key)}">${escHtml(key)}</button>`).join('')}</div></details>
+  </section>`;
+}
+
+function wireScienceWorkspace(q){
+  const root=document.querySelector('[data-formula-workspace]');
+  if(!root) return;
+  const s=state.session;
+  s.workspaceByQuestion=s.workspaceByQuestion&&typeof s.workspaceByQuestion==='object'?s.workspaceByQuestion:{};
+  s.workspaceByQuestion[q.id]=s.workspaceByQuestion[q.id]&&typeof s.workspaceByQuestion[q.id]==='object'?s.workspaceByQuestion[q.id]:{};
+  const values=s.workspaceByQuestion[q.id];
+  root.querySelectorAll('[data-workspace-field]').forEach(control=>{
+    const update=()=>{values[control.dataset.workspaceField]=control.value;control.removeAttribute('aria-invalid');document.getElementById('workspaceFeedback').textContent='';document.getElementById('workspaceFeedback').className='workspace-feedback';saveState();};
+    control.addEventListener('input',update);control.addEventListener('change',update);
+  });
+  let activeMathInput=root.querySelector('[data-workspace-field][type="text"]')||document.getElementById('numericValue');
+  root.querySelectorAll('input[type="text"]').forEach(input=>input.addEventListener('focus',()=>{activeMathInput=input;}));
+  root.querySelectorAll('[data-math-key]').forEach(button=>button.addEventListener('click',()=>{
+    if(!activeMathInput) return;
+    activeMathInput.value=window.MATH_WORKSPACE.applyKey(activeMathInput.value,button.dataset.mathKey);
+    activeMathInput.dispatchEvent(new Event('input',{bubbles:true}));
+    activeMathInput.focus();
+  }));
+}
+
+function validateScienceWorkspace(q){
+  const config=window.SCIENCE_WORKSPACE_CONFIG?.forQuestion(q);
+  if(!config) return {valid:true};
+  const values=state.session.workspaceByQuestion?.[q.id]||{};
+  const report=window.MATH_WORKSPACE.validate(config,values);
+  const feedback=document.getElementById('workspaceFeedback');
+  document.querySelectorAll('[data-workspace-field]').forEach(control=>control.removeAttribute('aria-invalid'));
+  if(!report.valid){
+    const control=document.querySelector(`[data-workspace-field="${report.fieldId}"]`);
+    control?.setAttribute('aria-invalid','true');
+    if(feedback){feedback.className='workspace-feedback bad';feedback.textContent=`Revisa este paso · ${report.category}: ${report.message}`;}
+    control?.focus();
+  }else if(feedback){feedback.className='workspace-feedback good';feedback.textContent='Procedimiento listo para comprobar.';}
+  return report;
+}
+
 function sciencePracticeToolsMarkup(q){
   if(!window.SCIENCE_PRACTICE_TOOLS?.toolsEnabled(q,state.session)) return '';
   const help=window.SCIENCE_PRACTICE_TOOLS.helpForQuestion(q);
@@ -2441,11 +2538,11 @@ function renderQuestionBody(q, isExam){
       enableSubmit();
     });
   } else if(q.type==='numeric'){
-    box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="numeric-answer"><label>Resultado<input class="fill-input" id="numericValue" inputmode="decimal" placeholder="Número"></label><label>Unidad<input class="fill-input" id="numericUnit" placeholder="${escHtml(q.unitSymbol)}"></label></div><p class="cloud-note">Se acepta un redondeo razonable; la unidad también se evalúa.</p>${sciencePracticeToolsMarkup(q)}`;
+    box.innerHTML = `<p class="q-prompt">${q.prompt}</p>${scienceWorkspaceMarkup(q,savedSelection)}<p class="cloud-note">Se acepta un redondeo razonable; la unidad también se evalúa.</p>${sciencePracticeToolsMarkup(q)}`;
     const valueInput=document.getElementById('numericValue'),unitInput=document.getElementById('numericUnit');
-    if(savedSelection&&typeof savedSelection==='object'){valueInput.value=savedSelection.value??'';unitInput.value=savedSelection.unit??'';}
     const updateNumeric=()=>{sessionSelection={value:valueInput.value,unit:unitInput.value};state.session.currentSelection=sessionSelection;saveState();enableSubmit(valueInput.value.trim()!==''&&unitInput.value.trim()!=='');};
-    valueInput.addEventListener('input',updateNumeric);unitInput.addEventListener('input',updateNumeric);
+    valueInput.addEventListener('input',updateNumeric);unitInput.addEventListener('input',updateNumeric);unitInput.addEventListener('change',updateNumeric);
+    wireScienceWorkspace(q);
     wireSciencePracticeTools();
   } else if(q.type==='seg'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
@@ -2698,7 +2795,7 @@ function detailedExplanation(q, ans, correct){
   if(q.type==='numeric'){
     const result=SCIENCE_CONTENT.checkNumericAnswer(q,ans);
     const errorLabel=result.numberCorrect&&!result.unitCorrect?'UNIDAD':q.errorType||'OPERACIÓN';
-    return `<div class="detail-block"><div class="detail-title">${correct?'Explicación':'Respuesta correcta'}</div><div class="why-box">${escHtml(q.simpleExplanation||q.exp)}</div>${correct?'':`<p><b>Error detectado: ${escHtml(errorLabel)}</b> · Tu respuesta: ${escHtml(selected)} · Correcta: ${escHtml(right)}</p>`}<details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Fórmula, sustitución, procedimiento y unidades</span></summary><p>${escHtml(q.detailedExplanation)}</p></details></div>`;
+    return `<div class="detail-block"><div class="detail-title">${correct?'Explicación':'Respuesta correcta'}</div><div class="why-box">${escHtml(q.simpleExplanation||q.exp)}</div>${correct?'':`<p><b>Error detectado: ${escHtml(errorLabel)}</b> · Tu respuesta: ${escHtml(selected)} · Correcta: ${escHtml(right)}</p>`}<details class="ui-disclosure"><summary><b>Ver procedimiento completo</b><span class="cloud-note">Fórmula, sustitución, procedimiento y unidades</span></summary><p>${escHtml(q.detailedExplanation)}</p></details></div>`;
   }
   let out='<div class="detail-block">';
 
@@ -2721,6 +2818,7 @@ function submitAnswer(){
   if(!q || !s || sessionAnswerAt(s,s.idx)) return;
   const submitBtn=document.getElementById('submitBtn');
   if(!submitBtn || submitBtn.disabled) return;
+  if(q.type==='numeric' && !validateScienceWorkspace(q).valid) return;
   submitBtn.disabled=true;
   const isExam = s.mode==='examen';
   const correct = checkCorrectness(q, sessionSelection);
@@ -2733,7 +2831,7 @@ function submitAnswer(){
     submitBtn.textContent=s.idx===s.queue.length-1?'Revisar antes de entregar':'Siguiente';
     submitBtn.disabled=false;
     submitBtn.onclick = ()=>advance();
-    document.querySelectorAll('.opt,.fill-input,select,.sent').forEach(el=>{el.style.pointerEvents='none'; if('disabled' in el) el.disabled=true;});
+    document.querySelectorAll('.opt,.fill-input,select,.sent,[data-workspace-field]').forEach(el=>{el.style.pointerEvents='none'; if('disabled' in el) el.disabled=true;});
     return;
   }
 
@@ -2746,6 +2844,18 @@ function submitAnswer(){
     recordAnswer(q, true);
     if(s.countStats===false) saveState();
     finalizeStep();
+  } else if(attemptStage===0 && q.type==='numeric'){
+    attemptStage=1;
+    s.attemptStage=1;
+    const result=SCIENCE_CONTENT.checkNumericAnswer(q,sessionSelection);
+    const message=result.numberCorrect&&!result.unitCorrect
+      ? 'El cálculo está bien. Revisa la unidad antes de volver a comprobar.'
+      : 'Revisa el resultado de la operación y corrígelo antes de volver a comprobar.';
+    fb.innerHTML=`<div class="feedback bad"><b>Revisa este paso</b>${escHtml(message)}</div>`;
+    submitBtn.textContent='Comprobar de nuevo';
+    submitBtn.disabled=false;
+    (result.numberCorrect?document.getElementById('numericUnit'):document.getElementById('numericValue'))?.focus();
+    saveState();
   } else if(attemptStage===0 && q.type!=='numeric'){
     attemptStage=1;
     s.attemptStage=1;
@@ -2780,7 +2890,7 @@ function restoreFinalizedQuestion(q,isExam,answer){
   state.session.currentSelection=sessionSelection;
   state.session.answered=true;
   if(isExam){
-    document.querySelectorAll('.opt,.fill-input,select,.sent').forEach(el=>{el.style.pointerEvents='none';if('disabled' in el)el.disabled=true;});
+    document.querySelectorAll('.opt,.fill-input,select,.sent,[data-workspace-field]').forEach(el=>{el.style.pointerEvents='none';if('disabled' in el)el.disabled=true;});
     const submitBtn=document.getElementById('submitBtn');
     submitBtn.textContent=s.idx===s.queue.length-1?'Revisar antes de entregar':'Siguiente';
     submitBtn.disabled=false;
@@ -2813,6 +2923,7 @@ function markAnswerVisual(q, ans, correct){
     el.classList.add(correct?'correct':'incorrect');
   } else if(q.type==='numeric'){
     for(const id of ['numericValue','numericUnit']){const el=document.getElementById(id);if(el){el.disabled=true;el.classList.add(correct?'correct':'incorrect');}}
+    box.querySelectorAll('[data-workspace-field]').forEach(el=>{el.disabled=true;el.style.pointerEvents='none';});
   } else if(q.type==='seg'){
     box.querySelectorAll('select').forEach((sel,i)=>{
       sel.disabled=true;

@@ -4,11 +4,13 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 
 const scienceSource = await readFile(new URL('../public/js/science-data.js', import.meta.url), 'utf8');
+const workspaceSource = await readFile(new URL('../public/js/math-workspace.js', import.meta.url), 'utf8');
 const toolsSource = await readFile(new URL('../public/js/science-practice-tools.js', import.meta.url), 'utf8');
 const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
 const sandbox = { window: {} };
 vm.createContext(sandbox);
 vm.runInContext(scienceSource, sandbox);
+vm.runInContext(workspaceSource, sandbox);
 vm.runInContext(toolsSource, sandbox);
 const SCIENCE = sandbox.window.SCIENCE_CONTENT;
 const TOOLS = sandbox.window.SCIENCE_PRACTICE_TOOLS;

@@ -3,56 +3,7 @@
 
   const METRIC_SCALE = 'kilo → hecto → deca → unidad → deci → centi → mili';
 
-  function evaluateExpression(value) {
-    const source = String(value ?? '')
-      .replace(/[×x]/gi, '*')
-      .replace(/÷/g, '/')
-      .replace(/[−–—]/g, '-')
-      .replace(/\s+/g, '');
-    if (!source || !/^[0-9.+\-*/()]+$/.test(source)) throw new Error('Expresión no válida');
-    const tokens = source.match(/(?:\d+(?:\.\d*)?|\.\d+)|[()+\-*/]/g) || [];
-    if (tokens.join('') !== source) throw new Error('Expresión no válida');
-    let cursor = 0;
-    const peek = () => tokens[cursor];
-    const take = () => tokens[cursor++];
-    const parsePrimary = () => {
-      const token = take();
-      if (token === '+' || token === '-') {
-        const number = parsePrimary();
-        return token === '-' ? -number : number;
-      }
-      if (token === '(') {
-        const number = parseSum();
-        if (take() !== ')') throw new Error('Paréntesis incompletos');
-        return number;
-      }
-      const number = Number(token);
-      if (!Number.isFinite(number)) throw new Error('Número no válido');
-      return number;
-    };
-    const parseProduct = () => {
-      let result = parsePrimary();
-      while (peek() === '*' || peek() === '/') {
-        const operator = take();
-        const right = parsePrimary();
-        if (operator === '/' && right === 0) throw new Error('No se puede dividir entre cero');
-        result = operator === '*' ? result * right : result / right;
-      }
-      return result;
-    };
-    const parseSum = () => {
-      let result = parseProduct();
-      while (peek() === '+' || peek() === '-') {
-        const operator = take();
-        const right = parseProduct();
-        result = operator === '+' ? result + right : result - right;
-      }
-      return result;
-    };
-    const result = parseSum();
-    if (cursor !== tokens.length || !Number.isFinite(result)) throw new Error('Expresión no válida');
-    return Number(result.toPrecision(12));
-  }
+  const evaluateExpression = value => window.MATH_WORKSPACE.evaluateExpression(value);
 
   function helpForQuestion(question) {
     if (!question || question.subjectId !== 'ciencia' || question.type !== 'numeric') return null;
