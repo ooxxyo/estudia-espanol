@@ -12,24 +12,31 @@ const SCIENCE = sandbox.window.SCIENCE_CONTENT;
 const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
 
 test('Ciencia está habilitada con tres bloques separados', () => {
-  assert.match(html, /id:'ciencia'.*status:'Prueba mañana'.*available:true.*contentKey:'science-v1'/);
+  assert.match(html, /id:'ciencia'.*status:'Prueba 28 sep'.*available:true.*contentKey:'science-v1'/);
   assert.deepEqual(Array.from(SCIENCE.topics, topic => topic.id), ['ciencia-si','densidad','temperatura']);
   assert.deepEqual(Array.from(SCIENCE.banks.si, q => q.topic === 'ciencia-si'), Array(SCIENCE.banks.si.length).fill(true));
   assert.deepEqual(Array.from(SCIENCE.banks.density, q => q.topic === 'densidad'), Array(SCIENCE.banks.density.length).fill(true));
   assert.deepEqual(Array.from(SCIENCE.banks.temperature, q => q.topic === 'temperatura'), Array(SCIENCE.banks.temperature.length).fill(true));
 });
 
-test('la evaluación de mañana incluye Densidad y Temperatura, nunca SI', () => {
-  const tomorrow = SCIENCE.unit.assessments.find(row => row.date === '2026-09-24');
-  assert.deepEqual(Array.from(tomorrow.topicIds), ['densidad','temperatura']);
-  assert.equal(tomorrow.topicIds.includes('ciencia-si'), false);
-  assert.match(html, /topics:\['densidad','temperatura'\],balancedTopics:true,limit:20/);
-  assert.match(html, /perTopic=Math\.max\(1,Math\.floor/);
+test('la prueba real del 24 queda tomada y conserva sus 20 preguntas como snapshot', () => {
+  const taken = SCIENCE.unit.assessments.find(row => row.date === '2026-09-24');
+  assert.equal(taken.status, 'taken');
+  assert.deepEqual(Array.from(taken.topicIds), ['ciencia-si','densidad','temperatura']);
+  assert.match(taken.note, /pregunta conceptual de Temperatura/);
+  assert.equal(SCIENCE.banks.actualTest.length, 20);
+  assert.equal(SCIENCE.assessmentSnapshots['science-test-2026-09-24'].questionIds.length, 20);
+  assert.equal(SCIENCE.banks.actualTest.every(row => row.sourceAssessmentId === 'science-test-2026-09-24'), true);
+  assert.match(html, /data-science-action="taken-test"/);
+  assert.match(html, /questionIds:snapshot\?\.questionIds/);
 });
 
-test('Conversiones SI se conserva separada para el 28 de septiembre', () => {
+test('la prueba del 28 conserva la prueba real como base y marca contenido adicional pendiente', () => {
   const later = SCIENCE.unit.assessments.find(row => row.date === '2026-09-28');
-  assert.deepEqual(Array.from(later.topicIds), ['ciencia-si']);
+  assert.deepEqual(Array.from(later.topicIds), ['ciencia-si','densidad','temperatura']);
+  assert.equal(later.contentPending, true);
+  assert.equal(later.sourceAssessmentId, 'science-test-2026-09-24');
+  assert.match(later.note, /contenido adicional/);
   assert.match(html, /topics:\['ciencia-si','densidad','temperatura'\],limit:30/);
 });
 
@@ -40,6 +47,15 @@ test('los bancos cumplen mínimos, IDs únicos y validador académico', () => {
   assert.equal(new Set(SCIENCE.questions.map(q => q.id)).size, SCIENCE.questions.length);
   const report = validateAcademicCatalog([{ id:'ciencia', units:[SCIENCE.unit], topics:SCIENCE.topics, reviewCards:SCIENCE.reviewCards, questions:SCIENCE.questions }]);
   assert.equal(report.valid, true, report.errors.join('\n'));
+});
+
+test('la prueba real conserva respuestas observadas sin reescribir el material del maestro', () => {
+  const actual = SCIENCE.banks.actualTest;
+  const bySuffix = suffix => actual.find(row => row.id.endsWith(suffix));
+  assert.equal(bySuffix('09').options[bySuffix('09').correct], 'm');
+  assert.equal(bySuffix('14').options[bySuffix('14').correct], 'Unidad de volumen y se expresa en centímetros cúbicos.');
+  assert.equal(bySuffix('19').options[bySuffix('19').correct], '5 m');
+  assert.equal(bySuffix('20').options[bySuffix('20').correct], '0.0012 km');
 });
 
 test('Densidad contiene las tres fórmulas y procedimiento completo', () => {

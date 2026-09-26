@@ -13,6 +13,9 @@
 
 ## Diseño y calidad
 
+- En flujos académicos, respeta la intención explícita del estudiante: si entra a Practicar, `Practicar` es la acción principal y aparece antes que `Repasar`.
+- No uses flechas nativas de `<details>` como patrón principal de navegación. Mantén visible lo importante y agrupa opciones secundarias bajo controles claros como `Más opciones`.
+- La navegación normal y el inicio de otra práctica deben guardar automáticamente una práctica normal recuperable cuando sea seguro. Pide confirmación solo si una acción realmente destruye datos.
 - Conserva el diseño visual actual. No rediseñes el sitio ni reconstruyas la aplicación desde cero salvo petición explícita.
 - Evita duplicar código cuando una función reutilizable sea suficiente y no añadas dependencias externas innecesarias.
 - Mantén compatibilidad móvil, especialmente con iPhone, y controles táctiles cómodos.

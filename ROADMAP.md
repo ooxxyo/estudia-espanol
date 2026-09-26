@@ -25,6 +25,7 @@
 | Hub general | Testing | Home común con Día 1, Día 2, progreso disponible y accesos rápidos. |
 | Materias, unidades y temas | Testing | Español e Historia conservan su material; Ciencia incorpora SI, Densidad y Temperatura en bancos separados y un Formula Workspace guiado reutilizable; Matemáticas sigue activa sin contenido inventado. |
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
+| Seamless UX y jerarquía de práctica | Testing | Practicar como acción principal, disclosures sin flechas nativas, selección persistente, auto-guardado de prácticas normales y recuperación sin modal de conflicto. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
 | Calendario base | Testing | Eventos, capability Veterano, propuestas moderadas, assignments y detección conservadora de duplicados. |
 | Estudio personalizado | In Progress | UI determinista, practicar débiles y preparar 15/30/60 con contenido oficial; falta priorización avanzada y seguimiento temporal. |

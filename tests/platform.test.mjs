@@ -357,7 +357,8 @@ test('progreso y snapshots separan Historia sin romper Español legacy', async (
   assert.match(html, /questionSubjectId\(question\)\{return question\?\.subjectId\|\|'espanol';\}/);
   assert.match(html, /subjectId:sessionSubjectId,unitId:/);
   assert.match(html, /subjectId:s\.subjectId\|\|'espanol'/);
-  assert.match(html, /showPendingPracticeDecision\(opts\);return/);
+  assert.match(html, /stashCurrentPractice\(\).*Práctica anterior guardada/s);
+  assert.match(html, /pausedPractices/);
   assert.match(html, /s\.startedAt\+=Math\.max\(0,Date\.now\(\)-s\.pausedAt\)/);
   assert.doesNotMatch(html, /s\.miniReviewShown=false;\s*\n\s*const isExam/);
 });

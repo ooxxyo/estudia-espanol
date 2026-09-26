@@ -82,10 +82,11 @@ test('los exámenes de práctica de Ciencia conservan etiqueta y herramientas', 
   assert.match(html, /sciencePracticeToolsMarkup\(q\)/);
 });
 
-test('Prepararme para mañana conserva ayudas y excluye Conversiones SI', () => {
-  assert.match(html, /action==='tomorrow'.*topics:\['densidad','temperatura'\].*limit:20/);
-  assert.doesNotMatch(html, /action==='tomorrow'.*ciencia-si/);
-  for (const bank of ['density','temperature']) {
+test('Practicar la prueba real usa el snapshot exacto sin inventar preguntas', () => {
+  assert.match(html, /action==='taken-test'/);
+  assert.match(html, /assessmentSnapshots\?\.\['science-test-2026-09-24'\]/);
+  assert.equal(SCIENCE.banks.actualTest.length, 20);
+  for (const bank of ['si','density']) {
     assert.equal(SCIENCE.banks[bank].filter(row => row.type === 'numeric').every(row => TOOLS.toolsEnabled(row,{practiceToolsEnabled:true})), true);
   }
 });

@@ -24,7 +24,7 @@
 - En desktop no existe Más: las herramientas se muestran directamente en grupos de Estudio, Seguimiento, Personal y Gestión.
 - Entrar o salir de una materia no elimina una práctica ni modifica su progreso.
 - `topicStatus` (`current/previous/completed/archived`) y `assessment.status` (`pending/scheduled/taken/cancelled`) son independientes. Un tema puede mantener varias evaluaciones sin cerrar su ciclo.
-- Una sesión pausada no se sustituye silenciosamente: se continúa, se cancela o se marca `discarded` antes de iniciar otra práctica o examen.
+- Navegar o iniciar otra práctica guarda automáticamente la práctica normal anterior cuando es seguro. No se muestra un modal de conflicto por defecto. Las prácticas guardadas siguen recuperables; solo se pide confirmación al descartar datos de forma destructiva.
 - La metadata nueva es opcional; las claves e IDs históricos conservan su significado.
 
 ## Identidad, permisos y acceso
@@ -55,12 +55,14 @@ Los rangos, paquetes, whitelist o pagos futuros nunca deben elevar un rol. Cualq
 - “Probar ahora” solo aparece cuando existe implementación y ubicación reales.
 - Los reportes de feedback son visibles para su autor y personal autorizado. Cambios de estado y acciones administrativas quedan auditados.
 - La navegación normal guarda prácticas recuperables sin pedir confirmación; las acciones irreversibles o administrativas críticas siempre la exigen.
+- En páginas de tema y práctica, `Practicar` es la acción principal cuando el usuario está intentando practicar; `Repasar` permanece accesible pero no debe dominar ni redirigir la intención del usuario.
+- Los indicadores nativos de flecha en disclosures no se usan como jerarquía principal. Lo importante queda visible; lo secundario se agrupa bajo controles claros como `Más opciones`, sin cadenas de accordions ambiguos.
 - Visitar un tema no cuenta como estudio: `pending_review` solo pasa a `in_progress` por práctica válida y a `reviewed` al terminar el repaso; nunca se marca `mastered` automáticamente.
 - La prueba tomada de Historia y su examen pendiente conviven con el tema en progreso. No se inventa una fecha y añadir material aprobado no reinicia sus datos.
 - El término académico correcto es `Interfijo`; su abreviatura es `MDI = Morfema Derivativo Interfijo`. `INF` solo se acepta internamente como alias de sesiones antiguas.
 - El Study Engine es universal y admite extensiones por materia sin duplicar la aplicación.
 - Cada materia tendrá un asistente propio, nunca un chatbot general. La materia activa limita la respuesta; el tema activo da prioridad y solo se usa material aprobado de esa materia.
-- Ciencia contiene únicamente tres bloques aprobados: Conversiones SI, Densidad y Temperatura. La prueba corta del 2026-09-24 mezcla solo Densidad y Temperatura; SI permanece separado con referencia 2026-09-28 y solo entra en un examen mixto elegido explícitamente.
+- Ciencia contiene únicamente tres bloques aprobados: Conversiones SI, Densidad y Temperatura. La prueba real del 2026-09-24 ya fue tomada y se conserva como snapshot de 20 preguntas proporcionadas por el usuario: Densidad, Sistema Internacional y una pregunta conceptual de Temperatura; no incluyó conversiones de temperatura. Para el 2026-09-28 se reutiliza como base el material de esa prueba y se añadirá contenido adicional cuando sea proporcionado; no se inventa material pendiente.
 - En respuestas numéricas de Ciencia se acepta redondeo razonable, pero el valor y la unidad se validan por separado. Kelvin se escribe `K`, sin símbolo de grado.
 - Las preguntas numéricas de Ciencia usan un Formula Workspace guiado con configuración por materia sobre un núcleo matemático reutilizable. Los bancos e IDs no cambian; la calculadora sigue siendo una ayuda secundaria y Matemáticas no recibe contenido hasta contar con material aprobado.
 - Community, Calendario, “Lo que dieron hoy” y “Falté hoy” usan bases separadas que referencian materia/unidad/tema sin duplicar el motor; automatización avanzada continúa futura.

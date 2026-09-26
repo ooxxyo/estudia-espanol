@@ -45,11 +45,14 @@ test('Competencia conserva estado urgente pendiente y el ciclo anterior es un so
   assert.doesNotMatch(html,/seenContentAt[^\n]+topicStudyStatus/);
 });
 
-test('la decisión de práctica pendiente ofrece continuar, descartar e iniciar o cancelar',async()=>{
+test('la práctica pendiente se guarda de forma seamless antes de iniciar otra',async()=>{
   const html=await readFile(new URL('../public/index.html',import.meta.url),'utf8');
-  for(const label of ['Continuar anterior','Descartar e iniciar esta','Cancelar','Descartar práctica'])assert.match(html,new RegExp(label));
-  assert.match(html,/discardedSessions=/);assert.match(html,/showPendingPracticeDecision\(opts\);return/);
-  assert.doesNotMatch(html,/Continúala o descártala antes de iniciar otra/);
+  assert.match(html,/portablePracticeSession/);
+  assert.match(html,/pausedPractices/);
+  assert.match(html,/stashCurrentPractice\(\).*Práctica anterior guardada/s);
+  assert.match(html,/data-resume-paused/);
+  assert.match(html,/data-discard-paused/);
+  assert.doesNotMatch(html,/showPendingPracticeDecision\(opts\);return/);
 });
 
 test('Historia separa estado del tema y evaluaciones sin inventar fecha',async()=>{
@@ -73,5 +76,5 @@ test('el validador académico real no encuentra referencias ni duplicados estruc
 test('motion y modales respetan reducción de movimiento y foco',async()=>{
   const [html,hub]=await Promise.all([readFile(new URL('../public/index.html',import.meta.url),'utf8'),readFile(new URL('../public/js/hub-ui.js',import.meta.url),'utf8')]);
   assert.match(hub,/@media\(prefers-reduced-motion:reduce\)/);assert.match(hub,/animation-duration:\.001ms!important/);
-  assert.match(html,/aria-modal="true" aria-labelledby="pendingPracticeTitle"/);assert.match(html,/pendingPracticeReturnFocus/);assert.match(html,/event\.key==='Escape'&&pendingPracticeOpen/);
+  assert.match(html,/aria-modal="true" aria-labelledby="moreTitle"/);assert.match(html,/event\.key==='Escape'&&moreOpen/);assert.doesNotMatch(html,/pendingPracticeTitle|pendingPracticeReturnFocus/);
 });

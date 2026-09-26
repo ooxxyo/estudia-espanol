@@ -50,16 +50,19 @@ function practice(subjectId, selected = null) {
 
 test('sin tema no se renderizan modos de vocabulario ni CTA de tema', async () => {
   const { markup } = await practice('espanol');
-  assert.match(markup, /Selecciona un tema para comenzar/);
-  assert.match(markup, /<summary>Elegir tema<\/summary>/);
+  assert.match(markup, /Selecciona un tema arriba para comenzar/);
+  assert.match(markup, /Elige qué quieres practicar/);
+  assert.doesNotMatch(markup, /<summary>Elegir tema<\/summary>/);
   assert.doesNotMatch(markup, /data-vocab-mode=|id="reviewPracticeTopic"/);
 });
 
 test('tema español conserva todos los modos, agrupados sin duplicar repasar/practicar', async () => {
   const { markup, modes } = await practice('espanol', 'vocabulario');
-  assert.match(markup, /id="reviewPracticeTopic">Repasar ahora/);
   assert.match(markup, /data-topic="vocabulario">Practicar/);
-  assert.match(markup, /<details class="card ui-disclosure"><summary>Más modos de vocabulario/);
+  assert.match(markup, /id="reviewPracticeTopic">Repasar/);
+  assert.ok(markup.indexOf('>Practicar<') < markup.indexOf('id="reviewPracticeTopic">Repasar'));
+  assert.match(markup, /<summary><span>Más opciones<\/span>/);
+  assert.doesNotMatch(markup, /Práctica combinada y modos especiales|Opciones de práctica/);
   for (const mode of modes.filter(mode => !['study','general'].includes(mode.id))) assert.ok(markup.includes(`data-vocab-mode="${mode.id}"`), mode.id);
   assert.doesNotMatch(markup, /data-vocab-mode="(?:study|general)"/);
 });
@@ -80,8 +83,9 @@ test('repaso conserva favoritos en disclosure y una única salida del tema', () 
   const review = html.slice(html.indexOf('function renderRepasoCards('), html.indexOf('function renderPracticaHome('));
   assert.equal((review.match(/id="exitTopic"/g) || []).length, 1);
   assert.doesNotMatch(review, /backRep/);
-  assert.match(review, /<summary><b>Más opciones de repaso<\/b>/);
-  assert.match(review, /Cambia cómo quieres estudiar · Ver opciones/);
+  assert.match(review, /id="practThis">Practicar este tema/);
+  assert.match(review, /<summary><b>Más opciones<\/b>/);
+  assert.doesNotMatch(review, /Ver opciones ▾/);
   for (const id of ['cardKnown','cardUnknown','cardFavorite','topicFavorite','practThis','prevRep','nextRep']) assert.ok(review.includes(`id="${id}"`));
 });
 
@@ -104,4 +108,13 @@ test('menú Más aísla el fondo y mantiene foco al cerrar o navegar', () => {
   assert.match(menu, /if\(restoreFocus\).*\.focus\(\)/);
   assert.match(menu, /event.shiftKey/);
   assert.match(menu, /event.key==='Escape'/);
+});
+
+
+test('los disclosures nativos no muestran flechas y la práctica seamless guarda la anterior', () => {
+  assert.match(html, /details>summary\{list-style:none\}/);
+  assert.match(html, /showToast\('Práctica anterior guardada'\)/);
+  assert.match(html, /pausedPractices/);
+  assert.match(html, /practiceTopicBySubject/);
+  assert.match(html, /id="clearExamSelection"/);
 });

@@ -7,8 +7,27 @@
     status: 'current', topicStatus: 'current', order: 1,
     topicIds: ['ciencia-si', 'densidad', 'temperatura'],
     assessments: [
-      { type: 'quiz', label: 'Prueba corta', status: 'pending', date: '2026-09-24', topicIds: ['densidad', 'temperatura'] },
-      { type: 'study', label: 'Conversiones SI', status: 'scheduled', date: '2026-09-28', topicIds: ['ciencia-si'] },
+      {
+        id: 'science-test-2026-09-24',
+        type: 'quiz',
+        label: 'Prueba',
+        status: 'taken',
+        date: '2026-09-24',
+        topicIds: ['ciencia-si', 'densidad', 'temperatura'],
+        source: 'teacher_assessment',
+        note: 'Prueba real proporcionada: Densidad, Sistema Internacional y una pregunta conceptual de Temperatura. No incluyó conversiones de temperatura.',
+      },
+      {
+        id: 'science-test-2026-09-28',
+        type: 'quiz',
+        label: 'Prueba',
+        status: 'scheduled',
+        date: '2026-09-28',
+        topicIds: ['ciencia-si', 'densidad', 'temperatura'],
+        contentPending: true,
+        sourceAssessmentId: 'science-test-2026-09-24',
+        note: 'Incluye el material de la prueba del 24 de septiembre y contenido adicional que todavía no ha sido proporcionado.',
+      },
     ],
   });
   const topics = Object.freeze([
@@ -130,6 +149,37 @@
   const kelvinF=[0,233.15,273.15,293.15,373.15];
   kelvinF.forEach((value,index)=>temperatureQuestions.push(numeric(`temp-${String(index+32).padStart(2,'0')}`,'temperatura',`Convierte ${value} K a Fahrenheit.`,Number(((value*1.8)-459.67).toFixed(2)),'°F','°F = (K × 1.8) - 459.67',tempDetail('°F','°F = (K × 1.8) - 459.67',`°F = (${value} × 1.8) - 459.67`,`(${value} × 1.8) - 459.67`,'Sumar 459.67 en vez de restarlo.'))));
 
+
+  // Snapshot de la prueba real del 24 de septiembre de 2026.
+  // Se conserva separado por procedencia, pero puede reutilizarse para repasar
+  // exactamente el formato que apareció en la evaluación.
+  const actualTestQuestions = [
+    mc('test-2026-09-24-01','densidad','La densidad de un alcohol es 0.8 g/cm3 y el volumen es de 1,600 cm3. ¿Cuál es su masa?',['D=M/V','M=D×V','V=M/D'],1,'Según la prueba, para hallar la masa se usa M=D×V.'),
+    mc('test-2026-09-24-02','densidad','¿Cuál sería la respuesta del problema uno?',['1,280 g','34.33 g','25.99 g'],0,'0.8 × 1,600 = 1,280 g.'),
+    mc('test-2026-09-24-03','densidad','Un bloque de hierro tiene 60 cm3 de volumen y una masa de 474 g. ¿Cuál es su densidad?',['D=M/V','M=D×V','V=M/D'],0,'Según la prueba, para hallar densidad se usa D=M/V.'),
+    mc('test-2026-09-24-04','densidad','¿Cuál sería el resultado?',['146.2 g/ml','7.9g/cm3','316.8 g/cm3'],1,'474 ÷ 60 = 7.9 g/cm3.'),
+    mc('test-2026-09-24-05','densidad','Calcula el volumen de un cuerpo que tiene una densidad 2g/cm3 y una masa de 50g. ¿Cuál sería la fórmula?',['D=M/V','M=D×V','V=M/D'],2,'Según la prueba, para hallar volumen se usa V=M/D.'),
+    mc('test-2026-09-24-06','densidad','¿Cuál es el resultado?',['48 cm3','100 cm3','25 cm3'],2,'50 ÷ 2 = 25 cm3.'),
+    mc('test-2026-09-24-07','ciencia-si',"¿Cuál es el símbolo del prefijo 'kilo' en el Sistema Internacional de Unidades?",['kl','ki','k'],2,'Según la prueba, el símbolo de kilo es k.'),
+    mc('test-2026-09-24-08','ciencia-si',"¿Cuál es el símbolo correcto del prefijo 'hecto' en el Sistema Internacional de Unidades?",['ht','h','he'],1,'Según la prueba, el símbolo de hecto es h.'),
+    mc('test-2026-09-24-09','ciencia-si',"¿Cuál es el símbolo correcto del prefijo 'mili' en el Sistema Internacional de Unidades?",['m','mi','ml'],0,'Según la prueba, el símbolo del prefijo mili es m.'),
+    mc('test-2026-09-24-10','ciencia-si',"¿Cuál es el valor numérico del prefijo 'deca' en el Sistema Internacional de Unidades?",['10','100','0.1'],0,'Según la prueba, deca corresponde a 10.'),
+    mc('test-2026-09-24-11','ciencia-si',"¿Cuál es el valor numérico del prefijo 'deci' en el Sistema Internacional de Unidades?",['0.01','0.1','10'],1,'Según la prueba, deci corresponde a 0.1.'),
+    mc('test-2026-09-24-12','ciencia-si',"¿Cuál de las siguientes opciones define mejor el término 'volumen'?",['Cantidad de espacio que ocupa un cuerpo.','Cantidad de materia en un objeto.','Medida de la densidad de un material.'],0,'Según la prueba, volumen es la cantidad de espacio que ocupa un cuerpo.'),
+    mc('test-2026-09-24-13','temperatura',"¿Cuál de las siguientes opciones define mejor el término 'temperatura'?",['Cantidad de materia en un objeto.','Cantidad de espacio que ocupa un cuerpo.','Medida del calor o energía cinética promedio de las partículas de un cuerpo.'],2,'Se conserva la definición utilizada en la prueba del maestro.'),
+    mc('test-2026-09-24-14','ciencia-si',"¿Cuál de las siguientes opciones define mejor el término 'litro'?",['Unidad de longitud equivalente a 1 metro.','Unidad de masa equivalente a 1 kilogramo.','Unidad de volumen y se expresa en centímetros cúbicos.'],2,'Se conserva exactamente la respuesta marcada como correcta en la prueba.'),
+    mc('test-2026-09-24-15','ciencia-si',"¿Cuál de las siguientes opciones define mejor el término 'menisco'?",['La cantidad de materia en un objeto.','La unidad de volumen en el Sistema Internacional.','La curvatura que se forma en la superficie de un líquido dentro de un recipiente.'],2,'Según la prueba, menisco es la curvatura que se forma en la superficie de un líquido dentro de un recipiente.'),
+    mc('test-2026-09-24-16','ciencia-si',"¿Cuál de las siguientes opciones define mejor el término 'longitud'?",['Medida de la masa de un objeto.','Cantidad de espacio que ocupa un cuerpo.','Distancia entre dos puntos.'],2,'Según la prueba, longitud es la distancia entre dos puntos.'),
+    mc('test-2026-09-24-17','ciencia-si',"¿Cuál de las siguientes opciones define mejor el término 'metro' en el Sistema Internacional de Unidades?",['Unidad de longitud equivalente a la distancia entre dos líneas.','Unidad de masa equivalente a 1 kilogramo.','Unidad de volumen equivalente a 1 litro.'],0,'Se conserva exactamente la respuesta marcada como correcta en la prueba.'),
+    mc('test-2026-09-24-18','densidad',"¿Cuál de las siguientes opciones define mejor el término 'densidad'?",['Relación entre la masa y el volumen de un cuerpo.','Cantidad de espacio que ocupa un cuerpo.','Medida de la temperatura de un objeto.'],0,'Según la prueba, densidad es la relación entre la masa y el volumen de un cuerpo.'),
+    mc('test-2026-09-24-19','ciencia-si','Convierte 500 centímetros a metros usando análisis dimensional.',['50 m','0.5 m','5 m'],2,'500 cm = 5 m.'),
+    mc('test-2026-09-24-20','ciencia-si','Utilizando análisis dimensional, ¿cuál es el resultado de convertir 1200 milímetros a kilómetros?',['0.0012 km','0.12 km','0.012 km'],0,'1200 mm = 0.0012 km.'),
+  ].map(question => Object.freeze({
+    ...question,
+    sourceAssessmentId: 'science-test-2026-09-24',
+    sourceReference: 'Prueba real · 24 sep 2026',
+  }));
+
   const normalizeUnit = value => String(value ?? '').trim().replace(/\s+/g,'').replace(/3/g,'³').toLowerCase();
   const checkNumericAnswer = (question, response) => {
     const value = Number(String(response?.value ?? '').replace(',','.'));
@@ -137,6 +187,28 @@
     const unitCorrect = normalizeUnit(response?.unit) === normalizeUnit(question.unitSymbol) && !(question.unitSymbol === 'K' && /°/.test(String(response?.unit || '')));
     return { correct: numberCorrect && unitCorrect, numberCorrect, unitCorrect, errorType: !numberCorrect ? 'OPERACIÓN' : !unitCorrect ? 'UNIDAD' : '' };
   };
-  const questions = Object.freeze([...siQuestions, ...densityQuestions, ...temperatureQuestions]);
-  window.SCIENCE_CONTENT = Object.freeze({ subjectId, unit, topics, reviewCards, questions, banks: Object.freeze({ si: siQuestions, density: densityQuestions, temperature: temperatureQuestions }), normalizeUnit, checkNumericAnswer });
+  const questions = Object.freeze([...siQuestions, ...densityQuestions, ...temperatureQuestions, ...actualTestQuestions]);
+  window.SCIENCE_CONTENT = Object.freeze({
+    subjectId,
+    unit,
+    topics,
+    reviewCards,
+    questions,
+    banks: Object.freeze({
+      si: siQuestions,
+      density: densityQuestions,
+      temperature: temperatureQuestions,
+      actualTest: actualTestQuestions,
+    }),
+    assessmentSnapshots: Object.freeze({
+      'science-test-2026-09-24': Object.freeze({
+        id: 'science-test-2026-09-24',
+        date: '2026-09-24',
+        label: 'Prueba real',
+        questionIds: Object.freeze(actualTestQuestions.map(question => question.id)),
+      }),
+    }),
+    normalizeUnit,
+    checkNumericAnswer,
+  });
 })();
