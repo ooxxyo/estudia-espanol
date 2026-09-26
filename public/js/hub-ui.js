@@ -2,6 +2,7 @@
   'use strict';
   const api=(path,options={})=>window.StudyHubApi.requestJson(`/.netlify/functions/${path}`,options);
   const updates=Object.freeze([
+    {updateId:'math-dms-workspace',title:'Matemáticas: grados decimales a DMS',summary:'Ya puedes repasar y practicar el procedimiento completo con multiplicación por columnas y una libreta interactiva.',category:'Académico',publishedAt:'2026-09-25',target:'matematicas'},
     {updateId:'spanish-vocabulary',title:'Competencia en Español',summary:'El vocabulario ya está listo para estudiar con tarjetas, práctica y examen.',category:'Académico',publishedAt:'2026-09-19',target:'espanol'},
     {updateId:'people-discovery',title:'Personas',summary:'Ahora puedes encontrar estudiantes descubribles y enviar solicitudes.',category:'Nuevo',publishedAt:'2026-09-19',target:'friends'},
     {updateId:'calendar-signals',title:'Calendario más claro',summary:'El Hub resume fechas de hoy, mañana y esta semana.',category:'Mejorado',publishedAt:'2026-09-19',target:'calendar'},
@@ -30,7 +31,7 @@
     const seen=new Set(context.updatesSeen());const unread=updates.filter(item=>!seen.has(item.updateId));
     main.innerHTML=`<div class="pagehead"><h1>Novedades ${unread.length?`<span class="new-pill">${unread.length} nuevas</span>`:''}</h1><p>Cambios útiles para estudiantes.</p></div><div class="platform-list">${updates.map(item=>`<article class="card update-item motion-card"><span class="status-badge">${item.category}</span><h2>${context.escape(item.title)}</h2><p>${context.escape(item.summary)}</p><div class="meta">${item.publishedAt}</div>${item.target?`<button class="icon-btn" data-update-target="${item.target}">Abrir</button>`:''}</article>`).join('')}</div>`;
     context.markUpdatesSeen(updates.map(item=>item.updateId));
-    main.querySelectorAll('[data-update-target]').forEach(button=>button.addEventListener('click',()=>button.dataset.updateTarget==='espanol'?context.openSubject('espanol'):context.goto(button.dataset.updateTarget)));
+    main.querySelectorAll('[data-update-target]').forEach(button=>button.addEventListener('click',()=>context.subjects.some(subject=>subject.id===button.dataset.updateTarget)?context.openSubject(button.dataset.updateTarget):context.goto(button.dataset.updateTarget)));
   }
   window.StudyHubHubUI=Object.freeze({mountHub,renderUpdates,updates});
 })();
