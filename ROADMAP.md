@@ -59,6 +59,22 @@
 
 La transformación completa del hub no forma parte de esta fase. Cada materia reutilizará el mismo Study Engine; no se crearán aplicaciones independientes.
 
+## Hitos posteriores a la estabilización actual
+
+Estos trabajos permanecen futuros y no forman parte de la fase actual:
+
+| Iniciativa | Estado | Alcance |
+| --- | --- | --- |
+| Rediseño grande / Figma / Design System | Planned | Definir en Figma los fundamentos, componentes y flujos antes de sustituir el diseño actual. |
+| Calendar 1.0 | Planned | Evolucionar la base de calendario ya disponible con una experiencia completa y validada. |
+| Community / Progress | Planned | Consolidar la experiencia comunitaria y el progreso transversal sin mezclar contenido oficial con aportes. |
+| Owner Command Center | Planned | Centro operativo futuro para Owner, separado de los permisos y herramientas actuales. |
+| Analytics | Planned | Medición futura con alcance, privacidad y proveedor todavía por definir; no incluye PostHog en esta fase. |
+| Prioridades de Hoy | Planned | Permitir control explícito de prioridad `Urgente`, `Normal` u `Oculto`. |
+| QA profundo | Planned | Revisión integral de flujos, datos compatibles, accesibilidad, responsive y regresiones antes de beta. |
+| Beta 0.9 | Planned | Hito de estabilización previo al lanzamiento, condicionado a QA profundo y aprobación. |
+| Study Hub 1.0 | Planned | Lanzamiento estable posterior a Beta 0.9, sin fecha ni activación automática. |
+
 ## Fase actual: base Hub
 
 La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español combina `spanish-v2` con un módulo legacy compatible; Historia reutiliza el motor mediante `historia-v1`; Ciencia usa `science-v1` con SI, Densidad y Temperatura separados; Matemáticas usa `math-v1` exclusivamente para Grados decimales a DMS. Inglés y Salud siguen deshabilitados.

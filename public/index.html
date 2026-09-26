@@ -1501,8 +1501,9 @@ function renderHubSubjectCard(subject){
   const content=subjectContent(subject.id);
   const unit=content.units.current;
   const newContent=subject.id==='espanol'&&!state.settings.seenContentAt?.[SPANISH_VOCABULARY.unit.id];
+  const unitType=unit?.type&&unit.type!==subject.status?` · ${unit.type}`:'';
   const detail=subject.available
-    ? `${unit?.name||'Unidad disponible'}${unit?.type?` · ${unit.type}`:''} · ${subject.status}`
+    ? `${unit?.name||'Unidad disponible'}${unitType} · ${subject.status}`
     : `Día ${subject.day} · contenido en preparación`;
   const spanishStatus=state.settings.topicStudyStatus?.vocabulario||'pending_review';
   return `<article class="card hub-subject-card ${subject.available?'available':'unavailable'} ${subject.id==='espanol'&&spanishStatus==='pending_review'?'priority-card':''}" ${subject.available?'':'aria-disabled="true"'}>
@@ -3279,9 +3280,12 @@ function renderResults(main){
   const r = state.lastResult;
   if(!r){ goto('dashboard'); return; }
   const wrong = r.answers.filter(a=>!a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
-  const good = r.answers.filter(a=>a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
   const subject=SUBJECT_BY_ID.get(r.subjectId||'espanol')||SUBJECT;
   const topicNames = Object.keys(r.byTopic);
+  const masteredTopicNames=topicNames.filter(tid=>{
+    const performance=r.byTopic[tid];
+    return performance.t>0&&performance.c/performance.t>=.8;
+  }).map(tid=>subjectContent(subject.id).topics.find(topic=>topic.id===tid)?.name).filter(Boolean);
 
   main.innerHTML = `
     <div class="pagehead"><h1>Resultados de ${subject.name}</h1><p>${r.experimental?'Sesión experimental completada':r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
@@ -3302,7 +3306,7 @@ function renderResults(main){
       </div>
       <div class="card">
         <p class="section-title">Lo que hiciste bien</p>
-        <p style="font-size:.88rem;">${good.length? `Dominas bien: ${[...new Set(good.map(q=>topicForQuestion(q)?.name).filter(Boolean))].join(', ')}.` : 'Sigue practicando para ver tus fortalezas aquí.'}</p>
+        <p style="font-size:.88rem;">${masteredTopicNames.length? `Dominas bien: ${masteredTopicNames.join(', ')}.` : 'Todavía no hay un tema dominado en esta sesión.'}</p>
         <p class="section-title" style="margin-top:16px;">Necesitas repasar</p>
         <p style="font-size:.88rem;">${wrong.length? `Revisa: ${[...new Set(wrong.map(q=>topicForQuestion(q)?.name).filter(Boolean))].join(', ')}.` : '¡No fallaste ninguna pregunta!'}</p>
         <p class="section-title" style="margin-top:16px;">Próximo paso recomendado</p>

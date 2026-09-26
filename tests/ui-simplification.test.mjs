@@ -114,6 +114,25 @@ function renderHubFixture(pending = null) {
   return main.innerHTML;
 }
 
+function renderSubjectCardFixture() {
+  const subject={id:'matematicas',name:'Matemáticas',emoji:'📐',available:true,status:'Tema actual'};
+  const sandbox={
+    state:{settings:{seenContentAt:{},topicStudyStatus:{}}},
+    SPANISH_VOCABULARY:{unit:{id:'spanish-current'}},
+    subjectContent:()=>({units:{current:{name:'Grados decimales a grados, minutos y segundos',type:'Tema actual'}}}),
+  };
+  vm.createContext(sandbox);
+  const start=html.indexOf('function renderHubSubjectCard(');
+  vm.runInContext(html.slice(start,html.indexOf('function openSubject(',start))+'\nthis.markup=renderHubSubjectCard('+JSON.stringify(subject)+');',sandbox);
+  return sandbox.markup;
+}
+
+test('Home no repite el mismo estado académico en la tarjeta de una materia', () => {
+  const markup=renderSubjectCardFixture();
+  assert.doesNotMatch(markup,/Tema actual · Tema actual/);
+  assert.equal((markup.match(/Tema actual/g)||[]).length,2);
+});
+
 test('Home prioriza una sola continuación real y ordena estudiar, fechas y acciones secundarias', () => {
   const markup = renderHubFixture({subjectName:'Historia',current:2,total:10,answered:1,topic:'Geografía'});
   assert.equal((markup.match(/id="resumeFromHub"/g)||[]).length, 1);
@@ -135,6 +154,37 @@ test('Home no inventa una continuación cuando solo existe un tema recordado', (
 
 test('Home móvil libera la altura de las tarjetas para evitar bloques vacíos', () => {
   assert.match(html, /@media \(max-width:620px\)\{[^\n]*\.hub-subject-card\{min-height:0\}/);
+});
+
+function renderLowScoreResultsFixture() {
+  const answers=Array.from({length:10},(_,index)=>({qid:`density-${index}`,correct:index===0}));
+  const questions=new Map(answers.map(answer=>[answer.qid,{id:answer.qid,topic:'densidad',prompt:`Pregunta ${answer.qid}`}]))
+  const elements=new Map();
+  const element=id=>{
+    if(!elements.has(id)) elements.set(id,{addEventListener(){}});
+    return elements.get(id);
+  };
+  const main={innerHTML:''};
+  const subject={id:'ciencia',name:'Ciencia'};
+  const sandbox={
+    main,
+    state:{lastResult:{subjectId:'ciencia',unitId:'science-current',total:10,correctCount:1,pct:10,elapsed:30,byTopic:{densidad:{c:1,t:10}},answers,mode:'practica'}},
+    SUBJECT_BY_ID:new Map([['ciencia',subject]]),SUBJECT:subject,
+    subjectContent:()=>({topics:[{id:'densidad',name:'Densidad',icon:'◆'}]}),
+    findQuestionById:id=>questions.get(id),topicForQuestion:()=>({id:'densidad',name:'Densidad',icon:'◆'}),
+    fmtTime:seconds=>`${seconds}s`,goto(){},saveState(){},shuffle:rows=>rows,currentUnit:()=>({id:'science-current'}),
+    document:{getElementById:element},
+  };
+  vm.createContext(sandbox);
+  const start=html.indexOf('function renderResults(');
+  vm.runInContext(html.slice(start,html.indexOf('/* =========================================================\n   ERRORES',start))+'\nrenderResults(main);',sandbox);
+  return main.innerHTML;
+}
+
+test('Resultados no presenta como dominado un tema con rendimiento bajo', () => {
+  const markup=renderLowScoreResultsFixture();
+  assert.doesNotMatch(markup,/Dominas bien: Densidad/);
+  assert.match(markup,/Todavía no hay un tema dominado en esta sesión/);
 });
 
 function renderReviewHomeFixture(rememberedTopicId = 'geografia') {
