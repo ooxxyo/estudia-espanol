@@ -28,8 +28,10 @@ function practice(subjectId, selected = null) {
     vm.runInContext(source, vocabulary);
     const topic = { id: subjectId === 'espanol' ? 'vocabulario' : 'geografia', name: 'Tema de prueba', icon: '○' };
     const elements = new Map();
+    const handlers = new Map();
+    const reviewCalls = [];
     const element = key => {
-      if (!elements.has(key)) elements.set(key, { checked: true, addEventListener() {}, focus() {} });
+      if (!elements.has(key)) elements.set(key, { checked: true, addEventListener(type, handler) { handlers.set(`${key}:${type}`, handler); }, focus() {} });
       return elements.get(key);
     };
     const main = { innerHTML: '', querySelectorAll: () => [], querySelector: element };
@@ -39,12 +41,18 @@ function practice(subjectId, selected = null) {
       activeQuestions: () => [{ topic: topic.id }], hasResumablePractice: () => false,
       computeMastery: () => ({ pct: 0 }), escHtml: value => value,
       VOCAB_TOPIC: topic, TOPICS: [], SPANISH_VOCABULARY: vocabulary.window.SpanishVocabulary,
+      platformUiContext: () => ({ reviewTopic: (...args) => reviewCalls.push(args) }),
       document: { getElementById: () => null },
     };
     vm.createContext(sandbox);
     const start = html.indexOf('function renderPracticaHome(');
     vm.runInContext(html.slice(start, html.indexOf('/* ===', start)) + '\nrenderPracticaHome(main);', sandbox);
-    return { markup: main.innerHTML, modes: vocabulary.window.SpanishVocabulary.modes };
+    return {
+      markup: main.innerHTML,
+      modes: vocabulary.window.SpanishVocabulary.modes,
+      reviewCalls,
+      triggerReview: () => handlers.get('#reviewPracticeTopic:click')?.(),
+    };
   });
 }
 
@@ -73,10 +81,90 @@ test('tema Historia no ofrece modos de Español', async () => {
   assert.doesNotMatch(markup, /data-vocab-mode=/);
 });
 
-test('Hub no duplica prioridad ni estadísticas y conserva cuenta y continuación', () => {
-  const hub = html.slice(html.indexOf('function renderHub(main)'), html.indexOf('function ringSvg('));
-  assert.doesNotMatch(hub, /Progreso por materia|openSpanishQuick|openHistoryQuick/);
-  for (const id of ['resumeFromHub','continueLastTopic','createAccountFromHub','loginFromHub','hubSignals']) assert.ok(hub.includes(id));
+test('Repasar desde un tema elegido abre ese tema directamente', async () => {
+  const result = await practice('historia', 'geografia');
+  result.triggerReview();
+  assert.deepEqual(result.reviewCalls, [['historia', 'geografia']]);
+});
+
+function renderHubFixture(pending = null) {
+  const subjects = [
+    { id:'ingles', name:'Inglés', emoji:'📘', day:1, available:false, units:{current:null,previous:[],completed:[]} },
+    { id:'salud', name:'Salud', emoji:'❤️', day:1, available:false, units:{current:null,previous:[],completed:[]} },
+    { id:'historia', name:'Historia', emoji:'🏛️', day:1, available:true, units:{current:{name:'Historia',assessments:[]},previous:[],completed:[]} },
+    { id:'ciencia', name:'Ciencia', emoji:'🔬', day:2, available:true, units:{current:{name:'Ciencia',assessments:[{label:'Prueba',status:'scheduled',date:'2026-09-30'}]},previous:[],completed:[]} },
+    { id:'matematicas', name:'Matemáticas', emoji:'📐', day:2, available:true, units:{current:{name:'Matemáticas',assessments:[]},previous:[],completed:[]} },
+    { id:'espanol', name:'Español', emoji:'📚', day:2, available:true, units:{current:{name:'Español',assessments:[]},previous:[],completed:[]} },
+  ];
+  const byId = new Map(subjects.map(subject => [subject.id, subject]));
+  const main = { innerHTML:'', querySelectorAll:() => [], querySelector:() => null };
+  const sandbox = {
+    main, SUBJECT_CATALOG:subjects, SUBJECT_BY_ID:byId, STUDY_DAYS:[{id:1,name:'Día 1'},{id:2,name:'Día 2'}],
+    state:{settings:{topicStudyStatus:{vocabulario:'reviewed'}},lastSubjectId:'historia',lastVisitedTopicBySubject:{historia:'geografia'}},
+    accountSession:{user:null}, localDateLabel:() => 'sábado, 26 de septiembre',
+    resumablePracticeProgress:() => pending, subjectsForDay:day => subjects.filter(subject => subject.day===day),
+    renderHubSubjectCard:subject => `<article data-subject="${subject.id}">${subject.name}</article>`,
+    subjectContent:() => ({topics:[{id:'geografia',name:'Geografía'}]}), escHtml:value => value,
+    platformUiContext:() => ({}), goto() {}, resumeSavedPractice() {},
+    window:{StudyHubHubUI:{mountHub() {}}}, document:{getElementById:() => null},
+  };
+  vm.createContext(sandbox);
+  const start = html.indexOf('function renderHub(main)');
+  vm.runInContext(html.slice(start, html.indexOf('function ringSvg(', start)) + '\nrenderHub(main);', sandbox);
+  return main.innerHTML;
+}
+
+test('Home prioriza una sola continuación real y ordena estudiar, fechas y acciones secundarias', () => {
+  const markup = renderHubFixture({subjectName:'Historia',current:2,total:10,answered:1,topic:'Geografía'});
+  assert.equal((markup.match(/id="resumeFromHub"/g)||[]).length, 1);
+  assert.doesNotMatch(markup, /continueLastTopic|Continuar donde lo dejaste/);
+  const continueAt=markup.indexOf('id="hubContinueTitle"');
+  const studyAt=markup.indexOf('id="hubStudyTitle"');
+  const upcomingAt=markup.indexOf('id="hubUpcomingTitle"');
+  const secondaryAt=markup.indexOf('id="hubSecondaryTitle"');
+  assert.ok(continueAt >= 0 && continueAt < studyAt && studyAt < upcomingAt && upcomingAt < secondaryAt);
+  for (const subject of ['Español','Matemáticas','Ciencia','Historia','Inglés','Salud']) assert.match(markup, new RegExp(subject));
+  assert.match(markup, /Ciencia[\s\S]*Prueba[\s\S]*miércoles 30 sep/);
+  for (const id of ['createAccountFromHub','loginFromHub','hubSignals']) assert.ok(markup.includes(id));
+});
+
+test('Home no inventa una continuación cuando solo existe un tema recordado', () => {
+  const markup = renderHubFixture();
+  assert.doesNotMatch(markup, /hubContinueTitle|resumeFromHub|continueLastTopic|Continuar donde lo dejaste/);
+});
+
+test('Home móvil libera la altura de las tarjetas para evitar bloques vacíos', () => {
+  assert.match(html, /@media \(max-width:620px\)\{[^\n]*\.hub-subject-card\{min-height:0\}/);
+});
+
+function renderReviewHomeFixture(rememberedTopicId = 'geografia') {
+  const topic={id:'geografia',name:'Geografía',icon:'○'};
+  const handlers=new Map(), calls=[];
+  const continueButton={addEventListener(type,handler){handlers.set(type,handler);}};
+  const main={innerHTML:'',querySelectorAll:()=>[],querySelector:selector=>selector==='#continuePreviousReview'?continueButton:null};
+  const sandbox={
+    main,state:{lastVisitedTopicBySubject:{historia:rememberedTopicId}},
+    activeSubject:()=>({id:'historia',name:'Historia'}),activeTopics:()=>[topic],
+    activeReviewCards:()=>[{topic:'geografia'}],VOCAB_TOPIC:topic,TOPICS:[],
+    platformUiContext:()=>({reviewTopic:(...args)=>calls.push(args)}),
+  };
+  vm.createContext(sandbox);
+  const start=html.indexOf('function renderRepasoHome(main)');
+  vm.runInContext(html.slice(start,html.indexOf('function renderRepasoCards(',start))+'\nrenderRepasoHome(main);',sandbox);
+  return {markup:main.innerHTML,calls,continueReview:()=>handlers.get('click')?.()};
+}
+
+test('Repasar ofrece el tema anterior como acción secundaria sin interceptar la selección', () => {
+  const result=renderReviewHomeFixture();
+  assert.ok(result.markup.indexOf('data-t="geografia"') < result.markup.indexOf('id="continuePreviousReview"'));
+  assert.match(result.markup,/Continuar repaso anterior/);
+  assert.doesNotMatch(result.markup,/Tu último repaso/);
+  result.continueReview();
+  assert.deepEqual(result.calls,[['historia','geografia']]);
+});
+
+test('Repasar no muestra continuación anterior si no existe un tema recuperable', () => {
+  assert.doesNotMatch(renderReviewHomeFixture(null).markup,/continuePreviousReview|Continuar repaso anterior/);
 });
 
 test('repaso conserva favoritos en disclosure y una única salida del tema', () => {
