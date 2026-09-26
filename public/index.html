@@ -354,7 +354,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .workspace-result{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.45fr);gap:10px}.workspace-result label{display:grid;gap:6px;font-size:.78rem;font-weight:750;color:var(--ink-soft)}
 .workspace-feedback{min-height:1.2em;font-size:.8rem;font-weight:700;color:var(--ink-soft)}.workspace-feedback.bad{color:var(--red)}.workspace-feedback.good{color:var(--green)}
 .math-keyboard summary{cursor:pointer;font-weight:750;color:var(--ink-soft);min-height:44px;display:flex;align-items:center}.math-key-grid{display:grid;grid-template-columns:repeat(4,minmax(48px,1fr));gap:7px;margin-top:8px}.math-key{min-height:46px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-weight:750;font-size:.95rem;cursor:pointer;touch-action:manipulation}.math-key:hover{border-color:var(--accent);color:var(--accent)}
+.math-notebook{display:grid;gap:22px;padding:clamp(16px,4vw,34px);border:1px solid color-mix(in srgb,var(--line) 72%,#fff);border-radius:16px;background:#fff;color:#22303a;box-shadow:0 14px 34px rgba(34,48,58,.08)}[data-theme="dark"] .math-notebook{background:#fdfcf8;color:#22303a}.math-notebook-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e4dfd3;padding-bottom:12px}.math-notebook-head h3{margin:0;font-size:1.2rem}.math-learning-badge{display:inline-flex;align-items:center;min-height:32px;padding:5px 10px;border-radius:999px;background:#f3dcdd;color:#8b2635;font-size:.74rem;font-weight:800}.math-paper-step{display:grid;gap:10px;max-width:620px;margin-inline:auto;width:100%}.math-paper-step[hidden]{display:none}.math-paper-heading{margin:0;color:#66717a;font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.math-step-cue{margin:0;padding:8px 11px;border-left:3px solid #b9772e;background:#fff8e8;color:#5b6670;font-size:.84rem;line-height:1.45}.math-paper-field{display:flex;align-items:end;gap:10px}.math-paper-field label{min-width:108px;color:#66717a;font-size:.82rem;font-weight:750}.math-paper-field input{width:min(100%,240px);min-height:50px;border:0;border-bottom:2px solid #a9afb3;border-radius:0;background:transparent;color:#22303a;padding:7px 4px;font:700 1.35rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace}.math-paper-field input:focus{outline:0;border-color:#8b2635;box-shadow:0 3px 0 rgba(139,38,53,.12)}.math-paper-field input[aria-invalid="true"]{border-color:#a63b3b}.vertical-operation{--math-columns:4;width:min(100%,480px);margin-inline:auto;display:grid;gap:5px;padding:18px 12px 12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.math-digit-grid{display:grid;grid-template-columns:repeat(var(--math-columns),minmax(44px,58px));justify-content:end;gap:5px}.math-cell{min-width:44px;min-height:46px;border:0;border-bottom:1px solid #bbc0c3;border-radius:5px;background:#faf9f5;color:#22303a;text-align:center;font:750 1.35rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;touch-action:manipulation}.math-cell:focus{outline:2px solid #8b2635;outline-offset:1px}.math-cell[aria-invalid="true"]{outline:2px solid #a63b3b;background:#fff0f0}.math-carry-row .math-cell{min-height:32px;height:32px;border-bottom:0;background:#fff8e8;color:#9a5d18;font-size:.95rem}.math-static-cell{display:grid;place-items:center;min-width:44px;min-height:44px;font-size:1.35rem;font-weight:750}.math-multiplier-line{display:flex;justify-content:flex-end;align-items:center;gap:7px}.math-operator{font-size:1.45rem;font-weight:800}.math-operation-rule{height:2px;background:#66717a;margin:2px 0 5px}.math-operation-rule.result{height:1px;margin-top:4px}.math-decimal-choices{display:grid;grid-template-columns:repeat(calc(var(--math-columns) + 1),minmax(34px,1fr));gap:2px;max-width:calc(var(--math-columns) * 63px);margin-left:auto}.math-decimal-choice{min-height:40px;border:0;border-radius:8px;background:transparent;color:#92999e;font-size:1.6rem;line-height:1;cursor:pointer}.math-decimal-choice[aria-pressed="true"]{background:#f3dcdd;color:#8b2635}.math-step-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}.math-step-feedback{min-height:1.2em;color:#66717a;font:700 .8rem/1.4 system-ui,sans-serif}.math-step-feedback.bad{color:#a63b3b}.math-step-feedback.good{color:#3e7a58}.math-help{display:grid;gap:10px;padding-top:4px;border-top:1px solid #e4dfd3}.math-help-panel{display:grid;gap:10px;padding:12px;border-radius:11px;background:#f6f3eb}.math-help-panel[hidden]{display:none}.math-help-topics{display:flex;flex-wrap:wrap;gap:7px}.math-help-topic{min-height:42px;border:1px solid #d9d2c0;border-radius:999px;padding:7px 11px;background:#fff;color:#5b6670;font-weight:750;cursor:pointer}.math-help-topic.active{border-color:#8b2635;color:#8b2635;background:#f3dcdd}.math-help-text{margin:0;line-height:1.55}.math-dms-answer{display:grid;grid-template-columns:repeat(3,minmax(72px,1fr));gap:12px}.math-dms-answer .math-paper-field{display:grid;gap:4px}.math-dms-answer .math-paper-field label{min-width:0;font-size:1.15rem}.math-dms-answer .math-paper-field input{width:100%}.math-procedure-review{margin-top:12px;padding:12px;border:1px solid #d9d2c0;border-radius:10px;background:#fff;color:#22303a}.math-procedure-review h5{margin:0 0 10px}.math-review-step{display:flex;gap:8px;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid #eee9dd}.math-review-step:last-child{border-bottom:0}.math-review-operation{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:520px){.formula-workspace{padding:13px}.workspace-head{display:grid}.workspace-meta,.workspace-fields,.workspace-result{grid-template-columns:1fr}.workspace-equation{gap:6px}.workspace-inline-field{min-width:76px;max-width:112px}.math-key{min-height:48px}}
+@media(max-width:520px){.math-notebook{padding:16px 10px}.math-paper-field{display:grid}.math-paper-field label{min-width:0}.vertical-operation{padding-inline:0}.math-digit-grid{grid-template-columns:repeat(var(--math-columns),minmax(40px,50px));gap:3px}.math-cell,.math-static-cell{min-width:40px;min-height:46px}.math-dms-answer{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.math-decimal-choices{max-width:calc(var(--math-columns) * 53px)}}
 
 
 .hint-box{margin-top:14px;background:var(--amber-soft);border-radius:10px;padding:12px 15px;font-size:.87rem;color:var(--ink);}
@@ -649,6 +651,8 @@ details>summary{list-style:none}details>summary::-webkit-details-marker{display:
 <script src="history-data.js"></script>
 <script src="js/science-data.js"></script>
 <script src="js/math-workspace.js"></script>
+<script src="js/math-data.js"></script>
+<script src="js/math-workspace-config.js"></script>
 <script src="js/science-workspace-config.js"></script>
 <script src="js/science-practice-tools.js"></script>
 <script src="js/spanish-legacy-content.js"></script>
@@ -668,6 +672,7 @@ const TOPICS = [
 ];
 const HISTORY_CONTENT=window.HISTORY_CONTENT;
 const SCIENCE_CONTENT=window.SCIENCE_CONTENT;
+const MATH_CONTENT=window.MATH_CONTENT;
 const SPANISH_VOCABULARY=window.SpanishVocabulary;
 const VOCAB_TOPIC={id:'vocabulario',name:'Vocabulario',icon:'🗂️',topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true};
 const VOCAB_CARDS=SPANISH_VOCABULARY.entries.map(entry=>({id:entry.id,topic:'vocabulario',topicId:'vocabulario',title:`${entry.word.toLocaleUpperCase('es')} (${entry.grammar})`,def:entry.definition,example:[entry.synonyms.length?`Sinónimos: ${entry.synonyms.join(', ')}.`:'',entry.antonyms.length?`Antónimos: ${entry.antonyms.join(', ')}.`:'',entry.example].filter(Boolean).join(' ')}));
@@ -685,7 +690,7 @@ const SUBJECT_CATALOG=Object.freeze([
   {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
   {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Disponible',available:true,contentKey:'historia-v1',units:{current:HISTORY_CONTENT.unit,previous:[],completed:[]}},
   {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Prueba 28 sep',available:true,contentKey:'science-v1',units:{current:SCIENCE_CONTENT.unit,previous:[],completed:[]}},
-  {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Activa',available:true,contentKey:'empty-approved',units:{current:null,previous:[],completed:[]}},
+  {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Tema actual',available:true,contentKey:'math-v1',units:{current:MATH_CONTENT.unit,previous:[],completed:[]}},
   {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Nuevo',available:true,contentKey:'spanish-v2',units:{current:{...SPANISH_VOCABULARY.unit,topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true,assessments:[{type:'competition',label:'Competencia',status:'pending',date:null}]},previous:[{id:'espanol-unidad-anterior',subjectId:'espanol',name:'Contenido anterior de Español',displayName:'✅ Tema pasado',type:'Tema pasado',status:'previous',topicStatus:'previous',examTaken:true,examTakenDate:'2026-09-14',date:'2026-09-14',order:1,topicIds:TOPICS.map(t=>t.id),assessments:[{type:'exam',label:'Examen',status:'taken',date:'2026-09-14'}]}],completed:[]}},
 ]);
 const SUBJECT_BY_ID=new Map(SUBJECT_CATALOG.map(subject=>[subject.id,subject]));
@@ -711,6 +716,7 @@ function subjectContent(subjectId){
   if(subject.contentKey==='spanish-v2') return {units,topics:[VOCAB_TOPIC,...TOPICS],reviewCards:[...VOCAB_CARDS,...REVIEW_CARDS],questions:[...SPANISH_VOCABULARY.questions,...Q]};
   if(subject.contentKey==='historia-v1') return {units,topics:HISTORY_CONTENT.topics,reviewCards:HISTORY_CONTENT.reviewCards,questions:HISTORY_CONTENT.questions};
   if(subject.contentKey==='science-v1') return {units,topics:SCIENCE_CONTENT.topics,reviewCards:SCIENCE_CONTENT.reviewCards,questions:SCIENCE_CONTENT.questions};
+  if(subject.contentKey==='math-v1') return {units,topics:MATH_CONTENT.topics,reviewCards:MATH_CONTENT.reviewCards,questions:MATH_CONTENT.questions};
   return {units,topics:[],reviewCards:[],questions:[]};
 }
 function unitTopics(unitId){
@@ -730,8 +736,8 @@ function activeContent(){return subjectContent(activeSubject().id);}
 function activeTopics(){return activeContent().topics;}
 function activeReviewCards(){return activeContent().reviewCards;}
 function activeQuestions(){return activeContent().questions;}
-function allTopics(){return [VOCAB_TOPIC,...TOPICS,...HISTORY_CONTENT.topics,...SCIENCE_CONTENT.topics];}
-function allQuestions(){return [...SPANISH_VOCABULARY.questions,...Q,...HISTORY_CONTENT.questions,...SCIENCE_CONTENT.questions];}
+function allTopics(){return [VOCAB_TOPIC,...TOPICS,...HISTORY_CONTENT.topics,...SCIENCE_CONTENT.topics,...MATH_CONTENT.topics];}
+function allQuestions(){return [...SPANISH_VOCABULARY.questions,...Q,...HISTORY_CONTENT.questions,...SCIENCE_CONTENT.questions,...MATH_CONTENT.questions];}
 function questionSubjectId(question){return question?.subjectId||'espanol';}
 function topicForQuestion(question){return subjectContent(questionSubjectId(question)).topics.find(topic=>topic.id===question?.topic)||null;}
 function approvedAssistantContext(subjectId,unitId,topicId){
@@ -791,7 +797,7 @@ const state = {
     practiceCountsByDefault:true,
     strictWrittenAnswers:false,
     examTopics:[VOCAB_TOPIC,...TOPICS].map(t=>t.id),
-    examTopicsBySubject:{historia:HISTORY_CONTENT.topics.map(t=>t.id),ciencia:SCIENCE_CONTENT.topics.map(t=>t.id)},
+    examTopicsBySubject:{historia:HISTORY_CONTENT.topics.map(t=>t.id),ciencia:SCIENCE_CONTENT.topics.map(t=>t.id),matematicas:MATH_CONTENT.topics.map(t=>t.id)},
     lastSeenUpdate:'',
     seenUpdateIds:[],
     seenCalendarIds:[],
@@ -853,7 +859,7 @@ function applySavedData(d){
   });
   ['totalAnswered','totalCorrect','currentStreak','bestStreak','studySeconds'].forEach(k=>{ if(Number.isFinite(d[k])) state[k]=d[k]; });
   if(d.subjectTotals && typeof d.subjectTotals==='object' && !Array.isArray(d.subjectTotals)){
-    for(const subjectId of ['historia','ciencia']){
+    for(const subjectId of ['historia','ciencia','matematicas']){
       const row=d.subjectTotals[subjectId];
       if(row && typeof row==='object') state.subjectTotals[subjectId]={
         answered:Math.max(0,Number(row.answered)||0),correct:Math.max(0,Number(row.correct)||0),
@@ -892,11 +898,11 @@ function applySavedData(d){
     if(typeof incoming.strictWrittenAnswers==='boolean')state.settings.strictWrittenAnswers=incoming.strictWrittenAnswers;
     if(Array.isArray(incoming.examTopics)) state.settings.examTopics=incoming.examTopics.filter(id=>[VOCAB_TOPIC,...TOPICS].some(t=>t.id===id));
     if(incoming.examTopicsBySubject && typeof incoming.examTopicsBySubject==='object' && !Array.isArray(incoming.examTopicsBySubject)){
-      const historyTopics=HISTORY_CONTENT.topics.map(topic=>topic.id),scienceTopics=SCIENCE_CONTENT.topics.map(topic=>topic.id);
-      state.settings.examTopicsBySubject={
-        historia:Array.isArray(incoming.examTopicsBySubject.historia)?incoming.examTopicsBySubject.historia.filter(id=>historyTopics.includes(id)):historyTopics,
-        ciencia:Array.isArray(incoming.examTopicsBySubject.ciencia)?incoming.examTopicsBySubject.ciencia.filter(id=>scienceTopics.includes(id)):scienceTopics
-      };
+      state.settings.examTopicsBySubject=Object.fromEntries(['historia','ciencia','matematicas'].map(subjectId=>{
+        const topicIds=subjectContent(subjectId).topics.map(topic=>topic.id);
+        const incomingIds=incoming.examTopicsBySubject[subjectId];
+        return [subjectId,Array.isArray(incomingIds)?incomingIds.filter(id=>topicIds.includes(id)):topicIds];
+      }));
     }
     if(typeof incoming.lastSeenUpdate==='string') state.settings.lastSeenUpdate=incoming.lastSeenUpdate.slice(0,20);
     if(Array.isArray(incoming.seenUpdateIds))state.settings.seenUpdateIds=incoming.seenUpdateIds.filter(value=>typeof value==='string').slice(-100);
@@ -1208,7 +1214,12 @@ function recordAnswer(q, correct){
   if(s.recent.length>20) s.recent.shift();
   if(!correct){
     let ex = state.errors.find(e=>e.qid===q.id);
-    const scienceError={userAnswer:sessionSelection,correctAnswer:correctAnswerLabel(q),formula:q.formula||'',errorType:q.type==='numeric'?(SCIENCE_CONTENT.checkNumericAnswer(q,sessionSelection).errorType||q.errorType):q.errorType||'',explanation:q.simpleExplanation||q.exp||''};
+    const workspaceErrorType=q.type==='numeric'
+      ? SCIENCE_CONTENT.checkNumericAnswer(q,sessionSelection).errorType
+      : q.type==='math-workspace'
+        ? MATH_CONTENT.checkDmsAnswer(q,sessionSelection).errorType
+        : '';
+    const scienceError={userAnswer:sessionSelection,correctAnswer:correctAnswerLabel(q),formula:q.formula||'',errorType:workspaceErrorType||q.errorType||'',explanation:q.simpleExplanation||q.exp||''};
     if(ex){ ex.times++; ex.last=Date.now();Object.assign(ex,scienceError); }
     else state.errors.push({qid:q.id, times:1, last:Date.now(),...scienceError});
   } else {
@@ -1885,7 +1896,7 @@ function renderPracticaHome(main){
     <div class="pagehead"><h1>Práctica de ${subject.name}</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
     ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><h3 style="margin:0 0 5px;">Práctica guardada</h3><p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Continúa exactamente donde la dejaste.</p><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></div>`})():''}
     <section class="card" id="practiceTopicPicker"><div class="system-row"><div><p class="section-title">Tema</p><h2 style="margin:0">${selectedTopic?'Cambiar tema':'Elige qué quieres practicar'}</h2></div></div><div class="grid grid-3" style="margin-top:14px;">${(isSpanish?[VOCAB_TOPIC]:topics).map(t=>{const m=computeMastery(t.id);return `<button type="button" class="card mode-card ${selectedTopic?.id===t.id?'selected':''}" data-select-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></button>`}).join('')}</div></section>
-    ${selectedTopic?`<section class="card"><h2 id="practiceTopicTitle" tabindex="-1">${escHtml(selectedTopic.name)}</h2><p class="cloud-note">${computeMastery(selectedTopic.id).pct}% dominado</p><div class="btn-row"><button class="btn" data-topic="${selectedTopic.id}">Practicar</button><button class="btn ghost" id="reviewPracticeTopic">Repasar</button><button class="icon-btn" id="practiceTopicProgress">Ver progreso</button></div></section>`:'<p class="cloud-note">Selecciona un tema arriba para comenzar.</p>'}
+    ${selectedTopic?`<section class="card"><h2 id="practiceTopicTitle" tabindex="-1">${escHtml(selectedTopic.name)}</h2><p class="cloud-note">${computeMastery(selectedTopic.id).pct}% dominado</p><div class="btn-row"><button class="btn" data-topic="${selectedTopic.id}">Practicar</button><button class="btn ghost" id="reviewPracticeTopic">Repasar</button>${subject.id==='matematicas'?'<button class="icon-btn" id="learnMathProcedure">¿No sabes cómo multiplicar? Aprender el procedimiento</button>':''}<button class="icon-btn" id="practiceTopicProgress">Ver progreso</button></div></section>`:'<p class="cloud-note">Selecciona un tema arriba para comenzar.</p>'}
     ${(()=>{const recent=(state.settings.pausedPractices||[]).filter(row=>row.subjectId===subject.id).slice(-3).reverse();return recent.length?`<section class="card"><h2>Prácticas guardadas</h2><p class="cloud-note">Puedes empezar otra práctica sin perder estas.</p>${recent.map(row=>`<div class="system-row" style="margin-top:10px"><span>${row.answers?.length||0} contestadas · ${row.queueIds?.length||0} preguntas</span><div class="btn-row"><button class="icon-btn" data-resume-paused="${escHtml(row.id)}">Continuar</button><button class="icon-btn danger-soft" data-discard-paused="${escHtml(row.id)}">Descartar</button></div></div>`).join('')}</section>`:''})()}
     <details class="card ui-disclosure"><summary><span>Más opciones</span><span class="cloud-note">Modos especiales y configuración</span></summary>
       ${isSpanish&&selectedTopic?.id==='vocabulario'?`<div class="btn-row" style="margin-bottom:14px">${SPANISH_VOCABULARY.modes.filter(mode=>!['study','general'].includes(mode.id)).map(mode=>`<button class="icon-btn" data-vocab-mode="${mode.id}">${mode.label}</button>`).join('')}</div>`:''}
@@ -1904,6 +1915,7 @@ function renderPracticaHome(main){
   const getCount=()=>document.getElementById('countPractice').checked;
   main.querySelectorAll('[data-select-topic]').forEach(button=>button.addEventListener('click',()=>{const countStats=getCount();state.settings.practiceTopicBySubject ||= {};state.settings.practiceTopicBySubject[subject.id]=button.dataset.selectTopic;state.activeTopicId=button.dataset.selectTopic;saveState();renderPracticaHome(main);const countBox=main.querySelector('#countPractice');if(countBox)countBox.checked=countStats;main.querySelector('#practiceTopicTitle')?.focus();}));
   main.querySelector('#reviewPracticeTopic')?.addEventListener('click',()=>platformUiContext().reviewTopic(subject.id,selectedTopic.id));
+  main.querySelector('#learnMathProcedure')?.addEventListener('click',()=>startSession({mode:'practica',mathLearning:true,questionIds:MATH_CONTENT.banks.learning.map(question=>question.id),preserveOrder:true,countStats:getCount()}));
   main.querySelectorAll('[data-resume-paused]').forEach(button=>button.addEventListener('click',()=>resumePausedPracticeById(button.dataset.resumePaused)));
   main.querySelectorAll('[data-discard-paused]').forEach(button=>button.addEventListener('click',()=>{if(confirm('¿Descartar esta práctica guardada? No podrás recuperarla.')){discardPausedPracticeById(button.dataset.discardPaused);render();}}));
   main.querySelector('#practiceTopicProgress')?.addEventListener('click',()=>goto('dashboard'));
@@ -1916,7 +1928,9 @@ function renderPracticaHome(main){
       render();
     }
   });
-  main.querySelectorAll('[data-topic]').forEach(c=>c.addEventListener('click', ()=>startSession({mode:'practica', topic:c.dataset.topic, countStats:getCount()})));
+  main.querySelectorAll('[data-topic]').forEach(c=>c.addEventListener('click', ()=>startSession(subject.id==='matematicas'
+    ? {mode:'practica',questionIds:MATH_CONTENT.banks.practice.map(question=>question.id),countStats:getCount()}
+    : {mode:'practica', topic:c.dataset.topic, countStats:getCount()})));
   main.querySelectorAll('[data-vocab-mode]').forEach(button=>button.addEventListener('click',()=>{
     const mode=button.dataset.vocabMode;
     if(mode==='study'){repasoFilter='vocabulario';repasoIndex=0;state.activeTopicId='vocabulario';state.lastVisitedTopicBySubject.espanol='vocabulario';goto('repasoCards');return;}
@@ -2092,7 +2106,8 @@ function renderExperimentalHome(main){
    EXAMEN HOME
 ========================================================= */
 function renderExamenHome(main){
-  const subject=activeSubject(),topics=activeTopics(),questions=activeQuestions();
+  const subject=activeSubject(),topics=activeTopics();
+  const questions=subject.id==='matematicas'?MATH_CONTENT.questionsForMode('practice'):activeQuestions();
   if(!questions.length){main.innerHTML=`<div class="pagehead"><h1>Examen de ${subject.name}</h1><p>Todavía no existe un banco académico aprobado para esta materia.</p></div><div class="empty-state"><span class="ic">○</span>No se inventaron unidades, temas ni preguntas.</div>`;return;}
   const savedDefaults=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
   const defaults = new Set(savedDefaults?.length?savedDefaults:topics.map(t=>t.id));
@@ -2105,7 +2120,7 @@ function renderExamenHome(main){
       </div>
       <p class="section-title">Número de preguntas</p>
       <div class="btn-row" id="examSize" style="margin-bottom:20px;">
-        ${(subject.id==='espanol'&&topics.some(topic=>topic.id==='vocabulario')?[5,10,15,20]:[10,20,25,30,50]).map(n=>`<button class="chip" data-n="${n}">${n} preguntas</button>`).join('')}
+        ${(subject.id==='espanol'&&topics.some(topic=>topic.id==='vocabulario')?[5,10,15,20]:subject.id==='matematicas'?[MATH_CONTENT.questionsForMode('practice').length]:[10,20,25,30,50]).map(n=>`<button class="chip" data-n="${n}">${n} preguntas</button>`).join('')}
         <button class="chip" data-n="all">Examen completo</button>
       </div>
       <div class="btn-row"><button class="btn" id="startExam" disabled>Selecciona un número de preguntas</button><button class="btn ghost" id="clearExamSelection" type="button">Limpiar selección</button></div>
@@ -2138,7 +2153,10 @@ function renderExamenHome(main){
 function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]); }
 
 function startSession(opts){
-  const subject=activeSubject(),content=activeContent(),topics=content.topics,questions=content.questions;
+  const subject=activeSubject(),content=activeContent(),topics=content.topics;
+  const questions=subject.id==='matematicas'
+    ? MATH_CONTENT.questionsForMode(opts.mathLearning?'learning':'practice')
+    : content.questions;
   if(hasResumablePractice() && state.view!=='session' && !opts.forceNew){
     if(stashCurrentPractice()) showToast('Práctica anterior guardada');
   }
@@ -2177,7 +2195,7 @@ function startSession(opts){
   } else {
     pool = questions.slice();
   }
-  pool = shuffle(pool);
+  if(!opts.preserveOrder) pool = shuffle(pool);
   if(opts.limit) pool = pool.slice(0, Math.min(opts.limit, pool.length));
   if(opts.errorsOnly && pool.length===0){showToast('Todavía no hay errores de este contenido para practicar.',true);return;}
   if(pool.length===0) pool = shuffle(questions).slice(0, opts.limit||10);
@@ -2253,6 +2271,7 @@ function renderSession(main){
   }
   const isExam = s.mode==='examen';
   const isSciencePracticeExam = isExam && s.subjectId==='ciencia';
+  const isMathPracticeExam = isExam && s.subjectId==='matematicas';
   const isExperimental = !!s.experimental;
   const starred = !isExperimental && state.saved.has(q.id);
 
@@ -2269,6 +2288,7 @@ function renderSession(main){
       </div>
       <div class="q-progress"><div class="q-progress-fill" style="width:${(s.idx)/total*100}%"></div></div>
       ${isSciencePracticeExam?'<div class="practice-exam-note"><b>Examen de práctica</b><span>Puedes usar la fórmula y la calculadora para practicar el procedimiento.</span></div>':''}
+      ${isMathPracticeExam?'<div class="practice-exam-note"><b>Examen de práctica</b><span>Completa el procedimiento DMS y la multiplicación por columnas sin respuestas automáticas.</span></div>':''}
       <div class="q-card">
         <span class="q-topic-tag">${t.name} · ${q.dif}</span>
         <div id="qBody"></div>
@@ -2282,7 +2302,7 @@ function renderSession(main){
           <button class="icon-btn" id="restartQBtn" ${finalizedAnswer?'disabled':''}>↺ Reiniciar</button>
         </div>
         <div class="btn-row">
-          ${!isExam? `<button class="icon-btn" id="hintBtn">💡 Pista (${q.hints? Math.min(s.hintLevel,q.hints.length):0}/${q.hints?q.hints.length:0})</button>`:''}
+          ${!isExam&&q.type!=='math-workspace'? `<button class="icon-btn" id="hintBtn">💡 Pista (${q.hints? Math.min(s.hintLevel,q.hints.length):0}/${q.hints?q.hints.length:0})</button>`:''}
           <button class="btn" id="submitBtn" disabled>Responder</button>
         </div>
       </div>
@@ -2308,10 +2328,11 @@ function renderSession(main){
     s.currentSelection=null;
     s.hintLevel=0;
     s.answered=false;
+    if(q.type==='math-workspace'&&s.workspaceByQuestion)delete s.workspaceByQuestion[q.id];
     saveState();
     render();
   });
-  if(!isExam) document.getElementById('hintBtn').addEventListener('click', showHint);
+  if(!isExam) document.getElementById('hintBtn')?.addEventListener('click', showHint);
 
   if(finalizedAnswer&&isExam)s.currentSelection=finalizedAnswer.userAnswer??null;
   renderQuestionBody(q, isExam);
@@ -2343,7 +2364,7 @@ function renderAnsweredReview(answerIndex){
           <b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>
           ${a.skipped
             ? `<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`
-            : detailedExplanation(q,a.userAnswer,a.correct)}
+            : detailedExplanation(q,a.userAnswer,a.correct,a.procedure)}
         </div>
         <div class="btn-row" style="margin-top:16px;justify-content:space-between;">
           <button class="icon-btn" id="reviewPrev" ${idx===0?'disabled':''}>← Anterior</button>
@@ -2457,6 +2478,163 @@ function validateScienceWorkspace(q){
   return report;
 }
 
+function mathPaperFieldControl(field,value){
+  return `<div class="math-paper-field"><label for="math-${field.id}">${escHtml(field.label)}</label><input id="math-${field.id}" type="text" inputmode="decimal" autocomplete="off" data-workspace-field="${field.id}" value="${escHtml(value??'')}"></div>`;
+}
+
+function verticalOperationMarkup(step,workspace,presentation){
+  const operation=step.operation;
+  const inputCells=(cells,rowLabel,rowClass='')=>`<div class="math-digit-grid ${rowClass}" role="group" aria-label="${escHtml(rowLabel)}">${cells.map(field=>`<input class="math-cell" type="text" inputmode="numeric" maxlength="1" autocomplete="off" data-workspace-field="${field.id}" data-vertical-cell value="${escHtml(workspace[field.id]??'')}" aria-label="${escHtml(`${rowLabel}, columna ${field.column}`)}">`).join('')}</div>`;
+  const multiplier=`<div class="math-multiplier-line"><span class="math-operator" aria-hidden="true">×</span><div class="math-digit-grid" aria-label="Multiplicador 60">${operation.multiplier.cells.map(field=>`<span class="math-static-cell">${escHtml(field.expected)}</span>`).join('')}</div></div>`;
+  const partials=operation.partialRows.map((row,index)=>inputCells(row.cells,`Fila ${index+1} del producto parcial`)).join('');
+  const decimalValue=String(workspace[operation.result.decimal.id]??'');
+  const decimalChoices=Array.from({length:operation.columns+1},(_,position)=>`<button type="button" class="math-decimal-choice" data-decimal-field="${operation.result.decimal.id}" data-decimal-position="${position}" aria-label="Colocar el punto decimal en la posición ${position}" aria-pressed="${decimalValue===String(position)}">.</button>`).join('');
+  return `<div class="vertical-operation" data-vertical-operation="${operation.id}" style="--math-columns:${operation.columns}">
+    <span class="visually-hidden">Multiplicación vertical por 60</span>
+    ${inputCells(operation.carry.cells,'Acarreos','math-carry-row')}
+    ${inputCells(operation.operand.cells,'Número decimal sin el punto')}
+    ${multiplier}
+    <div class="math-operation-rule"></div>
+    ${partials}
+    <div class="math-operation-rule result"></div>
+    ${inputCells(operation.result.cells,'Resultado sin punto decimal')}
+    <div class="math-decimal-choices" aria-label="Colocación manual del punto decimal">${decimalChoices}</div>
+    ${presentation.showStepCheck?`<div class="math-step-actions"><button type="button" class="icon-btn" data-check-math-step="${step.id}">Comprobar paso</button></div><div class="math-step-feedback" data-math-step-feedback="${step.id}" aria-live="polite"></div>`:''}
+  </div>`;
+}
+
+function mathWorkspaceMarkup(q){
+  const config=window.MATH_WORKSPACE_CONFIG?.forQuestion(q);
+  if(!config)return '';
+  const workspace=state.session.workspaceByQuestion?.[q.id]||{};
+  const mode=state.session.mode==='examen'?'exam':q.learningMode?'learning':'practice';
+  const presentation=window.MATH_WORKSPACE_CONFIG.presentationFor(mode);
+  const learningSupport=window.MATH_WORKSPACE_CONFIG.learningSupportFor(config.helpLevel);
+  const effectivePresentation={...presentation,showStepCheck:mode==='learning'?learningSupport.showStepCheck:presentation.showStepCheck};
+  const visible=new Set(window.MATH_WORKSPACE_CONFIG.visibleSteps(config,workspace,mode));
+  const steps=config.steps.map(step=>{
+    let body='';
+    if(step.kind==='operation')body=verticalOperationMarkup(step,workspace,effectivePresentation);
+    else if(step.kind==='answer')body=`<div class="math-dms-answer">${step.fields.map(field=>mathPaperFieldControl(field,workspace[field.id])).join('')}</div>`;
+    else body=step.fields.map(field=>mathPaperFieldControl(field,workspace[field.id])).join('');
+    const roundingNote=step.kind==='rounding'&&q.learningMode?'<p class="cloud-note">Los segundos tienen decimal. Redondea al entero más cercano.</p>':'';
+    const cue=mode==='learning'&&learningSupport.showStepCue?`<p class="math-step-cue">${escHtml(step.guidance||'Completa este paso antes de continuar.')}</p>`:'';
+    return `<section class="math-paper-step" data-math-step="${step.id}" ${visible.has(step.id)?'':'hidden'}><h4 class="math-paper-heading">${escHtml(step.title)}</h4>${cue}${roundingNote}${body}</section>`;
+  }).join('');
+  const learningHelpItems=learningSupport.helpIds===null?config.helpItems:config.helpItems.filter(item=>learningSupport.helpIds.includes(item.id));
+  const helpItems=mode==='learning'?learningHelpItems.slice(0,learningSupport.helpLimit):config.helpItems;
+  const helpOpen=Object.prototype.hasOwnProperty.call(workspace,'mathHelpOpen')?workspace.mathHelpOpen===true:mode==='learning'&&learningSupport.autoOpenHelp;
+  const activeHelp=helpItems.find(item=>item.id===workspace.mathHelpTopic)||helpItems[0];
+  const help=presentation.showHelp&&activeHelp?`<section class="math-help"><button type="button" class="icon-btn" data-toggle-math-help aria-expanded="${helpOpen}">¿Necesitas ayuda?</button><div class="math-help-panel" data-math-help-panel ${helpOpen?'':'hidden'}><div class="math-help-topics">${helpItems.map(item=>`<button type="button" class="math-help-topic ${item.id===activeHelp.id?'active':''}" data-math-help-topic="${item.id}">${escHtml(item.label)}</button>`).join('')}</div><p class="math-help-text" data-math-help-text>${escHtml(activeHelp.text)}</p></div></section>`:'';
+  return `<section class="math-notebook" data-math-workspace data-workspace-kind="dms" data-math-mode="${mode}">
+    <header class="math-notebook-head"><h3>Área de trabajo</h3>${presentation.showLearning?`<span class="math-learning-badge">${escHtml(config.learningStage)}</span>`:'<span class="status-tag">Libreta</span>'}</header>
+    ${steps}
+    <div class="workspace-feedback" id="workspaceFeedback" aria-live="polite"></div>
+    ${help}
+  </section>`;
+}
+
+function wireMathWorkspace(q){
+  const root=document.querySelector('[data-math-workspace]');
+  if(!root)return;
+  const s=state.session;
+  const config=window.MATH_WORKSPACE_CONFIG.forQuestion(q);
+  const mode=s.mode==='examen'?'exam':q.learningMode?'learning':'practice';
+  const learningSupport=window.MATH_WORKSPACE_CONFIG.learningSupportFor(config.helpLevel);
+  const learningHelpItems=learningSupport.helpIds===null?config.helpItems:config.helpItems.filter(item=>learningSupport.helpIds.includes(item.id));
+  const helpItems=mode==='learning'?learningHelpItems.slice(0,learningSupport.helpLimit):config.helpItems;
+  s.workspaceByQuestion=s.workspaceByQuestion&&typeof s.workspaceByQuestion==='object'?s.workspaceByQuestion:{};
+  s.workspaceByQuestion[q.id]=s.workspaceByQuestion[q.id]&&typeof s.workspaceByQuestion[q.id]==='object'?s.workspaceByQuestion[q.id]:{};
+  const values=s.workspaceByQuestion[q.id];
+  const refreshProgress=()=>{
+    for(const operation of Object.values(config.operationsByStep)){
+      const product=window.MATH_WORKSPACE.verticalOperationValue(operation,values);
+      if(Number.isFinite(product))values[operation.resultValueId]=product;
+    }
+    const visible=new Set(window.MATH_WORKSPACE_CONFIG.visibleSteps(config,values,mode));
+    root.querySelectorAll('[data-math-step]').forEach(step=>{step.hidden=!visible.has(step.dataset.mathStep);});
+  };
+  const syncAnswer=()=>{
+    if(sessionAnswerAt(s,s.idx))return;
+    refreshProgress();
+    sessionSelection={degrees:values.finalDegrees??'',minutes:values.finalMinutes??'',seconds:values.finalSeconds??''};
+    s.currentSelection=sessionSelection;
+    saveState();
+    enableSubmit(['degrees','minutes','seconds'].every(key=>String(sessionSelection[key]).trim()!==''));
+  };
+  root.querySelectorAll('[data-workspace-field]').forEach(control=>{
+    const update=()=>{
+      if(control.hasAttribute('data-vertical-cell'))control.value=control.value.replace(/\D/g,'').slice(-1);
+      values[control.dataset.workspaceField]=control.value;
+      control.removeAttribute('aria-invalid');
+      const feedback=document.getElementById('workspaceFeedback');
+      if(feedback){feedback.textContent='';feedback.className='workspace-feedback';}
+      syncAnswer();
+    };
+    control.addEventListener('input',()=>{update();if(control.hasAttribute('data-vertical-cell')&&control.value){const operationCells=[...control.closest('[data-vertical-operation]').querySelectorAll('[data-vertical-cell]')];const index=operationCells.indexOf(control);operationCells[index+1]?.focus();}});
+    control.addEventListener('change',update);
+    if(control.hasAttribute('data-vertical-cell'))control.addEventListener('keydown',event=>{
+      const row=control.closest('.math-digit-grid');
+      const rowCells=[...row.querySelectorAll('[data-vertical-cell]')];
+      const column=rowCells.indexOf(control);
+      const operationRows=[...control.closest('[data-vertical-operation]').querySelectorAll('.math-digit-grid')].map(grid=>[...grid.querySelectorAll('[data-vertical-cell]')]).filter(cells=>cells.length);
+      const rowIndex=operationRows.findIndex(cells=>cells.includes(control));
+      if(event.key==='ArrowRight'){event.preventDefault();rowCells[column+1]?.focus();}
+      if(event.key==='ArrowLeft'){event.preventDefault();rowCells[column-1]?.focus();}
+      if(event.key==='ArrowDown'){event.preventDefault();operationRows[rowIndex+1]?.[column]?.focus();}
+      if(event.key==='ArrowUp'){event.preventDefault();operationRows[rowIndex-1]?.[column]?.focus();}
+      if(event.key==='Backspace'&&!control.value){event.preventDefault();rowCells[column-1]?.focus();}
+    });
+  });
+  root.querySelectorAll('[data-decimal-position]').forEach(button=>button.addEventListener('click',()=>{
+    const fieldId=button.dataset.decimalField;
+    values[fieldId]=button.dataset.decimalPosition;
+    root.querySelectorAll(`[data-decimal-field="${fieldId}"]`).forEach(choice=>{choice.setAttribute('aria-pressed',String(choice===button));choice.removeAttribute('aria-invalid');});
+    syncAnswer();
+  }));
+  root.querySelectorAll('[data-check-math-step]').forEach(button=>button.addEventListener('click',()=>{
+    const stepId=button.dataset.checkMathStep;
+    const operation=config.operationsByStep[stepId];
+    const report=window.MATH_WORKSPACE.validateVerticalOperation(operation,values);
+    const feedback=root.querySelector(`[data-math-step-feedback="${stepId}"]`);
+    root.querySelectorAll(`[data-math-step="${stepId}"] [aria-invalid]`).forEach(control=>control.removeAttribute('aria-invalid'));
+    if(report.valid){feedback.className='math-step-feedback good';feedback.textContent='Paso comprobado.';return;}
+    const control=root.querySelector(`[data-workspace-field="${report.fieldId}"], [data-decimal-field="${report.fieldId}"]`);
+    control?.setAttribute('aria-invalid','true');
+    feedback.className='math-step-feedback bad';feedback.textContent=`${report.category}: ${report.message}`;
+    control?.focus();
+  }));
+  const helpToggle=root.querySelector('[data-toggle-math-help]');
+  helpToggle?.addEventListener('click',()=>{
+    const panel=root.querySelector('[data-math-help-panel]');
+    const open=helpToggle.getAttribute('aria-expanded')!=='true';
+    helpToggle.setAttribute('aria-expanded',String(open));panel.hidden=!open;values.mathHelpOpen=open;saveState();
+  });
+  root.querySelectorAll('[data-math-help-topic]').forEach(button=>button.addEventListener('click',()=>{
+    values.mathHelpTopic=button.dataset.mathHelpTopic;
+    root.querySelectorAll('[data-math-help-topic]').forEach(item=>item.classList.toggle('active',item===button));
+    root.querySelector('[data-math-help-text]').textContent=helpItems.find(item=>item.id===values.mathHelpTopic)?.text||'';
+    saveState();
+  }));
+  syncAnswer();
+}
+
+function validateMathWorkspace(q){
+  const config=window.MATH_WORKSPACE_CONFIG?.forQuestion(q);
+  if(!config)return{valid:true};
+  const values=state.session.workspaceByQuestion?.[q.id]||{};
+  const report=window.MATH_WORKSPACE_CONFIG.validateWorkspace(config,values);
+  const feedback=document.getElementById('workspaceFeedback');
+  document.querySelectorAll('[data-workspace-field],[data-decimal-field]').forEach(control=>control.removeAttribute('aria-invalid'));
+  if(!report.valid){
+    const control=document.querySelector(`[data-workspace-field="${report.fieldId}"], [data-decimal-field="${report.fieldId}"]`);
+    control?.setAttribute('aria-invalid','true');
+    if(feedback){feedback.className='workspace-feedback bad';feedback.textContent=`${report.category}: ${report.message}`;}
+    control?.focus();
+  }else if(feedback){feedback.className='workspace-feedback good';feedback.textContent='Procedimiento completo y listo para comprobar.';}
+  return report;
+}
+
 function sciencePracticeToolsMarkup(q){
   if(!window.SCIENCE_PRACTICE_TOOLS?.toolsEnabled(q,state.session)) return '';
   const help=window.SCIENCE_PRACTICE_TOOLS.helpForQuestion(q);
@@ -2556,6 +2734,9 @@ function renderQuestionBody(q, isExam){
     valueInput.addEventListener('input',updateNumeric);unitInput.addEventListener('input',updateNumeric);unitInput.addEventListener('change',updateNumeric);
     wireScienceWorkspace(q);
     wireSciencePracticeTools();
+  } else if(q.type==='math-workspace'){
+    box.innerHTML=`<p class="q-prompt">${q.prompt}</p>${mathWorkspaceMarkup(q)}${isExam?'':'<p class="cloud-note">La libreta organiza el espacio; tú haces la matemática.</p>'}`;
+    wireMathWorkspace(q);
   } else if(q.type==='seg'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
       <p class="seg-key">MDP = prefijo · LEX = lexema · MDI = interfijo · MDS = sufijo · MF = morfema flexivo</p>
@@ -2601,7 +2782,7 @@ function renderQuestionBody(q, isExam){
     }));
   }
   document.getElementById('feedbackZone').innerHTML='';
-  const availableHints=Array.isArray(q.hints)?q.hints:[];
+  const availableHints=q.type==='math-workspace'?[]:Array.isArray(q.hints)?q.hints:[];
   state.session.hintLevel=Math.max(0,Math.min(Number(state.session.hintLevel)||0,availableHints.length));
   document.getElementById('hintZone').innerHTML=availableHints.slice(0,state.session.hintLevel).map((hint,index)=>`<div class="hint-box"><b>Pista ${index+1}:</b> ${hint}</div>`).join('');
   const hintBtn=document.getElementById('hintBtn');
@@ -2612,6 +2793,7 @@ function renderQuestionBody(q, isExam){
   if(q.type==='seg') enableSubmit(Array.isArray(savedSelection) && savedSelection.length===q.parts.length && savedSelection.every(Boolean));
   else if(q.type==='eviden') enableSubmit(Number.isInteger(savedSelection?.sentence) && (!q.followup || Number.isInteger(savedSelection?.follow)));
   else if(q.type==='numeric') enableSubmit(savedSelection&&String(savedSelection.value??'').trim()!==''&&String(savedSelection.unit??'').trim()!=='');
+  else if(q.type==='math-workspace') enableSubmit(savedSelection&&['degrees','minutes','seconds'].every(key=>String(savedSelection[key]??'').trim()!==''));
   else enableSubmit(savedSelection!==null && savedSelection!=='');
   if(q.type==='numeric'&&window.SCIENCE_PRACTICE_TOOLS?.toolsEnabled(q,state.session)) document.getElementById('submitBtn').textContent='Comprobar';
 }
@@ -2642,6 +2824,7 @@ function checkCorrectness(q, ans){
     return ans && [q.answer,...(q.acceptedAnswers||[])].some(answer=>normalize(ans,strict)===normalize(answer,strict));
   }
   if(q.type==='numeric') return SCIENCE_CONTENT.checkNumericAnswer(q,ans).correct;
+  if(q.type==='math-workspace') return MATH_CONTENT.checkDmsAnswer(q,ans).correct;
   if(q.type==='seg') return Array.isArray(ans) && q.parts.every((p,i)=>normalizeMorphRole(ans[i])===normalizeMorphRole(p.role));
   if(q.type==='eviden'){
     const okSentence = ans?.sentence===q.correctSentence;
@@ -2659,6 +2842,7 @@ function answerLabel(q, ans){
   if(q.type==='tf') return ans===true?'Verdadero':ans===false?'Falso':'Sin respuesta';
   if(q.type==='fill') return ans || 'Sin respuesta';
   if(q.type==='numeric') return ans?`${ans.value||'?'} ${ans.unit||'(sin unidad)'}`:'Sin respuesta';
+  if(q.type==='math-workspace') return ans?`${ans.degrees||'?'}° ${ans.minutes||'?'}′ ${ans.seconds||'?'}″`:'Sin respuesta';
   if(q.type==='seg') return Array.isArray(ans)? ans.map(normalizeMorphRole).join(' · ') : 'Sin respuesta';
   if(q.type==='eviden'){
     const sent = Number.isInteger(ans?.sentence) ? q.reading?.[ans.sentence] : null;
@@ -2672,6 +2856,7 @@ function correctAnswerLabel(q){
   if(q.type==='tf') return q.correct?'Verdadero':'Falso';
   if(q.type==='fill') return q.answer || '';
   if(q.type==='numeric') return `${q.answer} ${q.unitSymbol}`;
+  if(q.type==='math-workspace') return `${q.answer.degrees}° ${q.answer.minutes}′ ${q.answer.seconds}″`;
   if(q.type==='seg') return q.parts?.map(p=>`${p.text || p.part || p.segment || ''} = ${p.role}`).join(' · ') || '';
   if(q.type==='eviden'){
     const sent=q.reading?.[q.correctSentence];
@@ -2800,7 +2985,26 @@ function learningReferenceHtml(q, ans, correct){
     ${example?`<div class="learning-box example-box"><span class="learning-label">Ejemplo para entenderlo</span>${escHtml(example)}</div>`:''}
   </div>`;
 }
-function detailedExplanation(q, ans, correct){
+function mathProcedureReview(q,procedure){
+  if(q?.type!=='math-workspace'||!procedure||typeof procedure!=='object')return '';
+  const config=window.MATH_WORKSPACE_CONFIG?.forQuestion(q);
+  if(!config)return '';
+  const shown=value=>String(value??'').trim()===''?'·':escHtml(String(value));
+  const row=cells=>cells.map(cell=>shown(procedure[cell.id])).join(' ');
+  const issues=window.MATH_WORKSPACE_CONFIG.reviewProcedure(config,procedure);
+  const issueMarkup=issues.length?`<div class="workspace-feedback bad"><b>Errores del procedimiento:</b>${issues.map(issue=>`<div>${escHtml(issue.stepTitle)} · ${escHtml(issue.category)}: ${escHtml(issue.message)}</div>`).join('')}</div>`:'<div class="workspace-feedback good">El procedimiento escrito no contiene errores.</div>';
+  const steps=config.steps.map(step=>{
+    if(step.kind==='operation'){
+      const operation=step.operation;
+      const partials=operation.partialRows.map(item=>row(item.cells)).join(' | ');
+      const decimal=shown(procedure[operation.result.decimal.id]);
+      return `<div class="math-review-step"><b>${escHtml(step.title)}</b><span class="math-review-operation">acarreo ${row(operation.carry.cells)} · número ${row(operation.operand.cells)} · × 60 · parciales ${partials} · suma ${row(operation.result.cells)} · punto en ${decimal}</span></div>`;
+    }
+    return `<div class="math-review-step"><b>${escHtml(step.title)}</b><span>${step.fields.map(field=>`${escHtml(field.label)}: ${shown(procedure[field.id])}`).join(' · ')}</span></div>`;
+  }).join('');
+  return `<details class="math-procedure-review"><summary><b>Revisar mi procedimiento</b></summary>${issueMarkup}${steps}</details>`;
+}
+function detailedExplanation(q, ans, correct, procedure){
   const selected=answerLabel(q, ans);
   const right=correctAnswerLabel(q);
   const why=escHtml(q.exp || recognitionTip(q));
@@ -2808,6 +3012,10 @@ function detailedExplanation(q, ans, correct){
     const result=SCIENCE_CONTENT.checkNumericAnswer(q,ans);
     const errorLabel=result.numberCorrect&&!result.unitCorrect?'UNIDAD':q.errorType||'OPERACIÓN';
     return `<div class="detail-block"><div class="detail-title">${correct?'Explicación':'Respuesta correcta'}</div><div class="why-box">${escHtml(q.simpleExplanation||q.exp)}</div>${correct?'':`<p><b>Error detectado: ${escHtml(errorLabel)}</b> · Tu respuesta: ${escHtml(selected)} · Correcta: ${escHtml(right)}</p>`}<details class="ui-disclosure"><summary><b>Ver procedimiento completo</b><span class="cloud-note">Fórmula, sustitución, procedimiento y unidades</span></summary><p>${escHtml(q.detailedExplanation)}</p></details></div>`;
+  }
+  if(q.type==='math-workspace'){
+    const result=MATH_CONTENT.checkDmsAnswer(q,ans);
+    return `<div class="detail-block"><div class="detail-title">${correct?'Explicación':'Respuesta correcta'}</div><div class="why-box">${escHtml(q.simpleExplanation)}</div>${correct?'':`<p><b>Error detectado: ${escHtml(result.errorType||'PROCEDIMIENTO')}</b> · Tu respuesta: ${escHtml(selected)} · Correcta: ${escHtml(right)}</p>`}${mathProcedureReview(q,procedure)}<details class="ui-disclosure"><summary><b>Ver procedimiento completo</b><span class="cloud-note">Grados, minutos, segundos y redondeo</span></summary><p>${escHtml(q.detailedExplanation)}</p></details></div>`;
   }
   let out='<div class="detail-block">';
 
@@ -2830,20 +3038,22 @@ function submitAnswer(){
   if(!q || !s || sessionAnswerAt(s,s.idx)) return;
   const submitBtn=document.getElementById('submitBtn');
   if(!submitBtn || submitBtn.disabled) return;
-  if(q.type==='numeric' && !validateScienceWorkspace(q).valid) return;
-  submitBtn.disabled=true;
   const isExam = s.mode==='examen';
+  if(q.type==='numeric' && !validateScienceWorkspace(q).valid) return;
+  if(q.type==='math-workspace' && !isExam && !validateMathWorkspace(q).valid) return;
+  submitBtn.disabled=true;
   const correct = checkCorrectness(q, sessionSelection);
   const fb=document.getElementById('feedbackZone');
 
   if(isExam){
-    s.answers.push({qid:q.id, correct, hintsUsed:s.hintLevel, userAnswer:sessionSelection});
+    const procedure=q.type==='math-workspace'?{...(s.workspaceByQuestion?.[q.id]||{})}:undefined;
+    s.answers.push({qid:q.id, correct, hintsUsed:s.hintLevel, userAnswer:sessionSelection,procedure});
     s.answered=true;
     saveState();
     submitBtn.textContent=s.idx===s.queue.length-1?'Revisar antes de entregar':'Siguiente';
     submitBtn.disabled=false;
     submitBtn.onclick = ()=>advance();
-    document.querySelectorAll('.opt,.fill-input,select,.sent,[data-workspace-field]').forEach(el=>{el.style.pointerEvents='none'; if('disabled' in el) el.disabled=true;});
+    document.querySelectorAll('.opt,.fill-input,select,.sent,[data-workspace-field],[data-decimal-position],[data-check-math-step],[data-toggle-math-help],[data-math-help-topic]').forEach(el=>{el.style.pointerEvents='none'; if('disabled' in el) el.disabled=true;});
     return;
   }
 
@@ -2867,6 +3077,14 @@ function submitAnswer(){
     submitBtn.textContent='Comprobar de nuevo';
     submitBtn.disabled=false;
     (result.numberCorrect?document.getElementById('numericUnit'):document.getElementById('numericValue'))?.focus();
+    saveState();
+  } else if(attemptStage===0 && q.type==='math-workspace'){
+    attemptStage=1;
+    s.attemptStage=1;
+    const result=MATH_CONTENT.checkDmsAnswer(q,sessionSelection);
+    fb.innerHTML=`<div class="feedback bad"><b>Revisa este paso</b>${escHtml(`La respuesta DMS todavía tiene un error en ${String(result.errorType||'el procedimiento').toLowerCase()}. Corrige ese paso sin cambiar los que ya comprobaste.`)}</div>`;
+    submitBtn.textContent='Comprobar de nuevo';
+    submitBtn.disabled=false;
     saveState();
   } else if(attemptStage===0 && q.type!=='numeric'){
     attemptStage=1;
@@ -2894,6 +3112,7 @@ function reenableInputs(q){
   box.querySelectorAll('select').forEach(s=>{ s.disabled=false; s.classList.remove('correct','incorrect'); s.value=''; });
   const fillEl = document.getElementById('fillInput'); if(fillEl){ fillEl.disabled=false; fillEl.classList.remove('correct','incorrect'); fillEl.value=''; }
   for(const id of ['numericValue','numericUnit']){const el=document.getElementById(id);if(el){el.disabled=false;el.classList.remove('correct','incorrect');el.value='';}}
+  if(q.type==='math-workspace') box.querySelectorAll('[data-workspace-field]').forEach(el=>{el.disabled=false;el.style.pointerEvents='auto';el.classList.remove('correct','incorrect');});
   box.querySelectorAll('.sent').forEach(s=>{ s.style.pointerEvents='auto'; s.classList.remove('picked','correct','incorrect'); });
   document.getElementById('submitBtn').disabled=true;
 }
@@ -2902,7 +3121,7 @@ function restoreFinalizedQuestion(q,isExam,answer){
   state.session.currentSelection=sessionSelection;
   state.session.answered=true;
   if(isExam){
-    document.querySelectorAll('.opt,.fill-input,select,.sent,[data-workspace-field]').forEach(el=>{el.style.pointerEvents='none';if('disabled' in el)el.disabled=true;});
+    document.querySelectorAll('.opt,.fill-input,select,.sent,[data-workspace-field],[data-decimal-position],[data-check-math-step],[data-toggle-math-help],[data-math-help-topic]').forEach(el=>{el.style.pointerEvents='none';if('disabled' in el)el.disabled=true;});
     const submitBtn=document.getElementById('submitBtn');
     submitBtn.textContent=s.idx===s.queue.length-1?'Revisar antes de entregar':'Siguiente';
     submitBtn.disabled=false;
@@ -2912,7 +3131,7 @@ function restoreFinalizedQuestion(q,isExam,answer){
   if(!answer.skipped) markAnswerVisual(q,answer.userAnswer,!!answer.correct);
   document.getElementById('feedbackZone').innerHTML=answer.skipped
     ? `<div class="feedback bad"><b>○ Saltada</b><div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div></div></div>`
-    : `<div class="feedback ${answer.correct?'good':'bad'}"><b>${answer.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,answer.userAnswer,!!answer.correct)}</div>`;
+    : `<div class="feedback ${answer.correct?'good':'bad'}"><b>${answer.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,answer.userAnswer,!!answer.correct,answer.procedure)}</div>`;
   finalizeStep();
 }
 function markAnswerVisual(q, ans, correct){
@@ -2936,6 +3155,9 @@ function markAnswerVisual(q, ans, correct){
   } else if(q.type==='numeric'){
     for(const id of ['numericValue','numericUnit']){const el=document.getElementById(id);if(el){el.disabled=true;el.classList.add(correct?'correct':'incorrect');}}
     box.querySelectorAll('[data-workspace-field]').forEach(el=>{el.disabled=true;el.style.pointerEvents='none';});
+  } else if(q.type==='math-workspace'){
+    box.querySelectorAll('[data-workspace-field]').forEach(el=>{el.disabled=true;el.style.pointerEvents='none';el.classList.add(correct?'correct':'incorrect');});
+    box.querySelectorAll('[data-decimal-position],[data-check-math-step],[data-toggle-math-help],[data-math-help-topic]').forEach(el=>{el.disabled=true;el.style.pointerEvents='none';});
   } else if(q.type==='seg'){
     box.querySelectorAll('select').forEach((sel,i)=>{
       sel.disabled=true;
@@ -3021,7 +3243,7 @@ function finishSession(){
     mode:s.mode,subjectId:s.subjectId||'espanol',unitId:s.unitId||currentUnit(s.subjectId||'espanol')?.id||null,total, correct:correctCount, pct, seconds:elapsed,
     byTopic, countsTowardProgress,
     examTopics:s.examTopics||[], examFull:!!s.examFull,
-    answers:s.answers.map(a=>({qid:a.qid,correct:!!a.correct,skipped:!!a.skipped,hintsUsed:a.hintsUsed||0,userAnswer:a.userAnswer??null}))
+    answers:s.answers.map(a=>({qid:a.qid,correct:!!a.correct,skipped:!!a.skipped,hintsUsed:a.hintsUsed||0,userAnswer:a.userAnswer??null,procedure:a.procedure??null}))
   });
 
   state.lastResult = {subjectId:s.subjectId||'espanol',unitId:s.unitId||currentUnit(s.subjectId||'espanol')?.id||null,total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, countsTowardProgress, examTopics:s.examTopics||[], examFull:!!s.examFull, experimental:!!s.experimental};
@@ -3076,7 +3298,7 @@ function renderResults(main){
     ${r.mode==='examen'? `<div class="card" style="margin-top:20px;">
       <p class="section-title">Explicación de cada respuesta</p>
       <p style="font-size:.86rem;color:var(--ink-soft);margin-bottom:14px;">Durante el examen no se muestran respuestas para no darte pistas. Aquí puedes revisar por qué cada contestación estuvo bien o mal.</p>
-      ${r.answers.map((a,i)=>{ const q=findQuestionById(a.qid); if(!q) return ''; return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`; }).join('')}
+      ${r.answers.map((a,i)=>{ const q=findQuestionById(a.qid); if(!q) return ''; return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,a.userAnswer,a.correct,a.procedure)}</div></div>`; }).join('')}
     </div>`:''}
   `;
   document.getElementById('backDash').addEventListener('click', ()=>goto('dashboard'));
@@ -3163,7 +3385,7 @@ function renderHistoryDetail(entry){
     <div class="pagehead"><h1>Revisión de sesión</h1><p>${entry.mode==='examen'?'Examen':'Práctica'} · ${escHtml(String(entry.date||''))} ${escHtml(String(entry.time||''))} · ${Number(entry.correct)||0}/${Number(entry.total)||0} (${Number(entry.pct)||0}%)</p></div>
     <div class="btn-row" style="margin-bottom:18px;"><button class="icon-btn" id="backHistory">← Volver al historial</button></div>
     ${answers.length? `<div class="card">
-      ${answers.map((a,i)=>{const q=findQuestionById(a.qid);if(!q)return'';const t=topicForQuestion(q);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct)}</div></div>`}).join('')}
+      ${answers.map((a,i)=>{const q=findQuestionById(a.qid);if(!q)return'';const t=topicForQuestion(q);return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="meta">${t?.name||''}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.skipped?'○ Saltada':a.correct?'✓ La sacaste bien':'✗ La sacaste mal'}</b>${a.skipped?`<div class="detail-block"><div class="detail-title">Respuesta correcta</div><div><span class="detail-answer">${escHtml(correctAnswerLabel(q))}</span></div><div class="why-box">${escHtml(q.exp||recognitionTip(q))}</div>${learningReferenceHtml(q,null,false)}<div class="detail-tip"><b>Cómo reconocerlo la próxima vez:</b> ${escHtml(recognitionTip(q))}</div></div>`:detailedExplanation(q,a.userAnswer,a.correct,a.procedure)}</div></div>`}).join('')}
     </div>` : `<div class="empty-state"><span class="ic">▥</span>Esta sesión es de una versión anterior y solo guardó el resultado general. Las sesiones nuevas sí guardarán cada pregunta y tu respuesta.</div>`}
   `;
   document.getElementById('backHistory').addEventListener('click',()=>goto('historial'));
