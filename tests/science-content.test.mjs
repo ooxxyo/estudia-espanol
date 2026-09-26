@@ -12,7 +12,7 @@ const SCIENCE = sandbox.window.SCIENCE_CONTENT;
 const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
 
 test('Ciencia está habilitada con tres bloques separados', () => {
-  assert.match(html, /id:'ciencia'.*status:'Prueba 28 sep'.*available:true.*contentKey:'science-v1'/);
+  assert.match(html, /id:'ciencia'.*status:'Prueba 30 sep'.*available:true.*contentKey:'science-v1'/);
   assert.deepEqual(Array.from(SCIENCE.topics, topic => topic.id), ['ciencia-si','densidad','temperatura']);
   assert.deepEqual(Array.from(SCIENCE.banks.si, q => q.topic === 'ciencia-si'), Array(SCIENCE.banks.si.length).fill(true));
   assert.deepEqual(Array.from(SCIENCE.banks.density, q => q.topic === 'densidad'), Array(SCIENCE.banks.density.length).fill(true));
@@ -31,13 +31,16 @@ test('la prueba real del 24 queda tomada y conserva sus 20 preguntas como snapsh
   assert.match(html, /questionIds:snapshot\?\.questionIds/);
 });
 
-test('la prueba del 28 conserva la prueba real como base y marca contenido adicional pendiente', () => {
-  const later = SCIENCE.unit.assessments.find(row => row.date === '2026-09-28');
+test('la prueba del 30 conserva la prueba real como base y marca contenido adicional pendiente', () => {
+  const later = SCIENCE.unit.assessments.find(row => row.date === '2026-09-30');
+  assert.equal(later.id, 'science-test-2026-09-30');
   assert.deepEqual(Array.from(later.topicIds), ['ciencia-si','densidad','temperatura']);
   assert.equal(later.contentPending, true);
   assert.equal(later.sourceAssessmentId, 'science-test-2026-09-24');
   assert.match(later.note, /contenido adicional/);
   assert.match(html, /topics:\['ciencia-si','densidad','temperatura'\],limit:30/);
+  assert.match(html, /Próxima prueba · miércoles 30 de septiembre de 2026/);
+  assert.match(html, /El miércoles incluye ese material/);
 });
 
 test('los bancos cumplen mínimos, IDs únicos y validador académico', () => {

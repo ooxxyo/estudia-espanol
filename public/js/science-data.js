@@ -18,11 +18,11 @@
         note: 'Prueba real proporcionada: Densidad, Sistema Internacional y una pregunta conceptual de Temperatura. No incluyó conversiones de temperatura.',
       },
       {
-        id: 'science-test-2026-09-28',
+        id: 'science-test-2026-09-30',
         type: 'quiz',
         label: 'Prueba',
         status: 'scheduled',
-        date: '2026-09-28',
+        date: '2026-09-30',
         topicIds: ['ciencia-si', 'densidad', 'temperatura'],
         contentPending: true,
         sourceAssessmentId: 'science-test-2026-09-24',
