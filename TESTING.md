@@ -33,6 +33,9 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 - **Navegación:** Anterior, Siguiente y Volver a pregunta actual sin alterar cola, respuestas ni estadísticas.
 - **Persistencia:** pausar antes y después de responder, recargar, reanudar y terminar; al iniciar otra práctica normal comprobar guardado automático sin modal, toast breve, recuperación desde Prácticas guardadas y confirmación solo al descartar. Conservar historial, errores, Guardadas y configuración.
 - **Continuidad de examen y resultados:** guardar el tamaño de examen como preferencia opcional por materia, restaurarlo tras navegar o recargar sin mezclar materias, conservar la vista lógica de origen de la sesión y regresar a ella desde Resultados; una sesión antigua sin origen debe usar `Examen` o `Practicar` según su modo.
+- **QoL móvil:** en 320×568, 375×667, 390×844, 430×932 y 1280×720 comprobar métricas de materia en dos columnas compactas, ausencia de overflow horizontal, `Ver` de contraseña con objetivo táctil de 44×44 px y acarreos/punto decimal del Math Workspace cómodos sin alterar su alineación.
+- **Historial accesible:** cada respuesta empieza colapsada como `details/summary`, conserva estado correcto/incorrecto/saltado, respuesta, explicación y procedimiento, y puede abrirse con teclado o toque sin cambiar el historial persistido.
+- **Selector de examen:** cada tamaño expone `aria-pressed`; la preferencia restaurada y cada selección actualizan a la vez el estado visual y el atributo accesible.
 - **Apariencia:** Claro, Oscuro, Automático y color personalizado en desktop y viewport móvil; recarga y cambio del esquema del sistema.
 - **Cuenta/cloud:** login por username/email, remember me, logout/login, sync, resolución de conflicto y usuario antiguo sin campos nuevos.
 - **Identidad:** cuenta antigua/nueva, fallback de displayName, rango, Veterano independiente de Admin y entitlement sin paywall.

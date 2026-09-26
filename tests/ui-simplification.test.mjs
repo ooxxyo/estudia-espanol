@@ -156,6 +156,60 @@ test('Home móvil libera la altura de las tarjetas para evitar bloques vacíos',
   assert.match(html, /@media \(max-width:620px\)\{[^\n]*\.hub-subject-card\{min-height:0\}/);
 });
 
+test('las métricas de materia mantienen dos columnas compactas en móvil', () => {
+  assert.match(html, /class="grid grid-4 dash-stats"/);
+  const base=html.indexOf('.dash-top{display:flex');
+  const mobile=html.indexOf('@media(max-width:480px){.dash-top{display:grid;justify-items:center}.dash-stats{width:100%;grid-template-columns:repeat(2,minmax(0,1fr))',base);
+  assert.ok(base>=0 && mobile>base);
+});
+
+test('Cuenta amplía el objetivo táctil de Ver sin agrandar el resto de controles', () => {
+  assert.match(html, /\.show-pass\{[^}]*min-width:44px[^}]*min-height:44px/);
+});
+
+test('el selector de tamaño de examen expone y sincroniza aria-pressed', () => {
+  const exam = html.slice(html.indexOf('function renderExamenHome('), html.indexOf('/* =========================================================\n   SESSION', html.indexOf('function renderExamenHome(')));
+  assert.match(exam, /aria-pressed="\$\{chosen===String\(n\)\}"/);
+  assert.match(exam, /aria-pressed="\$\{chosen==='all'\}"/);
+  assert.match(exam, /setAttribute\('aria-pressed',String\(selected\)\)/);
+});
+
+function renderHistoryDetailFixture() {
+  const main={innerHTML:''};
+  const back={addEventListener(){}};
+  const questions=new Map([
+    ['correcta',{id:'correcta',prompt:'Pregunta correcta'}],
+    ['incorrecta',{id:'incorrecta',prompt:'Pregunta incorrecta'}],
+  ]);
+  const sandbox={
+    document:{getElementById:id=>id==='main'?main:back},
+    findQuestionById:id=>questions.get(id),topicForQuestion:()=>({name:'Tema'}),
+    escHtml:value=>String(value),goto(){},
+    detailedExplanation:(question,userAnswer,correct,procedure)=>`<div class="kept-detail">${question.id}:${userAnswer}:${correct}:${procedure.marker}</div>`,
+  };
+  vm.createContext(sandbox);
+  const start=html.indexOf('function renderHistoryDetail(');
+  vm.runInContext(html.slice(start,html.indexOf('/* =========================================================\n   CUENTA',start))+`\nrenderHistoryDetail(${JSON.stringify({
+    mode:'examen',date:'26/9/2026',time:'10:00',correct:1,total:2,pct:50,
+    answers:[
+      {qid:'correcta',userAnswer:'A',correct:true,procedure:{marker:'procedimiento-1'}},
+      {qid:'incorrecta',userAnswer:'B',correct:false,procedure:{marker:'procedimiento-2'}},
+    ],
+  })});`,sandbox);
+  return main.innerHTML;
+}
+
+test('Historial colapsa cada respuesta sin perder estado, explicación ni procedimiento', () => {
+  const markup=renderHistoryDetailFixture();
+  assert.equal((markup.match(/<details class="history-answer"/g)||[]).length,2);
+  assert.equal((markup.match(/<summary>/g)||[]).length,2);
+  assert.doesNotMatch(markup,/<details class="history-answer"[^>]*\sopen(?:\s|>)/);
+  assert.match(markup,/✓ La sacaste bien/);
+  assert.match(markup,/✗ La sacaste mal/);
+  assert.match(markup,/correcta:A:true:procedimiento-1/);
+  assert.match(markup,/incorrecta:B:false:procedimiento-2/);
+});
+
 function renderLowScoreResultsFixture() {
   const answers=Array.from({length:10},(_,index)=>({qid:`density-${index}`,correct:index===0}));
   const questions=new Map(answers.map(answer=>[answer.qid,{id:answer.qid,topic:'densidad',prompt:`Pregunta ${answer.qid}`}]))

@@ -66,6 +66,13 @@ test('la práctica normal conserva pocos campos y lleva la multiplicación a la 
   assert.doesNotMatch(html,/>Primer acarreo</);
 });
 
+test('los acarreos y el punto decimal tienen objetivos táctiles cómodos', () => {
+  assert.match(html,/\.math-carry-row \.math-cell\{[^}]*min-height:44px[^}]*height:44px/);
+  assert.match(html,/\.math-decimal-choices\{[^}]*width:100%[^}]*max-width:calc\(var\(--math-columns\) \* 58px\)/);
+  assert.match(html,/\.math-decimal-choice\{[^}]*min-height:44px/);
+  assert.match(html,/@media\(max-width:520px\)\{[^\n]*\.math-decimal-choices\{max-width:calc\(var\(--math-columns\) \* 58px\)\}/);
+});
+
 test('Aprender es un flujo separado y la ayuda avanzada empieza cerrada en práctica normal', () => {
   assert.equal(CONTENT.banks.practice.every(question => question.learningMode === false),true);
   assert.equal(CONTENT.banks.learning.every(question => question.learningMode === true),true);
