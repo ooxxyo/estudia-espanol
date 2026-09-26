@@ -65,7 +65,7 @@ Estos trabajos permanecen futuros y no forman parte de la fase actual:
 
 | Iniciativa | Estado | Alcance |
 | --- | --- | --- |
-| Rediseño grande / Figma / Design System | Planned | Definir en Figma los fundamentos, componentes y flujos antes de sustituir el diseño actual. |
+| Rediseño grande / Figma / Design System | In Progress | Dirección y Motion System aprobados; Design System mínimo P0 en laboratorio aislado, todavía sin sustituir ni conectar estilos al producto actual. |
 | Calendar 1.0 | Planned | Evolucionar la base de calendario ya disponible con una experiencia completa y validada. |
 | Community / Progress | Planned | Consolidar la experiencia comunitaria y el progreso transversal sin mezclar contenido oficial con aportes. |
 | Owner Command Center | Planned | Centro operativo futuro para Owner, separado de los permisos y herramientas actuales. |

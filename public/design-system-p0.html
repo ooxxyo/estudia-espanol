@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Study Hub · Design System P0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&amp;family=Source+Sans+3:wght@400;500;600;650;700&amp;display=swap" rel="stylesheet">
+  <link href="./css/design-system-p0.css" rel="stylesheet">
+</head>
+<body style="margin:0">
+  <main data-shds="p0" data-shds-theme="light" data-shds-reduced="false">
+    <div class="shds-lab">
+      <header class="shds-lab-header">
+        <div>
+          <p class="shds-overline">Study Hub · Design System mínimo P0</p>
+          <h1 class="shds-lab-title">Preciso al estudiar.<br>Satisfactorio al avanzar.</h1>
+          <p class="shds-lab-lede">Una base pequeña para juzgar jerarquía, tacto, selección y progreso antes de conectar cualquier estilo al producto.</p>
+        </div>
+        <div class="shds-toolbar" aria-label="Preferencias del laboratorio">
+          <button class="shds-button shds-button--secondary" type="button" data-theme-toggle aria-pressed="false">Modo oscuro</button>
+          <button class="shds-button shds-button--secondary" type="button" data-reduced-motion aria-pressed="false">Reducir movimiento</button>
+        </div>
+      </header>
+
+      <section class="shds-section" aria-labelledby="foundations-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">01 · Fundamentos</p>
+            <h2 id="foundations-title">Papel cálido, tinta clara.</h2>
+          </div>
+          <p>El color comunica función. La superficie organiza sin convertir cada bloque en una tarjeta.</p>
+        </div>
+        <div class="shds-surface">
+          <div class="shds-token-row" aria-label="Paleta principal">
+            <div class="shds-swatch"><span class="shds-swatch-color" style="--shds-swatch:var(--shds-color-paper)"></span>Papel</div>
+            <div class="shds-swatch"><span class="shds-swatch-color" style="--shds-swatch:var(--shds-color-surface)"></span>Superficie</div>
+            <div class="shds-swatch"><span class="shds-swatch-color" style="--shds-swatch:var(--shds-color-ink)"></span>Tinta</div>
+            <div class="shds-swatch"><span class="shds-swatch-color" style="--shds-swatch:var(--shds-color-action)"></span>Acción</div>
+            <div class="shds-swatch"><span class="shds-swatch-color" style="--shds-swatch:var(--shds-color-success)"></span>Éxito</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="shds-section" aria-labelledby="type-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">02 · Tipografía en evaluación</p>
+            <h2 id="type-title">Fraunces + Source Sans 3</h2>
+          </div>
+          <p>Source Sans 3 se prueba aquí; esta muestra no constituye todavía su aprobación definitiva para producción.</p>
+        </div>
+        <div class="shds-surface">
+          <p class="shds-type-display">¿Qué estudiamos hoy?</p>
+          <p class="shds-type-body">La práctica continúa con precisión, ritmo y una jerarquía que permite leer párrafos en español con tildes sin perder comodidad.</p>
+          <p class="shds-type-meta">Miércoles, 30 de septiembre · evaluación pendiente · metadata secundaria</p>
+          <div class="shds-type-numbers" style="font-variant-numeric:tabular-nums">
+            <span>89.125°</span><span>89° 7′ 30″</span><span>23° 20′ 55″</span><span>K</span><span>g/mL</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="shds-section" aria-labelledby="surfaces-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">03 · Superficies</p>
+            <h2 id="surfaces-title">Profundidad sin ruido.</h2>
+          </div>
+          <p>Tres niveles bastan para P0: base, retraído y seleccionado.</p>
+        </div>
+        <div class="shds-grid shds-grid--three">
+          <article class="shds-surface"><h3>Superficie base</h3><p class="shds-meta">Contenido principal y lectura.</p></article>
+          <article class="shds-surface shds-surface--recessed"><h3>Área secundaria</h3><p class="shds-meta">Opciones o contexto de apoyo.</p></article>
+          <article class="shds-surface shds-surface--selected"><h3>Selección activa</h3><p class="shds-meta">Color, borde y énfasis trabajan juntos.</p></article>
+        </div>
+      </section>
+
+      <section class="shds-section" aria-labelledby="controls-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">04 · Acciones e inputs</p>
+            <h2 id="controls-title">Controles que responden.</h2>
+          </div>
+          <p>Objetivos táctiles cómodos, pressed state físico y foco imposible de perder.</p>
+        </div>
+        <div class="shds-grid">
+          <article class="shds-surface">
+            <h3>Jerarquía de acción</h3>
+            <div class="shds-actions" style="margin-top:16px">
+              <button class="shds-button shds-button--primary" type="button">Practicar <span aria-hidden="true">→</span></button>
+              <button class="shds-button shds-button--secondary" type="button">Repasar</button>
+              <button class="shds-button shds-button--text" type="button">Más opciones</button>
+              <button class="shds-button shds-button--icon" type="button" aria-label="Guardar">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21Z"/></svg>
+              </button>
+              <button class="shds-button shds-button--secondary" type="button" disabled>Desactivado</button>
+            </div>
+          </article>
+          <article class="shds-surface">
+            <h3>Campos</h3>
+            <div class="shds-form-grid" style="margin-top:16px">
+              <label class="shds-field-group"><span class="shds-label">Nombre visible</span><input class="shds-field" type="text" placeholder="Escribe un nombre"><span class="shds-help">Así aparecerá en tu dispositivo.</span></label>
+              <label class="shds-field-group"><span class="shds-label">Resultado</span><input class="shds-field" type="text" inputmode="decimal" value="89.125"><span class="shds-help">Usa teclado numérico cuando esté disponible.</span></label>
+              <label class="shds-field-group"><span class="shds-label">Unidad</span><input class="shds-field" type="text" value="g/mL" aria-invalid="true" aria-describedby="unit-error"><span class="shds-error" id="unit-error">Revisa el formato de la unidad.</span></label>
+              <label class="shds-field-group"><span class="shds-label">Campo no disponible</span><input class="shds-field" type="text" value="Pendiente" disabled></label>
+            </div>
+          </article>
+        </div>
+        <article class="shds-surface shds-save-demo">
+          <div>
+            <p class="shds-overline">FAVORITO / GUARDADO</p>
+            <h3>Pregunta de práctica</h3>
+            <p class="shds-meta">Una acción reversible: el icono, el texto y la semántica confirman el estado.</p>
+          </div>
+          <div class="shds-save-demo-actions">
+            <button class="shds-button shds-save-toggle" type="button" data-save-toggle aria-pressed="false" aria-label="Guardar">
+              <svg class="shds-save-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21Z"/></svg>
+              <span data-save-label>Guardar</span>
+            </button>
+            <button class="shds-button shds-save-toggle" type="button" data-save-toggle aria-pressed="false" aria-label="Guardar no disponible" disabled>
+              <svg class="shds-save-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.8A1.8 1.8 0 0 1 7.8 3h8.4A1.8 1.8 0 0 1 18 4.8V21l-6-3.6L6 21Z"/></svg>
+              <span>No disponible</span>
+            </button>
+          </div>
+          <p class="shds-meta shds-save-live" aria-live="polite" data-save-live>La pregunta no está guardada.</p>
+        </article>
+      </section>
+
+      <section class="shds-section" aria-labelledby="selection-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">05 · Selección y navegación</p>
+            <h2 id="selection-title">Cada estado se entiende.</h2>
+          </div>
+          <p>La selección tiene personalidad sin depender únicamente del color.</p>
+        </div>
+        <div class="shds-grid">
+          <article class="shds-surface">
+            <h3>Fila seleccionable</h3>
+            <div class="shds-choice-list" style="margin-top:16px">
+              <label class="shds-choice"><span class="shds-choice-index">01</span><span class="shds-choice-copy"><strong>Conceptos esenciales</strong><small>Lectura y práctica</small></span><input type="checkbox" checked></label>
+              <label class="shds-choice"><span class="shds-choice-index">02</span><span class="shds-choice-copy"><strong>Aplicación</strong><small>Ejercicios guiados</small></span><input type="checkbox"></label>
+            </div>
+            <div class="shds-segmented" aria-label="Cantidad de preguntas" style="margin-top:16px">
+              <button class="shds-button" type="button" aria-pressed="true" data-segment>10</button>
+              <button class="shds-button" type="button" aria-pressed="false" data-segment>25</button>
+              <button class="shds-button" type="button" aria-pressed="false" data-segment>Todas</button>
+            </div>
+          </article>
+          <article class="shds-surface">
+            <h3>Navegación visual</h3>
+            <nav class="shds-nav-demo" aria-label="Muestra de navegación" style="margin-top:16px">
+              <button class="shds-nav-item" type="button" aria-current="page"><span class="shds-nav-mark" aria-hidden="true">⌂</span>Hub</button>
+              <button class="shds-nav-item" type="button"><span class="shds-nav-mark" aria-hidden="true">□</span>Repasar</button>
+              <button class="shds-nav-item" type="button"><span class="shds-nav-mark" aria-hidden="true">✎</span>Practicar</button>
+            </nav>
+          </article>
+        </div>
+      </section>
+
+      <section class="shds-section" aria-labelledby="feedback-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">06 · Feedback y progreso</p>
+            <h2 id="feedback-title">El avance se siente vivo.</h2>
+          </div>
+          <p>La energía aumenta con el significado del evento, no con la frecuencia.</p>
+        </div>
+        <div class="shds-grid">
+          <article class="shds-surface">
+            <div class="shds-feedback-stack">
+              <div class="shds-feedback shds-feedback--success" role="status"><b aria-hidden="true">✓</b><div><strong>Correcto</strong><span>Tu razonamiento coincide.</span></div></div>
+              <div class="shds-feedback shds-feedback--warning"><b aria-hidden="true">!</b><div><strong>Pendiente</strong><span>Aún falta completar un paso.</span></div></div>
+              <div class="shds-feedback shds-feedback--info"><b aria-hidden="true">i</b><div><strong>Información</strong><span>Este dato ayuda a mantener contexto.</span></div></div>
+              <div class="shds-feedback shds-feedback--review"><b aria-hidden="true">×</b><div><strong>Revisa</strong><span>El valor necesita otra mirada.</span></div></div>
+            </div>
+          </article>
+          <article class="shds-surface">
+            <div class="shds-progress-wrap">
+              <div class="shds-progress-head"><strong>Progreso de muestra</strong><span class="shds-status" data-progress-label>3 de 5</span></div>
+              <div class="shds-progress" role="progressbar" aria-label="Progreso de muestra" aria-valuemin="0" aria-valuemax="5" aria-valuenow="3"><span class="shds-progress-fill"></span></div>
+              <p class="shds-meta" aria-live="polite" data-progress-live>Continúa cuando quieras.</p>
+              <button class="shds-button shds-button--primary" type="button" data-progress-next>Avanzar una vez</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="shds-section" aria-labelledby="motion-title">
+        <div class="shds-section-head">
+          <div>
+            <p class="shds-overline">07 · Motion System</p>
+            <h2 id="motion-title">Fluido al usar. Memorable al lograr.</h2>
+          </div>
+          <p>Transform y opacity primero. Ninguna transición ralentiza la navegación ni anima layout de forma continua.</p>
+        </div>
+        <div class="shds-motion-grid">
+          <article class="shds-motion-card" data-motion-demo="press">
+            <div class="shds-motion-card-head"><h3>PRESS</h3><span class="shds-motion-time">90–140 ms · sin spring</span></div>
+            <div class="shds-motion-stage"><button class="shds-button shds-button--primary shds-motion-target" type="button">Responder</button></div>
+            <p class="shds-motion-copy">Escala y sombra responden al toque. La acción nunca espera.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir press</button>
+          </article>
+          <article class="shds-motion-card" data-motion-demo="enter">
+            <div class="shds-motion-card-head"><h3>ENTER</h3><span class="shds-motion-time">220–300 ms · ease-out</span></div>
+            <div class="shds-motion-stage"><div class="shds-motion-demo-panel shds-motion-target">Nuevo contexto<small>Encuentra su sitio</small></div></div>
+            <p class="shds-motion-copy">Entrada corta con desaceleración natural y opacity secundaria.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir enter</button>
+          </article>
+          <article class="shds-motion-card" data-motion-demo="exit">
+            <div class="shds-motion-card-head"><h3>EXIT</h3><span class="shds-motion-time">160–220 ms · ease-in</span></div>
+            <div class="shds-motion-stage"><div class="shds-motion-demo-panel shds-motion-target">Contexto anterior<small>Sale antes de estorbar</small></div></div>
+            <p class="shds-motion-copy">La salida acelera y siempre termina antes que la entrada.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir exit</button>
+          </article>
+          <article class="shds-motion-card" data-motion-demo="move">
+            <div class="shds-motion-card-head"><h3>MOVE</h3><span class="shds-motion-time">220–320 ms · simétrico</span></div>
+            <div class="shds-motion-stage"><div class="shds-move-track"><i class="shds-move-indicator shds-motion-target"></i><span>Repasar</span><span>Practicar</span></div></div>
+            <p class="shds-motion-copy">Translate3d conserva la relación espacial entre estados.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir move</button>
+          </article>
+          <article class="shds-motion-card" data-motion-demo="expand">
+            <div class="shds-motion-card-head"><h3>EXPAND</h3><span class="shds-motion-time">180–260 ms · ease-out</span></div>
+            <div class="shds-motion-stage"><div class="shds-expand-shell"><div class="shds-expand-label">Más opciones</div><div class="shds-expand-content shds-motion-target">10 · 25 · Todas</div></div></div>
+            <p class="shds-motion-copy">El layout se confirma una vez; el contenido revela continuidad.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir expand</button>
+          </article>
+          <article class="shds-motion-card" data-motion-demo="success">
+            <div class="shds-motion-card-head"><h3>SUCCESS</h3><span class="shds-motion-time">320–480 ms · spring local</span></div>
+            <div class="shds-motion-stage"><div class="shds-success-mark shds-motion-target" aria-label="Correcto">✓</div></div>
+            <p class="shds-motion-copy">Escala contenida y halo breve: energía sin mover la página.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir success</button>
+          </article>
+          <article class="shds-motion-card" data-motion-demo="milestone">
+            <div class="shds-motion-card-head"><h3>MILESTONE</h3><span class="shds-motion-time">480–600 ms · spring controlado</span></div>
+            <div class="shds-motion-stage"><div class="shds-milestone-mark shds-motion-target" aria-label="Hito alcanzado">★</div></div>
+            <p class="shds-motion-copy">Escala y accent/highlight elevan el hito sin añadir un motor de celebración.</p>
+            <button class="shds-button shds-button--text shds-motion-replay" type="button" data-motion-replay>Reproducir milestone</button>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script>
+    (() => {
+      const root = document.querySelector('[data-shds="p0"]');
+      const themeButton = root.querySelector('[data-theme-toggle]');
+      const reducedButton = root.querySelector('[data-reduced-motion]');
+
+      themeButton.addEventListener('click', () => {
+        const dark = root.dataset.shdsTheme !== 'dark';
+        root.dataset.shdsTheme = dark ? 'dark' : 'light';
+        themeButton.setAttribute('aria-pressed', String(dark));
+        themeButton.textContent = dark ? 'Modo claro' : 'Modo oscuro';
+      });
+
+      reducedButton.addEventListener('click', () => {
+        const reduced = root.dataset.shdsReduced !== 'true';
+        root.dataset.shdsReduced = String(reduced);
+        reducedButton.setAttribute('aria-pressed', String(reduced));
+      });
+
+      root.querySelectorAll('[data-segment]').forEach(button => {
+        button.addEventListener('click', () => {
+          button.parentElement.querySelectorAll('[data-segment]').forEach(option => {
+            option.setAttribute('aria-pressed', String(option === button));
+          });
+        });
+      });
+
+      const saveButton = root.querySelector('[data-save-toggle]');
+      const saveLabel = root.querySelector('[data-save-label]');
+      const saveLive = root.querySelector('[data-save-live]');
+      saveButton.addEventListener('click', () => {
+        const saved = saveButton.getAttribute('aria-pressed') !== 'true';
+        saveButton.setAttribute('aria-pressed', String(saved));
+        saveButton.setAttribute('aria-label', saved ? 'Quitar de Guardadas' : 'Guardar');
+        saveLabel.textContent = saved ? 'Guardada' : 'Guardar';
+        saveLive.textContent = saved ? 'Pregunta guardada.' : 'Pregunta quitada de Guardadas.';
+      });
+
+      root.querySelectorAll('[data-motion-replay]').forEach(button => {
+        button.addEventListener('click', () => {
+          const demo = button.closest('[data-motion-demo]');
+          demo.classList.remove('is-playing');
+          void demo.offsetWidth;
+          demo.classList.add('is-playing');
+        });
+      });
+
+      const progress = root.querySelector('.shds-progress');
+      const progressFill = root.querySelector('.shds-progress-fill');
+      const progressLabel = root.querySelector('[data-progress-label]');
+      const progressLive = root.querySelector('[data-progress-live]');
+      const progressButton = root.querySelector('[data-progress-next]');
+      progressButton.addEventListener('click', () => {
+        const maximum = Number(progress.getAttribute('aria-valuemax'));
+        const current = Math.min(maximum, Number(progress.getAttribute('aria-valuenow')) + 1);
+        progress.setAttribute('aria-valuenow', String(current));
+        progressFill.style.transform = `scaleX(${current / maximum})`;
+        progressLabel.textContent = `${current} de ${maximum}`;
+        const complete = current === maximum;
+        progressLive.textContent = complete ? 'Hito alcanzado. Progreso completo.' : 'Progreso actualizado.';
+        progressButton.disabled = complete;
+        if (complete) {
+          const milestone = root.querySelector('[data-motion-demo="milestone"]');
+          milestone.classList.remove('is-playing');
+          void milestone.offsetWidth;
+          milestone.classList.add('is-playing');
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
