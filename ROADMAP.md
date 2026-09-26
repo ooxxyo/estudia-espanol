@@ -23,7 +23,7 @@
 | Iniciativa | Estado | Alcance |
 | --- | --- | --- |
 | Hub general | Testing | Home común con Día 1, Día 2, progreso disponible y accesos rápidos. |
-| Materias, unidades y temas | Testing | Español e Historia conservan su material; Ciencia incorpora SI, Densidad y Temperatura en bancos separados y un Formula Workspace guiado reutilizable; Matemáticas sigue activa sin contenido inventado. |
+| Materias, unidades y temas | Testing | Español e Historia conservan su material; Ciencia incorpora sus tres bancos y Formula Workspace; Matemáticas incorpora únicamente Grados decimales a DMS con Math Workspace, repaso, práctica y examen de práctica. |
 | Navegación simplificada | Testing | Cinco accesos y menú Más en teléfono; grupos directos sin Más en desktop; no se pierde materia ni práctica pendiente. |
 | Seamless UX y jerarquía de práctica | Testing | Practicar como acción principal, disclosures sin flechas nativas, selección persistente, auto-guardado de prácticas normales y recuperación sin modal de conflicto. |
 | Dashboard general | Testing | Resumen transversal básico y continuidad de prácticas pendientes. |
@@ -61,6 +61,6 @@ La transformación completa del hub no forma parte de esta fase. Cada materia re
 
 ## Fase actual: base Hub
 
-La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español combina `spanish-v2` con un módulo legacy compatible; Historia reutiliza el motor mediante `historia-v1`; Ciencia usa `science-v1` con SI, Densidad y Temperatura separados. Inglés y Salud siguen deshabilitados. Matemáticas conserva su empty state hasta recibir material real.
+La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español combina `spanish-v2` con un módulo legacy compatible; Historia reutiliza el motor mediante `historia-v1`; Ciencia usa `science-v1` con SI, Densidad y Temperatura separados; Matemáticas usa `math-v1` exclusivamente para Grados decimales a DMS. Inglés y Salud siguen deshabilitados.
 
 El rebranding futuro será `Estudio Hub` con slug preferido `estudio-hub`. Repositorio, remote, dominio y nombre visible actual no cambian en esta fase.
