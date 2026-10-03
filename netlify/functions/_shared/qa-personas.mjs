@@ -79,7 +79,7 @@ function canonicalUser(persona, existing, password) {
   };
 }
 
-function progressBaseline() {
+export function progressBaseline() {
   return {
     updatedAt: FIXTURE_TIME,
     state: {

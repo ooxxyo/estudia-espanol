@@ -1,5 +1,7 @@
 # Arquitectura del Study Hub
 
+`qa-inspect` es una Function GET exclusivamente de lectura para QA exacto habilitado y sesión real Owner/SuperDev con `qa:tools`. Inspecciona siete nombres fijos y devuelve ID, versión de sesión, roles, baselines y huellas; nunca entrega credenciales ni contenido ajeno. Compara dos pasadas de lectura strong de los nueve stores revisados, sin transacción ni reintentos propios; admite solo retries internos acotados del SDK en lecturas. Rechaza fallos finales, estructuras inválidas, stores desconocidos, límites e identidades inconsistentes sin devolver snapshots parciales. No escribe auditoría, sesiones, progreso ni cuentas; no invoca el endpoint de presencia, cuyo GET puede limpiar objetos. Contrato y limitaciones: `docs/qa-7c-readonly.md`.
+
 ## Estado actual
 
 `public/index.html` conserva el catálogo y Study Engine heredados. `public/history-data.js` contiene Historia; `public/js/` separa cliente API, estado de formularios, migración local, planificación pura y vistas de plataforma. El estado académico conserva claves de `localStorage`, respaldo IndexedDB y sync por `account.mjs`. Community, Calendar, Friends, notificaciones, moderación, búsqueda y Roadmap usan Functions y stores versionados independientes. Autenticación, capabilities, validación académica, utilidades de plataforma y rate limiting viven en `_shared/`.

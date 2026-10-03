@@ -1,5 +1,9 @@
 # Guía de pruebas
 
+## Inspección QA de solo lectura — 7C
+
+`node --import ./tests/register-blobs.mjs --test tests/qa-inspect.test.mjs` usa exclusivamente datos ficticios. El guard registra e impide set/setJSON/delete/deleteAll incluso si se oculta el error; compara todos los objetos antes/después. Cubrir QA exacto/flag, 401/403, Owner/SuperDev real, allowlist/query/métodos, versión e ID, baselines, ausencia de secretos, cambios de contenido/metadatos, stores desconocidos, límites, revocación final, identidades huérfanas y dos lecturas inestables sin reintento propio. Verificar strong en catálogo/stores/listados/objetos y auth existente, fallo final sin segunda invocación SDK, envelope inválido y fallo tardío sin snapshot parcial. Una prueba adicional usa el SDK instalado con transporte simulado sin red: permite un retry interno de lectura y comprueba agotamiento acotado sin retry de Study Hub. No convertir huellas iguales en una garantía transaccional o histórica; revisar cambios de actividad esperada sin ocultarlos. Procedimiento: `docs/qa-7c-readonly.md`.
+
 ## Validación automática mínima
 
 Antes de entregar cambios, extrae el único `<script>` inline de `public/index.html` y ejecútalo con `node --check -`. Valida después cada módulo:

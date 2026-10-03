@@ -1,5 +1,7 @@
 # Study Hub Roadmap
 
+3T / 7C, observabilidad de solo lectura: **Testing**, preparada y verificada localmente. Publicación, acceso con sesión privilegiada existente y bootstrap permanecen pendientes de autorización; no se declara QA remoto completado.
+
 ## Estados
 
 - **Planned:** definido, todavía sin implementación.
