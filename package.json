@@ -2,10 +2,18 @@
   "name": "cuaderno-espanol-hub",
   "private": true,
   "version": "2.0.0",
+  "scripts": {
+    "lint:js": "node node_modules/oxlint/bin/oxlint public netlify/functions tests",
+    "test:e2e": "playwright test",
+    "test:e2e:a11y": "playwright test tests/e2e/accessibility.spec.mjs",
+    "test:e2e:headed": "playwright test --headed"
+  },
   "dependencies": {
     "@netlify/blobs": "^10.0.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.63.0"
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
+    "oxlint": "^1.86.0"
   }
 }

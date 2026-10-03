@@ -24,7 +24,16 @@
     canGrow: true,
     assessments: [
       { type: 'test', label: 'Prueba', status: 'taken', date: null },
-      { type: 'exam', label: 'Examen', status: 'pending', date: null },
+      {
+        id: 'history-test-next',
+        type: 'test',
+        label: 'Prueba',
+        status: 'scheduled',
+        confirmed: true,
+        date: null,
+        dateStatus: 'pending',
+        provisionalDateLabel: 'Próxima semana',
+      },
     ],
     date: null,
     order: 1,
@@ -61,15 +70,26 @@
     ['ciclo-naturaleza', 'Ciclo de vida / naturaleza', 'Relación general: Sol → agua/nubes → lluvia → plantas → seres vivos.', 'El material incluye Sol, nubes, lluvia, plantas, árboles y seres humanos.'],
   ].map(([topic, title, def, example]) => ({ topic, title, def, example }));
 
+  const practiceHintByTopic = Object.freeze({
+    geografia: 'Identifica si la pregunta trata agua, región, clima o sociedad; compara la definición y el período de tiempo que describe.',
+    civilizaciones: 'Distingue si se pregunta por definición, características, período o ejemplos; busca organización e influencia histórica, no un fenómeno natural aislado.',
+    mayas: 'Identifica si se pide ubicación, ciudad, conocimiento, numeración, calendario o texto; compara únicamente datos del bloque maya.',
+    aztecas: 'Ubica qué aspecto se pregunta: origen, ciudad, expansión, organización o conocimientos; descarta datos que pertenecen a otras civilizaciones.',
+    incas: 'Separa territorio, centro político, economía, agricultura y gobierno; elige solo el dato que corresponde al aspecto preguntado.',
+    'religion-inca': 'Distingue entre tipo de creencia, deidad, representación y mundo; relaciona cada nombre con su función sin mezclar categorías.',
+    'mapas-localizacion': 'Primero identifica la civilización mencionada y después compara su región o sus ciudades con las demás opciones.',
+    'ciclo-naturaleza': 'Sigue la relación causal del ciclo natural en el orden presentado y descarta elementos políticos o culturales.',
+  });
+
   let optionIndex = 0;
   function mc(id, topic, prompt, answer, distractors, exp, dif = 'medio') {
     const correct = optionIndex++ % 4;
     const options = distractors.slice(0, 3);
     options.splice(correct, 0, answer);
-    return { id: `hist-${id}`, subjectId, unitId, topic, type: 'mc', dif, prompt, options, correct, hints: [], exp };
+    return { id: `hist-${id}`, subjectId, unitId, topic, type: 'mc', dif, prompt, options, correct, hints: [practiceHintByTopic[topic]], exp };
   }
   function tf(id, topic, prompt, correct, exp, dif = 'facil') {
-    return { id: `hist-${id}`, subjectId, unitId, topic, type: 'tf', dif, prompt, correct, hints: [], exp };
+    return { id: `hist-${id}`, subjectId, unitId, topic, type: 'tf', dif, prompt, correct, hints: [practiceHintByTopic[topic]], exp };
   }
 
   const questions = [

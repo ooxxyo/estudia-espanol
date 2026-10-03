@@ -22,6 +22,7 @@ export function json(data, status = 200, headers = {}) {
 }
 
 export function cleanText(value, max = 200) {
+  // oxlint-disable-next-line no-control-regex -- Security hardening intentionally strips unsafe control characters.
   return typeof value === 'string' ? value.trim().replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').slice(0, max) : '';
 }
 

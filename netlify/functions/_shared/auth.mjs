@@ -1,5 +1,5 @@
 import { getStore } from '@netlify/blobs';
-import { createHash, randomBytes } from 'node:crypto';
+import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'node:crypto';
 
 export const USERS = getStore('study-hub-users-v1');
 export const SESSIONS = getStore('study-hub-sessions-v1');
@@ -65,6 +65,18 @@ export function parseCookies(req) {
 
 export function tokenHash(token) {
   return createHash('sha256').update(String(token)).digest('hex');
+}
+
+export function hashSecret(secret, salt = randomBytes(16).toString('hex')) {
+  const hash = scryptSync(String(secret), salt, 64).toString('hex');
+  return { salt, hash };
+}
+
+export function safeSecretMatch(candidate, configured) {
+  if (typeof candidate !== 'string' || candidate.length < 1 || candidate.length > 256 || !configured) return false;
+  const left = createHash('sha256').update(candidate).digest();
+  const right = createHash('sha256').update(configured).digest();
+  return timingSafeEqual(left, right);
 }
 
 export async function readUserById(id) {

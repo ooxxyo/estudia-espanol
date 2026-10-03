@@ -6,7 +6,7 @@ import friendsHandler from '../netlify/functions/friends.mjs';
 import { COOKIE, createSession } from '../netlify/functions/_shared/auth.mjs';
 
 const USERS=getStore('study-hub-users-v1');
-function request(path,{method='GET',body,token,query='',ip='127.0.0.1'}={}){const headers={'content-type':'application/json','x-forwarded-for':ip};if(token)headers.cookie=`${COOKIE}=${token}`;return new Request(`https://study-hub.test/.netlify/functions/${path}${query}`,{method,headers,body:body?JSON.stringify(body):undefined});}
+function request(path,{method='GET',body,token,query='',ip='127.0.0.1'}={}){const headers={'content-type':'application/json','x-forwarded-for':ip};if(token)headers.cookie=`${COOKIE}=${token}`;return new Request(`https://study-hub.test/.netlify/functions/${path}${query}`,{method,headers,...(body?{body:JSON.stringify(body)}:{})});}
 async function payload(response){return{status:response.status,data:await response.json()};}
 async function user(input){const row={sessionVersion:1,status:'active',createdAt:1,updatedAt:1,normalizedUsername:input.username.toLowerCase(),displayName:input.username,socialPrivacy:{profileVisibility:'limited',friendRequests:'everyone'},...input};await USERS.setJSON(`user/${row.id}`,row);await USERS.setJSON(`username/${row.normalizedUsername}`,{userId:row.id});return row;}
 async function token(row){return createSession(row,true,{superdevAuthenticated:row.securityRole==='superdev'});}

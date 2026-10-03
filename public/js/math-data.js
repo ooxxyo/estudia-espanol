@@ -42,8 +42,23 @@
 
   const approvedExamples = Object.freeze({
     exact: Object.freeze({ decimalDegrees:89.125, degrees:89, decimalPart:0.125, decimalPartText:'0.125', minuteProduct:7.5, minutes:7, remainingDecimal:0.5, remainingDecimalText:'0.500', secondProduct:30, seconds:30, rounded:false }),
-    rounded: Object.freeze({ decimalDegrees:23.3486, degrees:23, decimalPart:0.3486, decimalPartText:'0.3486', minuteProduct:20.916, minutes:20, remainingDecimal:0.916, remainingDecimalText:'0.916', secondProduct:54.96, seconds:55, rounded:true }),
+    rounded: Object.freeze({ decimalDegrees:23.3486, degrees:23, decimalPart:0.3486, decimalPartText:'0.3486', minuteProduct:20.916, minutes:20, remainingDecimal:0.916, remainingDecimalText:'0.9160', secondProduct:54.96, seconds:55, rounded:true }),
   });
+
+  const detailedDmsExplanation=example=>{
+    const decimalDigits=example.decimalPartText.split('.')[1];
+    const decimalPlaces=decimalDigits.length;
+    const remainderDigits=example.remainingDecimalText.split('.')[1].padEnd(decimalPlaces,'0');
+    const minuteProductText=Number(example.minuteProduct).toFixed(decimalPlaces);
+    const secondProductText=Number(example.secondProduct).toFixed(decimalPlaces);
+    return [
+      `Los grados son ${example.degrees}° y los dígitos decimales son ${decimalDigits}.`,
+      `${decimalDigits} × 60 = ${Number(decimalDigits)*60}; con ${decimalPlaces} cifras decimales se lee ${minuteProductText}.`,
+      `La parte entera da ${example.minutes} minutos. Matemáticamente, el resto vale ${example.remainingDecimal}; en la libreta conserva los dígitos ${remainderDigits} según la escala.`,
+      `${remainderDigits} × 60 = ${Number(remainderDigits)*60}; con la misma escala se lee ${secondProductText}.`,
+      example.rounded?`Los segundos se redondean al final a ${example.seconds}.`:`Los segundos son exactos: ${example.seconds}.`,
+    ].join(' ');
+  };
 
   const question = (id, exampleKey, learningStage, helpLevel, dif, learningMode) => {
     const example = approvedExamples[exampleKey];
@@ -68,9 +83,7 @@
       ]),
       exp:'Sigue el procedimiento aprobado: parte entera, decimal × 60, minutos, decimal restante × 60 y redondeo de segundos cuando haga falta.',
       simpleExplanation:`La conversión correcta es ${example.degrees}° ${example.minutes}′ ${example.seconds}″.`,
-      detailedExplanation: example.rounded
-        ? '23°; 0.3486 × 60 = 20.916; 20′; 0.916 × 60 = 54.96; 54.96 → 55″; resultado: 23° 20′ 55″.'
-        : '89°; 0.125 × 60 = 7.500; 7′; 0.500 × 60 = 30; resultado: 89° 7′ 30″.',
+      detailedExplanation:detailedDmsExplanation(example),
     });
   };
 

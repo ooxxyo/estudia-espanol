@@ -24,7 +24,7 @@
         credentials: 'same-origin',
         cache,
         signal: controller.signal,
-        body: body == null ? undefined : JSON.stringify(body),
+        ...(body === null || body === undefined ? {} : { body: JSON.stringify(body) }),
       });
       const raw = await response.text(); let data = {};
       if (raw) { try { data = JSON.parse(raw); } catch { signalFailure(url, 'parse', 'La respuesta del servicio no era válida.', response.status); } }

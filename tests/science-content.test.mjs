@@ -31,16 +31,19 @@ test('la prueba real del 24 queda tomada y conserva sus 20 preguntas como snapsh
   assert.match(html, /questionIds:snapshot\?\.questionIds/);
 });
 
-test('la prueba del 30 conserva la prueba real como base y marca contenido adicional pendiente', () => {
+test('la prueba del 30 se limita a Temperatura y conserva como históricos los bloques ya evaluados', () => {
   const later = SCIENCE.unit.assessments.find(row => row.date === '2026-09-30');
   assert.equal(later.id, 'science-test-2026-09-30');
-  assert.deepEqual(Array.from(later.topicIds), ['ciencia-si','densidad','temperatura']);
-  assert.equal(later.contentPending, true);
-  assert.equal(later.sourceAssessmentId, 'science-test-2026-09-24');
-  assert.match(later.note, /contenido adicional/);
+  assert.deepEqual(Array.from(later.topicIds), ['temperatura']);
+  assert.equal(later.dateStatus, 'confirmed');
+  assert.match(later.note, /Temperatura/);
+  assert.equal(SCIENCE.topics.find(topic => topic.id === 'ciencia-si').topicStatus, 'evaluated');
+  assert.equal(SCIENCE.topics.find(topic => topic.id === 'densidad').topicStatus, 'evaluated');
+  assert.equal(SCIENCE.topics.find(topic => topic.id === 'temperatura').topicStatus, 'current');
   assert.match(html, /topics:\['ciencia-si','densidad','temperatura'\],limit:30/);
   assert.match(html, /Próxima prueba · miércoles 30 de septiembre de 2026/);
-  assert.match(html, /El miércoles incluye ese material/);
+  assert.match(html, /id="scienceMenuTitle">Temperatura</);
+  assert.match(html, /Para esta prueba: Temperatura/);
 });
 
 test('los bancos cumplen mínimos, IDs únicos y validador académico', () => {

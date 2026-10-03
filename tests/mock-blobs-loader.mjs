@@ -1,5 +1,6 @@
 const source = `
 const stores = new Map();
+export const __STUDY_HUB_TEST_BLOBS__ = true;
 function copy(value){ return value == null ? value : structuredClone(value); }
 export function getStore(name){
   if(!stores.has(name)) stores.set(name,new Map());

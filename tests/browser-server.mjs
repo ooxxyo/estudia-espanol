@@ -1,24 +1,55 @@
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import accountHandler from '../netlify/functions/account.mjs';
-import adminHandler from '../netlify/functions/admin.mjs';
-import feedbackHandler from '../netlify/functions/feedback.mjs';
-import featuresHandler from '../netlify/functions/features.mjs';
-import leaderboardHandler from '../netlify/functions/leaderboard.mjs';
-import presenceHandler from '../netlify/functions/presence.mjs';
-import communityHandler from '../netlify/functions/community.mjs';
-import calendarHandler from '../netlify/functions/calendar.mjs';
-import friendsHandler from '../netlify/functions/friends.mjs';
-import notificationsHandler from '../netlify/functions/notifications.mjs';
-import roadmapHandler from '../netlify/functions/roadmap.mjs';
-import searchHandler from '../netlify/functions/search.mjs';
-import moderationHandler from '../netlify/functions/moderation.mjs';
-import groupsHandler from '../netlify/functions/groups.mjs';
-import bugsHandler from '../netlify/functions/bugs.mjs';
-import { USERS, COOKIE, createSession, setSessionCookie } from '../netlify/functions/_shared/auth.mjs';
-import { getStore } from '@netlify/blobs';
+import * as blobs from '@netlify/blobs';
+import {
+  assertBrowserTestSafety,
+  configureLocalTestEnvironment,
+  resetBrowserFixtures,
+} from './browser-harness.mjs';
 
+assertBrowserTestSafety(process.env, blobs.__STUDY_HUB_TEST_BLOBS__);
+configureLocalTestEnvironment(process.env);
+
+const [
+  { default: accountHandler },
+  { default: adminHandler },
+  { default: feedbackHandler },
+  { default: featuresHandler },
+  { default: leaderboardHandler },
+  { default: presenceHandler },
+  { default: communityHandler },
+  { default: calendarHandler },
+  { default: friendsHandler },
+  { default: notificationsHandler },
+  { default: roadmapHandler },
+  { default: searchHandler },
+  { default: moderationHandler },
+  { default: groupsHandler },
+  { default: bugsHandler },
+  { default: qaToolsHandler },
+  auth,
+] = await Promise.all([
+  import('../netlify/functions/account.mjs'),
+  import('../netlify/functions/admin.mjs'),
+  import('../netlify/functions/feedback.mjs'),
+  import('../netlify/functions/features.mjs'),
+  import('../netlify/functions/leaderboard.mjs'),
+  import('../netlify/functions/presence.mjs'),
+  import('../netlify/functions/community.mjs'),
+  import('../netlify/functions/calendar.mjs'),
+  import('../netlify/functions/friends.mjs'),
+  import('../netlify/functions/notifications.mjs'),
+  import('../netlify/functions/roadmap.mjs'),
+  import('../netlify/functions/search.mjs'),
+  import('../netlify/functions/moderation.mjs'),
+  import('../netlify/functions/groups.mjs'),
+  import('../netlify/functions/bugs.mjs'),
+  import('../netlify/functions/qa-tools.mjs'),
+  import('../netlify/functions/_shared/auth.mjs'),
+]);
+
+const { COOKIE, createSession, setSessionCookie } = auth;
 const root = path.resolve(import.meta.dirname, '..');
 const handlers = new Map([
   ['/account', accountHandler],
@@ -36,28 +67,28 @@ const handlers = new Map([
   ['/moderation', moderationHandler],
   ['/groups', groupsHandler],
   ['/bugs', bugsHandler],
+  ['/qa-tools', qaToolsHandler],
 ]);
 
-async function seedUser(user) {
-  const row = { sessionVersion: 1, status: 'active', createdAt: Date.now() - 86_400_000, updatedAt: Date.now() - 60_000, normalizedUsername: user.username.toLowerCase(), ...user };
-  await USERS.setJSON(`user/${row.id}`, row);
-  await USERS.setJSON(`username/${row.normalizedUsername}`, { userId: row.id });
-  if (row.email) await USERS.setJSON(`email/${row.email.toLowerCase()}`, { userId: row.id });
-  return row;
-}
-
-const superdev = await seedUser({ id: 'superdev-test', username: 'superdev', displayName: 'Super Dev' });
-await seedUser({ id: 'old-test', username: 'cuentaantigua', email: 'antigua@example.test' });
-await seedUser({ id: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', email: 'nueva@example.test', veteran: true, entitlement: 'veteran', visibleRank: 'Veterano' });
-await seedUser({ id: 'admin-test', username: 'adminamigo', displayName: 'Admin Amigo', securityRole: 'admin' });
-const token = await createSession(superdev, true, { superdevAuthenticated: true });
-// Synthetic UI fixtures; the loader keeps these outside real Netlify stores.
-const fixtureDate = offset => { const date = new Date(); date.setDate(date.getDate() + offset); return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`; };
-const fixtureRequest = body => new Request('http://127.0.0.1:8765/.netlify/functions/fixture', { method: 'POST', headers: { 'content-type': 'application/json', cookie: `${COOKIE}=${token}` }, body: JSON.stringify(body) });
+const fixtures = await resetBrowserFixtures(blobs);
+const ownerToken = await createSession(fixtures.personas['qa-owner']);
+const superdevToken = await createSession(fixtures.superdev, true, { superdevAuthenticated: true });
+const fixtureDate = offset => {
+  const date = new Date();
+  date.setDate(date.getDate() + offset);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+};
+const fixtureRequest = body => new Request('http://127.0.0.1:8765/.netlify/functions/fixture', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', cookie: `${COOKIE}=${ownerToken}` },
+  body: JSON.stringify(body),
+});
 await communityHandler(fixtureRequest({ action: 'create', subjectId: 'historia', date: fixtureDate(0), type: 'announcement', title: 'Ejemplo local de comunidad', text: 'Datos sintéticos para revisar diseño, autor, comentarios y acciones. No es material académico.' }));
-for (const offset of [-1,0,1]) await calendarHandler(fixtureRequest({ action: 'create-event', subjectId: 'historia', date: fixtureDate(offset), type: 'announcement', title: `Evento local de prueba (${offset})`, description: 'Ejemplo visual en memoria; no representa una fecha escolar real.' }));
-await getStore('study-hub-presence-v1').setJSON('heartbeat/friend_online_test', { at: Date.now(), userId: 'new-test', section: 'dashboard', subjectId: 'espanol', unitId: 'espanol-unidad-actual', clientKind: 'mobile' });
-await getStore('study-hub-feedback-v1').setJSON('reports/feedback-test', { id: 'feedback-test', type: 'suggestion', title: 'Mejorar acceso rápido', message: 'Sería útil mantener visible el acceso durante la práctica.', userId: 'new-test', username: 'cuentanueva', displayName: 'Amiga Nueva', status: 'new', subjectId: 'espanol', unitId: 'espanol-unidad-actual', createdAt: Date.now(), updatedAt: Date.now() });
+for (const offset of [-1, 0, 1]) {
+  await calendarHandler(fixtureRequest({ action: 'create-event', subjectId: 'historia', date: fixtureDate(offset), type: 'announcement', title: `Evento local de prueba (${offset})`, description: 'Ejemplo visual en memoria; no representa una fecha escolar real.' }));
+}
+await blobs.getStore('study-hub-presence-v1').setJSON('heartbeat/friend_online_test', { at: Date.now(), userId: 'qa-student', section: 'dashboard', subjectId: 'espanol', unitId: 'espanol-unidad-actual', clientKind: 'mobile' });
+await blobs.getStore('study-hub-feedback-v1').setJSON('reports/feedback-test', { id: 'feedback-test', type: 'suggestion', title: 'Mejorar acceso rápido', message: 'Sería útil mantener visible el acceso durante la práctica.', userId: 'qa-student', username: 'qa-student', displayName: 'QA Student', status: 'new', subjectId: 'espanol', unitId: 'espanol-unidad-actual', createdAt: Date.now(), updatedAt: Date.now() });
 
 async function asRequest(req, body) {
   const url = new URL(req.url, `http://${req.headers.host || '127.0.0.1:8765'}`);
@@ -66,8 +97,7 @@ async function asRequest(req, body) {
 
 function sendResponse(res, response) {
   return response.arrayBuffer().then(buffer => {
-    const headers = Object.fromEntries(response.headers.entries());
-    res.writeHead(response.status, headers);
+    res.writeHead(response.status, Object.fromEntries(response.headers.entries()));
     res.end(Buffer.from(buffer));
   });
 }
@@ -76,13 +106,21 @@ http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host || '127.0.0.1:8765'}`);
     if (url.pathname === '/__test/superdev') {
+      res.writeHead(302, { location: '/', 'set-cookie': setSessionCookie(superdevToken, true).replace('; Secure', '') });
+      res.end();
+      return;
+    }
+    if (url.pathname.startsWith('/__test/persona/')) {
+      const id = decodeURIComponent(url.pathname.slice('/__test/persona/'.length));
+      const persona = fixtures.personas[id];
+      if (!persona) { res.writeHead(404); res.end('Unknown test persona'); return; }
+      const token = await createSession(persona);
       res.writeHead(302, { location: '/', 'set-cookie': setSessionCookie(token, true).replace('; Secure', '') });
       res.end();
       return;
     }
     if (url.pathname.startsWith('/.netlify/functions/')) {
-      const name = `/${url.pathname.split('/').pop()}`;
-      const handler = handlers.get(name);
+      const handler = handlers.get(`/${url.pathname.split('/').pop()}`);
       if (!handler) { res.writeHead(404); res.end('Not found'); return; }
       const chunks = [];
       for await (const chunk of req) chunks.push(chunk);
@@ -100,4 +138,4 @@ http.createServer(async (req, res) => {
     res.writeHead(error?.code === 'ENOENT' ? 404 : 500, { 'content-type': 'text/plain; charset=utf-8' });
     res.end('Test server error');
   }
-}).listen(8765, '127.0.0.1', () => console.log('Study Hub test server: http://127.0.0.1:8765'));
+}).listen(8765, '127.0.0.1', () => console.log('Study Hub local-test server: http://127.0.0.1:8765'));

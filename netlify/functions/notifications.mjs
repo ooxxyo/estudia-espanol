@@ -26,7 +26,7 @@ export default async (req) => {
       const saved = await NOTIFICATIONS.get(`preferences/${auth.user.id}`, { type: 'json', consistency: 'strong' });
       const defaults = { friendRequests: true, comments: true, calendar: true, assignments: true, tests: true, community: true, moderation: true, studyReminders: true };
       const page = paginateRows(rows, new URL(req.url).searchParams);
-      return json({ notifications: page.items.map(publicNotification), nextCursor: page.nextCursor, limit: page.limit, unreadCount: rows.filter(row => !row.readAt && row.status !== 'archived').length, preferences: { ...defaults, ...(saved?.preferences || {}) } });
+      return json({ notifications: page.items.map(publicNotification), nextCursor: page.nextCursor, limit: page.limit, unreadCount: rows.filter(row => !row.readAt && row.status !== 'archived').length, preferences: { ...defaults, ...saved?.preferences } });
     }
     if (req.method !== 'POST') return json({ error: 'Método no permitido.' }, 405);
     const body = await readBody(req);

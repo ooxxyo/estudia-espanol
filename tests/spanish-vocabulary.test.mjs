@@ -12,7 +12,7 @@ async function vocabulary(){
 test('Competencia contiene 20 entradas oficiales y al menos 120 preguntas válidas',async()=>{
   const data=await vocabulary(),report=data.validate();
   assert.equal(data.entries.length,20);assert.equal(report.valid,true,report.errors.join('\n'));assert.ok(report.total>=120);
-  assert.deepEqual([...data.entries.map(row=>row.word)],['acicate','rozagante','hilvanar','ascendencia','beldad','inocuo','tergiversar','embargar','lisonja','viable','yacer','mero','exequias','urdir','descendencia','rebosar','celestina','sudario','inusitado','séquito']);
+  assert.deepEqual(Array.from(data.entries,row=>row.word),['acicate','rozagante','hilvanar','ascendencia','beldad','inocuo','tergiversar','embargar','lisonja','viable','yacer','mero','exequias','urdir','descendencia','rebosar','celestina','sudario','inusitado','séquito']);
 });
 
 test('el banco cubre categorías, palabras y significados múltiples',async()=>{
@@ -59,7 +59,9 @@ test('Historia separa estado del tema y evaluaciones sin inventar fecha',async()
   const source=await readFile(new URL('../public/history-data.js',import.meta.url),'utf8');
   assert.match(source,/topicStatus: 'in_progress'/);assert.match(source,/canGrow: true/);
   assert.match(source,/type: 'test', label: 'Prueba', status: 'taken', date: null/);
-  assert.match(source,/type: 'exam', label: 'Examen', status: 'pending', date: null/);
+  assert.match(source,/id: 'history-test-next'/);
+  assert.match(source,/status: 'scheduled',[\s\S]*confirmed: true,[\s\S]*date: null,[\s\S]*dateStatus: 'pending'/);
+  assert.doesNotMatch(source,/viernes|date: '2026-\d{2}-\d{2}'/i);
 });
 
 test('el validador académico real no encuentra referencias ni duplicados estructurales',async()=>{

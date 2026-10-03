@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Study Hub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#EFEBE2;
@@ -366,10 +366,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .workspace-field input[aria-invalid="true"],.workspace-field select[aria-invalid="true"],.workspace-inline-field input[aria-invalid="true"]{border-color:var(--red);box-shadow:0 0 0 2px color-mix(in srgb,var(--red) 16%,transparent)}
 .workspace-result{display:grid;grid-template-columns:minmax(0,1fr) minmax(120px,.45fr);gap:10px}.workspace-result label{display:grid;gap:6px;font-size:.78rem;font-weight:750;color:var(--ink-soft)}
 .workspace-feedback{min-height:1.2em;font-size:.8rem;font-weight:700;color:var(--ink-soft)}.workspace-feedback.bad{color:var(--red)}.workspace-feedback.good{color:var(--green)}
-.math-keyboard summary{cursor:pointer;font-weight:750;color:var(--ink-soft);min-height:44px;display:flex;align-items:center}.math-key-grid{display:grid;grid-template-columns:repeat(4,minmax(48px,1fr));gap:7px;margin-top:8px}.math-key{min-height:46px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-weight:750;font-size:.95rem;cursor:pointer;touch-action:manipulation}.math-key:hover{border-color:var(--accent);color:var(--accent)}
-.math-notebook{display:grid;gap:22px;padding:clamp(16px,4vw,34px);border:1px solid color-mix(in srgb,var(--line) 72%,#fff);border-radius:16px;background:#fff;color:#22303a;box-shadow:0 14px 34px rgba(34,48,58,.08)}[data-theme="dark"] .math-notebook{background:#fdfcf8;color:#22303a}.math-notebook-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e4dfd3;padding-bottom:12px}.math-notebook-head h3{margin:0;font-size:1.2rem}.math-learning-badge{display:inline-flex;align-items:center;min-height:32px;padding:5px 10px;border-radius:999px;background:#f3dcdd;color:#8b2635;font-size:.74rem;font-weight:800}.math-paper-step{display:grid;gap:10px;max-width:620px;margin-inline:auto;width:100%}.math-paper-step[hidden]{display:none}.math-paper-heading{margin:0;color:#66717a;font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.math-step-cue{margin:0;padding:8px 11px;border-left:3px solid #b9772e;background:#fff8e8;color:#5b6670;font-size:.84rem;line-height:1.45}.math-paper-field{display:flex;align-items:end;gap:10px}.math-paper-field label{min-width:108px;color:#66717a;font-size:.82rem;font-weight:750}.math-paper-field input{width:min(100%,240px);min-height:50px;border:0;border-bottom:2px solid #a9afb3;border-radius:0;background:transparent;color:#22303a;padding:7px 4px;font:700 1.35rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace}.math-paper-field input:focus{outline:0;border-color:#8b2635;box-shadow:0 3px 0 rgba(139,38,53,.12)}.math-paper-field input[aria-invalid="true"]{border-color:#a63b3b}.vertical-operation{--math-columns:4;width:min(100%,480px);margin-inline:auto;display:grid;gap:5px;padding:18px 12px 12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.math-digit-grid{display:grid;grid-template-columns:repeat(var(--math-columns),minmax(44px,58px));justify-content:end;gap:5px}.math-cell{min-width:44px;min-height:46px;border:0;border-bottom:1px solid #bbc0c3;border-radius:5px;background:#faf9f5;color:#22303a;text-align:center;font:750 1.35rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;touch-action:manipulation}.math-cell:focus{outline:2px solid #8b2635;outline-offset:1px}.math-cell[aria-invalid="true"]{outline:2px solid #a63b3b;background:#fff0f0}.math-carry-row .math-cell{min-height:44px;height:44px;border-bottom:0;background:#fff8e8;color:#9a5d18;font-size:.95rem}.math-static-cell{display:grid;place-items:center;min-width:44px;min-height:44px;font-size:1.35rem;font-weight:750}.math-multiplier-line{display:flex;justify-content:flex-end;align-items:center;gap:7px}.math-operator{font-size:1.45rem;font-weight:800}.math-operation-rule{height:2px;background:#66717a;margin:2px 0 5px}.math-operation-rule.result{height:1px;margin-top:4px}.math-decimal-choices{display:grid;width:100%;grid-template-columns:repeat(calc(var(--math-columns) + 1),minmax(34px,1fr));gap:2px;max-width:calc(var(--math-columns) * 58px);margin-left:auto}.math-decimal-choice{min-height:44px;border:0;border-radius:8px;background:transparent;color:#92999e;font-size:1.6rem;line-height:1;cursor:pointer}.math-decimal-choice[aria-pressed="true"]{background:#f3dcdd;color:#8b2635}.math-step-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}.math-step-feedback{min-height:1.2em;color:#66717a;font:700 .8rem/1.4 system-ui,sans-serif}.math-step-feedback.bad{color:#a63b3b}.math-step-feedback.good{color:#3e7a58}.math-help{display:grid;gap:10px;padding-top:4px;border-top:1px solid #e4dfd3}.math-help-panel{display:grid;gap:10px;padding:12px;border-radius:11px;background:#f6f3eb}.math-help-panel[hidden]{display:none}.math-help-topics{display:flex;flex-wrap:wrap;gap:7px}.math-help-topic{min-height:42px;border:1px solid #d9d2c0;border-radius:999px;padding:7px 11px;background:#fff;color:#5b6670;font-weight:750;cursor:pointer}.math-help-topic.active{border-color:#8b2635;color:#8b2635;background:#f3dcdd}.math-help-text{margin:0;line-height:1.55}.math-dms-answer{display:grid;grid-template-columns:repeat(3,minmax(72px,1fr));gap:12px}.math-dms-answer .math-paper-field{display:grid;gap:4px}.math-dms-answer .math-paper-field label{min-width:0;font-size:1.15rem}.math-dms-answer .math-paper-field input{width:100%}.math-procedure-review{margin-top:12px;padding:12px;border:1px solid #d9d2c0;border-radius:10px;background:#fff;color:#22303a}.math-procedure-review h5{margin:0 0 10px}.math-review-step{display:flex;gap:8px;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid #eee9dd}.math-review-step:last-child{border-bottom:0}.math-review-operation{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.math-keyboard-toggle{width:100%;justify-content:center}.math-key-grid{display:grid;grid-template-columns:repeat(4,minmax(48px,1fr));gap:7px;margin-top:8px}.math-key-grid[hidden]{display:none}.math-key{min-height:46px;border:1px solid var(--line);border-radius:9px;background:var(--paper);color:var(--ink);font-weight:750;font-size:.95rem;cursor:pointer;touch-action:manipulation}.math-key:hover{border-color:var(--accent);color:var(--accent)}
+.math-notebook{display:grid;gap:22px;padding:clamp(16px,4vw,34px);border:1px solid color-mix(in srgb,var(--line) 72%,#fff);border-radius:16px;background:#fff;color:#22303a;box-shadow:0 14px 34px rgba(34,48,58,.08)}[data-theme="dark"] .math-notebook{background:#fdfcf8;color:#22303a}.math-notebook-head{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid #e4dfd3;padding-bottom:12px}.math-notebook-head h3{margin:0;font-size:1.2rem}.math-learning-badge{display:inline-flex;align-items:center;min-height:32px;padding:5px 10px;border-radius:999px;background:#f3dcdd;color:#8b2635;font-size:.74rem;font-weight:800}.math-known-data{display:grid;gap:10px;max-width:620px;width:100%;margin-inline:auto;padding:14px;border:1px solid var(--shds-color-line,var(--line));border-radius:12px;background:var(--shds-color-recess,var(--bg-soft))}.math-known-data h4{margin:0;color:var(--shds-color-ink-soft,var(--ink-soft));font-size:.74rem;letter-spacing:.06em;text-transform:uppercase}.math-known-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.math-known-item{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.math-known-item span{color:var(--shds-color-ink-soft,var(--ink-soft));font-size:.78rem;font-weight:750}.math-known-item strong{font:750 1.08rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace}.math-paper-step{display:grid;gap:10px;max-width:620px;margin-inline:auto;width:100%}.math-paper-step[hidden]{display:none}.math-paper-heading{margin:0;color:#66717a;font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.math-step-cue{margin:0;padding:8px 11px;border-left:3px solid #b9772e;background:#fff8e8;color:#5b6670;font-size:.84rem;line-height:1.45}.math-paper-field{display:flex;align-items:end;gap:10px}.math-paper-field label{min-width:108px;color:#66717a;font-size:.82rem;font-weight:750}.math-paper-field input{width:min(100%,240px);min-height:50px;border:0;border-bottom:2px solid #a9afb3;border-radius:0;background:transparent;color:#22303a;padding:7px 4px;font:700 1.35rem/1.2 ui-monospace,SFMono-Regular,Consolas,monospace}.math-paper-field input:focus{outline:0;border-color:#8b2635;box-shadow:0 3px 0 rgba(139,38,53,.12)}.math-paper-field input[aria-invalid="true"]{border-color:#a63b3b}.vertical-operation{--math-columns:4;width:min(100%,480px);margin-inline:auto;display:grid;gap:5px;padding:18px 12px 12px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.math-column-frame{display:grid;grid-template-columns:28px repeat(calc(var(--math-columns) * 2),minmax(20px,29px));justify-content:end;gap:0}.math-operation-label{grid-column:1/-1;display:block;margin:6px 0 1px;color:var(--shds-color-ink-soft,#66717a);font:750 .72rem/1.3 system-ui,sans-serif}.math-digit-grid,.math-decimal-choices{grid-column:2/-1;display:grid;grid-template-columns:subgrid}.math-cell,.math-static-cell,.math-structural-cell{grid-column:span 2;margin-inline:2.5px}.math-cell{min-width:0;min-height:46px;border:0;border-bottom:1px solid #bbc0c3;border-radius:5px;background:#faf9f5;color:#22303a;text-align:center;font:750 1.35rem/1 ui-monospace,SFMono-Regular,Consolas,monospace;touch-action:manipulation}.math-cell:focus{outline:2px solid #8b2635;outline-offset:1px}.math-cell[aria-invalid="true"]{outline:2px solid #a63b3b;background:#fff0f0}.math-carry-row .math-cell{min-height:44px;height:44px;border-bottom:0;background:#fff8e8;color:#9a5d18;font-size:.95rem}.math-static-cell,.math-structural-cell{display:grid;place-items:center;min-width:0;min-height:44px;font-size:1.35rem;font-weight:750}.math-structural-cell{background:transparent}.math-multiplier-line{display:contents}.math-operator{grid-column:1;align-self:center;justify-self:center;font-size:1.45rem;font-weight:800}.math-operation-rule{grid-column:2/-1;height:2px;background:#66717a;margin:2px 2.5px 5px}.math-operation-rule.result{height:1px;margin-top:4px}.math-decimal-choices{position:relative;min-height:44px}.math-decimal-choice{grid-row:1;grid-column:var(--decimal-grid-start)/span 2;justify-self:center;width:44px;min-height:44px;border:0;border-radius:8px;background:transparent;color:#92999e;font-size:1.6rem;line-height:1;cursor:pointer}.math-decimal-choice.edge-start{justify-self:start;transform:translateX(-50%)}.math-decimal-choice.edge-end{justify-self:end;transform:translateX(50%)}.math-decimal-choice[aria-pressed="true"]{background:#f3dcdd;color:#8b2635}.math-step-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px}.math-step-feedback{min-height:1.2em;color:#66717a;font:700 .8rem/1.4 system-ui,sans-serif}.math-step-feedback.bad{color:#a63b3b}.math-step-feedback.good{color:#3e7a58}.math-help{display:grid;gap:10px;padding-top:4px;border-top:1px solid #e4dfd3}.math-help-panel{display:grid;gap:10px;padding:12px;border-radius:11px;background:#f6f3eb}.math-help-panel[hidden]{display:none}.math-help-topics{display:flex;flex-wrap:wrap;gap:7px}.math-help-topic{min-height:42px;border:1px solid #d9d2c0;border-radius:999px;padding:7px 11px;background:#fff;color:#5b6670;font-weight:750;cursor:pointer}.math-help-topic.active{border-color:#8b2635;color:#8b2635;background:#f3dcdd}.math-help-text{margin:0;line-height:1.55}.math-solve{display:grid;gap:10px;padding-top:4px;border-top:1px solid #e4dfd3}.math-solve>.icon-btn{justify-self:start}.math-solve-confirm .btn-row,.math-solution-panel .btn-row{justify-content:flex-end}.math-solution-panel ol{margin:0;padding-left:22px;display:grid;gap:8px;line-height:1.5}.math-dms-answer{display:grid;grid-template-columns:repeat(3,minmax(72px,1fr));gap:12px}.math-dms-answer .math-paper-field{display:grid;gap:4px}.math-dms-answer .math-paper-field label{min-width:0;font-size:1.15rem}.math-dms-answer .math-paper-field input{width:100%}.math-procedure-review{margin-top:12px;padding:12px;border:1px solid #d9d2c0;border-radius:10px;background:#fff;color:#22303a}.math-procedure-review h5{margin:0 0 10px}.math-review-step{display:flex;gap:8px;flex-wrap:wrap;padding:6px 0;border-bottom:1px solid #eee9dd}.math-review-step:last-child{border-bottom:0}.math-review-operation{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre-wrap}.visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:520px){.formula-workspace{padding:13px}.workspace-head{display:grid}.workspace-meta,.workspace-fields,.workspace-result{grid-template-columns:1fr}.workspace-equation{gap:6px}.workspace-inline-field{min-width:76px;max-width:112px}.math-key{min-height:48px}}
-@media(max-width:520px){.math-notebook{padding:16px 10px}.math-paper-field{display:grid}.math-paper-field label{min-width:0}.vertical-operation{padding-inline:0}.math-digit-grid{grid-template-columns:repeat(var(--math-columns),minmax(40px,50px));gap:3px}.math-cell,.math-static-cell{min-width:40px;min-height:46px}.math-dms-answer{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.math-decimal-choices{max-width:calc(var(--math-columns) * 58px)}}
+@media(max-width:520px){.math-notebook{padding:16px 10px}.math-paper-field{display:grid}.math-paper-field label{min-width:0}.vertical-operation{padding-inline:0}.math-column-frame{grid-template-columns:24px repeat(calc(var(--math-columns) * 2),minmax(18px,25px))}.math-dms-answer{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}}
+@media(max-width:360px){main:has(.math-notebook){padding-inline:4px}.q-card:has(.math-notebook){padding-inline:4px!important}.math-notebook{padding-inline:4px}.math-column-frame{grid-template-columns:22px repeat(calc(var(--math-columns) * 2),minmax(0,1fr))}.math-cell,.math-static-cell,.math-structural-cell{width:calc(100% - 3px);margin-inline:1.5px}}
 
 
 .hint-box{margin-top:14px;background:var(--amber-soft);border-radius:10px;padding:12px 15px;font-size:.87rem;color:var(--ink);}
@@ -394,7 +395,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .empty-state .ic{font-size:2.2rem;margin-bottom:10px;display:block;}
 
 .kbd-hint{font-size:.75rem;color:var(--ink-soft);text-align:center;margin-top:10px;}
-kbd{background:var(--bg-soft);border-radius:5px;padding:1px 6px;font-family:inherit;border:1px solid var(--line);}
+kbd{background:var(--bg-soft);color:var(--ink);border-radius:5px;padding:1px 6px;font-family:inherit;border:1px solid var(--line);}
 
 .hist-row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line);font-size:.88rem;}
 .hist-row:last-child{border-bottom:none;}
@@ -639,9 +640,13 @@ body{line-height:1.55;}
 
 details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}.ui-disclosure{margin-bottom:16px}.ui-disclosure>summary{cursor:pointer;min-height:44px;padding:10px 12px;font-weight:700;border:1px solid var(--line);border-radius:10px;background:var(--card);display:flex;align-items:center;justify-content:space-between;gap:12px}.ui-disclosure[open]>summary{margin-bottom:12px;border-color:var(--accent)}.more-group h3{font-size:.82rem;margin:16px 0 8px;color:var(--ink-soft)}.more-group .more-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.more-group .more-item{grid-template-columns:22px minmax(0,1fr);gap:6px;min-height:48px;padding:9px;font-size:.8rem}.more-group .more-item b{overflow-wrap:anywhere}.guest-banner{border-bottom:1px solid var(--line);padding:0 0 16px;margin-bottom:20px}.guest-banner p{margin:0;max-width:42ch;font-size:.85rem;color:var(--ink-soft)}.study-today-row{margin-bottom:24px}.study-today-row h2{margin:0;font-size:1.2rem}.hub-footer{margin-top:20px}.platform-card .ui-disclosure{margin:12px 0 0}.platform-card .ui-disclosure>summary{font-size:.85rem}.platform-card .icon-btn{min-height:44px}
 </style>
+<link rel="stylesheet" href="css/design-system-p0.css">
+<link rel="stylesheet" href="css/study-hub-shell-p0.css">
+<link rel="stylesheet" href="css/study-hub-account-p0.css">
+<link rel="stylesheet" href="css/study-hub-study-p0.css">
 </head>
-<body data-theme="light">
-<div id="onlineBadge" class="online-badge" title="Usuarios activos en los últimos 90 segundos"><span class="online-dot"></span><span id="onlineCount">… conectados</span></div>
+<body data-theme="light" data-shds-shell="p0">
+<aside id="onlineBadge" class="online-badge" aria-label="Usuarios activos en los últimos 90 segundos" title="Usuarios activos en los últimos 90 segundos"><span class="online-dot"></span><span id="onlineCount">… conectados</span></aside>
 <div class="app">
   <nav class="rail" id="rail"></nav>
   <main id="main">
@@ -700,12 +705,12 @@ const STUDY_DAYS=Object.freeze([
 // Fuente única de verdad para Hub → Día → Materia → Unidad → Tema. El motor
 // heredado de Español se adapta mediante contentKey sin cambiar IDs ni datos.
 const SUBJECT_CATALOG=Object.freeze([
-  {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
+  {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,currentMaterial:'Memoir',contentKey:null,units:{current:null,previous:[],completed:[]}},
   {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
   {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Disponible',available:true,contentKey:'historia-v1',units:{current:HISTORY_CONTENT.unit,previous:[],completed:[]}},
-  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Prueba 30 sep',available:true,contentKey:'science-v1',units:{current:SCIENCE_CONTENT.unit,previous:[],completed:[]}},
+  {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Prueba 30 sep',available:true,currentMaterial:'Temperatura',contentKey:'science-v1',units:{current:SCIENCE_CONTENT.unit,previous:[],completed:[]}},
   {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Tema actual',available:true,contentKey:'math-v1',units:{current:MATH_CONTENT.unit,previous:[],completed:[]}},
-  {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Nuevo',available:true,contentKey:'spanish-v2',units:{current:{...SPANISH_VOCABULARY.unit,topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true,assessments:[{type:'competition',label:'Competencia',status:'pending',date:null}]},previous:[{id:'espanol-unidad-anterior',subjectId:'espanol',name:'Contenido anterior de Español',displayName:'✅ Tema pasado',type:'Tema pasado',status:'previous',topicStatus:'previous',examTaken:true,examTakenDate:'2026-09-14',date:'2026-09-14',order:1,topicIds:TOPICS.map(t=>t.id),assessments:[{type:'exam',label:'Examen',status:'taken',date:'2026-09-14'}]}],completed:[]}},
+  {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Pendiente',available:true,currentMaterial:'Pendiente de confirmación',contentKey:'spanish-v2',units:{current:{...SPANISH_VOCABULARY.unit,topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true,assessments:[{type:'competition',label:'Competencia',status:'pending',date:null}]},previous:[{id:'espanol-unidad-anterior',subjectId:'espanol',name:'Contenido anterior de Español',displayName:'✅ Tema pasado',type:'Tema pasado',status:'previous',topicStatus:'previous',examTaken:true,examTakenDate:'2026-09-14',date:'2026-09-14',order:1,topicIds:TOPICS.map(t=>t.id),assessments:[{type:'exam',label:'Examen',status:'taken',date:'2026-09-14'}]}],completed:[]}},
 ]);
 const SUBJECT_BY_ID=new Map(SUBJECT_CATALOG.map(subject=>[subject.id,subject]));
 const SUBJECT=SUBJECT_BY_ID.get('espanol');
@@ -770,7 +775,7 @@ const morphVisual=window.STUDY_HUB_MORPH_VISUAL;
 /* =========================================================
    ESTADO Y PERSISTENCIA
 ========================================================= */
-const APP_VERSION = '2.0';
+const APP_VERSION = '0.8.0';
 // Clave estable: NO cambiar entre actualizaciones. Así el progreso sobrevive a nuevas versiones.
 const STABLE_STORAGE_KEY = 'cuaderno_espanol_hub_progress_v1';
 const STORAGE_KEY = 'cuaderno_espanol_v12'; // compatibilidad con versiones anteriores
@@ -780,6 +785,9 @@ const IDB_STORE = 'progress';
 let hasLocalSavedState = false;
 let lastSaveAt = 0;
 let accountSession = {status:'checking', user:null};
+const QA_TOOLS_SESSION_KEY='studyHubQaToolsVisible';
+let qaToolsCapability={accountKey:'',allowed:false,environment:''};
+let qaPracticeRun=null;
 let requestedAccountMode='login';
 let suppressCloudSync = false;
 let cloudSyncTimer = null;
@@ -817,7 +825,6 @@ const state = {
     seenUpdateIds:[],
     seenCalendarIds:[],
     seenContentAt:{},
-    accentColor:'#8B2635',
     leaderboardName:'',
     leaderboardDeviceId:'',
     hiddenWarnings:{},
@@ -932,7 +939,6 @@ function applySavedData(d){
     if(Array.isArray(incoming.seenUpdateIds))state.settings.seenUpdateIds=incoming.seenUpdateIds.filter(value=>typeof value==='string').slice(-100);
     if(Array.isArray(incoming.seenCalendarIds))state.settings.seenCalendarIds=incoming.seenCalendarIds.filter(value=>typeof value==='string').slice(-500);
     if(incoming.seenContentAt&&typeof incoming.seenContentAt==='object'&&!Array.isArray(incoming.seenContentAt)) state.settings.seenContentAt=Object.fromEntries(Object.entries(incoming.seenContentAt).filter(([key,value])=>typeof key==='string'&&Number.isFinite(value)).slice(0,100));
-    if(typeof incoming.accentColor==='string' && /^#[0-9A-Fa-f]{6}$/.test(incoming.accentColor)) state.settings.accentColor=incoming.accentColor;
     if(typeof incoming.leaderboardName==='string') state.settings.leaderboardName=incoming.leaderboardName.slice(0,40);
     if(typeof incoming.leaderboardDeviceId==='string') state.settings.leaderboardDeviceId=incoming.leaderboardDeviceId.slice(0,120);
     if(incoming.hiddenWarnings && typeof incoming.hiddenWarnings==='object' && !Array.isArray(incoming.hiddenWarnings)) state.settings.hiddenWarnings={...incoming.hiddenWarnings};
@@ -1046,23 +1052,12 @@ async function restoreIndexedDBFallback(){
     render();
   }
 }
-function hexToRgb(hex){ const m=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex||''); return m?{r:parseInt(m[1],16),g:parseInt(m[2],16),b:parseInt(m[3],16)}:null; }
-function applyAccentColor(accentColor=state.settings.accentColor){
-  const hex=/^#[0-9A-Fa-f]{6}$/.test(accentColor||'')?accentColor:'#8B2635';
-  const rgb=hexToRgb(hex)||{r:139,g:38,b:53};
-  document.documentElement.style.setProperty('--accent',hex);
-  const alpha=state.theme==='dark'?.18:.14;
-  document.documentElement.style.setProperty('--accent-soft',`rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`);
-}
-function applyThemeMode(themeMode=state.settings.themeMode, accentColor=state.settings.accentColor){
+function applyThemeMode(themeMode=state.settings.themeMode){
   const mode=['light','dark','auto'].includes(themeMode)?themeMode:'light';
   const actual=mode==='auto' ? (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light') : mode;
   state.theme=actual;
-  // El tema y el acento viven en el mismo elemento. Si el tema oscuro se
-  // aplicara a body, su --accent sobrescribiría el color personalizado de html.
   document.documentElement.setAttribute('data-theme',actual);
   document.body.removeAttribute('data-theme');
-  applyAccentColor(accentColor);
 }
 const loadedExistingState=loadState();
 applyThemeMode();
@@ -1070,6 +1065,42 @@ if(loadedExistingState) saveState(); // migra automáticamente a la clave establ
 
 async function accountRequest(method='GET', body=null){
   return requestJson('/.netlify/functions/account',{method,body,fallbackMessage:'No se pudo procesar la cuenta.'});
+}
+function qaAccountKey(){
+  const user=accountSession.user;
+  return user?String(user.id||user.username||''):'';
+}
+function qaToolsCapabilityConfirmed(){
+  const key=qaAccountKey();
+  return !!key&&qaToolsCapability.allowed&&qaToolsCapability.accountKey===key;
+}
+function qaToolsPreference(){
+  try{return sessionStorage.getItem(QA_TOOLS_SESSION_KEY)==='true';}catch{return false;}
+}
+function qaToolsUiEnabled(){return qaToolsCapabilityConfirmed()&&qaToolsPreference();}
+function qaToolsEnvironmentLabel(){return qaToolsCapability.environment==='qa'?'QA':'Local';}
+function cancelQaPracticeRun(){
+  if(qaPracticeRun)qaPracticeRun.cancelled=true;
+  qaPracticeRun=null;
+}
+function clearQaToolsCapability(){
+  qaToolsCapability={accountKey:'',allowed:false,environment:''};
+  cancelQaPracticeRun();
+}
+async function refreshQaToolsCapability(){
+  const accountKey=qaAccountKey();
+  if(!accountKey){clearQaToolsCapability();return false;}
+  qaToolsCapability={accountKey,allowed:false,environment:''};
+  cancelQaPracticeRun();
+  try{
+    const data=await requestJson('/.netlify/functions/qa-tools',{fallbackMessage:'QA Tools no está disponible.'});
+    if(qaAccountKey()!==accountKey)return false;
+    const environment=data.environment==='qa'?'qa':data.environment==='local-test'?'local-test':'';
+    qaToolsCapability={accountKey,allowed:!!environment&&Array.isArray(data.capabilities)&&data.capabilities.includes('qa:tools'),environment};
+  }catch{
+    if(qaAccountKey()===accountKey)qaToolsCapability={accountKey,allowed:false,environment:''};
+  }
+  return qaToolsCapabilityConfirmed();
 }
 function stableCloudPayload(){
   const snap=snapshotState();
@@ -1157,12 +1188,13 @@ async function restoreAccountSession(){
   try{
     const data=await accountRequest('GET');
     accountSession={status:'ready',user:data.authenticated?data.user:null};
+    await refreshQaToolsCapability();
     lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;
     if(data.authenticated && data.cloudState) applyCloudCanonical(data.cloudState);
     renderNav();
     render();
     if(data.authenticated && !lastCloudHash) scheduleCloudSync();
-  }catch(e){accountSession={status:'ready',user:null}; renderNav();}
+  }catch(e){accountSession={status:'ready',user:null};clearQaToolsCapability();renderNav();}
 }
 function accountLabel(){ return accountSession.user?accountSession.user.username:'Cuenta'; }
 function accountDisplayName(user=accountSession.user){return user?.displayName||user?.username||'Estudiante';}
@@ -1286,20 +1318,28 @@ const MORE_NAV_ITEMS=[
   {id:'bugReport',label:'Reportar error',icon:'!',description:'Informa un problema de forma segura'},
 ];
 const DESKTOP_NAV_GROUPS=[
-  {label:'Estudio',items:[{id:'hub',label:'Hub',icon:'⌂'},{id:'today',label:'Hoy',icon:'◷'},{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'},{id:'studyToday',label:'Qué estudiar hoy',icon:'✧'}]},
-  {label:'Seguimiento',items:[{id:'errores',label:'Errores',icon:'✕'},{id:'guardadas',label:'Guardadas',icon:'★'},{id:'historial',label:'Historial',icon:'▥'},{id:'dashboard',label:'Progreso',icon:'📊'},{id:'leaderboard',label:'Leaderboard',icon:'🏆'}]},
-  {label:'Comunidad',items:[{id:'community',label:'Comunidad',icon:'♧'},{id:'calendar',label:'Calendario',icon:'▣'},{id:'groups',label:'Mis grupos',icon:'▣'},{id:'friends',label:'Personas',icon:'♢'},{id:'notifications',label:'Notificaciones',icon:'◉'}]},
-  {label:'Herramientas',items:[{id:'search',label:'Buscar',icon:'⌕'},{id:'favorites',label:'Favoritos',icon:'♡'},{id:'roadmap',label:'Roadmap',icon:'◇'},{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'feedback',label:'Feedback',icon:'✉'},{id:'bugReport',label:'Reportar error',icon:'!'},{id:'novedades',label:'Novedades',icon:'✦'},{id:'cuenta',label:'Cuenta',icon:'●'}]},
+  {label:'Principal',items:[{id:'hub',label:'Hub',icon:'⌂'}]},
+  {label:'Estudio',items:[{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'}]},
+  {label:'Seguimiento',items:[{id:'dashboard',label:'Progreso',icon:'📊'},{id:'historial',label:'Historial',icon:'▥'},{id:'calendar',label:'Calendario',icon:'▣'}]},
+  {label:'Personal',items:[{id:'guardadas',label:'Guardadas',icon:'★'},{id:'cuenta',label:'Cuenta',icon:'●'},{id:'ajustes',label:'Configuración',icon:'⚙'}]},
 ];
 const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
 const MORE_NAV_GROUPS=[
-  {label:'Estudiar',ids:['studyToday','examen','errores','search']},
-  {label:'Organizar',ids:['today','calendar','groups','guardadas','favorites']},
-  {label:'Social',ids:['community','friends','notifications']},
-  {label:'Progreso',ids:['dashboard','historial','leaderboard','novedades','roadmap']},
-  {label:'Cuenta',ids:['ajustes','feedback','bugReport','admin']},
+  {label:'Planificar',ids:['today','studyToday']},
+  {label:'Estudiar mejor',ids:['errores','search','favorites']},
+  {label:'Comunidad',ids:['community','groups','friends','notifications','leaderboard']},
+  {label:'Ayuda y producto',ids:['novedades','roadmap','feedback','bugReport']},
+  {label:'Gestión',ids:['admin']},
 ];
+const MOBILE_MORE_NAV_GROUPS=[
+  {label:'Estudio',ids:['examen']},
+  {label:'Seguimiento',ids:['dashboard','historial','calendar']},
+  {label:'Personal',ids:['guardadas','ajustes']},
+  ...MORE_NAV_GROUPS,
+];
+const DESKTOP_MORE_VIEWS=new Set(MORE_NAV_GROUPS.flatMap(group=>group.ids));
 let moreOpen=false;
+let lastMoreTrigger=null;
 function visibleMoreItems(){
   const role=accountSession.user?.role;
   return MORE_NAV_ITEMS.filter(item=>!item.adminOnly||['admin','owner','superdev'].includes(role));
@@ -1313,18 +1353,22 @@ function closeMoreMenu(restoreFocus=true){
   ['main','rail','mobileNav'].forEach(id=>{const element=document.getElementById(id);if(element)element.inert=false;});
   document.getElementById('moreMenuRoot').innerHTML='';
   document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded','false'));
-  if(restoreFocus)document.querySelector('[data-open-more]')?.focus();
+  if(restoreFocus)lastMoreTrigger?.focus();
+  lastMoreTrigger=null;
 }
-function openMoreMenu(){
+function openMoreMenu(trigger){
   moreOpen=true;
+  lastMoreTrigger=trigger||document.querySelector('[data-open-more]');
   ['main','rail','mobileNav'].forEach(id=>{const element=document.getElementById(id);if(element)element.inert=true;});
-  document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded','true'));
+  document.querySelectorAll('[data-open-more]').forEach(button=>button.setAttribute('aria-expanded',String(button===lastMoreTrigger)));
   const root=document.getElementById('moreMenuRoot');
   const items=visibleMoreItems();
-  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><h2 id="moreTitle">Más herramientas</h2><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más">✕</button></div>${MORE_NAV_GROUPS.map(group=>`<section class="more-group"><h3>${group.label}</h3><div class="more-list">${group.ids.map(id=>items.find(item=>item.id===id)).filter(Boolean).map(item=>`<button class="more-item" data-more-view="${item.id}" title="${item.description}"><span class="ic" aria-hidden="true">${item.icon}</span><b>${navLabel(item)}</b></button>`).join('')}</div></section>`).join('')}</section></div>`;
+  const scope=lastMoreTrigger?.dataset.moreScope==='desktop'?'desktop':'mobile';
+  const groups=scope==='desktop'?MORE_NAV_GROUPS:MOBILE_MORE_NAV_GROUPS;
+  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop" data-more-scope="${scope}"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><div><p class="more-overline">Navegación</p><h2 id="moreTitle">Más</h2></div><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más"><span class="more-close-glyph" aria-hidden="true"></span></button></div>${groups.map(group=>{const groupItems=group.ids.map(id=>items.find(item=>item.id===id)).filter(Boolean);return groupItems.length?`<section class="more-group"><h3>${group.label}</h3><div class="more-list">${groupItems.map(item=>`<button class="more-item" data-more-view="${item.id}" title="${item.description}"><span class="ic" aria-hidden="true">${item.icon}</span><b>${navLabel(item)}</b></button>`).join('')}</div></section>`:'';}).join('')}<p class="more-product-meta">Study Hub · v${APP_VERSION}</p></section></div>`;
   document.getElementById('closeMore').addEventListener('click',()=>closeMoreMenu());
   document.getElementById('moreBackdrop').addEventListener('click',event=>{if(event.target.id==='moreBackdrop')closeMoreMenu();});
-  root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);navigateFromNav(view);const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}}));
+  root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);const transition=navigateFromNav(view);const ready=transition?.updateCallbackDone||Promise.resolve();ready.then(()=>{const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}});}));
   document.getElementById('closeMore').focus();
 }
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&moreOpen)closeMoreMenu();});
@@ -1336,27 +1380,100 @@ document.addEventListener('keydown',event=>{
   if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
   else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
 });
+let practiceDiscardOpen=false;
+let practiceDiscardReturnFocus=null;
+let practiceDiscardConfirm=null;
+let practiceDiscardKeyHandler=null;
+function closePracticeDiscardDialog(restoreFocus=true){
+  practiceDiscardOpen=false;
+  ['main','rail','mobileNav'].forEach(id=>{const element=document.getElementById(id);if(element)element.inert=false;});
+  document.getElementById('pendingPracticeRoot').innerHTML='';
+  if(practiceDiscardKeyHandler)document.removeEventListener('keydown',practiceDiscardKeyHandler);
+  practiceDiscardKeyHandler=null;
+  if(restoreFocus)practiceDiscardReturnFocus?.focus();
+  practiceDiscardReturnFocus=null;
+  practiceDiscardConfirm=null;
+}
+function openPracticeDiscardDialog(trigger,onConfirm){
+  practiceDiscardOpen=true;
+  practiceDiscardReturnFocus=trigger;
+  practiceDiscardConfirm=onConfirm;
+  ['main','rail','mobileNav'].forEach(id=>{const element=document.getElementById(id);if(element)element.inert=true;});
+  const root=document.getElementById('pendingPracticeRoot');
+  root.innerHTML=`<div class="practice-discard-backdrop" id="practiceDiscardBackdrop"><section class="practice-discard-panel" id="practiceDiscardPanel" role="dialog" aria-modal="true" aria-labelledby="practiceDiscardTitle" aria-describedby="practiceDiscardDescription"><p class="study-overline">Práctica en curso</p><h2 id="practiceDiscardTitle">¿Descartar esta práctica?</h2><p id="practiceDiscardDescription">Se perderá el progreso de esta sesión sin terminar.</p><div class="practice-discard-actions"><button type="button" class="btn ghost" id="cancelPracticeDiscard">Cancelar</button><button type="button" class="btn danger" id="confirmPracticeDiscard">Descartar práctica</button></div></section></div>`;
+  const cancel=document.getElementById('cancelPracticeDiscard');
+  const confirmDiscard=document.getElementById('confirmPracticeDiscard');
+  const backdrop=document.getElementById('practiceDiscardBackdrop');
+  const panel=document.getElementById('practiceDiscardPanel');
+  cancel.addEventListener('click',()=>closePracticeDiscardDialog());
+  backdrop.addEventListener('click',event=>{if(event.target===backdrop)closePracticeDiscardDialog();});
+  confirmDiscard.addEventListener('click',()=>{
+    const action=practiceDiscardConfirm;
+    closePracticeDiscardDialog(false);
+    action?.();
+    requestAnimationFrame(()=>{const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}});
+  });
+  practiceDiscardKeyHandler=event=>{
+    if(!practiceDiscardOpen)return;
+    if(event.key==='Escape'){event.preventDefault();closePracticeDiscardDialog();return;}
+    if(event.key!=='Tab')return;
+    const focusable=[...panel.querySelectorAll('button:not([disabled])')];
+    const first=focusable[0],last=focusable[focusable.length-1];
+    if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+    else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+  };
+  document.addEventListener('keydown',practiceDiscardKeyHandler);
+  cancel.focus();
+}
+const COMPACT_STUDY_CONTEXT_VIEWS=new Set(['repaso','repasoCards','practica','examen','session']);
+function shellContextTopic(subject){
+  const topics=subjectContent(subject.id).topics;
+  const savedExamTopics=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
+  const configuredTopicId=state.view==='session'
+    ? state.session?.queue?.[state.session.idx]?.topic||state.activeTopicId
+    : state.view==='practica'
+    ? state.activeTopicId||state.settings.practiceTopicBySubject?.[subject.id]
+    : state.view==='examen'
+      ? state.activeTopicId||(savedExamTopics?.length===1?savedExamTopics[0]:null)
+      : state.activeTopicId||repasoFilter||state.lastVisitedTopicBySubject?.[subject.id];
+  return topics.find(topic=>topic.id===configuredTopicId)
+    || topics.find(topic=>topic.name===subject.currentMaterial)
+    || topics.find(topic=>topic.topicStatus==='current'||topic.priority==='current'||topic.priority==='urgent')
+    || (topics.length===1?topics[0]:null);
+}
+function shellContextLabel(subject,activeUnit){
+  if(!subject)return'Estudio general';
+  if(COMPACT_STUDY_CONTEXT_VIEWS.has(state.view)){
+    const topic=shellContextTopic(subject);
+    return topic?`${subject.name} · ${topic.name}`:subject.name;
+  }
+  return `${subject.emoji} Día ${subject.day} · ${subject.name}${activeUnit?` · ${activeUnit.name}`:''}`;
+}
 function renderNav(){
   const rail = document.getElementById('rail');
   const activeSubject=SUBJECT_BY_ID.get(state.activeSubjectId);
   const activeUnit=activeSubject?unitById(activeSubject.id,state.activeUnitId)||currentUnit(activeSubject.id):null;
+  const context=shellContextLabel(activeSubject,activeUnit);
   const role=accountSession.user?.role;
   rail.innerHTML = `
-    <div class="rail-brand"><div class="rail-brand-line">Study Hub <span class="version-badge">v${APP_VERSION}</span></div><span>${activeSubject?`${activeSubject.emoji} Día ${activeSubject.day} · ${activeSubject.name}${activeUnit?` · ${activeUnit.name}`:''}`:'Estudio general'}</span></div>
-    ${DESKTOP_NAV_GROUPS.map(group=>`<div class="nav-group"><span class="nav-group-title">${group.label}</span>${group.items.map(item=>`<button class="nav-btn ${state.view===item.id?'active':''}" data-nav="${item.id}"><span class="ic">${item.icon}</span>${navLabel(item)}</button>`).join('')}</div>`).join('')}
-    ${['admin','owner','superdev'].includes(role)?`<div class="nav-group"><span class="nav-group-title">Gestión</span><button class="nav-btn ${state.view==='admin'?'active':''}" data-nav="admin"><span class="ic">⚑</span>Administración</button></div>`:''}
+    <div class="rail-brand"><div class="rail-brand-line"><span class="brand-tile" aria-hidden="true">S</span><strong class="brand-name">Study Hub</strong><span class="brand-version">v${APP_VERSION}</span></div><span class="rail-context" title="${escHtml(context)}">${escHtml(context)}</span></div>
+    ${DESKTOP_NAV_GROUPS.map(group=>`<div class="nav-group"><span class="nav-group-title">${group.label}</span>${group.items.map(item=>`<button class="nav-btn ${state.view===item.id?'active':''}" data-nav="${item.id}" aria-current="${state.view===item.id?'page':'false'}"><span class="ic" aria-hidden="true">${item.icon}</span>${navLabel(item)}</button>`).join('')}</div>`).join('')}
+    <button class="nav-btn rail-more-button ${DESKTOP_MORE_VIEWS.has(state.view)?'active':''}" data-open-more data-more-scope="desktop" aria-label="Abrir menú Más" aria-expanded="false" aria-controls="morePanel" aria-current="${DESKTOP_MORE_VIEWS.has(state.view)?'page':'false'}"><span class="ic" aria-hidden="true">⋯</span>Más</button>
     <div class="rail-foot">
-      <button class="theme-toggle" id="themeBtn">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
+      <button class="theme-toggle" id="themeBtn" aria-pressed="${state.theme==='dark'}">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
   rail.querySelectorAll('[data-nav]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.nav)));
+  rail.querySelector('[data-open-more]').addEventListener('click',event=>moreOpen?closeMoreMenu():openMoreMenu(event.currentTarget));
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
 
   const mob = document.getElementById('mobileNav');
-  mob.innerHTML = PRIMARY_NAV_ITEMS.map(item=>`<button class="nav-btn ${primaryActive(item)?'active':''}" ${item.id==='more'?'data-open-more aria-label="Abrir menú Más" aria-expanded="false" aria-controls="morePanel"':`data-navm="${item.id}"`}><span class="ic">${item.icon}</span>${primaryLabel(item)}</button>`).join('');
+  mob.innerHTML = PRIMARY_NAV_ITEMS.map(item=>`<button class="nav-btn ${primaryActive(item)?'active':''}" aria-current="${primaryActive(item)?'page':'false'}" ${item.id==='more'?'data-open-more data-more-scope="mobile" aria-label="Abrir menú Más" aria-expanded="false" aria-controls="morePanel"':`data-navm="${item.id}"`}><span class="ic" aria-hidden="true">${item.icon}</span>${primaryLabel(item)}</button>`).join('');
   mob.querySelectorAll('[data-navm]').forEach(b=>b.addEventListener('click', ()=>navigateFromNav(b.dataset.navm)));
-  mob.querySelector('[data-open-more]').addEventListener('click',()=>moreOpen?closeMoreMenu():openMoreMenu());
+  mob.querySelector('[data-open-more]').addEventListener('click',event=>moreOpen?closeMoreMenu():openMoreMenu(event.currentTarget));
 }
+function resolveViewAlias(view){return view==='progreso'?'dashboard':view;}
 function setViewContext(view){
+  view=resolveViewAlias(view);
   state.view=view;
   if(view==='hub'){state.activeSubjectId=null;state.activeUnitId=null;state.activeTopicId=null;}
   else if(SUBJECT_VIEW_IDS.has(view)){
@@ -1370,20 +1487,17 @@ function setViewContext(view){
 function navigateFromNav(view){
   if(state.session){
     if(state.session.mode==='practica' && !state.session.experimental){
-      if(state.view!=='session'){ goto(view); return; }
+      if(state.view!=='session') return navigateWithShellMotion(view);
       state.session.pausedAt=Date.now();
       state.session.attemptStage=attemptStage;
-      setViewContext(view);
       saveState();
-      render();
-      window.scrollTo(0,0);
-      return;
+      return navigateWithShellMotion(view);
     }
     if(!confirm('Tienes una sesión en progreso. ¿Quieres salir y abrir otra sección?')) return;
     state.session=null;
     attemptStage=0;
   }
-  goto(view);
+  return navigateWithShellMotion(view);
 }
 function toggleTheme(){
   state.theme = state.theme==='light'?'dark':'light';
@@ -1469,7 +1583,37 @@ function resumePausedPracticeById(id){
 function discardPausedPracticeById(id){
   state.settings.pausedPractices=(state.settings.pausedPractices||[]).filter(row=>row.id!==id);saveState();
 }
-function goto(view){ setViewContext(view); saveState(); render(); window.scrollTo(0,0); }
+function navigationDirection(fromView,toView){
+  if(toView==='hub'&&fromView!=='hub')return 'back';
+  if(fromView==='hub'&&toView!=='hub')return 'forward';
+  return 'lateral';
+}
+function clearShellNavigationMotion(){
+  delete document.body.dataset.navigationDirection;
+  delete document.documentElement.dataset.navigationDirection;
+  document.getElementById('main')?.classList.remove('shell-navigation-enter');
+}
+function goto(view){view=resolveViewAlias(view);setViewContext(view);saveState();render();window.scrollTo(0,0);}
+function navigateWithShellMotion(view){
+  view=resolveViewAlias(view);
+  if(state.view===view){goto(view);return null;}
+  const direction=navigationDirection(state.view,view);
+  const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)').matches===true;
+  const commit=()=>goto(view);
+  if(reduced){clearShellNavigationMotion();commit();return null;}
+  document.body.dataset.navigationDirection=direction;
+  document.documentElement.dataset.navigationDirection=direction;
+  if(typeof document.startViewTransition==='function'){
+    const transition=document.startViewTransition(commit);
+    transition.finished.finally(clearShellNavigationMotion);
+    return transition;
+  }
+  commit();
+  const main=document.getElementById('main');
+  main?.classList.add('shell-navigation-enter');
+  window.setTimeout(clearShellNavigationMotion,300);
+  return null;
+}
 function platformUiContext(){return{user:accountSession.user,escape:escHtml,subjects:SUBJECT_CATALOG,subjectName:id=>escHtml(SUBJECT_BY_ID.get(id)?.name||id),goto,openSubject,toast:showToast,
   updatesSeen:()=>state.settings.seenUpdateIds||[],markUpdatesSeen:ids=>{state.settings.seenUpdateIds=[...new Set([...(state.settings.seenUpdateIds||[]),...ids])].slice(-100);saveState();renderNav();},
   calendarSeen:()=>state.settings.seenCalendarIds||[],markCalendarSeen:ids=>{state.settings.seenCalendarIds=[...new Set([...(state.settings.seenCalendarIds||[]),...ids])].slice(-500);saveState();},
@@ -1480,6 +1624,7 @@ function platformUiContext(){return{user:accountSession.user,escape:escHtml,subj
   reviewTopic:(subjectId,topicId)=>{if(openSubject(subjectId,'repaso')){repasoFilter=topicId;repasoIndex=0;state.activeTopicId=topicId;state.lastVisitedTopicBySubject[subjectId]=topicId;goto('repasoCards');}},
   reviewCard:(subjectId,cardId)=>{if(openSubject(subjectId,'repaso')){const [,topic,title]=cardId.split('|');repasoFilter=topic;repasoIndex=Math.max(0,activeReviewCards().filter(card=>card.topic===topic).findIndex(card=>card.title===title));state.activeTopicId=topic;state.lastVisitedTopicBySubject[subjectId]=topic;goto('repasoCards');}}};}
 function render(){
+  state.view=resolveViewAlias(state.view);
   if(state.view!=='admin'){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
   document.body.dataset.view=state.view;
   renderNav();
@@ -1508,22 +1653,13 @@ function localDateLabel(){
   try{return new Intl.DateTimeFormat('es-ES',{weekday:'long',day:'numeric',month:'long'}).format(new Date());}
   catch{return '';}
 }
-function renderHubSubjectCard(subject){
-  if(!subject.available)return `<article class="card hub-subject-card unavailable" aria-disabled="true"><div class="system-row"><h3><span aria-hidden="true">${subject.emoji}</span> ${subject.name}</h3><span class="subject-status">Próximamente</span></div></article>`;
+function renderHubSubjectRow(subject){
+  if(!subject.available)return `<div class="hub-coming-row" aria-disabled="true"><span>${escHtml(subject.name)}</span><small>${escHtml(subject.currentMaterial||'Próximamente')}</small></div>`;
   const content=subjectContent(subject.id);
   const unit=content.units.current;
-  const newContent=subject.id==='espanol'&&!state.settings.seenContentAt?.[SPANISH_VOCABULARY.unit.id];
-  const unitType=unit?.type&&unit.type!==subject.status?` · ${unit.type}`:'';
-  const detail=subject.available
-    ? `${unit?.name||'Unidad disponible'}${unitType} · ${subject.status}`
-    : `Día ${subject.day} · contenido en preparación`;
-  const spanishStatus=state.settings.topicStudyStatus?.vocabulario||'pending_review';
-  return `<article class="card hub-subject-card ${subject.available?'available':'unavailable'} ${subject.id==='espanol'&&spanishStatus==='pending_review'?'priority-card':''}" ${subject.available?'':'aria-disabled="true"'}>
-    <div class="subject-card-top"><span class="subject-emoji" aria-hidden="true">${subject.emoji}</span>${newContent?'<span class="new-pill">NUEVO</span>':`<span class="subject-status">${subject.status}</span>`}</div>
-    <h3>${subject.name}</h3>
-    <p>${subject.id==='espanol'?'Competencia en Español · Vocabulario listo para estudiar':detail}</p>
-    <button class="icon-btn hub-subject-action" data-open-subject="${subject.id}">Abrir materia</button>
-  </article>`;
+  const symbols={historia:'H',ciencia:'Ci',matematicas:'°',espanol:'Aa'};
+  const detail=subject.currentMaterial||unit?.name||'Unidad disponible';
+  return `<button type="button" class="hub-subject-row hub-subject-${subject.id}" data-open-subject="${subject.id}"><span class="hub-subject-symbol" aria-hidden="true">${symbols[subject.id]||subject.emoji}</span><span class="hub-subject-copy"><strong>${escHtml(subject.name)}</strong><small>${escHtml(detail)}</small></span><span class="hub-subject-chevron" aria-hidden="true">›</span></button>`;
 }
 function openSubject(subjectId,view='dashboard'){
   const subject=SUBJECT_BY_ID.get(subjectId);
@@ -1533,36 +1669,39 @@ function openSubject(subjectId,view='dashboard'){
   state.activeUnitId=currentUnit(subject.id)?.id||null;
   state.activeTopicId=null;
   if(subject.id==='espanol'){state.settings.seenContentAt ||= {};state.settings.seenContentAt[SPANISH_VOCABULARY.unit.id]=Date.now();}
-  goto(view);
+  if(arguments[2]===true)navigateWithShellMotion(view);else goto(view);
   return true;
 }
 function renderHub(main){
   const date=localDateLabel();
   const pending=resumablePracticeProgress();
-  const upcoming=SUBJECT_CATALOG.flatMap(subject=>{
+  const scheduledAssessments=SUBJECT_CATALOG.flatMap(subject=>{
     const units=[subject.units?.current,...(subject.units?.previous||[]),...(subject.units?.completed||[])].filter(Boolean);
-    return units.flatMap(unit=>(unit.assessments||[]).filter(assessment=>assessment.status==='scheduled'&&assessment.date).map(assessment=>({subject,assessment})));
-  }).sort((a,b)=>a.assessment.date.localeCompare(b.assessment.date));
+    return units.flatMap(unit=>(unit.assessments||[]).filter(assessment=>assessment.status==='scheduled').map(assessment=>({subject,assessment})));
+  });
+  const upcoming=scheduledAssessments.filter(({assessment})=>assessment.date&&assessment.dateStatus!=='pending').sort((a,b)=>a.assessment.date.localeCompare(b.assessment.date));
+  const upcomingDatePending=scheduledAssessments.filter(({assessment})=>assessment.confirmed===true&&!assessment.date&&assessment.dateStatus==='pending');
   const academicDateLabel=value=>{
     const parsed=new Date(`${value}T00:00:00Z`);
     const weekdays=['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
     const months=['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
     return `${weekdays[parsed.getUTCDay()]} ${parsed.getUTCDate()} ${months[parsed.getUTCMonth()]}`;
   };
-  main.innerHTML=`
-    <div class="pagehead hub-heading"><div><h1>Study Hub</h1><p>¿Qué quieres estudiar ahora?</p></div>${date?`<span class="hub-date">${escHtml(date)}</span>`:''}</div>
-    ${pending?`<section class="hub-section" aria-labelledby="hubContinueTitle"><div class="hub-section-head"><h2 id="hubContinueTitle">Continuar</h2></div><div class="card hub-continue-card"><div class="system-row"><div><b>${escHtml(pending.subjectName)} · ${escHtml(pending.topic)}</b><div class="resume-meta"><span class="resume-pill">Pregunta ${pending.current} de ${pending.total}</span><span class="resume-pill">${pending.answered} contestadas</span></div></div><button class="btn" id="resumeFromHub">Continuar práctica</button></div></div></section>`:''}
-    <section class="hub-section" aria-labelledby="hubStudyTitle"><div class="hub-section-head"><h2 id="hubStudyTitle">Estudiar</h2><p>Elige una materia para ver sus temas y herramientas.</p></div>${STUDY_DAYS.map(day=>`<div class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h3 id="hub-day-${day.id}">${day.name}</h3><span>${subjectsForDay(day.id).length} materias</span></div><div class="subject-grid">${subjectsForDay(day.id).map(renderHubSubjectCard).join('')}</div></div>`).join('')}</section>
-    <section class="hub-section" aria-labelledby="hubUpcomingTitle"><div class="hub-section-head"><h2 id="hubUpcomingTitle">Próximamente</h2><p>Pruebas, exámenes y eventos académicos con fecha.</p></div>${upcoming.length?`<div class="hub-upcoming-list">${upcoming.map(({subject,assessment})=>`<article class="hub-upcoming-item"><div><b>${subject.emoji} ${escHtml(subject.name)} · ${escHtml(assessment.label)}</b><p>${escHtml(subject.units.current?.name||'Evaluación programada')}</p></div><time datetime="${escHtml(assessment.date)}">${academicDateLabel(assessment.date)}</time></article>`).join('')}</div>`:'<p class="cloud-note">No hay evaluaciones programadas.</p>'}<section id="hubSignals" aria-live="polite"></section></section>
-    <section class="hub-section" aria-labelledby="hubSecondaryTitle"><div class="hub-section-head"><h2 id="hubSecondaryTitle">También puedes</h2><p>Consulta tu planificación y otras herramientas cuando las necesites.</p></div><div class="hub-secondary-actions"><button class="icon-btn" data-hub-view="studyToday">Qué estudiar hoy</button><button class="icon-btn" data-hub-view="progreso">Progreso</button><button class="icon-btn" data-hub-view="calendar">Calendario</button><button class="icon-btn" data-hub-view="novedades">Novedades</button></div>${(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='pending_review'?`<div class="review-continue system-row"><div><p>Pendiente de repasar</p><b>Competencia en Español · Vocabulario</b></div><button class="icon-btn" id="hubReviewVocabulary">Repasar ahora</button></div>`:''}${!accountSession.user?`<div class="guest-banner system-row" aria-label="Cuenta de Study Hub" style="margin-top:18px"><p>Estudia sin cuenta. Regístrate para sincronizar tu progreso.</p><div class="btn-row"><button class="btn" id="createAccountFromHub">Crear cuenta</button><button class="icon-btn" id="loginFromHub">Iniciar sesión</button></div></div>`:''}</section>`;
-  main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject)));
-  main.querySelector('#hubReviewVocabulary')?.addEventListener('click',()=>platformUiContext().reviewTopic('espanol','vocabulario'));
-  main.querySelectorAll('[data-hub-view]').forEach(button=>button.addEventListener('click',()=>goto(button.dataset.hubView)));
+  const academicDateParts=value=>{const parsed=new Date(`${value}T00:00:00Z`);return{day:parsed.getUTCDate(),month:['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'][parsed.getUTCMonth()],year:parsed.getUTCFullYear()};};
+  main.innerHTML=`<div class="hub-home">
+    <div class="pagehead hub-heading"><div class="hub-heading-copy"><h1>¿Qué estudiamos hoy?</h1><p>${pending?'Retoma tu práctica o elige tu siguiente materia.':'Elige una materia. El resto, paso a paso.'}</p></div><div class="hub-heading-actions">${date?`<span class="hub-date">${escHtml(date)}</span>`:''}<button type="button" class="hub-account-action" data-hub-view="cuenta">${accountSession.user?'Cuenta':'Entrar'}</button></div></div>
+    ${pending?`<section class="hub-continue-card hub-decision-primary" aria-labelledby="hubContinueTitle"><div class="hub-continue-copy"><p class="hub-overline">Continuar · ${escHtml(pending.subjectName)}</p><h2 id="hubContinueTitle">${escHtml(pending.topic)}</h2><p>Tu procedimiento sigue donde lo dejaste.</p></div><button class="btn" id="resumeFromHub">Continuar práctica</button></section>`:''}
+    <section class="hub-section${pending?'':' hub-decision-primary'}" aria-labelledby="hubStudyTitle"><div class="hub-section-head"><h2 id="hubStudyTitle">Estudiar</h2><p>Tu material, en un lugar.</p></div><div class="hub-days">${STUDY_DAYS.map(day=>`<div class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h3 id="hub-day-${day.id}">${day.name}</h3></div><div class="hub-subject-list">${subjectsForDay(day.id).slice().sort((a,b)=>Number(b.available)-Number(a.available)).map(renderHubSubjectRow).join('')}</div></div>`).join('')}</div></section>
+    <section class="hub-section" aria-labelledby="hubUpcomingTitle"><div class="hub-section-head"><h2 id="hubUpcomingTitle">Próximamente</h2></div>${upcoming.length?`<div class="hub-upcoming-list">${upcoming.map(({subject,assessment})=>{const parts=academicDateParts(assessment.date);return `<article class="hub-upcoming-item"><time datetime="${escHtml(assessment.date)}"><b>${parts.day}</b><span>${parts.month}</span></time><div class="hub-upcoming-copy"><strong>${escHtml(assessment.label)} de ${escHtml(subject.name)}</strong>${assessment.displayTopic?`<small class="hub-upcoming-topic">${escHtml(assessment.displayTopic)}</small>`:''}<small>${academicDateLabel(assessment.date)} de ${parts.year}</small></div><button class="hub-text-action" data-upcoming-subject="${subject.id}">Ver material <span aria-hidden="true">›</span></button></article>`;}).join('')}</div>`:''}${upcomingDatePending.length?`<div class="hub-upcoming-list hub-upcoming-pending-list" aria-label="Evaluaciones con fecha por confirmar">${upcomingDatePending.map(({subject,assessment})=>`<article class="hub-upcoming-item hub-upcoming-item-pending"><span class="hub-upcoming-when" aria-hidden="true">—</span><div class="hub-upcoming-copy"><strong>${escHtml(assessment.label)} de ${escHtml(subject.name)}</strong><small>${escHtml(assessment.provisionalDateLabel||'Evaluación confirmada')} · Fecha por confirmar</small></div><button class="hub-text-action" data-upcoming-subject="${subject.id}">Ver material <span aria-hidden="true">›</span></button></article>`).join('')}</div>`:''}${!upcoming.length&&!upcomingDatePending.length?'<p class="cloud-note">No hay evaluaciones programadas.</p>':''}</section>
+    <div class="hub-footer-links"><button data-hub-view="progreso">▥ Progreso</button><button data-hub-view="calendar">▣ Calendario</button><button data-hub-view="novedades">✦ Novedades</button></div>
+    <section id="hubSignals" aria-live="polite"></section>
+  </div>`;
+  main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject,'dashboard',true)));
+  main.querySelectorAll('[data-upcoming-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.upcomingSubject,'dashboard',true)));
+  main.querySelectorAll('[data-hub-view]').forEach(button=>button.addEventListener('click',()=>navigateWithShellMotion(button.dataset.hubView)));
   window.StudyHubHubUI.mountHub(main,platformUiContext());
   const resumeFromHub=document.getElementById('resumeFromHub');
   if(resumeFromHub) resumeFromHub.addEventListener('click',resumeSavedPractice);
-  const createAccountFromHub=document.getElementById('createAccountFromHub');if(createAccountFromHub)createAccountFromHub.addEventListener('click',()=>{requestedAccountMode='register';goto('cuenta');});
-  const loginFromHub=document.getElementById('loginFromHub');if(loginFromHub)loginFromHub.addEventListener('click',()=>{requestedAccountMode='login';goto('cuenta');});
 }
 
 function ringSvg(pct, size=150, stroke=12){
@@ -1608,7 +1747,7 @@ function renderDashboard(main){
     <div class="pagehead"><p class="subject-context">Study Hub → Día ${subject.day} → ${subject.emoji} ${subject.name} → ${escHtml(activeUnit?.name||'Unidad')}</p><div class="system-row"><div><h1>Panel de ${subject.name}</h1><p>Tu progreso y herramientas de esta materia.</p></div><button class="icon-btn" id="backToHub">← Volver al Hub</button></div></div>
     ${!accountSession.user?`<div class="card" style="margin-bottom:20px;"><div class="account-status"><div><b>Guarda todo en tu cuenta</b><div class="account-sub">Sincroniza progreso, historial, guardadas y configuración entre dispositivos.</div></div><button class="btn" id="goAccount">Registrarme / Login</button></div></div>`:`<div class="cloud-note" style="margin:-14px 0 18px 0;">● Conectado como <b>${escHtml(accountSession.user.username)}</b> · <span id="cloudSyncStatus">Sincronización activa</span></div>`}
     ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><b>▶ Tienes una práctica sin terminar</b><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} de ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><button class="btn" id="resumeFromDash">Continuar práctica</button></div></div>`})():''}
-    ${subject.id==='ciencia'?`<section class="card priority-card science-menu" aria-labelledby="scienceMenuTitle"><div class="system-row"><div><p class="section-title">Próxima prueba · miércoles 30 de septiembre de 2026</p><h2 id="scienceMenuTitle">Material confirmado + contenido pendiente</h2><p class="cloud-note">La prueba real del 24 ya fue añadida al Hub. El miércoles incluye ese material y otras cosas que todavía no han sido proporcionadas; no se inventará contenido adicional.</p></div><button class="btn" data-science-action="taken-test">Practicar la prueba real</button></div><div class="btn-row"><button class="icon-btn" data-science-action="si">Conversiones SI</button><button class="icon-btn" data-science-action="density">Densidad</button><button class="icon-btn" data-science-action="temperature">Temperatura</button><button class="icon-btn" data-science-action="formulas">Repasar fórmulas</button><button class="icon-btn" data-science-action="errors">Practicar errores</button><button class="icon-btn" data-science-action="mixed">Examen mixto</button></div><p class="cloud-note" style="margin-top:12px;">Prueba tomada · 24 sep 2026 · 20 preguntas reales: Densidad, SI y una definición conceptual de Temperatura.</p></section>`:''}
+    ${subject.id==='ciencia'?`<section class="card priority-card science-menu" aria-labelledby="scienceMenuTitle"><div class="system-row"><div><p class="section-title">Próxima prueba · miércoles 30 de septiembre de 2026</p><h2 id="scienceMenuTitle">Temperatura</h2><p class="cloud-note">La próxima evaluación confirmada cubre Temperatura. Conversiones SI y Densidad permanecen disponibles como material ya evaluado.</p></div><button class="btn" data-science-action="temperature">Practicar Temperatura</button></div><div class="btn-row"><button class="icon-btn" data-science-action="si">Conversiones SI</button><button class="icon-btn" data-science-action="density">Densidad</button><button class="icon-btn" data-science-action="taken-test">Prueba real anterior</button><button class="icon-btn" data-science-action="formulas">Repasar fórmulas</button><button class="icon-btn" data-science-action="errors">Practicar errores</button><button class="icon-btn" data-science-action="mixed">Examen mixto</button></div><p class="cloud-note" style="margin-top:12px;">Prueba tomada · 24 sep 2026 · 20 preguntas reales: Densidad, SI y una definición conceptual de Temperatura.</p></section>`:''}
     <div class="card dash-top" style="margin-bottom:20px;">
       <div class="ring-wrap">${ringSvg(pct)}<div class="ring-num"><b>${pct}%</b><span>dominado</span></div></div>
       <div class="grid grid-4 dash-stats" style="flex:1;">
@@ -1628,7 +1767,6 @@ function renderDashboard(main){
           <p class="section-title" style="margin-bottom:4px;">${subject.name}</p>
           <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Materia disponible del Study Hub.</p>
         </div>
-        <span class="version-badge">v${APP_VERSION}</span>
       </div>
       <div class="subject-columns" style="margin-top:14px;">
         <div class="subject-block">
@@ -1667,7 +1805,7 @@ function renderDashboard(main){
       </div>
     </div>
   `;
-  document.getElementById('backToHub').addEventListener('click',()=>goto('hub'));
+  document.getElementById('backToHub').addEventListener('click',()=>navigateWithShellMotion('hub'));
   document.getElementById('openSubjectReview').addEventListener('click',()=>goto('repaso'));
   document.getElementById('openSubjectPractice').addEventListener('click',()=>goto('practica'));
   if(weak) document.getElementById('goWeak').addEventListener('click', ()=> startSession({mode:'practica', topic:weak.id}));
@@ -1698,10 +1836,10 @@ function truncate(s,n){ return s.length>n? s.slice(0,n)+'…' : s; }
 let scienceFormulaScope='all';
 function renderScienceFormulas(main){
   if(activeSubject().id!=='ciencia'){goto('dashboard');return;}
-  const filters={density:['densidad'],temperature:['temperatura'],si:['ciencia-si'],'current-test':['ciencia-si','densidad'],all:['ciencia-si','densidad','temperatura']};
+  const filters={density:['densidad'],temperature:['temperatura'],si:['ciencia-si'],'current-test':['temperatura'],all:['ciencia-si','densidad','temperatura']};
   const topicIds=filters[scienceFormulaScope]||filters.all;
   const cards=SCIENCE_CONTENT.reviewCards.filter(card=>topicIds.includes(card.topic));
-  main.innerHTML=`<div class="pagehead"><div class="system-row"><div><h1>Repasar fórmulas</h1><p>${scienceFormulaScope==='current-test'?'Para esta prueba: Conversiones SI y Densidad.':'Elige un bloque o repasa los tres de forma explícita.'}</p></div><button class="icon-btn" id="backScience">← Volver a Ciencia</button></div></div><div class="btn-row" style="margin-bottom:18px"><button class="chip" data-formula-scope="density">Densidad</button><button class="chip" data-formula-scope="temperature">Temperatura</button><button class="chip" data-formula-scope="si">Conversiones SI</button><button class="chip" data-formula-scope="all">Todas</button></div><div class="grid grid-2">${cards.map(card=>`<article class="card"><p class="section-title">${escHtml(SCIENCE_CONTENT.topics.find(topic=>topic.id===card.topic)?.name||'Ciencia')}</p><h2>${escHtml(card.title)}</h2><p>${escHtml(card.def)}</p><div class="learning-box example-box"><span class="learning-label">Ejemplo corto</span>${escHtml(card.example)}</div><details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Qué significa y cuándo usarla</span></summary><p>${escHtml(card.detail)}</p></details></article>`).join('')}</div><section class="card" style="margin-top:18px"><h2>¿Qué fórmula uso?</h2><p>Practica primero cómo identificar la fórmula y después resuelve el procedimiento completo.</p><button class="btn" id="practiceScienceFormulas">Practicar fórmulas</button></section>`;
+  main.innerHTML=`<div class="pagehead"><div class="system-row"><div><h1>Repasar fórmulas</h1><p>${scienceFormulaScope==='current-test'?'Para esta prueba: Temperatura.':'Elige un bloque o repasa los tres de forma explícita.'}</p></div><button class="icon-btn" id="backScience">← Volver a Ciencia</button></div></div><div class="btn-row" style="margin-bottom:18px"><button class="chip" data-formula-scope="density">Densidad</button><button class="chip" data-formula-scope="temperature">Temperatura</button><button class="chip" data-formula-scope="si">Conversiones SI</button><button class="chip" data-formula-scope="all">Todas</button></div><div class="grid grid-2">${cards.map(card=>`<article class="card"><p class="section-title">${escHtml(SCIENCE_CONTENT.topics.find(topic=>topic.id===card.topic)?.name||'Ciencia')}</p><h2>${escHtml(card.title)}</h2><p>${escHtml(card.def)}</p><div class="learning-box example-box"><span class="learning-label">Ejemplo corto</span>${escHtml(card.example)}</div><details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Qué significa y cuándo usarla</span></summary><p>${escHtml(card.detail)}</p></details></article>`).join('')}</div><section class="card" style="margin-top:18px"><h2>¿Qué fórmula uso?</h2><p>Practica primero cómo identificar la fórmula y después resuelve el procedimiento completo.</p><button class="btn" id="practiceScienceFormulas">Practicar fórmulas</button></section>`;
   document.getElementById('backScience').addEventListener('click',()=>goto('dashboard'));
   main.querySelectorAll('[data-formula-scope]').forEach(button=>button.addEventListener('click',()=>{scienceFormulaScope=button.dataset.formulaScope;renderScienceFormulas(main);}));
   document.getElementById('practiceScienceFormulas').addEventListener('click',()=>startSession({mode:'practica',topics:topicIds,limit:topicIds.length===2?20:10,balancedTopics:topicIds.length>1,countStats:true}));
@@ -1842,17 +1980,19 @@ let repasoIndex = 0, repasoFilter=null;
 
 function renderRepasoHome(main){
   const subject=activeSubject(),topics=activeTopics(),cards=activeReviewCards();
-  if(!topics.length){main.innerHTML=`<div class="pagehead"><h1>Repaso de ${subject.name}</h1><p>La materia está activa y lista para recibir contenido aprobado.</p></div><div class="empty-state"><span class="ic">○</span>Selecciona otra materia mientras se incorpora material real.</div>`;return;}
+  if(!topics.length){main.innerHTML=`<section class="study-flow study-flow--setup" data-study-surface="review"><header class="pagehead study-flow-head"><p class="study-overline">Repasar</p><h1>Repaso de ${subject.name}</h1><p>La materia está activa y lista para recibir contenido aprobado.</p></header><div class="empty-state study-empty"><span class="ic">○</span>Selecciona otra materia mientras se incorpora material real.</div></section>`;return;}
   const visibleTopics=subject.id==='espanol'?[VOCAB_TOPIC]:topics;
   const previousTopic=visibleTopics.find(topic=>topic.id===state.lastVisitedTopicBySubject?.[subject.id]);
   main.innerHTML = `
-    <div class="pagehead"><h1>Repaso de ${subject.name}</h1><p>Revisa el contenido en tarjetas, a tu ritmo, antes de practicar.</p></div>
-    <div class="grid grid-3">
-      ${visibleTopics.map(t=>`<button type="button" class="card mode-card" data-t="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${cards.filter(c=>c.topic===t.id).length} tarjetas</p></button>`).join('')}
-      <button type="button" class="card mode-card" data-t="all"><span class="ic">◎</span><h3>Todo el material</h3><p>${cards.length} tarjetas en total</p></button>
-    </div>
-    ${previousTopic?`<section class="review-continue system-row"><div><p>Repaso anterior</p><b>${previousTopic.icon} ${previousTopic.name}</b></div><button class="icon-btn" id="continuePreviousReview">Continuar repaso anterior</button></section>`:''}
-    ${subject.id==='espanol'?`<details class="card" style="margin-top:18px"><summary><b>Tema pasado · Examen tomado el 14 de septiembre de 2026</b></summary><p class="cloud-note">El contenido anterior se conserva como un solo bloque académico.</p><div class="btn-row">${TOPICS.map(t=>`<button type="button" class="icon-btn" data-t="${t.id}">${t.icon} ${t.name}</button>`).join('')}</div></details>`:''}`;
+    <section class="study-flow study-flow--setup" data-study-surface="review">
+      <header class="pagehead study-flow-head"><p class="study-overline">Repasar</p><h1>Repaso de ${subject.name}</h1><p>Revisa el contenido en tarjetas, a tu ritmo, antes de practicar.</p></header>
+      <div class="study-choice-list" aria-label="Temas para repasar">
+        ${visibleTopics.map(t=>`<button type="button" class="study-choice" data-t="${t.id}"><span class="study-choice-icon" aria-hidden="true">${t.icon}</span><span class="study-choice-copy"><strong>${t.name}</strong><small>${cards.filter(c=>c.topic===t.id).length} tarjetas</small></span><span class="study-choice-arrow" aria-hidden="true">›</span></button>`).join('')}
+        <button type="button" class="study-choice" data-t="all"><span class="study-choice-icon" aria-hidden="true">◎</span><span class="study-choice-copy"><strong>Todo el material</strong><small>${cards.length} tarjetas en total</small></span><span class="study-choice-arrow" aria-hidden="true">›</span></button>
+      </div>
+      ${previousTopic?`<section class="review-continue study-secondary-row"><div><p class="study-overline">Repaso anterior</p><b>${previousTopic.icon} ${previousTopic.name}</b></div><button class="icon-btn" id="continuePreviousReview">Continuar repaso anterior</button></section>`:''}
+      ${subject.id==='espanol'?`<details class="ui-disclosure study-disclosure"><summary><b>Tema pasado · Examen tomado el 14 de septiembre de 2026</b><span class="cloud-note">Contenido anterior</span></summary><p class="cloud-note">El contenido anterior se conserva como un solo bloque académico.</p><div class="btn-row">${TOPICS.map(t=>`<button type="button" class="icon-btn" data-t="${t.id}">${t.icon} ${t.name}</button>`).join('')}</div></details>`:''}
+    </section>`;
   main.querySelectorAll('[data-t]').forEach(c=>c.addEventListener('click', ()=>{
     repasoFilter = c.dataset.t==='all'? null : c.dataset.t;
     state.activeTopicId=repasoFilter;
@@ -1871,10 +2011,10 @@ function renderRepasoCards(main){
   const cardId=`${activeSubject().id}|${c.topic}|${c.title}`;
   const cardProgress=state.settings.flashcards?.[cardId];
   main.innerHTML = `
-    <div class="q-wrap">
-      <div class="q-topbar"><button class="icon-btn" id="exitTopic">← Salir del tema</button><span>${repasoIndex+1} / ${cards.length}</span></div>
-      <div class="q-progress"><div class="q-progress-fill" style="width:${(repasoIndex+1)/cards.length*100}%"></div></div>
-      <div class="q-card review-card">
+    <section class="q-wrap study-flow study-flow--review" data-study-surface="review-card">
+      <div class="q-topbar study-toolbar"><button class="icon-btn" id="exitTopic">← Salir del tema</button><span class="study-session-context">${repasoIndex+1} / ${cards.length}</span></div>
+      <div class="q-progress study-progress" role="progressbar" aria-label="Progreso del repaso" aria-valuemin="1" aria-valuemax="${cards.length}" aria-valuenow="${repasoIndex+1}"><div class="q-progress-fill" style="width:${(repasoIndex+1)/cards.length*100}%"></div></div>
+      <article class="q-card review-card study-question-surface">
         <div style="text-align:center;">
           <span class="q-topic-tag">${topics.find(t=>t.id===c.topic)?.name||'Repaso'}</span>
           <h2 class="serif" style="margin:6px 0 16px 0;">${c.title}</h2>
@@ -1882,16 +2022,16 @@ function renderRepasoCards(main){
         </div>
         ${renderReviewExample(c)}
         ${c.detail?`<details class="ui-disclosure"><summary><b>Ver explicación detallada</b><span class="cloud-note">Qué significa, cuándo usarla y error común</span></summary><p>${escHtml(c.detail)}</p></details>`:''}
-      </div>
-      <div class="btn-row" aria-label="Mi repaso de esta tarjeta"><button class="icon-btn" id="cardKnown" aria-pressed="${cardProgress?.status==='known'}">Lo sé</button><button class="icon-btn" id="cardUnknown" aria-pressed="${cardProgress?.status==='unknown'}">No lo sé</button><span class="meta">${cardProgress?.reviewCount||0} ${cardProgress?.reviewCount===1?'repaso':'repasos'}</span></div>
-      <div class="q-actions">
+      </article>
+      <div class="btn-row study-recall-actions" aria-label="Mi repaso de esta tarjeta"><button class="icon-btn" id="cardKnown" aria-pressed="${cardProgress?.status==='known'}">Lo sé</button><button class="icon-btn" id="cardUnknown" aria-pressed="${cardProgress?.status==='unknown'}">No lo sé</button><span class="meta">${cardProgress?.reviewCount||0} ${cardProgress?.reviewCount===1?'repaso':'repasos'}</span></div>
+      <div class="q-actions study-session-actions">
         <div class="btn-row"><button class="icon-btn" id="prevRep" ${repasoIndex===0?'disabled':''}>← Anterior</button></div>
         <div class="btn-row">
           <button class="btn" id="nextRep">${repasoIndex===cards.length-1?'Terminar':'Siguiente →'}</button>
         </div>
       </div>
-      <div class="btn-row" style="margin-top:14px"><button class="btn ghost" id="practThis">Practicar este tema</button></div><details class="ui-disclosure"><summary><b>Más opciones</b><span class="cloud-note">Favoritos y organización</span></summary><div class="btn-row"><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button></div></details>
-    </div>`;
+      <div class="btn-row study-primary-followup"><button class="btn ghost" id="practThis">Practicar este tema</button></div><details class="ui-disclosure study-disclosure"><summary><b>Más opciones</b><span class="cloud-note">Favoritos y organización</span></summary><div class="btn-row"><button class="icon-btn" id="cardFavorite">♡ Favorito tarjeta</button><button class="icon-btn" id="topicFavorite">♡ Favorito tema</button></div></details>
+    </section>`;
   document.getElementById('exitTopic').addEventListener('click',()=>{state.activeTopicId=null;repasoFilter=null;saveState();goto('repaso');});
   document.getElementById('prevRep').addEventListener('click', ()=>{ repasoIndex=Math.max(0,repasoIndex-1); render(); });
   document.getElementById('nextRep').addEventListener('click', ()=>{
@@ -1921,15 +2061,16 @@ function renderPracticaHome(main){
   const subject=activeSubject(),topics=activeTopics(),questions=activeQuestions(),isSpanish=subject.id==='espanol';
   const configuredTopicId=state.activeTopicId||state.settings.practiceTopicBySubject?.[subject.id]||null;
   const selectedTopic=topics.find(topic=>topic.id===configuredTopicId);
-  if(!questions.length){main.innerHTML=`<div class="pagehead"><h1>Práctica de ${subject.name}</h1><p>El motor está disponible, pero todavía no hay preguntas académicas aprobadas.</p></div><div class="empty-state"><span class="ic">○</span>Contenido listo para incorporarse cuando sea proporcionado.</div>`;return;}
+  if(!questions.length){main.innerHTML=`<section class="study-flow study-flow--setup" data-study-surface="practice"><header class="pagehead study-flow-head"><p class="study-overline">Practicar</p><h1>Práctica de ${subject.name}</h1><p>El motor está disponible, pero todavía no hay preguntas académicas aprobadas.</p></header><div class="empty-state study-empty"><span class="ic">○</span>Contenido listo para incorporarse cuando sea proporcionado.</div></section>`;return;}
   let countPractice = state.settings.practiceCountsByDefault!==false;
   main.innerHTML = `
-    <div class="pagehead"><h1>Práctica de ${subject.name}</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></div>
-    ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<div class="card resume-card"><div class="system-row"><div><h3 style="margin:0 0 5px;">Práctica guardada</h3><p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Continúa exactamente donde la dejaste.</p><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></div>`})():''}
-    <section class="card" id="practiceTopicPicker"><div class="system-row"><div><p class="section-title">Tema</p><h2 style="margin:0">${selectedTopic?'Cambiar tema':'Elige qué quieres practicar'}</h2></div></div><div class="grid grid-3" style="margin-top:14px;">${(isSpanish?[VOCAB_TOPIC]:topics).map(t=>{const m=computeMastery(t.id);return `<button type="button" class="card mode-card ${selectedTopic?.id===t.id?'selected':''}" data-select-topic="${t.id}"><span class="ic">${t.icon}</span><h3>${t.name}</h3><p>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</p></button>`}).join('')}</div></section>
-    ${selectedTopic?`<section class="card"><h2 id="practiceTopicTitle" tabindex="-1">${escHtml(selectedTopic.name)}</h2><p class="cloud-note">${computeMastery(selectedTopic.id).pct}% dominado</p><div class="btn-row"><button class="btn" data-topic="${selectedTopic.id}">Practicar</button><button class="btn ghost" id="reviewPracticeTopic">Repasar</button>${subject.id==='matematicas'?'<button class="icon-btn" id="learnMathProcedure">¿No sabes cómo multiplicar? Aprender el procedimiento</button>':''}<button class="icon-btn" id="practiceTopicProgress">Ver progreso</button></div></section>`:'<p class="cloud-note">Selecciona un tema arriba para comenzar.</p>'}
-    ${(()=>{const recent=(state.settings.pausedPractices||[]).filter(row=>row.subjectId===subject.id).slice(-3).reverse();return recent.length?`<section class="card"><h2>Prácticas guardadas</h2><p class="cloud-note">Puedes empezar otra práctica sin perder estas.</p>${recent.map(row=>`<div class="system-row" style="margin-top:10px"><span>${row.answers?.length||0} contestadas · ${row.queueIds?.length||0} preguntas</span><div class="btn-row"><button class="icon-btn" data-resume-paused="${escHtml(row.id)}">Continuar</button><button class="icon-btn danger-soft" data-discard-paused="${escHtml(row.id)}">Descartar</button></div></div>`).join('')}</section>`:''})()}
-    <details class="card ui-disclosure"><summary><span>Más opciones</span><span class="cloud-note">Modos especiales y configuración</span></summary>
+    <section class="study-flow study-flow--setup" data-study-surface="practice">
+    <header class="pagehead study-flow-head"><p class="study-overline">Practicar</p><h1>Práctica de ${subject.name}</h1><p>Preguntas ilimitadas, con pistas y retroalimentación inmediata.</p></header>
+    ${hasResumablePractice()&&state.session.subjectId===subject.id?(()=>{const p=resumablePracticeProgress();return `<section class="card resume-card study-panel study-resume"><div class="system-row"><div><p class="study-overline">Práctica guardada</p><h2>Continúa donde la dejaste</h2><div class="resume-meta"><span class="resume-pill">Pregunta ${p.current} / ${p.total}</span><span class="resume-pill">${p.answered} contestadas</span><span class="resume-pill">${escHtml(p.topic)}</span></div></div><div class="btn-row"><button class="btn" id="resumePractice">Continuar</button><button class="btn ghost" id="discardPractice">Descartar</button></div></div></section>`})():''}
+    <section class="study-panel study-topic-picker" id="practiceTopicPicker"><div><p class="study-overline">Tema</p><h2>${selectedTopic?'Cambiar tema':'Elige qué quieres practicar'}</h2></div><div class="study-choice-list">${(isSpanish?[VOCAB_TOPIC]:topics).map(t=>{const m=computeMastery(t.id);return `<button type="button" class="study-choice ${selectedTopic?.id===t.id?'selected':''}" data-select-topic="${t.id}" aria-pressed="${selectedTopic?.id===t.id}"><span class="study-choice-icon" aria-hidden="true">${t.icon}</span><span class="study-choice-copy"><strong>${t.name}</strong><small>${m.pct}% dominado · ${questions.filter(q=>q.topic===t.id).length} preguntas</small></span><span class="study-choice-arrow" aria-hidden="true">›</span></button>`}).join('')}</div></section>
+    ${selectedTopic?`<section class="study-panel study-selected-topic"><div><p class="study-overline">Tema seleccionado</p><h2 id="practiceTopicTitle" tabindex="-1">${escHtml(selectedTopic.name)}</h2><p class="cloud-note">${computeMastery(selectedTopic.id).pct}% dominado</p></div><div class="btn-row study-actions"><button class="btn" data-topic="${selectedTopic.id}">Practicar</button><button class="btn ghost" id="reviewPracticeTopic">Repasar</button>${subject.id==='matematicas'?'<button class="icon-btn" id="learnMathProcedure">¿No sabes cómo multiplicar? Aprender el procedimiento</button>':''}<button class="icon-btn" id="practiceTopicProgress">Ver progreso</button></div></section>`:'<p class="cloud-note study-selection-note">Selecciona un tema arriba para comenzar.</p>'}
+    ${(()=>{const recent=(state.settings.pausedPractices||[]).filter(row=>row.subjectId===subject.id).slice(-3).reverse();return recent.length?`<section class="study-panel study-saved-practices"><h2>Prácticas guardadas</h2><p class="cloud-note">Puedes empezar otra práctica sin perder estas.</p>${recent.map(row=>`<div class="study-secondary-row"><span>${row.answers?.length||0} contestadas · ${row.queueIds?.length||0} preguntas</span><div class="btn-row"><button class="icon-btn" data-resume-paused="${escHtml(row.id)}">Continuar</button><button class="icon-btn danger-soft" data-discard-paused="${escHtml(row.id)}">Descartar</button></div></div>`).join('')}</section>`:''})()}
+    <details class="ui-disclosure study-disclosure"><summary><span>Más opciones</span><span class="cloud-note">Modos especiales y configuración</span></summary>
       ${isSpanish&&selectedTopic?.id==='vocabulario'?`<div class="btn-row" style="margin-bottom:14px">${SPANISH_VOCABULARY.modes.filter(mode=>!['study','general'].includes(mode.id)).map(mode=>`<button class="icon-btn" data-vocab-mode="${mode.id}">${mode.label}</button>`).join('')}</div>`:''}
       <div class="grid grid-3">
         <button type="button" class="card mode-card" data-special="debiles"><span class="ic">⚠</span><h3>Temas débiles</h3><p>Preguntas centradas en tus temas con menor dominio.</p></button>
@@ -1942,23 +2083,19 @@ function renderPracticaHome(main){
       <label class="practice-count-box" style="margin-top:16px"><input type="checkbox" id="countPractice" ${countPractice?'checked':''}><span><b>Contar esta práctica en mi Panel de estudio</b><br><span style="color:var(--ink-soft);font-size:.8rem;">Si lo desactivas, esta sesión no cambiará tus estadísticas, racha ni errores.</span></span></label>
       ${isSpanish?`<div style="margin-top:12px"><b>Tema pasado · Examen tomado el 14 de septiembre de 2026</b><p class="cloud-note">Se conserva como bloque académico anterior.</p><div class="btn-row">${TOPICS.map(t=>`<button type="button" class="icon-btn" data-topic="${t.id}">${t.icon} ${t.name}</button>`).join('')}</div></div>`:''}
     </details>
+    </section>
     `;
   const getCount=()=>document.getElementById('countPractice').checked;
   main.querySelectorAll('[data-select-topic]').forEach(button=>button.addEventListener('click',()=>{const countStats=getCount();state.settings.practiceTopicBySubject ||= {};state.settings.practiceTopicBySubject[subject.id]=button.dataset.selectTopic;state.activeTopicId=button.dataset.selectTopic;saveState();renderPracticaHome(main);const countBox=main.querySelector('#countPractice');if(countBox)countBox.checked=countStats;main.querySelector('#practiceTopicTitle')?.focus();}));
   main.querySelector('#reviewPracticeTopic')?.addEventListener('click',()=>platformUiContext().reviewTopic(subject.id,selectedTopic.id));
   main.querySelector('#learnMathProcedure')?.addEventListener('click',()=>startSession({mode:'practica',mathLearning:true,questionIds:MATH_CONTENT.banks.learning.map(question=>question.id),preserveOrder:true,countStats:getCount()}));
   main.querySelectorAll('[data-resume-paused]').forEach(button=>button.addEventListener('click',()=>resumePausedPracticeById(button.dataset.resumePaused)));
-  main.querySelectorAll('[data-discard-paused]').forEach(button=>button.addEventListener('click',()=>{if(confirm('¿Descartar esta práctica guardada? No podrás recuperarla.')){discardPausedPracticeById(button.dataset.discardPaused);render();}}));
+  main.querySelectorAll('[data-discard-paused]').forEach(button=>button.addEventListener('click',()=>openPracticeDiscardDialog(button,()=>{discardPausedPracticeById(button.dataset.discardPaused);render();})));
   main.querySelector('#practiceTopicProgress')?.addEventListener('click',()=>goto('dashboard'));
   const resumePractice=document.getElementById('resumePractice');
   if(resumePractice) resumePractice.addEventListener('click',resumeSavedPractice);
   const discardPractice=document.getElementById('discardPractice');
-  if(discardPractice) discardPractice.addEventListener('click',()=>{
-    if(confirm('¿Descartar esta práctica guardada? No podrás recuperarla.')){
-      discardPausedPractice();
-      render();
-    }
-  });
+  if(discardPractice) discardPractice.addEventListener('click',()=>openPracticeDiscardDialog(discardPractice,()=>{discardPausedPractice();render();}));
   main.querySelectorAll('[data-topic]').forEach(c=>c.addEventListener('click', ()=>startSession(subject.id==='matematicas'
     ? {mode:'practica',questionIds:MATH_CONTENT.banks.practice.map(question=>question.id),countStats:getCount()}
     : {mode:'practica', topic:c.dataset.topic, countStats:getCount()})));
@@ -2139,7 +2276,7 @@ function renderExperimentalHome(main){
 function renderExamenHome(main){
   const subject=activeSubject(),topics=activeTopics();
   const questions=subject.id==='matematicas'?MATH_CONTENT.questionsForMode('practice'):activeQuestions();
-  if(!questions.length){main.innerHTML=`<div class="pagehead"><h1>Examen de ${subject.name}</h1><p>Todavía no existe un banco académico aprobado para esta materia.</p></div><div class="empty-state"><span class="ic">○</span>No se inventaron unidades, temas ni preguntas.</div>`;return;}
+  if(!questions.length){main.innerHTML=`<section class="study-flow study-flow--exam-setup" data-study-surface="exam"><header class="pagehead study-flow-head"><p class="study-overline">Examen</p><h1>Examen de ${subject.name}</h1><p>Todavía no existe un banco académico aprobado para esta materia.</p></header><div class="empty-state study-empty"><span class="ic">○</span>No se inventaron unidades, temas ni preguntas.</div></section>`;return;}
   const savedDefaults=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
   const defaults = new Set(savedDefaults?.length?savedDefaults:topics.map(t=>t.id));
   const sizeOptions=subject.id==='espanol'&&topics.some(topic=>topic.id==='vocabulario')?[5,10,15,20]:subject.id==='matematicas'?[MATH_CONTENT.questionsForMode('practice').length]:[10,20,25,30,50];
@@ -2147,19 +2284,22 @@ function renderExamenHome(main){
   const savedSize=state.settings.examSizeBySubject?.[subject.id];
   let chosen=validSizes.has(String(savedSize))?String(savedSize):null;
   main.innerHTML = `
-    <div class="pagehead"><h1>Examen de ${subject.name}</h1><p>${subject.name} · ${escHtml(currentUnit(subject.id)?.name||'Unidad actual')}. Las respuestas se revelan solo al terminar.</p></div>
-    <div class="card">
-      <p class="section-title">Temas que quieres incluir <span class="new-pill">NUEVO</span></p>
-      <div class="check-list" id="examTopics" style="margin-bottom:20px;">
+    <section class="study-flow study-flow--exam-setup" data-study-surface="exam">
+    <header class="pagehead study-flow-head"><p class="study-overline">Examen</p><h1>Examen de ${subject.name}</h1><p>${subject.name} · ${escHtml(currentUnit(subject.id)?.name||'Unidad actual')}. Las respuestas se revelan solo al terminar.</p></header>
+    <section class="study-panel study-exam-setup">
+      <fieldset class="study-fieldset"><legend>Temas que quieres incluir</legend>
+      <div class="check-list study-check-list" id="examTopics">
         ${topics.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${defaults.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}
       </div>
-      <p class="section-title">Número de preguntas</p>
-      <div class="btn-row" id="examSize" style="margin-bottom:20px;">
+      </fieldset>
+      <fieldset class="study-fieldset"><legend>Número de preguntas</legend>
+      <div class="btn-row study-size-options" id="examSize">
         ${sizeOptions.map(n=>`<button type="button" class="chip ${chosen===String(n)?'active':''}" data-n="${n}" aria-pressed="${chosen===String(n)}">${n} preguntas</button>`).join('')}
         <button type="button" class="chip ${chosen==='all'?'active':''}" data-n="all" aria-pressed="${chosen==='all'}">Examen completo</button>
       </div>
-      <div class="btn-row"><button class="btn" id="startExam" disabled>Selecciona un número de preguntas</button><button class="btn ghost" id="clearExamSelection" type="button">Limpiar selección</button></div>
-    </div>`;
+      </fieldset>
+      <div class="btn-row study-actions"><button class="btn" id="startExam" disabled>Selecciona un número de preguntas</button><button class="btn ghost" id="clearExamSelection" type="button">Limpiar selección</button></div>
+    </section></section>`;
   function selectedTopics(){ return [...main.querySelectorAll('#examTopics input:checked')].map(x=>x.value); }
   function updateStart(){
     const btn=document.getElementById('startExam'), topics=selectedTopics();
@@ -2280,6 +2420,174 @@ function previousReviewIndex(s){
   return Math.min(s.idx-1,s.answers.length-1);
 }
 
+function availablePracticeHints(question){
+  const placeholders=/^(TODO|TBD|Pista|Hint aqu[ií])$/i;
+  return Array.isArray(question?.hints)
+    ? question.hints.filter(hint=>typeof hint==='string'&&hint.trim()&&!placeholders.test(hint.trim()))
+    : [];
+}
+
+function qaAutofillSupported(question){
+  if(!question)return false;
+  if(question.type==='mc')return Array.isArray(question.options)&&question.options.length>1&&Number.isInteger(question.correct)&&question.correct>=0&&question.correct<question.options.length;
+  if(question.type==='tf')return typeof question.correct==='boolean';
+  if(question.type==='fill')return typeof question.answer==='string'&&question.answer.trim()!=='';
+  if(question.type==='numeric')return Number.isFinite(Number(question.answer))&&typeof question.unitSymbol==='string'&&question.unitSymbol!=='';
+  if(question.type==='seg')return Array.isArray(question.parts)&&question.parts.length>0&&question.parts.every(part=>part.role);
+  if(question.type==='eviden')return (question.reading?.length||0)>1||(question.followup?.options?.length||0)>1;
+  if(question.type==='math-workspace')return !!window.MATH_WORKSPACE_CONFIG?.forQuestion(question);
+  return false;
+}
+function qaToolsPanelMarkup(question,finalizedAnswer,isExam,isExperimental){
+  if(isExam||isExperimental||!qaToolsUiEnabled())return '';
+  const available=qaAutofillSupported(question)&&!finalizedAnswer;
+  const unavailableReason=available?'':'Este tipo de pregunta no admite autorrelleno seguro.';
+  return `<aside class="qa-tools-panel" role="region" aria-labelledby="qaToolsPanelTitle">
+    <div class="qa-tools-head"><div><p class="study-overline">Herramienta interna</p><h2 id="qaToolsPanelTitle">QA / Testing</h2></div><span class="status-tag">${qaToolsEnvironmentLabel()}</span></div>
+    <div class="qa-tools-actions">
+      <button type="button" class="icon-btn" data-qa-action="fill-correct" data-qa-supported="${available}" ${available?'':`disabled title="${unavailableReason}"`}>Autorrellenar correcto</button>
+      <button type="button" class="icon-btn" data-qa-action="fill-incorrect" data-qa-supported="${available}" ${available?'':`disabled title="${unavailableReason}"`}>Autorrellenar incorrecto</button>
+      <button type="button" class="btn" data-qa-action="complete-question" data-qa-supported="${available}" ${available?'':`disabled title="${unavailableReason}"`}>Completar ejercicio</button>
+      <button type="button" class="icon-btn" data-qa-action="complete-practice" data-qa-supported="${available}" ${available?'':`disabled title="${unavailableReason}"`}>Completar práctica de prueba</button>
+    </div>
+    <p class="qa-tools-status" data-qa-status role="status" aria-live="polite">${available?'Listo para probar esta pregunta.':unavailableReason}</p>
+  </aside>`;
+}
+
+function qaSetControlValue(control,value){
+  if(!control)return false;
+  control.value=String(value??'');
+  control.dispatchEvent(new Event('input',{bubbles:true}));
+  control.dispatchEvent(new Event('change',{bubbles:true}));
+  return true;
+}
+function qaIncorrectText(question){
+  const candidates=['respuesta qa incorrecta','__qa_incorrecta__','0'];
+  let candidate=candidates.find(value=>!checkCorrectness(question,value))||'respuesta qa incorrecta 1';
+  while(checkCorrectness(question,candidate))candidate+='x';
+  return candidate;
+}
+function qaFillWorkspaceFields(config,root){
+  const fields=new Map((config?.fields||[]).map(field=>[field.id,field]));
+  for(const control of root.querySelectorAll('[data-workspace-field]')){
+    const field=fields.get(control.dataset.workspaceField);
+    if(!field||field.structural)continue;
+    qaSetControlValue(control,field.expected);
+  }
+  for(const operation of Object.values(config?.operationsByStep||{})){
+    root.querySelector(`[data-decimal-field="${operation.result.decimal.id}"][data-decimal-position="${operation.result.decimal.expected}"]`)?.click();
+  }
+}
+function qaAutofillQuestion(question,correct){
+  if(!qaToolsUiEnabled()||state.view!=='session'||state.session?.mode!=='practica'||question!==currentQ()||!qaAutofillSupported(question))return false;
+  const box=document.getElementById('qBody');
+  if(!box)return false;
+  if(question.type==='mc'){
+    const index=correct?question.correct:question.options.findIndex((_,i)=>i!==question.correct);
+    const choice=box.querySelector(`[data-i="${index}"]`);if(!choice)return false;choice.click();return true;
+  }
+  if(question.type==='tf'){
+    const choice=box.querySelector(`[data-v="${correct?question.correct:!question.correct}"]`);if(!choice)return false;choice.click();return true;
+  }
+  if(question.type==='fill')return qaSetControlValue(document.getElementById('fillInput'),correct?question.answer:qaIncorrectText(question));
+  if(question.type==='numeric'){
+    const config=window.SCIENCE_WORKSPACE_CONFIG?.forQuestion(question);
+    if(config)qaFillWorkspaceFields(config,box);
+    let value=question.answer;
+    if(!correct){
+      const step=Math.max(Math.abs(Number(question.answer)||0)*.1+1,(Number(question.tolerance)||.02)*10);
+      value=Number(question.answer)+step;
+      while(checkCorrectness(question,{value:String(value),unit:question.unitSymbol}))value+=step;
+    }
+    return qaSetControlValue(document.getElementById('numericValue'),value)&&qaSetControlValue(document.getElementById('numericUnit'),question.unitSymbol);
+  }
+  if(question.type==='math-workspace'){
+    const config=window.MATH_WORKSPACE_CONFIG?.forQuestion(question);if(!config)return false;
+    qaFillWorkspaceFields(config,box);
+    if(!correct){
+      const seconds=box.querySelector('[data-workspace-field="finalSeconds"]');
+      if(!seconds)return false;
+      qaSetControlValue(seconds,Number(question.answer.seconds)+1);
+    }
+    return true;
+  }
+  if(question.type==='seg'){
+    const roles=['MDP','LEX','MDI','MDS','MF'];
+    const controls=[...box.querySelectorAll('select')];
+    if(controls.length!==question.parts.length)return false;
+    controls.forEach((control,index)=>qaSetControlValue(control,!correct&&index===0?roles.find(role=>normalizeMorphRole(role)!==normalizeMorphRole(question.parts[index].role)):question.parts[index].role));
+    return true;
+  }
+  if(question.type==='eviden'){
+    const alternateSentence=question.reading.findIndex((_,index)=>index!==question.correctSentence);
+    const sentence=correct||alternateSentence<0?question.correctSentence:alternateSentence;
+    const sentenceChoice=box.querySelector(`[data-i="${sentence}"]`);
+    if(!sentenceChoice)return false;
+    sentenceChoice.click();
+    if(question.followup){
+      const follow=correct||alternateSentence>=0?question.followup.correct:question.followup.options.findIndex((_,index)=>index!==question.followup.correct);
+      const followChoice=box.querySelector(`[data-fi="${follow}"]`);if(!followChoice)return false;followChoice.click();
+    }
+    return true;
+  }
+  return false;
+}
+function qaPanelStatus(message,bad=false){
+  const status=document.querySelector('[data-qa-status]');
+  if(status){status.textContent=message;status.classList.toggle('bad',bad);}
+}
+function qaPanelBusy(busy){
+  document.querySelectorAll('[data-qa-action]').forEach(button=>{button.disabled=busy||button.dataset.qaSupported!=='true';});
+  document.querySelector('.qa-tools-panel')?.setAttribute('aria-busy',String(busy));
+}
+function qaCompleteCurrentQuestion(){
+  const question=currentQ();
+  if(!qaAutofillQuestion(question,true)){qaPanelStatus('No pudimos completar esta pregunta automáticamente.',true);return false;}
+  const submit=document.getElementById('submitBtn');
+  if(!submit||submit.disabled){qaPanelStatus('No pudimos completar esta pregunta automáticamente.',true);return false;}
+  qaPanelStatus('Completando ejercicio…');
+  submit.click();
+  if(!sessionAnswerAt(state.session,state.session?.idx)){qaPanelStatus('No pudimos completar esta pregunta automáticamente.',true);return false;}
+  qaPanelStatus('Ejercicio completado.');
+  return true;
+}
+const qaNextFrame=()=>new Promise(resolve=>requestAnimationFrame(resolve));
+function qaRunMatches(run,index,questionId){
+  return qaPracticeRun===run&&!run.cancelled&&qaToolsUiEnabled()&&state.view==='session'&&state.session===run.session&&run.session.mode==='practica'&&run.session.idx===index&&currentQ()?.id===questionId;
+}
+async function qaCompletePractice(){
+  if(qaPracticeRun||!qaToolsUiEnabled()||state.view!=='session'||state.session?.mode!=='practica')return;
+  const run={session:state.session,cancelled:false};
+  qaPracticeRun=run;
+  qaPanelBusy(true);
+  qaPanelStatus(`Completando práctica… ${run.session.answers.length} / ${run.session.queue.length}`);
+  await qaNextFrame();
+  while(qaPracticeRun===run&&!run.cancelled){
+    const index=run.session.idx;
+    const questionId=run.session.queue[index]?.id;
+    if(!qaRunMatches(run,index,questionId))break;
+    if(!sessionAnswerAt(run.session,index)&&!qaCompleteCurrentQuestion())break;
+    if(!qaRunMatches(run,index,questionId))break;
+    qaPanelStatus(`Completando práctica… ${run.session.answers.length} / ${run.session.queue.length}`);
+    const next=document.getElementById('submitBtn');
+    if(!next||next.disabled)break;
+    next.click();
+    if(state.view==='results'||state.session!==run.session){qaPracticeRun=null;return;}
+    const expectedIndex=index+1;
+    if(state.view!=='session'||run.session.idx!==expectedIndex)break;
+    await qaNextFrame();
+  }
+  if(qaPracticeRun===run){qaPracticeRun=null;qaPanelBusy(false);if(state.view==='session')qaPanelStatus('La ejecución se detuvo de forma segura.',true);}
+}
+function wireQaToolsPanel(question){
+  const panel=document.querySelector('.qa-tools-panel');
+  if(!panel)return;
+  panel.querySelector('[data-qa-action="fill-correct"]')?.addEventListener('click',()=>qaPanelStatus(qaAutofillQuestion(question,true)?'Respuesta preparada.':'No pudimos completar esta pregunta automáticamente.',!qaAutofillSupported(question)));
+  panel.querySelector('[data-qa-action="fill-incorrect"]')?.addEventListener('click',()=>qaPanelStatus(qaAutofillQuestion(question,false)?'Respuesta incorrecta preparada.':'No pudimos completar esta pregunta automáticamente.',!qaAutofillSupported(question)));
+  panel.querySelector('[data-qa-action="complete-question"]')?.addEventListener('click',qaCompleteCurrentQuestion);
+  panel.querySelector('[data-qa-action="complete-practice"]')?.addEventListener('click',qaCompletePractice);
+}
+
 function renderSession(main){
   const s = state.session;
   if(!s){ goto('dashboard'); return; }
@@ -2304,7 +2612,7 @@ function renderSession(main){
       <p style="margin:0;color:var(--ink-soft);font-size:.87rem;">Ejemplo: ${card.example}</p>
       <button class="btn amber" id="miniOk" style="margin-top:12px;">Entendido, continuar</button>
     </div>`;
-    main.innerHTML = `<div class="q-wrap"><div class="q-topbar"><button class="icon-btn save-exit-btn" id="quitSession">💾 Guardar y salir</button><span>${s.idx+1} / ${total}</span></div>${bodyHtml}</div>`;
+    main.innerHTML = `<section class="q-wrap study-flow study-session" data-study-mode="practice"><h1 class="visually-hidden">Práctica · ${t.name}</h1><div class="q-topbar study-toolbar"><button class="icon-btn save-exit-btn" id="quitSession">💾 Guardar y salir</button><span class="study-session-context">${s.idx+1} / ${total}</span></div>${bodyHtml}</section>`;
     document.getElementById('quitSession').addEventListener('click', saveAndExitPractice);
     document.getElementById('miniOk').addEventListener('click', ()=>{ s.miniReviewShown=true; render(); });
     return;
@@ -2313,46 +2621,52 @@ function renderSession(main){
   const isSciencePracticeExam = isExam && s.subjectId==='ciencia';
   const isMathPracticeExam = isExam && s.subjectId==='matematicas';
   const isExperimental = !!s.experimental;
+  const practiceHints=isExam?[]:availablePracticeHints(q);
+  const visibleHintCount=Math.min(Number(s.hintLevel)||0,practiceHints.length);
   const starred = !isExperimental && state.saved.has(q.id);
 
   main.innerHTML = `
-    <div class="q-wrap">
+    <section class="q-wrap study-flow study-session" data-study-mode="${isExam?'exam':'practice'}">
+      <h1 class="visually-hidden">${isExam?'Examen':'Práctica'} · ${t.name}</h1>
       ${isExperimental?`<div class="experimental-warning" style="margin-bottom:14px;"><b>🧪 Experimental</b>Esta pregunta puede contener errores y no cuenta para tu progreso oficial.</div>`:''}
-      <div class="q-topbar">
+      <div class="q-topbar study-toolbar">
         <div class="btn-row">
           <button class="icon-btn ${!isExam&&!isExperimental?'save-exit-btn':''}" id="quitSession">${isExam?'✕ Abandonar examen':isExperimental?'✕ Salir':'💾 Guardar y salir'}</button>
           ${!isExam&&!isExperimental?'<button class="icon-btn danger-soft" id="discardCurrentPractice">Descartar práctica</button>':''}
           ${(isExam?s.idx>0:lastPreviousIndex>=0)?'<button class="icon-btn" id="reviewPreviousBtn">← Anterior</button>':''}
         </div>
-        <span>${t.icon} ${t.name} · ${s.idx+1} / ${total} ${isExam?'':''}</span>
+        <span class="study-session-context">${t.icon} ${t.name} · ${s.idx+1} / ${total}</span>
       </div>
-      <div class="q-progress"><div class="q-progress-fill" style="width:${(s.idx)/total*100}%"></div></div>
+      <div class="q-progress study-progress" role="progressbar" aria-label="Progreso de la sesión" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${s.idx}"><div class="q-progress-fill" style="width:${(s.idx)/total*100}%"></div></div>
+      ${qaToolsPanelMarkup(q,finalizedAnswer,isExam,isExperimental)}
       ${isSciencePracticeExam?'<div class="practice-exam-note"><b>Examen de práctica</b><span>Puedes usar la fórmula y la calculadora para practicar el procedimiento.</span></div>':''}
       ${isMathPracticeExam?'<div class="practice-exam-note"><b>Examen de práctica</b><span>Completa el procedimiento DMS y la multiplicación por columnas sin respuestas automáticas.</span></div>':''}
-      <div class="q-card">
+      <article class="q-card study-question-surface">
         <span class="q-topic-tag">${t.name} · ${q.dif}</span>
         <div id="qBody"></div>
-        <div id="feedbackZone"></div>
-        <div id="hintZone"></div>
-      </div>
-      <div class="q-actions">
+        <div id="feedbackZone" ${!isExam? 'aria-live="polite"':''}></div>
+        <div class="study-hint-zone" id="hintZone" ${visibleHintCount?'':'hidden'}></div>
+      </article>
+      <div class="q-actions study-session-actions">
         <div class="btn-row">
           ${isExperimental?'<span class="experimental-chip">No se guarda</span>':`<button class="icon-btn ${starred?'starred':''}" id="starBtn">${starred?'★ Guardada':'☆ Guardar'}</button>`}
           <button class="icon-btn" id="skipBtn" ${finalizedAnswer?'disabled':''}>Saltar</button>
           <button class="icon-btn" id="restartQBtn" ${finalizedAnswer?'disabled':''}>↺ Reiniciar</button>
         </div>
         <div class="btn-row">
-          ${!isExam&&q.type!=='math-workspace'? `<button class="icon-btn" id="hintBtn">💡 Pista (${q.hints? Math.min(s.hintLevel,q.hints.length):0}/${q.hints?q.hints.length:0})</button>`:''}
+          ${!isExam? `<button class="icon-btn" id="hintBtn" aria-expanded="${visibleHintCount>0}" aria-controls="hintZone" ${practiceHints.length?'':'disabled'}>${visibleHintCount?visibleHintCount<practiceHints.length?`Otra pista (${visibleHintCount}/${practiceHints.length})`:`Pistas consultadas (${visibleHintCount}/${practiceHints.length})`:'Pista'}</button>`:''}
           <button class="btn" id="submitBtn" disabled>Responder</button>
         </div>
       </div>
       <p class="kbd-hint">Atajo: presiona <kbd>Enter</kbd> para responder/continuar</p>
-    </div>`;
+    </section>`;
 
   document.getElementById('quitSession').addEventListener('click', ()=>{
     if(isExam || isExperimental) confirmQuit();
     else saveAndExitPractice();
   });
+  const discardCurrentPractice=document.getElementById('discardCurrentPractice');
+  if(discardCurrentPractice)discardCurrentPractice.addEventListener('click',()=>openPracticeDiscardDialog(discardCurrentPractice,()=>{discardPausedPractice();attemptStage=0;sessionSelection=null;goto('practica');}));
   const reviewPrevBtn=document.getElementById('reviewPreviousBtn');
   if(reviewPrevBtn) reviewPrevBtn.addEventListener('click', ()=>{if(isExam){s.idx=Math.max(0,s.idx-1);s.currentSelection=sessionAnswerAt(s,s.idx)?.userAnswer??null;saveState();render();}else renderAnsweredReview(lastPreviousIndex);});
   const starBtn=document.getElementById('starBtn');
@@ -2376,6 +2690,7 @@ function renderSession(main){
 
   if(finalizedAnswer&&isExam)s.currentSelection=finalizedAnswer.userAnswer??null;
   renderQuestionBody(q, isExam);
+  wireQaToolsPanel(q);
   if(finalizedAnswer) restoreFinalizedQuestion(q,isExam,finalizedAnswer);
 }
 
@@ -2477,13 +2792,21 @@ function scienceWorkspaceMarkup(q,savedSelection){
       </div>
     </div>
     <div class="workspace-feedback" id="workspaceFeedback" aria-live="polite"></div>
-    <details class="math-keyboard"><summary>Teclado matemático</summary><div class="math-key-grid">${keys.map(key=>`<button type="button" class="math-key" data-math-key="${escHtml(key)}" aria-label="Tecla ${escHtml(key)}">${escHtml(key)}</button>`).join('')}</div></details>
+    <div class="math-keyboard"><button type="button" class="icon-btn math-keyboard-toggle" id="scienceKeyboardToggle" aria-expanded="false" aria-controls="scienceKeyboardPanel">Mostrar teclado matemático</button><div class="math-key-grid" id="scienceKeyboardPanel" hidden>${keys.map(key=>`<button type="button" class="math-key" data-math-key="${escHtml(key)}" aria-label="Tecla ${escHtml(key)}">${escHtml(key)}</button>`).join('')}</div></div>
   </section>`;
 }
 
 function wireScienceWorkspace(q){
   const root=document.querySelector('[data-formula-workspace]');
   if(!root) return;
+  const keyboardToggle=root.querySelector('#scienceKeyboardToggle');
+  const keyboardPanel=root.querySelector('#scienceKeyboardPanel');
+  keyboardToggle?.addEventListener('click',()=>{
+    const open=keyboardToggle.getAttribute('aria-expanded')!=='true';
+    keyboardToggle.setAttribute('aria-expanded',String(open));
+    keyboardToggle.textContent=open?'Ocultar teclado matemático':'Mostrar teclado matemático';
+    keyboardPanel.hidden=!open;
+  });
   const s=state.session;
   s.workspaceByQuestion=s.workspaceByQuestion&&typeof s.workspaceByQuestion==='object'?s.workspaceByQuestion:{};
   s.workspaceByQuestion[q.id]=s.workspaceByQuestion[q.id]&&typeof s.workspaceByQuestion[q.id]==='object'?s.workspaceByQuestion[q.id]:{};
@@ -2519,28 +2842,68 @@ function validateScienceWorkspace(q){
 }
 
 function mathPaperFieldControl(field,value){
-  return `<div class="math-paper-field"><label for="math-${field.id}">${escHtml(field.label)}</label><input id="math-${field.id}" type="text" inputmode="decimal" autocomplete="off" data-workspace-field="${field.id}" value="${escHtml(value??'')}"></div>`;
+  const procedural=field.type==='procedural-digits';
+  const shown=procedural?window.MATH_WORKSPACE.proceduralDigits(value,field.decimalPlaces):value??'';
+  return `<div class="math-paper-field"><label for="math-${field.id}">${escHtml(field.label)}</label><input id="math-${field.id}" type="text" inputmode="${procedural?'numeric':'decimal'}" ${procedural?`maxlength="${field.decimalPlaces}" data-procedural-digits`:''} autocomplete="off" data-workspace-field="${field.id}" value="${escHtml(shown)}"></div>`;
+}
+
+function mathKnownFieldMarkup(field){
+  return `<div class="math-known-item"><span>${escHtml(field.label)}</span><strong>${escHtml(field.displayValue??field.expected)}${escHtml(field.suffix||'')}</strong></div>`;
 }
 
 function verticalOperationMarkup(step,workspace,presentation){
   const operation=step.operation;
-  const inputCells=(cells,rowLabel,rowClass='')=>`<div class="math-digit-grid ${rowClass}" role="group" aria-label="${escHtml(rowLabel)}">${cells.map(field=>`<input class="math-cell" type="text" inputmode="numeric" maxlength="1" autocomplete="off" data-workspace-field="${field.id}" data-vertical-cell value="${escHtml(workspace[field.id]??'')}" aria-label="${escHtml(`${rowLabel}, columna ${field.column}`)}">`).join('')}</div>`;
-  const multiplier=`<div class="math-multiplier-line"><span class="math-operator" aria-hidden="true">×</span><div class="math-digit-grid" aria-label="Multiplicador 60">${operation.multiplier.cells.map(field=>`<span class="math-static-cell">${escHtml(field.expected)}</span>`).join('')}</div></div>`;
-  const partials=operation.partialRows.map((row,index)=>inputCells(row.cells,`Fila ${index+1} del producto parcial`)).join('');
+  const structuralCell=field=>`<span class="math-structural-cell" data-structural-cell="${escHtml(field.reason||'alignment')}" aria-hidden="true"></span>`;
+  const inputCells=(cells,rowLabel,rowClass='')=>`<div class="math-digit-grid ${rowClass}" role="group" aria-label="${escHtml(rowLabel)}">${cells.map(field=>field.structural?structuralCell(field):`<input class="math-cell" type="text" inputmode="numeric" maxlength="1" autocomplete="off" data-workspace-field="${field.id}" data-vertical-cell value="${escHtml(workspace[field.id]??'')}" aria-label="${escHtml(`${rowLabel}, columna ${field.column}`)}">`).join('')}</div>`;
+  const staticCells=(cells,rowLabel)=>`<div class="math-digit-grid" role="group" aria-label="${escHtml(rowLabel)}">${cells.map(field=>field.structural?structuralCell(field):`<span class="math-static-cell">${escHtml(field.expected)}</span>`).join('')}</div>`;
+  const preparedCells=(cells,rowLabel)=>{
+    const digits=window.MATH_WORKSPACE.operationOperandDigits(operation,workspace);
+    let index=0;
+    return `<div class="math-digit-grid" role="group" aria-label="${escHtml(rowLabel)}">${cells.map(field=>field.structural?structuralCell(field):`<span class="math-static-cell" data-prepared-operand-cell="${field.id}">${escHtml(digits[index++]||'')}</span>`).join('')}</div>`;
+  };
+  const multiplier=`<div class="math-multiplier-line"><span class="math-operator" aria-hidden="true">×</span>${staticCells(operation.multiplier.cells,'Multiplicador 60')}</div>`;
+  const partials=operation.partialRows.map((row,index)=>`<span class="math-operation-label">Producto parcial × ${escHtml(row.multiplierDigit)}</span>${inputCells(row.cells,`Fila ${index+1} del producto parcial`)}`).join('');
   const decimalValue=String(workspace[operation.result.decimal.id]??'');
-  const decimalChoices=Array.from({length:operation.columns+1},(_,position)=>`<button type="button" class="math-decimal-choice" data-decimal-field="${operation.result.decimal.id}" data-decimal-position="${position}" aria-label="Colocar el punto decimal en la posición ${position}" aria-pressed="${decimalValue===String(position)}">.</button>`).join('');
+  const decimalChoices=Array.from({length:operation.columns+1},(_,position)=>{
+    const decimalGridStart=position===0?1:position===operation.columns?operation.columns*2-1:position*2;
+    const edgeClass=position===0?' edge-start':position===operation.columns?' edge-end':'';
+    return `<button type="button" class="math-decimal-choice${edgeClass}" style="--decimal-grid-start:${decimalGridStart}" data-decimal-field="${operation.result.decimal.id}" data-decimal-position="${position}" aria-label="Colocar el punto decimal ${position===0?'antes del primer dígito':`después del dígito ${position}`}" aria-pressed="${decimalValue===String(position)}">.</button>`;
+  }).join('');
   return `<div class="vertical-operation" data-vertical-operation="${operation.id}" style="--math-columns:${operation.columns}">
     <span class="visually-hidden">Multiplicación vertical por 60</span>
-    ${inputCells(operation.carry.cells,'Acarreos','math-carry-row')}
-    ${inputCells(operation.operand.cells,'Número decimal sin el punto')}
-    ${multiplier}
-    <div class="math-operation-rule"></div>
-    ${partials}
-    <div class="math-operation-rule result"></div>
-    ${inputCells(operation.result.cells,'Resultado sin punto decimal')}
-    <div class="math-decimal-choices" aria-label="Colocación manual del punto decimal">${decimalChoices}</div>
+    <div class="math-column-frame">
+      <span class="math-operation-label">Llevadas</span>
+      ${inputCells(operation.carry.cells,'Llevadas','math-carry-row')}
+      <span class="math-operation-label">Número sin punto decimal</span>
+      ${operation.operandSourceFieldId?preparedCells(operation.operand.cells,'Dígitos restantes preparados por el estudiante'):operation.operandKnown?staticCells(operation.operand.cells,'Número decimal dado, sin el punto'):inputCells(operation.operand.cells,'Número decimal sin el punto')}
+      ${multiplier}
+      <div class="math-operation-rule"></div>
+      ${partials}
+      <div class="math-operation-rule result"></div>
+      ${inputCells(operation.result.cells,'Resultado sin punto decimal')}
+      <span class="math-operation-label">Coloca el punto decimal</span>
+      <div class="math-decimal-choices" role="group" aria-label="Colocación manual del punto decimal">${decimalChoices}</div>
+    </div>
     ${presentation.showStepCheck?`<div class="math-step-actions"><button type="button" class="icon-btn" data-check-math-step="${step.id}">Comprobar paso</button></div><div class="math-step-feedback" data-math-step-feedback="${step.id}" aria-live="polite"></div>`:''}
   </div>`;
+}
+
+function mathSolutionMarkup(config,workspace,mode){
+  if(mode!=='practice')return '';
+  const viewed=workspace.mathSolutionViewed===true;
+  const open=viewed&&workspace.mathSolutionOpen!==false;
+  const solutionSteps=window.MATH_WORKSPACE.dmsSolutionSteps(config.procedure);
+  return `<section class="math-solve" aria-label="Ayuda para resolver">
+    <button type="button" class="icon-btn" data-request-math-solution aria-expanded="${open}" aria-controls="mathSolutionPanel">Resolver</button>
+    <div class="math-help-panel math-solve-confirm" data-math-solve-confirm hidden>
+      <p class="math-help-text"><b>¿Quieres ver cómo se resuelve paso a paso?</b> Tu trabajo actual no se borrará.</p>
+      <div class="btn-row"><button type="button" class="icon-btn" data-cancel-math-solution>Cancelar</button><button type="button" class="btn" data-confirm-math-solution>Ver solución</button></div>
+    </div>
+    <div class="math-help-panel math-solution-panel" id="mathSolutionPanel" data-math-solution-panel ${open?'':'hidden'}>
+      <ol>${solutionSteps.map(step=>`<li>${escHtml(step)}</li>`).join('')}</ol>
+      <div class="btn-row"><button type="button" class="icon-btn" data-close-math-solution>Cerrar solución</button></div>
+    </div>
+  </section>`;
 }
 
 function mathWorkspaceMarkup(q){
@@ -2552,7 +2915,9 @@ function mathWorkspaceMarkup(q){
   const learningSupport=window.MATH_WORKSPACE_CONFIG.learningSupportFor(config.helpLevel);
   const effectivePresentation={...presentation,showStepCheck:mode==='learning'?learningSupport.showStepCheck:presentation.showStepCheck};
   const visible=new Set(window.MATH_WORKSPACE_CONFIG.visibleSteps(config,workspace,mode));
-  const steps=config.steps.map(step=>{
+  const knownFields=config.steps.filter(step=>step.kind==='known').flatMap(step=>step.fields||[]);
+  const knownData=knownFields.length?`<section class="math-known-data" aria-labelledby="mathKnownTitle"><h4 id="mathKnownTitle">Datos del ejercicio</h4><div class="math-known-grid">${knownFields.map(mathKnownFieldMarkup).join('')}</div></section>`:'';
+  const steps=config.steps.filter(step=>step.kind!=='known').map(step=>{
     let body='';
     if(step.kind==='operation')body=verticalOperationMarkup(step,workspace,effectivePresentation);
     else if(step.kind==='answer')body=`<div class="math-dms-answer">${step.fields.map(field=>mathPaperFieldControl(field,workspace[field.id])).join('')}</div>`;
@@ -2566,11 +2931,14 @@ function mathWorkspaceMarkup(q){
   const helpOpen=Object.prototype.hasOwnProperty.call(workspace,'mathHelpOpen')?workspace.mathHelpOpen===true:mode==='learning'&&learningSupport.autoOpenHelp;
   const activeHelp=helpItems.find(item=>item.id===workspace.mathHelpTopic)||helpItems[0];
   const help=presentation.showHelp&&activeHelp?`<section class="math-help"><button type="button" class="icon-btn" data-toggle-math-help aria-expanded="${helpOpen}">¿Necesitas ayuda?</button><div class="math-help-panel" data-math-help-panel ${helpOpen?'':'hidden'}><div class="math-help-topics">${helpItems.map(item=>`<button type="button" class="math-help-topic ${item.id===activeHelp.id?'active':''}" data-math-help-topic="${item.id}">${escHtml(item.label)}</button>`).join('')}</div><p class="math-help-text" data-math-help-text>${escHtml(activeHelp.text)}</p></div></section>`:'';
+  const solve=mode==='practice'?mathSolutionMarkup(config,workspace,mode):'';
   return `<section class="math-notebook" data-math-workspace data-workspace-kind="dms" data-math-mode="${mode}">
     <header class="math-notebook-head"><h3>Área de trabajo</h3>${presentation.showLearning?`<span class="math-learning-badge">${escHtml(config.learningStage)}</span>`:'<span class="status-tag">Libreta</span>'}</header>
+    ${knownData}
     ${steps}
     <div class="workspace-feedback" id="workspaceFeedback" aria-live="polite"></div>
     ${help}
+    ${solve}
   </section>`;
 }
 
@@ -2586,7 +2954,18 @@ function wireMathWorkspace(q){
   s.workspaceByQuestion=s.workspaceByQuestion&&typeof s.workspaceByQuestion==='object'?s.workspaceByQuestion:{};
   s.workspaceByQuestion[q.id]=s.workspaceByQuestion[q.id]&&typeof s.workspaceByQuestion[q.id]==='object'?s.workspaceByQuestion[q.id]:{};
   const values=s.workspaceByQuestion[q.id];
+  const syncPreparedOperands=()=>{
+    for(const operation of Object.values(config.operationsByStep).filter(item=>item.operandSourceFieldId)){
+      const digits=window.MATH_WORKSPACE.proceduralDigits(values[operation.operandSourceFieldId],operation.decimalPlaces);
+      let index=0;
+      for(const field of operation.operand.cells.filter(item=>!item.structural)){
+        const cell=root.querySelector(`[data-prepared-operand-cell="${field.id}"]`);
+        if(cell)cell.textContent=digits[index++]||'';
+      }
+    }
+  };
   const refreshProgress=()=>{
+    syncPreparedOperands();
     for(const operation of Object.values(config.operationsByStep)){
       const product=window.MATH_WORKSPACE.verticalOperationValue(operation,values);
       if(Number.isFinite(product))values[operation.resultValueId]=product;
@@ -2605,6 +2984,7 @@ function wireMathWorkspace(q){
   root.querySelectorAll('[data-workspace-field]').forEach(control=>{
     const update=()=>{
       if(control.hasAttribute('data-vertical-cell'))control.value=control.value.replace(/\D/g,'').slice(-1);
+      if(control.hasAttribute('data-procedural-digits'))control.value=control.value.replace(/\D/g,'').slice(0,Number(control.maxLength)||undefined);
       values[control.dataset.workspaceField]=control.value;
       control.removeAttribute('aria-invalid');
       const feedback=document.getElementById('workspaceFeedback');
@@ -2656,6 +3036,31 @@ function wireMathWorkspace(q){
     root.querySelector('[data-math-help-text]').textContent=helpItems.find(item=>item.id===values.mathHelpTopic)?.text||'';
     saveState();
   }));
+  const solutionRequest=root.querySelector('[data-request-math-solution]');
+  const solutionConfirm=root.querySelector('[data-math-solve-confirm]');
+  const solutionPanel=root.querySelector('[data-math-solution-panel]');
+  solutionRequest?.addEventListener('click',()=>{
+    if(values.mathSolutionViewed){values.mathSolutionOpen=true;solutionPanel.hidden=false;solutionRequest.setAttribute('aria-expanded','true');saveState();solutionPanel.querySelector('[data-close-math-solution]')?.focus();return;}
+    solutionConfirm.hidden=false;
+    solutionConfirm.querySelector('[data-confirm-math-solution]')?.focus();
+  });
+  root.querySelector('[data-cancel-math-solution]')?.addEventListener('click',()=>{solutionConfirm.hidden=true;solutionRequest?.focus();});
+  root.querySelector('[data-confirm-math-solution]')?.addEventListener('click',()=>{
+    values.mathSolutionViewed=true;
+    values.mathSolutionOpen=true;
+    solutionConfirm.hidden=true;
+    solutionPanel.hidden=false;
+    solutionRequest.setAttribute('aria-expanded','true');
+    saveState();
+    solutionPanel.querySelector('[data-close-math-solution]')?.focus();
+  });
+  root.querySelector('[data-close-math-solution]')?.addEventListener('click',()=>{
+    values.mathSolutionOpen=false;
+    solutionPanel.hidden=true;
+    solutionRequest.setAttribute('aria-expanded','false');
+    saveState();
+    solutionRequest.focus();
+  });
   syncAnswer();
 }
 
@@ -2734,7 +3139,7 @@ function renderQuestionBody(q, isExam){
   const box = document.getElementById('qBody');
   if(q.type==='mc'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="opt-list">
-      ${q.options.map((o,i)=>`<div class="opt" data-i="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></div>`).join('')}
+      ${q.options.map((o,i)=>`<button type="button" class="opt" data-i="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`).join('')}
     </div>`;
     box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click', ()=>{
       box.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
@@ -2746,8 +3151,8 @@ function renderQuestionBody(q, isExam){
     if(Number.isInteger(savedSelection)) box.querySelector(`[data-i="${savedSelection}"]`)?.classList.add('selected');
   } else if(q.type==='tf'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="tf-row">
-      <div class="opt" data-v="true"><span>Verdadero</span></div>
-      <div class="opt" data-v="false"><span>Falso</span></div>
+      <button type="button" class="opt" data-v="true"><span>Verdadero</span></button>
+      <button type="button" class="opt" data-v="false"><span>Falso</span></button>
     </div>`;
     box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click', ()=>{
       box.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
@@ -2798,8 +3203,8 @@ function renderQuestionBody(q, isExam){
     if(Array.isArray(savedSelection)) box.querySelectorAll('select').forEach((select,index)=>{ select.value=savedSelection[index]||''; });
   } else if(q.type==='eviden'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p>
-      <div class="q-reading">${q.reading.map((s,i)=>`<span class="sent" data-i="${i}">${s}</span> `).join('')}</div>
-      ${q.followup? `<div class="opt-list">${q.followup.options.map((o,i)=>`<div class="opt" data-fi="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></div>`).join('')}</div>` : ''}`;
+      <div class="q-reading">${q.reading.map((s,i)=>`<button type="button" class="sent" data-i="${i}">${s}</button> `).join('')}</div>
+      ${q.followup? `<div class="opt-list">${q.followup.options.map((o,i)=>`<button type="button" class="opt" data-fi="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`).join('')}</div>` : ''}`;
     let pickedSentence=Number.isInteger(savedSelection?.sentence)?savedSelection.sentence:null;
     let pickedFollow=Number.isInteger(savedSelection?.follow)?savedSelection.follow:null;
     if(pickedSentence!==null) box.querySelector(`[data-i="${pickedSentence}"]`)?.classList.add('picked');
@@ -2822,12 +3227,15 @@ function renderQuestionBody(q, isExam){
     }));
   }
   document.getElementById('feedbackZone').innerHTML='';
-  const availableHints=q.type==='math-workspace'?[]:Array.isArray(q.hints)?q.hints:[];
+  const availableHints=isExam?[]:availablePracticeHints(q);
   state.session.hintLevel=Math.max(0,Math.min(Number(state.session.hintLevel)||0,availableHints.length));
-  document.getElementById('hintZone').innerHTML=availableHints.slice(0,state.session.hintLevel).map((hint,index)=>`<div class="hint-box"><b>Pista ${index+1}:</b> ${hint}</div>`).join('');
+  const hintZone=document.getElementById('hintZone');
+  hintZone.innerHTML=availableHints.slice(0,state.session.hintLevel).map((hint,index)=>`<div class="hint-box"><b>Pista ${index+1}:</b> ${escHtml(hint)}</div>`).join('');
+  hintZone.hidden=state.session.hintLevel===0;
   const hintBtn=document.getElementById('hintBtn');
   if(hintBtn){
-    hintBtn.textContent=`💡 Pista (${state.session.hintLevel}/${availableHints.length})`;
+    hintBtn.setAttribute('aria-expanded',String(state.session.hintLevel>0));
+    hintBtn.textContent=state.session.hintLevel===0?'Pista':state.session.hintLevel<availableHints.length?`Otra pista (${state.session.hintLevel}/${availableHints.length})`:`Pistas consultadas (${state.session.hintLevel}/${availableHints.length})`;
     hintBtn.disabled=!availableHints.length || state.session.hintLevel>=availableHints.length;
   }
   if(q.type==='seg') enableSubmit(Array.isArray(savedSelection) && savedSelection.length===q.parts.length && savedSelection.every(Boolean));
@@ -2846,12 +3254,16 @@ function enableSubmit(force){
 
 function showHint(){
   const q=currentQ(); const s=state.session;
-  if(!q.hints || s.hintLevel>=q.hints.length) return;
+  const hints=availablePracticeHints(q);
+  if(s.mode==='examen'||s.hintLevel>=hints.length) return;
   s.hintLevel++;
   const zone=document.getElementById('hintZone');
-  zone.innerHTML = q.hints.slice(0,s.hintLevel).map((h,i)=>`<div class="hint-box"><b>Pista ${i+1}:</b> ${h}</div>`).join('');
-  document.getElementById('hintBtn').textContent = `💡 Pista (${s.hintLevel}/${q.hints.length})`;
-  if(s.hintLevel>=q.hints.length) document.getElementById('hintBtn').disabled=true;
+  zone.innerHTML=hints.slice(0,s.hintLevel).map((hint,index)=>`<div class="hint-box"><b>Pista ${index+1}:</b> ${escHtml(hint)}</div>`).join('');
+  zone.hidden=false;
+  const hintBtn=document.getElementById('hintBtn');
+  hintBtn.setAttribute('aria-expanded','true');
+  hintBtn.textContent=s.hintLevel<hints.length?`Otra pista (${s.hintLevel}/${hints.length})`:`Pistas consultadas (${s.hintLevel}/${hints.length})`;
+  if(s.hintLevel>=hints.length)hintBtn.disabled=true;
   saveState();
 }
 
@@ -3038,8 +3450,10 @@ function mathProcedureReview(q,procedure){
       const operation=step.operation;
       const partials=operation.partialRows.map(item=>row(item.cells)).join(' | ');
       const decimal=shown(procedure[operation.result.decimal.id]);
-      return `<div class="math-review-step"><b>${escHtml(step.title)}</b><span class="math-review-operation">acarreo ${row(operation.carry.cells)} · número ${row(operation.operand.cells)} · × 60 · parciales ${partials} · suma ${row(operation.result.cells)} · punto en ${decimal}</span></div>`;
+      const operand=operation.operandSourceFieldId?window.MATH_WORKSPACE.operationOperandDigits(operation,procedure).split('').map(escHtml).join(' '):operation.operandKnown?operation.operand.cells.map(cell=>cell.structural?'':escHtml(cell.expected)).join(' '):row(operation.operand.cells);
+      return `<div class="math-review-step"><b>${escHtml(step.title)}</b><span class="math-review-operation">acarreo ${row(operation.carry.cells)} · número ${operand} · × 60 · parciales ${partials} · suma ${row(operation.result.cells)} · punto en ${decimal}</span></div>`;
     }
+    if(step.kind==='known')return `<div class="math-review-step"><b>${escHtml(step.title)}</b><span>${step.fields.map(field=>`${escHtml(field.label)}: ${shown(field.expected)}${escHtml(field.suffix||'')}`).join(' · ')}</span></div>`;
     return `<div class="math-review-step"><b>${escHtml(step.title)}</b><span>${step.fields.map(field=>`${escHtml(field.label)}: ${shown(procedure[field.id])}`).join(' · ')}</span></div>`;
   }).join('');
   return `<details class="math-procedure-review"><summary><b>Revisar mi procedimiento</b></summary>${issueMarkup}${steps}</details>`;
@@ -3245,7 +3659,7 @@ function advance(){
 function renderExamReview(){
   const s=state.session;if(!s||s.mode!=='examen'){render();return;}
   const main=document.getElementById('main');
-  main.innerHTML=`<div class="pagehead"><h1>Revisa antes de entregar</h1><p>Las respuestas correctas se mostrarán solamente después de entregar.</p></div><div class="card"><div class="btn-row">${s.queue.map((question,index)=>`<button class="chip ${sessionAnswerAt(s,index)?'active':''}" data-exam-question="${index}">${index+1}</button>`).join('')}</div><div class="q-actions" style="margin-top:20px"><button class="icon-btn" id="returnExam">← Volver al examen</button><button class="btn" id="submitExamFinal">Entregar examen</button></div></div>`;
+  main.innerHTML=`<section class="study-flow study-flow--exam-review" data-study-surface="exam-review"><header class="pagehead study-flow-head"><p class="study-overline">Examen</p><h1>Revisa antes de entregar</h1><p>Las respuestas correctas se mostrarán solamente después de entregar.</p></header><section class="study-panel study-exam-review"><div class="btn-row study-question-index" aria-label="Preguntas del examen">${s.queue.map((question,index)=>`<button class="chip ${sessionAnswerAt(s,index)?'active':''}" data-exam-question="${index}" aria-label="Pregunta ${index+1}${sessionAnswerAt(s,index)?', respondida':', sin responder'}">${index+1}</button>`).join('')}</div><div class="q-actions study-session-actions"><button class="icon-btn" id="returnExam">← Volver al examen</button><button class="btn" id="submitExamFinal">Entregar examen</button></div></section></section>`;
   main.querySelectorAll('[data-exam-question]').forEach(button=>button.addEventListener('click',()=>{s.idx=Number(button.dataset.examQuestion);s.currentSelection=sessionAnswerAt(s,s.idx)?.userAnswer??null;render();}));
   document.getElementById('returnExam').addEventListener('click',()=>{s.idx=Math.max(0,s.queue.length-1);s.currentSelection=sessionAnswerAt(s,s.idx)?.userAnswer??null;render();});
   document.getElementById('submitExamFinal').addEventListener('click',()=>{if(confirm('¿Entregar el examen y ver el resultado?'))finishSession();});
@@ -3306,46 +3720,48 @@ function renderResults(main){
   const wrong = r.answers.filter(a=>!a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
   const subject=SUBJECT_BY_ID.get(r.subjectId||'espanol')||SUBJECT;
   const topicNames = Object.keys(r.byTopic);
-  const masteredTopicNames=topicNames.filter(tid=>{
+  const strongTopicNames=topicNames.filter(tid=>{
     const performance=r.byTopic[tid];
     return performance.t>0&&performance.c/performance.t>=.8;
   }).map(tid=>subjectContent(subject.id).topics.find(topic=>topic.id===tid)?.name).filter(Boolean);
 
   main.innerHTML = `
-    <div class="pagehead"><h1>Resultados de ${subject.name}</h1><p>${r.experimental?'Sesión experimental completada':r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></div>
+    <section class="study-flow study-results" data-study-surface="results">
+    <header class="pagehead study-flow-head"><p class="study-overline">Resultados</p><h1>Resultados de ${subject.name}</h1><p>${r.experimental?'Sesión experimental completada':r.mode==='examen'?'Examen completado':'Sesión de práctica completada'}</p></header>
     ${r.experimental?`<div class="experimental-warning" style="margin-bottom:20px;"><b>🧪 Resultado experimental</b>Esta nota no se añadió a tus estadísticas, errores, historial ni leaderboard porque el contenido puede contener errores.</div>`:''}
-    <div class="card results-hero" style="margin-bottom:20px;">
+    <section class="card results-hero study-results-score" aria-label="Resumen del resultado">
       <div class="big">${r.pct}%</div>
-      <p style="color:var(--ink-soft);margin:4px 0 16px 0;">${r.correctCount} de ${r.total} correctas · ${fmtTime(r.elapsed)}</p>
-      <div class="btn-row" style="justify-content:center;">
+      <p>${r.correctCount} de ${r.total} correctas · ${fmtTime(r.elapsed)}</p>
+      <div class="btn-row study-results-actions">
         <button class="btn" id="backDash">${returnLabels[returnView]||'Volver'}</button>
         ${r.experimental?'<button class="btn ghost" id="newExperimental">Generar otra práctica</button>':`<button class="btn ghost" id="retryWrong" ${wrong.length===0?'disabled':''}>Practicar lo fallado (${wrong.length})</button>`}
       </div>
-    </div>
-    <div class="grid grid-2" style="align-items:start;">
-      <div class="card">
+    </section>
+    <div class="study-results-grid">
+      <section class="study-panel">
         <p class="section-title">Desempeño por tema</p>
         ${topicNames.map(tid=>{ const t=subjectContent(subject.id).topics.find(x=>x.id===tid); const d=r.byTopic[tid]; const p=Math.round(d.c/d.t*100);
           return `<div class="topic-row"><div class="tname">${t.icon} ${t.name}</div><div class="bar-track"><div class="bar-fill" style="width:${p}%"></div></div><span class="pill pill-progress">${d.c}/${d.t}</span></div>`; }).join('')}
-      </div>
-      <div class="card">
+      </section>
+      <section class="study-panel">
         <p class="section-title">Lo que hiciste bien</p>
-        <p style="font-size:.88rem;">${masteredTopicNames.length? `Dominas bien: ${masteredTopicNames.join(', ')}.` : 'Todavía no hay un tema dominado en esta sesión.'}</p>
+        <p>${strongTopicNames.length? `Buen resultado en esta sesión: ${strongTopicNames.join(', ')}.` : 'Esta sesión todavía no muestra un tema con 80% o más de respuestas correctas.'}</p>
         <p class="section-title" style="margin-top:16px;">Necesitas repasar</p>
-        <p style="font-size:.88rem;">${wrong.length? `Revisa: ${[...new Set(wrong.map(q=>topicForQuestion(q)?.name).filter(Boolean))].join(', ')}.` : '¡No fallaste ninguna pregunta!'}</p>
-        <p class="section-title" style="margin-top:16px;">Próximo paso recomendado</p>
-        <p style="font-size:.88rem;">${wrong.length>2? 'Practica el modo "Temas débiles" antes de intentar otro examen.' : 'Estás listo para intentar un examen más largo.'}</p>
-      </div>
+        <p>${wrong.length? `Revisa: ${[...new Set(wrong.map(q=>topicForQuestion(q)?.name).filter(Boolean))].join(', ')}.` : '¡No fallaste ninguna pregunta!'}</p>
+        <p class="section-title" style="margin-top:16px;">Siguiente acción</p>
+        <p>${wrong.length? 'Puedes practicar las preguntas falladas o volver a la materia.' : 'Puedes volver a la materia o repetir la sesión cuando quieras.'}</p>
+      </section>
     </div>
-    ${wrong.length? `<div class="card" style="margin-top:20px;">
+    ${wrong.length? `<section class="study-panel study-results-detail">
       <p class="section-title">Preguntas falladas</p>
       ${wrong.map(q=>`<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${topicForQuestion(q)?.name||''}${q.word?` · Palabra: ${escHtml(q.word)}`:''}</div></div>`).join('')}
-    </div>`:''}
-    ${r.mode==='examen'? `<div class="card" style="margin-top:20px;">
+    </section>`:''}
+    ${r.mode==='examen'? `<section class="study-panel study-results-detail">
       <p class="section-title">Explicación de cada respuesta</p>
       <p style="font-size:.86rem;color:var(--ink-soft);margin-bottom:14px;">Durante el examen no se muestran respuestas para no darte pistas. Aquí puedes revisar por qué cada contestación estuvo bien o mal.</p>
       ${r.answers.map((a,i)=>{ const q=findQuestionById(a.qid); if(!q) return ''; return `<div class="err-item"><div class="q">${i+1}. ${q.prompt}</div><div class="feedback ${a.correct?'good':'bad'}" style="margin-top:10px;"><b>${a.correct?'✓ Correcto':'✗ Incorrecto'}</b>${detailedExplanation(q,a.userAnswer,a.correct,a.procedure)}</div></div>`; }).join('')}
-    </div>`:''}
+    </section>`:''}
+    </section>
   `;
   document.getElementById('backDash').addEventListener('click', ()=>goto(returnView));
   const newExperimental=document.getElementById('newExperimental');
@@ -3443,15 +3859,19 @@ function renderHistoryDetail(entry){
 ========================================================= */
 function renderCuenta(main){
   if(accountSession.status==='checking'){
-    main.innerHTML=`<div class="pagehead"><h1>Cuenta</h1><p>Comprobando tu sesión…</p></div><div class="card">Cargando…</div>`;
+    main.innerHTML=`<section class="account-page" aria-busy="true"><div class="pagehead"><p class="account-overline">Cuenta</p><h1>Preparando tu espacio</h1><p>Comprobando tu sesión…</p></div><div class="account-summary-surface" role="status">Cargando tu cuenta…</div></section>`;
     return;
   }
   if(accountSession.user){
     main.innerHTML=`
-      <div class="pagehead"><h1>Tu cuenta</h1><p>Todo tu progreso y configuración se sincronizan con esta cuenta.</p></div>
-      <div class="card" style="margin-bottom:20px;"><div class="account-status"><div><div class="account-user">${escHtml(accountDisplayName())} <span class="role-badge">${roleLabel(accountSession.user.role)}</span> ${accountSession.user.veteran?'<span class="veteran-badge">Veterano</span>':''}</div><div class="account-sub">@${escHtml(accountSession.user.username)} · ${accountSession.user.email?escHtml(accountSession.user.email)+' · login por username o email':'Sin email añadido · login por username'} · sesión activa</div></div><span class="sync-pill" id="cloudSyncStatus">Sincronización activa</span></div>
-      <div class="btn-row" style="margin-top:16px;"><button class="btn" id="syncNow">Sincronizar ahora</button><button class="icon-btn" id="logoutBtn">Cerrar sesión</button></div></div>
-      <div class="card"><p class="section-title">Qué se guarda en tu cuenta</p><p style="margin:0;color:var(--ink-soft);">Progreso por tema, estadísticas, historial, errores, preguntas guardadas, preferencias de práctica y examen, modo claro/oscuro, color de interfaz y futuras materias del hub.</p></div>`;
+      <section class="account-page">
+        <div class="pagehead"><p class="account-overline">Cuenta</p><h1>Tu espacio de estudio</h1><p>Tu progreso y configuración permanecen disponibles entre dispositivos.</p></div>
+        <section class="account-summary-surface" aria-labelledby="accountIdentityTitle">
+          <div class="account-status"><div><div class="account-user" id="accountIdentityTitle">${escHtml(accountDisplayName())} <span class="role-badge">${roleLabel(accountSession.user.role)}</span> ${accountSession.user.veteran?'<span class="veteran-badge">Veterano</span>':''}</div><div class="account-sub">@${escHtml(accountSession.user.username)} · ${accountSession.user.email?escHtml(accountSession.user.email)+' · acceso por username o email':'Sin email añadido · acceso por username'} · sesión activa</div></div><span class="sync-pill" id="cloudSyncStatus" role="status" aria-live="polite">Sincronización activa</span></div>
+          <div class="btn-row" style="margin-top:20px;"><button class="btn" id="syncNow">Sincronizar ahora</button><button class="icon-btn" id="logoutBtn">Cerrar sesión</button></div>
+        </section>
+        <section class="account-data-surface" aria-labelledby="accountDataTitle"><p class="account-overline">Datos sincronizados</p><h2 id="accountDataTitle">Tu trabajo sigue contigo</h2><p>Se guardan progreso por tema, estadísticas, historial, errores, preguntas guardadas, preferencias de práctica y examen, apariencia y futuras materias del Hub.</p></section>
+      </section>`;
     document.getElementById('syncNow').addEventListener('click',async()=>{
       const button=document.getElementById('syncNow');
       const status=document.getElementById('cloudSyncStatus');
@@ -3470,17 +3890,20 @@ function renderCuenta(main){
         showToast(result?.error||'No se pudo sincronizar.',true);
       }
     });
-    document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('¿Cerrar sesión? Tu copia local seguirá en este dispositivo.'))return;try{await accountRequest('POST',{action:'logout'});accountSession={status:'ready',user:null};lastCloudHash='';lastCloudUpdatedAt=0;render();}catch(err){showToast(`No se pudo revocar la sesión en el servidor. Sigues conectado. ${err.message}`,true);}});
+    document.getElementById('logoutBtn').addEventListener('click',async()=>{if(!confirm('¿Cerrar sesión? Tu copia local seguirá en este dispositivo.'))return;try{await accountRequest('POST',{action:'logout'});accountSession={status:'ready',user:null};clearQaToolsCapability();lastCloudHash='';lastCloudUpdatedAt=0;render();}catch(err){showToast(`No se pudo revocar la sesión en el servidor. Sigues conectado. ${err.message}`,true);}});
     return;
   }
   main.innerHTML=`
-    <div class="pagehead"><h1>Cuenta</h1><p>Regístrate para guardar todo el hub en una cuenta y continuar desde otros dispositivos.</p></div>
-    <div class="account-tabs"><button class="chip" data-account-tab="login">Login</button><button class="chip" data-account-tab="register">Registrarme</button><button class="chip" data-account-tab="recover">Olvidé mi contraseña</button></div>
-    <div id="accountPanel"></div>`;
+    <section class="account-page">
+      <div class="pagehead"><p class="account-overline">Cuenta</p><h1>Tu estudio, donde lo dejaste</h1><p>Entra o crea una cuenta para conservar tu progreso entre dispositivos.</p></div>
+      <div class="account-tabs" role="tablist" aria-label="Acceso a tu cuenta"><button class="chip" type="button" role="tab" aria-selected="false" data-account-tab="login">Entrar</button><button class="chip" type="button" role="tab" aria-selected="false" data-account-tab="register">Crear cuenta</button><button class="chip" type="button" role="tab" aria-selected="false" data-account-tab="recover">Recuperar</button></div>
+      <div class="account-panel" id="accountPanel" role="tabpanel"></div>
+    </section>`;
   const tabs=[...main.querySelectorAll('[data-account-tab]')];
-  tabs.forEach(b=>b.addEventListener('click',()=>{tabs.forEach(x=>x.classList.toggle('active',x===b));renderAccountPanel(b.dataset.accountTab);}));
+  const selectTab=selected=>tabs.forEach(tab=>{const active=tab===selected;tab.classList.toggle('active',active);tab.setAttribute('aria-selected',String(active));});
+  tabs.forEach(b=>b.addEventListener('click',()=>{selectTab(b);renderAccountPanel(b.dataset.accountTab,true);}));
   const initialMode=['login','register','recover'].includes(requestedAccountMode)?requestedAccountMode:'login';
-  tabs.forEach(tab=>tab.classList.toggle('active',tab.dataset.accountTab===initialMode));
+  selectTab(tabs.find(tab=>tab.dataset.accountTab===initialMode));
   requestedAccountMode='login';renderAccountPanel(initialMode);
 }
 function accountMessage(text,bad=false){const el=document.getElementById('accountMsg');if(el){el.textContent=text;el.style.color=bad?'var(--bad)':'var(--good)';}}
@@ -3493,24 +3916,26 @@ function passwordStrengthText(value){
   let n=0;if(value.length>=8)n++;if(value.length>=12)n++;if(/[A-Z]/.test(value)&&/[a-z]/.test(value))n++;if(/\d/.test(value))n++;if(/[^A-Za-z0-9]/.test(value))n++;
   return n<=1?'Básica':n<=3?'Buena':'Fuerte';
 }
-function renderAccountPanel(mode){
+function renderAccountPanel(mode,animate=false){
   const box=document.getElementById('accountPanel'); if(!box)return;
+  box.classList.toggle('is-switching',animate);
+  if(animate)setTimeout(()=>box.classList.remove('is-switching'),300);
   if(mode==='login'){
-    box.innerHTML=`<div class="card"><form class="account-form" id="loginForm"><label>Username o email<input id="loginId" autocomplete="username" maxlength="120" placeholder="Tu username o email" required></label><label>Contraseña<div class="password-wrap"><input id="loginPass" type="password" autocomplete="current-password" minlength="8" maxlength="128" required><button class="show-pass" id="showLoginPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberLogin" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Entrar</button><span class="save-note" id="accountMsg"></span></div><div class="account-benefit">Puedes iniciar sesión con tu username. Si añadiste un email a tu cuenta, también puedes usar ese email.</div></form><div class="dev-login"><p class="section-title">🧪 Dev Login</p><p class="account-sub" style="margin-bottom:10px;">Acceso exclusivo del desarrollador.</p><form class="account-form" id="devLoginForm"><label>Código de desarrollador<input id="devCode" type="password" autocomplete="off" maxlength="256" required></label><label class="remember-row"><input id="rememberDev" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn ghost" type="submit">Entrar como Super Dev</button><span class="save-note" id="devMsg"></span></div></form></div></div>`;
+    box.innerHTML=`<div class="account-auth-layout"><section class="account-auth-form" aria-labelledby="loginTitle"><p class="account-overline">Entrar</p><h2 id="loginTitle">Bienvenido de vuelta</h2><p class="account-auth-copy">Continúa con tu progreso, historial y guardadas.</p><form class="account-form" id="loginForm"><label>Username o email<input id="loginId" autocomplete="username" maxlength="120" placeholder="Tu username o email" aria-describedby="loginHelp" required></label><span class="account-field-help" id="loginHelp">Puedes usar tu username o el email añadido a tu cuenta.</span><label>Contraseña<div class="password-wrap"><input id="loginPass" type="password" autocomplete="current-password" minlength="8" maxlength="128" required><button class="show-pass" id="showLoginPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberLogin" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Entrar</button><span class="account-message" id="accountMsg" role="status" aria-live="polite"></span></div></form></section><aside class="account-auth-aside" aria-labelledby="loginAsideTitle"><p class="account-overline">Study Hub</p><h2 id="loginAsideTitle">Tus datos, en tu control</h2><ul class="account-auth-points"><li>Tu copia local permanece en este dispositivo.</li><li>La sincronización conserva progreso, historial y preferencias.</li><li>Cerrar sesión no borra tu trabajo local.</li></ul><details class="account-dev-access"><summary>Acceso de desarrollo</summary><p class="account-field-help">Acceso real protegido por el servidor y reservado al desarrollador.</p><form class="account-form" id="devLoginForm"><label>Código de desarrollador<input id="devCode" type="password" autocomplete="off" maxlength="256" required></label><label class="remember-row"><input id="rememberDev" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn ghost" type="submit">Entrar como Owner</button><span class="account-message" id="devMsg" role="status" aria-live="polite"></span></div></form></details></aside></div>`;
     bindPasswordToggle('showLoginPass','loginPass');
-    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Entrando…',async()=>{accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});});
-    document.getElementById('devLoginForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Verificando…',async()=>{devMessage('Verificando…');try{const data=await accountRequest('POST',{action:'dev-login',code:document.getElementById('devCode').value,remember:document.getElementById('rememberDev').checked});document.getElementById('devCode').value='';accountSession={status:'ready',user:data.user};lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){document.getElementById('devCode').value='';devMessage(err.message,true);}});});
+    document.getElementById('loginForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Entrando…',async()=>{accountMessage('Entrando…');try{const data=await accountRequest('POST',{action:'login',identifier:document.getElementById('loginId').value,password:document.getElementById('loginPass').value,remember:document.getElementById('rememberLogin').checked});accountSession={status:'ready',user:data.user};await refreshQaToolsCapability();lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){accountMessage(err.message,true);}});});
+    document.getElementById('devLoginForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Verificando…',async()=>{devMessage('Verificando…');try{const data=await accountRequest('POST',{action:'dev-login',code:document.getElementById('devCode').value,remember:document.getElementById('rememberDev').checked});document.getElementById('devCode').value='';accountSession={status:'ready',user:data.user};await refreshQaToolsCapability();lastCloudUpdatedAt=Number(data.cloudUpdatedAt)||0;if(data.cloudState)applyCloudCanonical(data.cloudState);else await syncCloudState();renderNav();render();}catch(err){document.getElementById('devCode').value='';devMessage(err.message,true);}});});
   }else if(mode==='register'){
-    box.innerHTML=`<div class="card"><div class="account-choice"><button type="button" class="active" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" data-reg-mode="email"><b>Cuenta con email</b><span>Username + email + contraseña. También podrás entrar usando el email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. usuario" required></label><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="account-sub">El username debe tener 3–20 caracteres: letras, números, punto, guion o _. Tu progreso actual de este dispositivo se subirá a la cuenta.</div><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="save-note" id="accountMsg"></span></div></form></div>`;
+    box.innerHTML=`<div class="account-auth-layout"><section class="account-auth-form" aria-labelledby="registerTitle"><p class="account-overline">Crear cuenta</p><h2 id="registerTitle">Guarda tu recorrido</h2><p class="account-auth-copy">Crea una cuenta sin perder el progreso que ya existe en este dispositivo.</p><div class="account-choice" aria-label="Tipo de cuenta"><button type="button" class="active" aria-pressed="true" data-reg-mode="basic"><b>Cuenta básica</b><span>Username + contraseña. Email opcional.</span></button><button type="button" aria-pressed="false" data-reg-mode="email"><b>Con email</b><span>También podrás entrar usando tu email.</span></button></div><form class="account-form" id="registerForm"><label>Username<input id="regUser" autocomplete="username" maxlength="20" placeholder="ej. usuario" aria-describedby="usernameHelp" required></label><span class="account-field-help" id="usernameHelp">De 3 a 20 caracteres: letras, números, punto, guion o _.</span><label id="emailLabel">Email (opcional)<input id="regEmail" type="email" autocomplete="email" maxlength="120" placeholder="Puede ser personal o escolar"></label><label>Contraseña<div class="password-wrap"><input id="regPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass" type="button" aria-pressed="false">Ver</button></div><div class="password-meter" id="passStrength">Mínimo 8 caracteres.</div></label><label>Confirmar contraseña<div class="password-wrap"><input id="regPass2" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRegPass2" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRegister" type="checkbox" checked> Mantener mi sesión iniciada en este dispositivo</label><div class="btn-row"><button class="btn" type="submit">Crear cuenta</button><span class="account-message" id="accountMsg" role="status" aria-live="polite"></span></div></form></section><aside class="account-auth-aside" aria-labelledby="registerAsideTitle"><p class="account-overline">Antes de continuar</p><h2 id="registerAsideTitle">Nada se descarta</h2><ul class="account-auth-points"><li>Tu progreso local se añadirá a la cuenta.</li><li>El email sigue siendo opcional en la cuenta básica.</li><li>Recibirás un código de recuperación que debes guardar.</li></ul></aside></div>`;
     let regMode='basic';
     const choices=[...box.querySelectorAll('[data-reg-mode]')];
     const emailInput=document.getElementById('regEmail'), emailLabel=document.getElementById('emailLabel');
-    choices.forEach(btn=>btn.addEventListener('click',()=>{regMode=btn.dataset.regMode;choices.forEach(x=>x.classList.toggle('active',x===btn));const required=regMode==='email';emailInput.required=required;emailLabel.firstChild.textContent=required?'Email ':'Email (opcional)';emailInput.placeholder=required?'Tu email personal o escolar':'Puede ser personal o escolar';}));
+    choices.forEach(btn=>btn.addEventListener('click',()=>{regMode=btn.dataset.regMode;choices.forEach(x=>{const active=x===btn;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));});const required=regMode==='email';emailInput.required=required;emailLabel.firstChild.textContent=required?'Email ':'Email (opcional)';emailInput.placeholder=required?'Tu email personal o escolar':'Puede ser personal o escolar';}));
     bindPasswordToggle('showRegPass','regPass');bindPasswordToggle('showRegPass2','regPass2');
     document.getElementById('regPass').addEventListener('input',e=>{const v=e.target.value;document.getElementById('passStrength').textContent=v.length?`Seguridad: ${passwordStrengthText(v)}.`:'Mínimo 8 caracteres.';});
     document.getElementById('registerForm').addEventListener('submit',async e=>{e.preventDefault();const p=document.getElementById('regPass').value;if(p!==document.getElementById('regPass2').value){accountMessage('Las contraseñas no coinciden.',true);return;}const email=document.getElementById('regEmail').value.trim();if(regMode==='email'&&!email){accountMessage('Escribe un email para este tipo de cuenta.',true);return;}await window.StudyHubForms.run(e.currentTarget,'Creando…',async()=>{accountMessage('Creando cuenta…');try{const data=await accountRequest('POST',{action:'register',username:document.getElementById('regUser').value,email,password:p,requireEmail:regMode==='email',remember:document.getElementById('rememberRegister').checked});accountSession={status:'ready',user:data.user};lastCloudHash='';await syncCloudState();box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Cuenta creada ✓</h2><p><b>Guarda este código de recuperación.</b> Te permite recuperar tu cuenta incluso si no puedes entrar.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. Guárdalo en un lugar seguro. El sitio no puede volver a mostrarlo después.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishAccount">Continuar</button></div></div>`;document.getElementById('finishAccount').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});});
   }else{
-    box.innerHTML=`<div class="card"><form class="account-form" id="recoverForm"><label>Username o email<input id="recId" autocomplete="username" maxlength="120" required></label><label>Código de recuperación<input id="recCode" autocomplete="off" maxlength="64" placeholder="XXXX-XXXX-XXXX-XXXX" required></label><label>Nueva contraseña<div class="password-wrap"><input id="recPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRecPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRecover" type="checkbox" checked> Mantener mi sesión iniciada después de recuperar la cuenta</label><div class="btn-row"><button class="btn" type="submit">Cambiar contraseña</button><span class="save-note" id="accountMsg"></span></div></form><p class="cloud-note">Por seguridad, conocer solo el username o email no permite cambiar una contraseña: también necesitas el código de recuperación.</p></div>`;
+    box.innerHTML=`<div class="account-auth-layout"><section class="account-auth-form" aria-labelledby="recoverTitle"><p class="account-overline">Recuperación</p><h2 id="recoverTitle">Vuelve a entrar con seguridad</h2><p class="account-auth-copy">Necesitas el código entregado al crear la cuenta.</p><form class="account-form" id="recoverForm"><label>Username o email<input id="recId" autocomplete="username" maxlength="120" required></label><label>Código de recuperación<input id="recCode" autocomplete="off" maxlength="64" placeholder="XXXX-XXXX-XXXX-XXXX" aria-describedby="recoveryHelp" required></label><span class="account-field-help" id="recoveryHelp">El código solo se mostró al crear la cuenta o en la recuperación anterior.</span><label>Nueva contraseña<div class="password-wrap"><input id="recPass" type="password" autocomplete="new-password" minlength="8" maxlength="128" required><button class="show-pass" id="showRecPass" type="button" aria-pressed="false">Ver</button></div></label><label class="remember-row"><input id="rememberRecover" type="checkbox" checked> Mantener mi sesión iniciada después de recuperar la cuenta</label><div class="btn-row"><button class="btn" type="submit">Cambiar contraseña</button><span class="account-message" id="accountMsg" role="status" aria-live="polite"></span></div></form></section><aside class="account-auth-aside" aria-labelledby="recoverAsideTitle"><p class="account-overline">Protección</p><h2 id="recoverAsideTitle">El username no basta</h2><p>Conocer un username o email no permite cambiar una contraseña. El código de recuperación es obligatorio y será reemplazado por uno nuevo al terminar.</p><div class="account-security-note">Study Hub nunca muestra de nuevo un código antiguo ni lo adjunta a respuestas o registros.</div></aside></div>`;
     bindPasswordToggle('showRecPass','recPass');
     document.getElementById('recoverForm').addEventListener('submit',async e=>{e.preventDefault();await window.StudyHubForms.run(e.currentTarget,'Verificando…',async()=>{accountMessage('Verificando…');try{const data=await accountRequest('POST',{action:'reset-password',identifier:document.getElementById('recId').value,recoveryCode:document.getElementById('recCode').value,newPassword:document.getElementById('recPass').value,remember:document.getElementById('rememberRecover').checked});accountSession={status:'ready',user:data.user};box.innerHTML=`<div class="card"><h2 style="margin-top:0;">Contraseña cambiada ✓</h2><p><b>Guarda tu nuevo código de recuperación.</b> El código anterior ya no funciona.</p><div class="recovery-code">${escHtml(data.recoveryCode)}</div><p class="cloud-note">No compartas este código. No podrá volver a mostrarse.</p><div class="btn-row" style="margin-top:16px;"><button class="btn" id="finishRecovery">Continuar</button></div></div>`;document.getElementById('finishRecovery').addEventListener('click',()=>{renderNav();render();});}catch(err){accountMessage(err.message,true);}});});
   }
@@ -3575,7 +4000,8 @@ async function adminRequest(method='GET',body=null,query=''){
 async function featureRequest(method='GET',body=null,query=''){
   return requestJson(`/.netlify/functions/features${query?`?${query}`:''}`,{method,body,fallbackMessage:'No se pudieron cargar Early Access y Feature Flags.'});
 }
-function roleLabel(role){return role==='superdev'?'Super Dev':role==='owner'?'Owner':role==='admin'?'Admin':'Member';}
+function roleLabel(role){return role==='superdev'?'Owner':role==='owner'?'Owner':role==='admin'?'Admin':'Member';}
+function featureAudienceLabel(audience){return audience==='superdev'?'Owner':audience==='admins'?'Admins':audience==='veterans'?'Veteranos':audience==='selectedUsers'?'Usuarios seleccionados':audience==='members'?'Miembros':audience;}
 function frontendCanManage(actorRole,targetRole){
   if(targetRole==='superdev')return false;
   if(actorRole==='admin')return targetRole==='member';
@@ -3655,7 +4081,7 @@ function adminUserCard(user,index,actorRole,sessionsOnly){
   return `<article class="admin-user-card"><div class="system-row"><div><h3>${escHtml(user.displayName||user.username)} ${user.veteran?'<span class="veteran-badge">Veterano</span>':''}</h3><div class="meta">@${escHtml(user.username||'')} ${user.email?`· ${escHtml(user.email)}`:''}</div></div><div class="admin-user-meta"><span class="role-badge">${roleLabel(user.role)}</span><span class="status-badge ${user.status==='suspended'?'suspended':user.online?'':'offline'}">${user.status==='suspended'?'Suspendido':user.online?'Online':'Offline'}</span></div></div><div class="meta" style="margin-top:8px;">Rango: ${escHtml(user.visibleRank||'Estudiante')} · ${relativeActivity(user.lastActivityAt)} · ${Number(user.activeSessions)||0} sesiones activas${user.section?` · ${escHtml(user.section)}`:''}</div>${sessionsOnly?`${manageable?`<div class="admin-actions"><button class="icon-btn" data-admin-action="revoke-sessions" data-admin-index="${index}">Cerrar sesiones</button></div>`:'<p class="cloud-note">Sesiones protegidas para tu rol.</p>'}`:`<button class="icon-btn" style="margin-top:10px;" data-user-detail="${index}">Abrir usuario</button><div class="admin-detail" id="adminDetail${index}" hidden>${adminUserDetail(user,index,actorRole,manageable)}</div>`}</article>`;
 }
 function adminUserDetail(user,index,actorRole,manageable){
-  if(!manageable)return'<p class="cloud-note">Esta cuenta está protegida para tu rol. Super Dev nunca puede modificarse desde este panel.</p>';
+  if(!manageable)return'<p class="cloud-note">Esta cuenta está protegida para tu rol. Owner nunca puede modificarse desde este panel.</p>';
   const isSuper=actorRole==='superdev';
   return `<div class="admin-form-grid"><label>Nombre visible<input id="adminDisplay${index}" maxlength="60" value="${escHtml(user.displayName||user.username)}"></label><label>Rango visible<input id="adminRank${index}" maxlength="40" value="${escHtml(user.visibleRank||'Estudiante')}" ${isSuper?'':'disabled'}></label></div><label class="account-form" style="margin-top:10px;">Razón administrativa (opcional)<input id="adminReason${index}" maxlength="200" placeholder="Motivo para el audit log"></label><div class="admin-actions"><button class="icon-btn" data-admin-action="update-profile" data-admin-index="${index}">Guardar perfil</button>${isSuper?`<button class="icon-btn" data-admin-action="${user.veteran?'remove-veteran':'set-veteran'}" data-admin-index="${index}">${user.veteran?'Quitar Veterano':'Convertir en Veterano'}</button>${user.role==='member'?`<button class="icon-btn" data-admin-action="grant-admin" data-admin-index="${index}">Dar Admin</button>`:user.role==='admin'?`<button class="icon-btn" data-admin-action="revoke-admin" data-admin-index="${index}">Quitar Admin</button>`:''}`:''}<button class="icon-btn" data-admin-action="${user.status==='suspended'?'reactivate':'suspend'}" data-admin-index="${index}">${user.status==='suspended'?'Reactivar':'Suspender'}</button><button class="icon-btn" data-admin-action="revoke-sessions" data-admin-index="${index}">Cerrar sesiones</button><button class="icon-btn" data-admin-action="remove-leaderboard" data-admin-index="${index}">Quitar leaderboard</button><button class="icon-btn" data-admin-action="delete" data-admin-index="${index}">Borrar cuenta</button></div>`;
 }
@@ -3719,7 +4145,7 @@ async function loadAdminFeedback(){
 async function loadEarlyAccess(box){
   try{
     const data=await featureRequest();featureFlags=Array.isArray(data.features)?data.features:[];
-    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Laboratorio Super Dev</h2><p style="margin-bottom:0;">Estado, audiencia y publicación son controles independientes. Ready no significa publicada y el backend valida también el acceso directo.</p></div><div class="feature-list">${featureFlags.map((feature,index)=>`<article class="feature-row"><div class="system-row"><div><h3>${escHtml(feature.name)}</h3><p class="cloud-note">${escHtml(feature.description)}</p></div><div class="admin-user-meta"><span class="status-badge">${escHtml(feature.status)}</span><span class="status-badge ${feature.enabled?'':'offline'}">${feature.enabled?'Published':'Disabled'}</span></div></div><div class="feature-controls"><label>Estado<select data-feature-status="${index}">${['development','experimental','preview','ready'].map(value=>`<option value="${value}" ${feature.status===value?'selected':''}>${value}</option>`).join('')}</select></label><label>Audiencia<select data-feature-audience="${index}">${['superdev','admins','veterans','selectedUsers','members'].map(value=>`<option value="${value}" ${feature.audience===value?'selected':''}>${value}</option>`).join('')}</select></label><label data-feature-selected-wrap="${index}" ${feature.audience==='selectedUsers'?'':'hidden'}>Usuarios seleccionados<input data-feature-selected="${index}" value="${escHtml((feature.selectedUsers||[]).join(', '))}" placeholder="username1, username2"></label></div><div class="feature-actions"><button class="btn ghost" data-feature-save="${index}">Guardar configuración</button><button class="btn ${feature.enabled?'soft':'ghost'}" data-feature-toggle="${index}">${feature.enabled?'Despublicar':'Publicar'}</button>${feature.canLaunch?`<button class="btn" data-feature-test="${index}">Probar ahora</button>`:'<span class="cloud-note">Todavía no disponible para pruebas.</span>'}</div></article>`).join('')}</div>`;
+    box.innerHTML=`<div class="card" style="margin-bottom:16px;"><h2 style="margin-top:0;">Laboratorio Owner</h2><p style="margin-bottom:0;">Estado, audiencia y publicación son controles independientes. Ready no significa publicada y el backend valida también el acceso directo.</p></div><div class="feature-list">${featureFlags.map((feature,index)=>`<article class="feature-row"><div class="system-row"><div><h3>${escHtml(feature.name)}</h3><p class="cloud-note">${escHtml(feature.description)}</p></div><div class="admin-user-meta"><span class="status-badge">${escHtml(feature.status)}</span><span class="status-badge ${feature.enabled?'':'offline'}">${feature.enabled?'Published':'Disabled'}</span></div></div><div class="feature-controls"><label>Estado<select data-feature-status="${index}">${['development','experimental','preview','ready'].map(value=>`<option value="${value}" ${feature.status===value?'selected':''}>${value}</option>`).join('')}</select></label><label>Audiencia<select data-feature-audience="${index}">${['superdev','admins','veterans','selectedUsers','members'].map(value=>`<option value="${value}" ${feature.audience===value?'selected':''}>${featureAudienceLabel(value)}</option>`).join('')}</select></label><label data-feature-selected-wrap="${index}" ${feature.audience==='selectedUsers'?'':'hidden'}>Usuarios seleccionados<input data-feature-selected="${index}" value="${escHtml((feature.selectedUsers||[]).join(', '))}" placeholder="username1, username2"></label></div><div class="feature-actions"><button class="btn ghost" data-feature-save="${index}">Guardar configuración</button><button class="btn ${feature.enabled?'soft':'ghost'}" data-feature-toggle="${index}">${feature.enabled?'Despublicar':'Publicar'}</button>${feature.canLaunch?`<button class="btn" data-feature-test="${index}">Probar ahora</button>`:'<span class="cloud-note">Todavía no disponible para pruebas.</span>'}</div></article>`).join('')}</div>`;
     const featurePayload=(index,enabled)=>{const feature=featureFlags[index],audience=box.querySelector(`[data-feature-audience="${index}"]`).value;return{id:feature.id,status:box.querySelector(`[data-feature-status="${index}"]`).value,audience,enabled,selectedUsers:audience==='selectedUsers'?(box.querySelector(`[data-feature-selected="${index}"]`)?.value||'').split(',').map(value=>value.trim()).filter(Boolean):[]};};
     const saveFeature=async(index,enabled)=>{try{const result=await featureRequest('POST',featurePayload(index,enabled));featureFlags[index]=result.feature;showToast('Feature Flag actualizada ✓');await loadEarlyAccess(box);}catch(error){showToast(error.message,true);}};
     box.querySelectorAll('[data-feature-audience]').forEach(select=>select.addEventListener('change',()=>{const wrap=box.querySelector(`[data-feature-selected-wrap="${select.dataset.featureAudience}"]`);if(wrap)wrap.hidden=select.value!=='selectedUsers';}));
@@ -3801,45 +4227,38 @@ function renderAjustes(main){
   const savedTopics=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
   const selected=new Set(savedTopics?.length?savedTopics:topics.map(t=>t.id));
   main.innerHTML = `
-    <div class="pagehead"><h1>Configuración</h1><p>Personaliza cómo funciona tu cuaderno.${accountSession.user?' Estos ajustes se sincronizan con tu cuenta.':' Inicia sesión para sincronizarlos entre dispositivos.'}</p></div>
-    <div class="card" style="margin-bottom:20px;">
-      <p class="section-title">Apariencia</p>
-      <div class="setting-row"><div class="setting-copy"><b>Tema</b><span>Escoge claro, oscuro o automático según tu dispositivo.</span></div><div class="setting-control"><select id="themeMode"><option value="light" ${state.settings.themeMode==='light'?'selected':''}>Claro</option><option value="dark" ${state.settings.themeMode==='dark'?'selected':''}>Oscuro</option><option value="auto" ${state.settings.themeMode==='auto'?'selected':''}>Automático</option></select></div></div>
-      <div class="setting-row"><div class="setting-copy"><b>Color de la interfaz</b><span>Personaliza el color principal de botones, barras y selecciones.</span></div><div class="setting-control"><input id="accentColor" type="color" value="${escHtml(state.settings.accentColor||'#8B2635')}" style="width:52px;height:40px;border:1px solid var(--line);border-radius:8px;background:var(--card);padding:3px;"></div></div>
-    </div>
-    <div class="card" style="margin-bottom:20px;">
-      <p class="section-title">Práctica</p>
+    <section class="settings-page">
+    <div class="pagehead"><p class="settings-overline">Preferencias</p><h1>Configuración</h1><p>Personaliza cómo funciona tu cuaderno.${accountSession.user?' Estos ajustes se sincronizan con tu cuenta.':' Inicia sesión para sincronizarlos entre dispositivos.'}</p></div>
+    <section class="settings-section" aria-labelledby="settingsAppearance">
+      <p class="settings-overline">Apariencia</p><h2 id="settingsAppearance">Hazlo cómodo para ti</h2>
+      <div class="setting-row"><div class="setting-copy"><b>Tema</b><span>Escoge claro, oscuro o automático según tu dispositivo.</span></div><div class="setting-control"><select id="themeMode" aria-label="Tema de la interfaz"><option value="light" ${state.settings.themeMode==='light'?'selected':''}>Claro</option><option value="dark" ${state.settings.themeMode==='dark'?'selected':''}>Oscuro</option><option value="auto" ${state.settings.themeMode==='auto'?'selected':''}>Automático</option></select></div></div>
+    </section>
+    <section class="settings-section" aria-labelledby="settingsPractice">
+      <p class="settings-overline">Práctica</p><h2 id="settingsPractice">Tu forma de trabajar</h2>
       <div class="setting-row"><div class="setting-copy"><b>Contar prácticas en el Panel por defecto</b><span>También puedes cambiarlo antes de cada práctica.</span></div><div class="setting-control"><label class="check-line"><input id="defaultCount" type="checkbox" ${state.settings.practiceCountsByDefault!==false?'checked':''}> Activado</label></div></div>
       <div class="setting-row"><div class="setting-copy"><b>Ortografía estricta</b><span>Exige tildes exactas en respuestas escritas. Desactivada, solo tolera diferencias de tildes inequívocas.</span></div><div class="setting-control"><label class="check-line"><input id="strictWritten" type="checkbox" ${state.settings.strictWrittenAnswers===true?'checked':''}> Activada</label></div></div>
-    </div>
-    <div class="card" style="margin-bottom:20px;">
-      <p class="section-title">Examen de ${subject.name} · temas predeterminados</p>
+    </section>
+    <section class="settings-section" aria-labelledby="settingsExam">
+      <p class="settings-overline">Examen</p><h2 id="settingsExam">${subject.name} · temas predeterminados</h2>
       <div class="check-list" id="defaultTopics">${topics.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}</div>
-    </div>
-    <div class="card" style="margin-bottom:20px;">
-      <p class="section-title">Avisos</p>
+    </section>
+    <section class="settings-section" aria-labelledby="settingsNotices">
+      <p class="settings-overline">Avisos</p><h2 id="settingsNotices">Mensajes recuperables</h2>
       <div class="setting-row"><div class="setting-copy"><b>Restablecer avisos y confirmaciones</b><span>Vuelve a mostrar avisos recuperables que hayas ocultado. Las confirmaciones destructivas siempre permanecen activas.</span></div><div class="setting-control"><button class="icon-btn" id="resetWarnings">Restablecer</button></div></div>
-    </div>
-    <div class="card" id="notificationPreferences" style="margin-bottom:20px;"></div>
-    <div class="card" style="margin-bottom:20px;">
-      <p class="section-title">Open Source</p>
-      <p style="margin:0 0 12px;color:var(--ink-soft);font-size:.88rem;">Consulta el código, el historial de cambios y los reportes del proyecto.</p>
-      <div class="btn-row"><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol" target="_blank" rel="noopener noreferrer">Repositorio</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/commits" target="_blank" rel="noopener noreferrer">Commits</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/issues" target="_blank" rel="noopener noreferrer">Issues</a></div>
-    </div>
-    <div class="btn-row"><button class="btn" id="saveSettings">💾 Guardar</button><span class="save-note" id="savedNote">${lastSaveAt?'Guardado automático activo ✓':'Guardado automático activo'}</span></div>`;
+    </section>
+    ${qaToolsCapabilityConfirmed()?`<section class="settings-section qa-settings-section" aria-labelledby="settingsQaTools">
+      <p class="settings-overline">Interno</p><h2 id="settingsQaTools">Developer / QA</h2>
+      <div class="setting-row"><div class="setting-copy"><b>QA Tools</b><span>Habilita herramientas internas para acelerar pruebas en este entorno.</span></div><div class="setting-control"><label class="qa-toggle"><input id="qaToolsToggle" type="checkbox" aria-label="Activar QA Tools" ${qaToolsPreference()?'checked':''}><span aria-hidden="true"></span><b id="qaToolsToggleState">${qaToolsPreference()?'Activado':'Desactivado'}</b></label></div></div>
+    </section>`:''}
+    <section class="settings-section settings-notifications" id="notificationPreferences" aria-label="Preferencias de notificaciones"></section>
+    <section class="settings-section" aria-labelledby="settingsSource"><p class="settings-overline">Open Source</p><h2 id="settingsSource">Proyecto y soporte</h2><p class="settings-section-intro">Consulta el código, el historial de cambios y los reportes del proyecto.</p><div class="settings-links"><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol" target="_blank" rel="noopener noreferrer">Repositorio</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/commits" target="_blank" rel="noopener noreferrer">Commits</a><a class="btn ghost" href="https://github.com/ooxxyo/estudia-espanol/issues" target="_blank" rel="noopener noreferrer">Issues</a></div></section>
+    <section class="settings-section product-info-card" aria-labelledby="settingsProduct"><p class="settings-overline">Producto</p><h2 id="settingsProduct">Información</h2><p class="settings-product-meta">Study Hub · v${APP_VERSION}</p></section>
+    <div class="settings-actions"><button class="btn" id="saveSettings">Guardar cambios</button><span class="save-note" id="savedNote" role="status" aria-live="polite">${lastSaveAt?'Guardado automático activo ✓':'Guardado automático activo'}</span></div>
+    </section>`;
   const themeMode=document.getElementById('themeMode');
-  const accentColor=document.getElementById('accentColor');
   themeMode.addEventListener('change',()=>{
     state.settings.themeMode=themeMode.value;
     applyThemeMode();
-    saveState();
-    renderNav();
-  });
-  accentColor.addEventListener('input',()=>{
-    state.settings.accentColor=accentColor.value||'#8B2635';
-    applyAccentColor();
-  });
-  accentColor.addEventListener('change',()=>{
     saveState();
     renderNav();
   });
@@ -3848,8 +4267,14 @@ function renderAjustes(main){
     saveState();
     showToast('Avisos restablecidos ✓');
   });
-  const discardCurrentPractice=document.getElementById('discardCurrentPractice');
-  if(discardCurrentPractice)discardCurrentPractice.addEventListener('click',()=>{if(!confirm('¿Descartar esta práctica? Se conservarán tu progreso anterior, historial, errores y guardadas.'))return;discardPausedPractice();goto('practica');});
+  const qaToolsToggle=document.getElementById('qaToolsToggle');
+  qaToolsToggle?.addEventListener('change',()=>{
+    if(!qaToolsCapabilityConfirmed()){qaToolsToggle.checked=false;return;}
+    try{sessionStorage.setItem(QA_TOOLS_SESSION_KEY,String(qaToolsToggle.checked));}catch{}
+    document.getElementById('qaToolsToggleState').textContent=qaToolsToggle.checked?'Activado':'Desactivado';
+    if(!qaToolsToggle.checked)cancelQaPracticeRun();
+    showToast(qaToolsToggle.checked?'QA Tools activado para esta sesión.':'QA Tools desactivado.');
+  });
   window.StudyHubExtras?.mountNotificationPreferences(document.getElementById('notificationPreferences'),platformUiContext());
   document.getElementById('saveSettings').addEventListener('click',()=>{
     const topics=[...document.querySelectorAll('#defaultTopics input:checked')].map(x=>x.value);
@@ -3859,7 +4284,6 @@ function renderAjustes(main){
     state.settings.strictWrittenAnswers=document.getElementById('strictWritten').checked;
     if(subject.id==='espanol') state.settings.examTopics=topics;
     else state.settings.examTopicsBySubject={...(state.settings.examTopicsBySubject||{}),[subject.id]:topics};
-    state.settings.accentColor=accentColor.value||'#8B2635';
     applyThemeMode(); saveState(); renderNav();
     document.getElementById('savedNote').textContent='Guardado ✓';
     setTimeout(()=>{const n=document.getElementById('savedNote');if(n)n.textContent='';},1600);

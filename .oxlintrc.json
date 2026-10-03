@@ -1,0 +1,14 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "warn"
+  },
+  "ignorePatterns": [
+    "node_modules/**",
+    "test-results/**",
+    "playwright-report/**",
+    ".playwright-auth/**",
+    ".netlify/**",
+    "graphify-out/**"
+  ]
+}

@@ -26,6 +26,7 @@
   }
 
   function stepComplete(step, values) {
+    if(step.kind==='known')return true;
     if(step.kind==='operation')return window.MATH_WORKSPACE.isVerticalOperationComplete(step.operation,values);
     return (step.fields||[]).every(field=>String(values[field.id]??'').trim()!=='');
   }
@@ -42,7 +43,7 @@
   }
 
   function validateWorkspace(config, values = {}, options = {}) {
-    const steps=options.answerOnly?config.steps.filter(step=>step.kind==='answer'):config.steps;
+    const steps=options.answerOnly?config.steps.filter(step=>step.kind==='answer'):config.steps.filter(step=>step.kind!=='known');
     for(const step of steps){
       const report=step.kind==='operation'
         ? window.MATH_WORKSPACE.validateVerticalOperation(step.operation,values)
@@ -54,7 +55,7 @@
 
   function reviewProcedure(config, values = {}) {
     const issues=[];
-    for(const step of config.steps.filter(item=>item.kind!=='answer'&&item.kind!=='rounding')){
+    for(const step of config.steps.filter(item=>!['answer','rounding','known'].includes(item.kind))){
       const report=step.kind==='operation'
         ? window.MATH_WORKSPACE.validateVerticalOperation(step.operation,values)
         : window.MATH_WORKSPACE.validate({fields:step.fields||[]},values);
@@ -67,13 +68,14 @@
     if (!question || question.subjectId !== 'matematicas' || question.workspaceKind !== 'dms') return null;
     const expected = Object.values(window.MATH_CONTENT.approvedExamples).find(example => example.decimalDegrees === question.decimalDegrees);
     if (!expected) return null;
+    const procedure=window.MATH_WORKSPACE.createDmsProcedure({decimalDegrees:expected.decimalDegrees,decimalPartText:expected.decimalPartText});
 
-    const degreesField=numberField('degrees','Grados',expected.degrees,'A','GRADOS','La parte entera original corresponde a los grados.');
-    const decimalPartField=numberField('decimalPart','Parte decimal',expected.decimalPart,'B','PARTE DECIMAL','Conserva únicamente la parte que queda después del punto decimal.');
-    const minuteOperation=window.MATH_WORKSPACE.createVerticalOperation({id:'minute',value:expected.decimalPartText,multiplier:60,stepId:'C'});
-    const minutesField=numberField('minutes','Minutos',expected.minutes,'D','MINUTOS','Toma la parte entera del resultado; no redondees los minutos.');
-    const remainingDecimalField=numberField('remainingDecimal','Decimal restante',expected.remainingDecimal,'E','PARTE DECIMAL','Conserva completa la parte decimal restante para la segunda multiplicación.');
-    const secondOperation=window.MATH_WORKSPACE.createVerticalOperation({id:'second',value:expected.remainingDecimalText,multiplier:60,stepId:'F'});
+    const degreesField=numberField('degrees','Grados',procedure.degrees,'A','GRADOS','La parte entera original corresponde a los grados.',{suffix:'°'});
+    const minuteOperation=window.MATH_WORKSPACE.createVerticalOperation({id:'minute',value:procedure.decimalPartText,multiplier:60,stepId:'C',operandKnown:true});
+    const decimalPartField=numberField('decimalPart','Parte decimal',procedure.decimalPartValue,'B','PARTE DECIMAL','Conserva únicamente la parte que queda después del punto decimal.',{displayValue:procedure.decimalDigits});
+    const minutesField=numberField('minutes','Minutos',procedure.minutes,'D','MINUTOS','Toma la parte entera del resultado; no redondees los minutos.');
+    const remainingDecimalField=numberField('remainingDecimal','Sin punto',procedure.remainderDigits,'E','PARTE DECIMAL','Conserva todos los dígitos restantes según la escala decimal.',{type:'procedural-digits',decimalPlaces:procedure.decimalPlaces});
+    const secondOperation=window.MATH_WORKSPACE.createVerticalOperation({id:'second',value:procedure.remainderText,multiplier:60,stepId:'F',operandSourceFieldId:'remainingDecimal'});
     const roundingField=expected.rounded
       ? numberField('roundedSeconds','Segundos redondeados',expected.seconds,'G','REDONDEO','Redondea los segundos al entero más cercano.')
       : null;
@@ -82,20 +84,21 @@
     const finalSecondsField=numberField('finalSeconds','″',expected.seconds,'H','RESPUESTA FINAL','Revisa los segundos de la respuesta final.');
     const answerFields=Object.freeze([finalDegreesField,finalMinutesField,finalSecondsField]);
     const steps=[
-      Object.freeze({id:'A',kind:'field',title:'Grados',guidance:'Toma la parte entera del número original.',fields:Object.freeze([degreesField])}),
-      Object.freeze({id:'B',kind:'field',title:'Parte decimal',guidance:'Conserva todo lo que queda después del punto decimal.',fields:Object.freeze([decimalPartField])}),
-      Object.freeze({id:'C',kind:'operation',title:'× 60',guidance:'Multiplica sin el punto y vuelve a colocarlo al terminar.',operation:minuteOperation,fields:minuteOperation.fields}),
+      Object.freeze({id:'A',kind:'known',title:'Grados',guidance:'La parte entera ya viene dada en el ejercicio.',fields:Object.freeze([degreesField])}),
+      Object.freeze({id:'B',kind:'known',title:'Parte decimal',guidance:'La parte decimal ya viene dada en el ejercicio.',fields:Object.freeze([decimalPartField])}),
+      Object.freeze({id:'C',kind:'operation',title:`${minuteOperation.operandDigits} × 60`,guidance:'Multiplica sin el punto y vuelve a colocarlo al terminar.',operation:minuteOperation,fields:minuteOperation.fields}),
       Object.freeze({id:'D',kind:'field',title:'Minutos',guidance:'Toma la parte entera del primer producto, sin redondearla.',fields:Object.freeze([minutesField])}),
-      Object.freeze({id:'E',kind:'field',title:'Decimal restante',guidance:'Conserva completa la parte decimal del primer producto.',fields:Object.freeze([remainingDecimalField])}),
+      Object.freeze({id:'E',kind:'field',title:'Parte decimal restante',guidance:`Conserva sus ${procedure.decimalPlaces} dígitos y escríbelos sin el punto.`,fields:Object.freeze([remainingDecimalField])}),
       Object.freeze({id:'F',kind:'operation',title:'× 60',guidance:'Repite la multiplicación por 60 con el decimal restante.',operation:secondOperation,fields:secondOperation.fields}),
     ];
     if(roundingField)steps.push(Object.freeze({id:'G',kind:'rounding',title:'Redondear segundos',guidance:'Redondea solo ahora, al entero más cercano.',fields:Object.freeze([roundingField])}));
     steps.push(Object.freeze({id:'H',kind:'answer',title:'Respuesta DMS',guidance:'Reúne grados, minutos y segundos.',fields:answerFields}));
-    const primaryFields=Object.freeze([degreesField,decimalPartField,minutesField,remainingDecimalField,...(roundingField?[roundingField]:[]),...answerFields]);
+    const knownFields=Object.freeze([degreesField,decimalPartField]);
+    const primaryFields=Object.freeze([minutesField,remainingDecimalField,...(roundingField?[roundingField]:[]),...answerFields]);
     const operationsByStep=Object.freeze({C:minuteOperation,F:secondOperation});
-    const fields=Object.freeze([...primaryFields,...minuteOperation.fields,...secondOperation.fields]);
+    const fields=Object.freeze([...knownFields,...primaryFields,...minuteOperation.fields,...secondOperation.fields]);
     const helpItems=[
-      Object.freeze({id:'start',label:'Cómo empezar',text:'Escribe primero la parte entera como grados y conserva la parte decimal.'}),
+      Object.freeze({id:'start',label:'Cómo empezar',text:'Study Hub ya separó los grados y la parte decimal. Empieza multiplicando la parte decimal por 60.'}),
       Object.freeze({id:'columns',label:'Multiplicación por columnas',text:'Alinea cada dígito a la derecha y completa una fila por cada cifra de 60.'}),
       Object.freeze({id:'carry',label:'Acarreo',text:'Escribe arriba de la siguiente columna únicamente el número que llevas.'}),
       Object.freeze({id:'decimal',label:'Punto decimal',text:'Haz primero la multiplicación sin punto; después decide dónde colocarlo contando las cifras decimales.'}),
@@ -108,6 +111,7 @@
       search:'grados, minutos y segundos',
       learningStage:question.learningStage,
       helpLevel:question.helpLevel,
+      procedure,
       fields,
       primaryFields,
       answerFields,

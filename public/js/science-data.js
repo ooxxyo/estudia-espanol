@@ -23,16 +23,16 @@
         label: 'Prueba',
         status: 'scheduled',
         date: '2026-09-30',
-        topicIds: ['ciencia-si', 'densidad', 'temperatura'],
-        contentPending: true,
-        sourceAssessmentId: 'science-test-2026-09-24',
-        note: 'Incluye el material de la prueba del 24 de septiembre y contenido adicional que todavía no ha sido proporcionado.',
+        dateStatus: 'confirmed',
+        displayTopic: 'Temperatura',
+        topicIds: ['temperatura'],
+        note: 'Próxima prueba confirmada de Temperatura.',
       },
     ],
   });
   const topics = Object.freeze([
-    { id: 'ciencia-si', subjectId, unitId: unit.id, name: 'Conversiones SI', icon: '↔', topicStatus: 'current' },
-    { id: 'densidad', subjectId, unitId: unit.id, name: 'Densidad', icon: '◆', topicStatus: 'current', priority: 'urgent' },
+    { id: 'ciencia-si', subjectId, unitId: unit.id, name: 'Conversiones SI', icon: '↔', topicStatus: 'evaluated' },
+    { id: 'densidad', subjectId, unitId: unit.id, name: 'Densidad', icon: '◆', topicStatus: 'evaluated' },
     { id: 'temperatura', subjectId, unitId: unit.id, name: 'Temperatura', icon: '🌡', topicStatus: 'current', priority: 'urgent' },
   ]);
 
@@ -61,7 +61,16 @@
     ]),
   ]);
 
-  const base = (id, topic, type, prompt, extra) => ({ id: `science-${id}`, subjectId, unitId: unit.id, topic, topicId: topic, type, prompt, dif: extra.dif || 'normal', hints: extra.hints || [], ...extra });
+  const practiceHintByTopic = Object.freeze({
+    'ciencia-si': 'Identifica primero la magnitud, la unidad o el prefijo. Si hay conversión, ubica origen y destino en la escala y cuenta dirección y saltos antes de operar.',
+    densidad: 'Identifica la variable pedida. Parte de d = m ÷ V, despeja solo si hace falta y comprueba que las unidades correspondan a esa variable.',
+    temperatura: 'Identifica la escala de origen y la de destino, elige la fórmula en esa dirección y recuerda que Kelvin se expresa con K, sin símbolo de grado.',
+  });
+  const base = (id, topic, type, prompt, extra) => ({
+    id: `science-${id}`, subjectId, unitId: unit.id, topic, topicId: topic, type, prompt,
+    dif: extra.dif || 'normal', ...extra,
+    hints: Array.isArray(extra.hints) && extra.hints.length ? extra.hints : [practiceHintByTopic[topic]],
+  });
   const mc = (id, topic, prompt, options, correct, exp, dif = 'fácil') => base(id, topic, 'mc', prompt, { options, correct, exp, simpleExplanation: exp, detailedExplanation: exp, dif });
   const numeric = (id, topic, prompt, answer, unitSymbol, formula, detail, dif = 'normal', tolerance = 0.02) => base(id, topic, 'numeric', prompt, {
     answer, unitSymbol, tolerance, formula, dif,

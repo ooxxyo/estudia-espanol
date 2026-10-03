@@ -51,7 +51,7 @@
   function siConfig(question) {
     const match=question.prompt.match(/Convierte\s+([\d,.]+)\s+(\w+)\s+a\s+(\w+)/i);
     if(!match) return null;
-    const source=parseNumber(match[1]),from=match[2],to=match[3],fromLevel=levels[from],toLevel=levels[to];
+    const from=match[2],to=match[3],fromLevel=levels[from],toLevel=levels[to];
     if(!Number.isFinite(fromLevel)||!Number.isFinite(toLevel)) return null;
     const direction=toLevel>fromLevel?'derecha':'izquierda',steps=Math.abs(toLevel-fromLevel),factor=10**steps,operator=direction==='derecha'?'×':'÷';
     const path=steps===1?`${from} → ${to}`:`${from} → ${direction==='derecha'?'… →':'… →'} ${to}`;

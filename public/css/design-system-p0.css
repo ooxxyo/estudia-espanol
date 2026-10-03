@@ -1,6 +1,6 @@
 /* Study Hub Design System P0 — isolated laboratory foundation. */
 
-[data-shds="p0"] {
+[data-shds="p0"], [data-shds-shell="p0"] {
   --shds-color-paper: #f7f4ed;
   --shds-color-surface: #fffdf9;
   --shds-color-recess: #eeebe4;
@@ -53,6 +53,9 @@
   --shds-motion-milestone: 600ms;
   --shds-motion-save: 200ms;
   --shds-motion-unsave: 170ms;
+}
+
+[data-shds="p0"] {
   min-height: 100vh;
   background: var(--shds-color-paper);
   color: var(--shds-color-ink);
@@ -61,7 +64,7 @@
   color-scheme: light;
 }
 
-[data-shds="p0"][data-shds-theme="dark"] {
+[data-shds="p0"][data-shds-theme="dark"], html[data-theme="dark"] [data-shds-shell="p0"] {
   --shds-color-paper: #211e1e;
   --shds-color-surface: #2b2727;
   --shds-color-recess: #353030;
@@ -79,8 +82,9 @@
   --shds-color-info-soft: #2b3941;
   --shds-shadow-surface: 0 10px 34px rgb(0 0 0 / 16%);
   --shds-shadow-action: 0 3px 0 rgb(0 0 0 / 30%);
-  color-scheme: dark;
 }
+
+[data-shds="p0"][data-shds-theme="dark"] { color-scheme: dark; }
 
 [data-shds="p0"] *, [data-shds="p0"] *::before, [data-shds="p0"] *::after {
   box-sizing: border-box;

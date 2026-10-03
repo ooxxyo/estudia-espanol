@@ -20,13 +20,36 @@ const historyContext = { window: {} };
 vm.runInNewContext(await readFile(new URL('../public/history-data.js', import.meta.url), 'utf8'), historyContext);
 const HISTORY = historyContext.window.HISTORY_CONTENT;
 
+test('el cliente API omite body en GET y lo conserva cuando existe', async () => {
+  const calls = [];
+  const sandbox = {
+    AbortController,
+    clearTimeout,
+    fetch: async (url, options) => {
+      calls.push({ url, options });
+      return { ok: true, status: 200, text: async () => '{"ok":true}' };
+    },
+    location: { origin: 'https://study-hub.test' },
+    setTimeout,
+    URL,
+    window: { dispatchEvent() {} },
+  };
+  vm.runInNewContext(await readFile(new URL('../public/js/api-client.js', import.meta.url), 'utf8'), sandbox);
+
+  await sandbox.window.StudyHubApi.requestJson('/health');
+  await sandbox.window.StudyHubApi.requestJson('/save', { method: 'POST', body: { ok: true } });
+
+  assert.equal(Object.hasOwn(calls[0].options, 'body'), false);
+  assert.equal(calls[1].options.body, '{"ok":true}');
+});
+
 function request(path, { method = 'GET', body, token, ip = '127.0.0.1' } = {}) {
   const headers = { 'content-type': 'application/json', 'x-forwarded-for': ip, 'user-agent': 'StudyHubTest/desktop' };
   if (token) headers.cookie = `${COOKIE}=${token}`;
   return new Request(`https://study-hub.test/.netlify/functions/${path}`, {
     method,
     headers,
-    body: body ? JSON.stringify(body) : undefined,
+    ...(body ? { body: JSON.stringify(body) } : {}),
   });
 }
 
@@ -389,7 +412,7 @@ test('navegación primaria tiene cinco accesos, Cuenta dinámica y Más condicio
   assert.match(html, /\['admin','owner','superdev'\]\.includes\(role\)/);
   assert.match(html, /aria-expanded="false" aria-controls="morePanel"/);
   assert.match(html, /const DESKTOP_NAV_GROUPS=/);
-  assert.doesNotMatch(html, /rail\.querySelector\('\[data-open-more\]'\)/);
+  assert.match(html, /rail\.querySelector\('\[data-open-more\]'\)\.addEventListener/);
   assert.match(html, /if\(!moreOpen\|\|event\.key!=='Tab'\)return/);
 });
 

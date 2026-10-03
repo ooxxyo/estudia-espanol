@@ -125,6 +125,19 @@
 - Registra en `TESTING.md` la matriz mínima y las pruebas de regresión aplicables.
 - No marques trabajo como `Completed` hasta que sus pruebas relevantes hayan pasado.
 
+## Context & Integration Discipline
+
+- Empieza cada tarea con el contexto mínimo relevante: entiende objetivo y alcance, consulta un mapa o índice corto, localiza la implementación, abre archivos y secciones concretos y amplía el contexto solo ante una necesidad real. Prefiere `mapa → archivo → sección → detalle`; usa Graphify o búsqueda para localizar antes de cargar grandes volúmenes, sin sacrificar corrección por ahorrar tokens.
+- Mantén una sola fuente canónica por decisión importante: **one home per fact; a reference beats a copy**. `ROADMAP.md` resume estado y alcance; el detalle vive en el documento más apropiado y los demás lo referencian en vez de copiarlo.
+- Antes de construir o incorporar una integración, comprueba en orden: capacidad nativa, integración oficial, API/SDK/CLI oficial, plugin o MCP confiable y mantenido, paquete mantenido y, por último, implementación propia.
+- Antes de añadir MCP, plugin, SDK, paquete, CLI, servicio externo o herramienta de agente, aplica un Dependency Gate: problema concreto, cobertura existente, mantenimiento, seguridad, permisos, privacidad, secretos, licencia, lock-in, coste, complejidad, impacto en CI/build y beneficio real. Sin un hueco demostrado, no se añade.
+- No colecciones herramientas por moda, curiosidad o utilidad hipotética. Codex sigue como agente principal; Astra cubre QA visual/diseño, Superpowers workflows/TDD/debugging, Ponytail simplicidad/YAGNI y Graphify conocimiento del repositorio. No dupliques esas responsabilidades sin evidencia.
+- Entre opciones equivalentes, prefiere la solución y documentación oficiales, mantenidas y con menor superficie de confianza; ser oficial no evita el Dependency Gate.
+- Mide antes de afirmar mejoras de tokens, contexto, rendimiento, velocidad, tamaño o coste. Las cifras promocionales de terceros no son garantías para Study Hub.
+- Mantén aprobación humana antes de arquitectura importante, servicios externos sensibles, auth/sesiones, secretos, permisos, integraciones que modifiquen datos, dependencias estratégicas, staging/producción y cambios destructivos.
+- En 3T, reutiliza Playwright ya existente; añade Axe solo para cubrir la brecha real de accesibilidad automatizada; usa Context7 bajo demanda y fuera de las dependencias del proyecto; evalúa Oxlint gradualmente; no añadas otro auth ni otro knowledge graph mientras los actuales cubran la necesidad.
+- No instales ICM ahora. Solo se adoptan sus principios útiles de contexto mínimo, progressive disclosure, fuentes canónicas y referencias. Reconsidera ICM únicamente si una medición demuestra un problema que Graphify y la documentación actual no resuelven.
+
 ## Pruebas y entrega
 
 Antes de terminar cualquier cambio:
@@ -144,3 +157,16 @@ Entrega un resumen con:
 5. `git status`;
 6. cualquier riesgo pendiente;
 7. URL de preview, si existe.
+
+## graphify
+
+This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+
+When the user types `/graphify`, use the installed graphify skill or instructions before doing anything else.
+
+Rules:
+- For codebase questions, first run `graphify query "<question>"` when graphify-out/graph.json exists. Use `graphify path "<A>" "<B>"` for relationships and `graphify explain "<concept>"` for focused concepts. These return a scoped subgraph, usually much smaller than GRAPH_REPORT.md or raw grep output.
+- Dirty graphify-out/ files are expected after hooks or incremental updates; dirty graph files are not a reason to skip graphify. Only skip graphify if the task is about stale or incorrect graph output, or the user explicitly says not to use it.
+- If graphify-out/wiki/index.md exists, use it for broad navigation instead of raw source browsing.
+- Read graphify-out/GRAPH_REPORT.md only for broad architecture review or when query/path/explain do not surface enough context.
+- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).

@@ -20,7 +20,7 @@ const USERS = getStore('study-hub-users-v1');
 function request(path, { method = 'GET', body, token, ip = '127.0.0.1' } = {}) {
   const headers = { 'content-type': 'application/json', 'x-forwarded-for': ip };
   if (token) headers.cookie = `${COOKIE}=${token}`;
-  return new Request(`https://study-hub.test/.netlify/functions/${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
+  return new Request(`https://study-hub.test/.netlify/functions/${path}`, { method, headers, ...(body ? { body: JSON.stringify(body) } : {}) });
 }
 async function payload(response) { return { status: response.status, data: await response.json() }; }
 async function putUser(input) {

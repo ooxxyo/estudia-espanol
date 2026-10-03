@@ -1,15 +1,17 @@
 import { getStore } from '@netlify/blobs';
-import { randomBytes, randomUUID, createHash, scryptSync, timingSafeEqual } from 'node:crypto';
+import { randomBytes, randomUUID, scryptSync, timingSafeEqual } from 'node:crypto';
 import {
   USERS,
   SESSIONS,
   authenticateRequest,
   clearSessionCookie,
   createSession,
+  hashSecret,
   isSuspended,
   normalizeUsername,
   publicUser,
   resolveUser,
+  safeSecretMatch,
   setSessionCookie,
   tokenHash,
 } from './_shared/auth.mjs';
@@ -41,11 +43,6 @@ function cleanEmail(value) { return String(value ?? '').trim().toLowerCase().sli
 function validEmail(value) { return !value || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value); }
 function validPassword(value) { return typeof value === 'string' && value.length >= 8 && value.length <= 128; }
 
-function hashSecret(secret, salt = randomBytes(16).toString('hex')) {
-  const hash = scryptSync(String(secret), salt, 64).toString('hex');
-  return { salt, hash };
-}
-
 function checkSecret(secret, stored, maxLength = 128) {
   try {
     if (typeof secret !== 'string' || secret.length < 1 || secret.length > maxLength || !stored?.salt || !stored?.hash) return false;
@@ -53,13 +50,6 @@ function checkSecret(secret, stored, maxLength = 128) {
     const actual = Buffer.from(stored.hash, 'hex');
     return candidate.length === actual.length && timingSafeEqual(candidate, actual);
   } catch { return false; }
-}
-
-function safeCodeMatch(candidate, configured) {
-  if (typeof candidate !== 'string' || candidate.length < 1 || candidate.length > 256 || !configured) return false;
-  const left = createHash('sha256').update(candidate).digest();
-  const right = createHash('sha256').update(configured).digest();
-  return timingSafeEqual(left, right);
 }
 
 function makeRecoveryCode() {
@@ -172,7 +162,7 @@ export default async (req) => {
     if (action === 'dev-login') {
       const rate = await enforceRateLimit(req, 'devLogin', 'superdev', { strict: true });
       const configuredCode = process.env.DEV_LOGIN_CODE || '';
-      if (!safeCodeMatch(body.code, configuredCode)) return await failAttempt(rate, 'Código de desarrollador incorrecto.');
+      if (!safeSecretMatch(body.code, configuredCode)) return await failAttempt(rate, 'Código de desarrollador incorrecto.');
       const user = await resolveUser('superdev');
       if (!user) return await failAttempt(rate, 'La cuenta Super Dev todavía no está configurada.');
       if (isSuspended(user)) return await failAttempt(rate, 'La cuenta Super Dev no está disponible.');

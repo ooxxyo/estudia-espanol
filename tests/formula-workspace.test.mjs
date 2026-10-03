@@ -72,9 +72,18 @@ test('la interfaz persiste pasos, conserva la calculadora y guía la corrección
   assert.match(html, /Ver procedimiento completo/);
   assert.match(html, /scienceCalculatorToggle/);
   assert.match(html, /data-formula-workspace/);
-  assert.match(html, /workspace-step-letter\">A/);
+  assert.match(html, /workspace-step-letter">A/);
   assert.match(html, /método de casita \/ procedimiento/);
-  assert.match(html, /workspace-step-letter\">C/);
+  assert.match(html, /workspace-step-letter">C/);
+});
+
+test('el teclado matemático usa un control explícito para ocultar y volver a mostrar', () => {
+  assert.match(html,/id="scienceKeyboardToggle"[^>]*aria-expanded="false"[^>]*aria-controls="scienceKeyboardPanel"/);
+  assert.match(html,/>Mostrar teclado matemático<\/button>/);
+  assert.match(html,/id="scienceKeyboardPanel" hidden/);
+  assert.match(html,/\.math-key-grid\[hidden\]\{display:none\}/);
+  assert.match(html,/keyboardToggle\.textContent=open\?'Ocultar teclado matemático':'Mostrar teclado matemático'/);
+  assert.match(html,/keyboardPanel\.hidden=!open/);
 });
 
 test('el examen de práctica usa el mismo workspace sin cambiar el banco', () => {
