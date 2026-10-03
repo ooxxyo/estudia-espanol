@@ -160,3 +160,7 @@ Esta tabla resume hitos existentes y no sustituye la numeración canónica: `3F-
 La jerarquía implementada es `Hub → Día → Materia → Unidad/Categoría → Tema`. Español conserva `spanish-v2` y muestra su tema actual como pendiente de confirmación; Historia reutiliza el motor mediante `historia-v1`; Ciencia usa `science-v1` con SI, Densidad y Temperatura separados; Matemáticas usa `math-v1` exclusivamente para Grados decimales a DMS. Inglés sigue deshabilitado pero muestra `Memoir` como material confirmado; Salud sigue deshabilitada.
 
 El rebranding futuro será `Estudio Hub` con slug preferido `estudio-hub`. Repositorio, remote, dominio y nombre visible actual no cambian en esta fase.
+
+## 3T / 7C — desbloqueo de sesión QA
+
+**Testing:** control de logout actual automatizable, exclusivo de QA con flag, reutilizando account y verificando cierre sin sincronizar/borrar progreso. Contrato en `ARCHITECTURE.md`; pruebas en `TESTING.md`. Preparado en copia aislada; pendiente de Approval Gate, publicación QA y verificación remota. Bootstrap parcial conservado; no avanzar a registros/roles/resets por esta preparación.

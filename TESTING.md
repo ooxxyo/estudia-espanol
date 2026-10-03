@@ -83,3 +83,9 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 ## Evidencia de entrega
 
 Registra comandos, resultado, errores de consola, rutas probadas, navegador/viewport y riesgos pendientes. Una prueba manual no se considera aprobada si altera datos reales o requiere revelar secretos.
+
+## Logout QA — 3T / 7C
+
+Contrato canónico: `ARCHITECTURE.md`, «Cierre de sesión QA automatizable». `node --import ./tests/register-blobs.mjs --test ./tests/qa-session-ui.test.mjs ./tests/qa-session-ui-client.test.mjs` cubre QA/flag exactos, 404 en producción/desconocido, Member/suspended actual, rechazo de targets/origen/query/payload, expiración HttpOnly, sesión actual invalidada y GET account anónimo. Compara todos los stores antes/después permitiendo solo eliminar la sesión actual; preserva otras sesiones y progreso, prueba fallos finales y cliente sin reintentos/doble POST ni exposición de errores sensibles.
+
+`node --import ./tests/register-blobs.mjs --test ./tests/qa-session-ui.browser.mjs` usa Chromium independiente, loopback y el sentinel de Blobs en memoria. Desktop/mobile comprueban cookie eliminada por respuesta del logout real, ausencia de diálogos, GET account anónimo, storage académico/preferencias idénticos, cookie Netlify ficticia en otro host intacta y recarga sin otro logout. No usa el navegador del usuario, datos remotos ni secretos reales. Verificación remota pendiente de Gate y deploy QA exacto; no inferirla de pruebas locales.
