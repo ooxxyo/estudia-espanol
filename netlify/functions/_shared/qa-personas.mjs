@@ -1,6 +1,7 @@
 import { getStore } from '@netlify/blobs';
 import { randomBytes } from 'node:crypto';
-import { USERS, hashSecret, normalizeUsername } from './auth.mjs';
+import { isDeepStrictEqual } from 'node:util';
+import { USERS, hashSecret, normalizeUsername, roleForUser } from './auth.mjs';
 
 const PROGRESS = getStore('study-hub-progress-v1');
 const FIXTURE_TIME = 1_700_000_000_000;
@@ -129,4 +130,26 @@ export async function resetQaPersona(username) {
   const existing = await existingPersona(username);
   if (!existing?.password) throw new Error('Persona QA no provisionada.');
   return saveCanonicalPersona(persona, existing);
+}
+
+// Read-only, deliberately excludes IDs, emails, credentials and sessions.
+export async function qaPersonaSummaries() {
+  return Promise.all(QA_PERSONAS.map(async persona => {
+    const user = await existingPersona(persona.username);
+    if (!user) return { username: persona.username, exists: false };
+    const progress = await PROGRESS.get(`user/${user.id}`, { type: 'json', consistency: 'strong' });
+    const baselineCorrect = persona.baseline === 'progress'
+      ? isDeepStrictEqual(progress, progressBaseline()) : progress === null;
+    return {
+      username: persona.username,
+      exists: true,
+      role: roleForUser(user),
+      status: user.status,
+      canonical: user.displayName === persona.displayName
+        && user.status === persona.status && user.email === ''
+        && user.visibleRank === 'Estudiante' && user.veteran === false
+        && user.entitlement === 'standard' && user.privacy?.profile === 'private',
+      baselineCorrect,
+    };
+  }));
 }

@@ -1,0 +1,22 @@
+import { test, expect } from '@playwright/test';
+test('one-person reset, canonical verification and owner reauthentication', async ({ page }, testInfo) => {
+  await page.goto('/__fixture/owner');
+  await expect(page.getByRole('heading', { name: 'Personas de prueba' })).toBeVisible();
+  await page.screenshot({ path: `../qa-7c-${testInfo.project.name}.png`, fullPage: true });
+  await page.locator('#qa-target').selectOption('qa-student');
+  await page.locator('#qa-confirm').check();
+  await page.getByRole('button', { name: 'Normalizar esta persona' }).click();
+  await expect(page.locator('#qa-status')).toHaveText('qa-student: baseline y rol verificados.');
+  await page.locator('#qa-target').selectOption('qa-owner');
+  await page.locator('#qa-confirm').check();
+  await page.getByRole('button', { name: 'Normalizar esta persona' }).click();
+  await expect(page.locator('#qa-status')).toContainText('Sesión invalidada');
+  await expect(page.locator('#qa-reset')).toBeHidden();
+  await page.reload();
+  await expect(page.locator('#qa-login')).toBeVisible();
+  await page.locator('#qa-login-password').fill('Fictitious-browser-test!');
+  await page.getByRole('button', { name: 'Entrar como QA Owner' }).click();
+  await expect(page.locator('#qa-reset')).toBeVisible();
+  await expect(page.getByRole('row').filter({ has: page.getByRole('rowheader', { name: 'qa-owner', exact: true }) })).toContainText('Baseline correcto');
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});

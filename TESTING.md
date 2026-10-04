@@ -1,5 +1,13 @@
 # Guía de pruebas
 
+## Personas QA — bloque 7C
+
+- Unitarias con Blobs en memoria: `node --import ./tests/register-blobs.mjs --test tests/qa-personas-ui.test.mjs tests/qa-personas-ui-client.test.mjs`.
+- Navegador local, escritorio y móvil: `node node_modules/@playwright/test/cli.js test --config tests/qa-personas-ui.playwright.config.mjs`. El servidor exige Blobs sintéticos y escucha únicamente en loopback. No ejecuta QA remoto.
+- Cubrir 404 fuera de QA exacto/flag deshabilitado, 401/403, SuperDev sin/con su flag de autenticación, allowlist cerrada, índices inconsistentes sin writes, registros normales con IDs nuevos, conservación de credenciales y datos ajenos, baselines, roles y autoinvalidación de Owner.
+- UI: confirmación individual, misma procedencia, bloqueo de doble envío, verificación server-side tras reset, detención sin reintentos ante error, login real sin sync y limpieza del campo password. No capturar pantallas, traces ni snapshots de credenciales reales o páginas con recovery visible.
+- Matriz operativa, rollback y Approval Gate: `docs/qa-7c-bootstrap.md`. Las credenciales locales cifradas y sus herramientas de entrega quedan fuera del repositorio.
+
 ## Inspección QA de solo lectura — 7C
 
 `node --import ./tests/register-blobs.mjs --test tests/qa-inspect.test.mjs` usa exclusivamente datos ficticios. El guard registra e impide set/setJSON/delete/deleteAll incluso si se oculta el error; compara todos los objetos antes/después. Cubrir QA exacto/flag, 401/403, Owner/SuperDev real, allowlist/query/métodos, versión e ID, baselines, ausencia de secretos, cambios de contenido/metadatos, stores desconocidos, límites, revocación final, identidades huérfanas y dos lecturas inestables sin reintento propio. Verificar strong en catálogo/stores/listados/objetos y auth existente, fallo final sin segunda invocación SDK, envelope inválido y fallo tardío sin snapshot parcial. Una prueba adicional usa el SDK instalado con transporte simulado sin red: permite un retry interno de lectura y comprueba agotamiento acotado sin retry de Study Hub. No convertir huellas iguales en una garantía transaccional o histórica; revisar cambios de actividad esperada sin ocultarlos. Procedimiento: `docs/qa-7c-readonly.md`.

@@ -2,6 +2,8 @@
 
 3T / 7C, observabilidad de solo lectura: **Testing**, preparada y verificada localmente. Publicación, acceso con sesión privilegiada existente y bootstrap permanecen pendientes de autorización; no se declara QA remoto completado.
 
+Panel de personas QA — bloque 7C de 3T: **Testing**. Interfaz de normalización de personas QA preparada y probada localmente; despliegue y bootstrap real pendientes de aprobación. Procedimiento canónico: `docs/qa-7c-bootstrap.md`.
+
 ## Estados
 
 - **Planned:** definido, todavía sin implementación.
