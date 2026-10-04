@@ -4,6 +4,14 @@
 
 El panel remoto de personas QA vive en `qa-personas-ui.mjs`: el servidor entrega la interfaz solo en `qa` exacto con herramientas habilitadas. Los controles de normalización requieren sesión Owner/SuperDev y `qa:tools`; la entrada del panel reutiliza `account.mjs` y evita sincronizar progreso local. El panel llama al `qa-reset` existente para una sola persona allowlisted y consulta resúmenes saneados de solo lectura. No añade stores, credenciales ni sistemas de autenticación. El procedimiento del bloque 7C vive en `docs/qa-7c-bootstrap.md`.
 
+## Fundación QA 3T completada
+
+QA Personas, QA-session, qa-inspect v2 y diagnóstico de reset están listos y publicados en el proyecto QA privado; producción real permanece separada. El cierre conserva los contratos certificados de 7C: después de `74027725c6cb937f62ea44c81559eeeda2562dec` solo se añadieron runner/tests, sin cambios runtime en frontend, Functions, auth, permisos, progreso o stores. Evidencia canónica: `docs/qa-7c-bootstrap.md`.
+
+El human browser checkpoint de `tests/remote-smoke.mjs` es instrumentación de testing, no auth de producto. Conserva un único browser/context/page, espera CONTINUE o ABORT por stdin sin tráfico previo y aplica después el guard existente. No persiste perfil, cookies ni storageState. Playwright a través de Private SSO queda diferido/no bloqueante; el smoke asistido queda incompleto/no bloqueante por limitación observable de Work, sin causa raíz determinada. No hay bypass, allowlist ampliada ni CI requerido para cerrar 3T.
+
+`DEV_LOGIN_CODE` y `QA_SEED_TOKEN` se retiraron únicamente de la configuración QA; no se reintroducen. La lógica runtime permanece intacta y las regresiones prueban el rechazo seguro sin esos valores. Los deploys históricos pueden conservar valores anteriores; el estado del deploy vigente se verifica por separado.
+
 ## Estado actual
 
 `public/index.html` conserva el catálogo y Study Engine heredados. `public/history-data.js` contiene Historia; `public/js/` separa cliente API, estado de formularios, migración local, planificación pura y vistas de plataforma. El estado académico conserva claves de `localStorage`, respaldo IndexedDB y sync por `account.mjs`. Community, Calendar, Friends, notificaciones, moderación, búsqueda y Roadmap usan Functions y stores versionados independientes. Autenticación, capabilities, validación académica, utilidades de plataforma y rate limiting viven en `_shared/`.

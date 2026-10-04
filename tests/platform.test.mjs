@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
-import { getStore, __resetAll } from '@netlify/blobs';
+import { getStore, __resetAll, __inspectionSnapshot } from '@netlify/blobs';
 import accountHandler from '../netlify/functions/account.mjs';
 import adminHandler from '../netlify/functions/admin.mjs';
 import feedbackHandler from '../netlify/functions/feedback.mjs';
@@ -456,4 +456,18 @@ test('sync mantiene progreso y una práctica recuperable', async () => {
   assert.equal(conflict.status, 409);
   assert.equal(conflict.data.conflict, true);
   assert.deepEqual(conflict.data.cloudState.session.queueIds, ['q1']);
+});
+
+test('sin DEV_LOGIN_CODE no se crea sesión Super Dev ni se modifica usuario o progreso', async () => {
+  const user = await putUser({ id: 'protected-superdev', username: 'superdev' });
+  await getStore('study-hub-progress-v1').setJSON(`user/${user.id}`, { state: { totalAnswered: 7 }, updatedAt: 1 });
+  const protectedStores = () => __inspectionSnapshot().filter(([name]) => ['study-hub-users-v1', 'study-hub-progress-v1', 'study-hub-sessions-v1'].includes(name));
+  const before = protectedStores();
+  delete process.env.DEV_LOGIN_CODE;
+  const response = await accountHandler(request('account', { method: 'POST', body: { action: 'dev-login', code: 'fictitious-disabled-code', remember: false } }));
+  assert.equal(response.status, 401);
+  assert.equal(response.headers.get('set-cookie'), null);
+  assert.deepEqual(protectedStores(), before);
+  const account = await payload(await accountHandler(request('account')));
+  assert.equal(account.data.authenticated, false);
 });

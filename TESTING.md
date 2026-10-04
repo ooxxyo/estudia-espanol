@@ -1,5 +1,19 @@
 # Guía de pruebas
 
+## Cierre 3T y límites de evidencia remota
+
+3T está Completed por decisión de alcance basada en 7C previamente certificado, runtime conservado y validación local. La matriz de personas, integridad protegida y evidencia remota saneada vive en `docs/qa-7c-bootstrap.md`. No repetir bootstrap, resets, 6/6 ni smoke remoto para este cierre.
+
+- **VERIFIED:** configuración/deploy QA privado y Home accesible en Work.
+- **PREVIOUSLY CERTIFIED:** cinco personas, roles, baselines, versión de sesión, Owner/qa:tools e integridad de 7C.
+- **NOT VERIFIED:** en el smoke asistido, Account, navegación crítica completa, desktop/mobile, login Owner, qa:tools, baseline, sessionVersion y logout. No significa FAILED.
+- **NOT OBSERVABLE:** conteos completos de consola, red y escrituras académicas del smoke asistido; null no equivale a cero.
+- **DEFERRED / NON-BLOCKING:** Playwright remoto por Netlify Private SSO; smoke asistido INCOMPLETE / NON-BLOCKING. No declarar PASS, fallo de producto ni causa raíz determinada.
+
+Pruebas focalizadas finales: `node --import file:///C:/Users/sebas/Documents/estudia-espanol/tests/register-blobs.mjs --test tests/platform.test.mjs tests/qa-remote-seed-reset.test.mjs tests/qa-tools.test.mjs tests/qa-inspect.test.mjs tests/qa-personas-ui.test.mjs tests/qa-personas-ui-client.test.mjs tests/qa-session-ui.test.mjs tests/qa-session-ui-client.test.mjs tests/remote-smoke.test.mjs`. Suite unitaria: el mismo loader con `--test ./tests/*.test.mjs`. Todo usa Blobs ficticios en memoria; importar/probar el runner no ejecuta su smoke remoto.
+
+El checkpoint tiene 21 pruebas en memoria para entrada exacta, orden, mismas instancias, ABORT, cierres, diagnóstico agregado sin secretos, guard intacto y ausencia de persistencia. Las regresiones WIP finales prueban que sin DEV_LOGIN_CODE no nace una sesión Super Dev y sin QA_SEED_TOKEN el seed devuelve 401 sin escrituras, incluso ocultas. Lint, sintaxis y whitespace completan la ronda; no reabrir suites de navegador ya certificadas sin invalidación runtime real. CI, SSO automatizado permanente y QA remoto extensivo quedan fuera de este cierre; el último pertenece a pre-beta.
+
 ## Personas QA — bloque 7C
 
 - Unitarias con Blobs en memoria: `node --import ./tests/register-blobs.mjs --test tests/qa-personas-ui.test.mjs tests/qa-personas-ui-client.test.mjs`.
@@ -104,4 +118,4 @@ Registra comandos, resultado, errores de consola, rutas probadas, navegador/view
 
 Contrato canónico: `ARCHITECTURE.md`, «Cierre de sesión QA automatizable». `node --import ./tests/register-blobs.mjs --test ./tests/qa-session-ui.test.mjs ./tests/qa-session-ui-client.test.mjs` cubre QA/flag exactos, 404 en producción/desconocido, Member/suspended actual, rechazo de targets/origen/query/payload, expiración HttpOnly, sesión actual invalidada y GET account anónimo. Compara todos los stores antes/después permitiendo solo eliminar la sesión actual; preserva otras sesiones y progreso, prueba fallos finales y cliente sin reintentos/doble POST ni exposición de errores sensibles.
 
-`node --import ./tests/register-blobs.mjs --test ./tests/qa-session-ui.browser.mjs` usa Chromium independiente, loopback y el sentinel de Blobs en memoria. Desktop/mobile comprueban cookie eliminada por respuesta del logout real, ausencia de diálogos, GET account anónimo, storage académico/preferencias idénticos, cookie Netlify ficticia en otro host intacta y recarga sin otro logout. No usa el navegador del usuario, datos remotos ni secretos reales. Verificación remota pendiente de Gate y deploy QA exacto; no inferirla de pruebas locales.
+`node --import ./tests/register-blobs.mjs --test ./tests/qa-session-ui.browser.mjs` usa Chromium independiente, loopback y el sentinel de Blobs en memoria. Desktop/mobile comprueban cookie eliminada por respuesta del logout real, ausencia de diálogos, GET account anónimo, storage académico/preferencias idénticos, cookie Netlify ficticia en otro host intacta y recarga sin otro logout. No usa el navegador del usuario, datos remotos ni secretos reales. QA-session está publicado y 7C previamente certificado; las verificaciones pendientes del smoke asistido permanecen NOT VERIFIED y no se infieren de estas pruebas locales.

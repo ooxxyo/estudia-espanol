@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
-import { getStore, __resetAll } from '@netlify/blobs';
+import { getStore, __resetAll, __inspectionSnapshot, __inspectionGuard, __inspectionAccess } from '@netlify/blobs';
 import accountHandler from '../netlify/functions/account.mjs';
 import {
   COOKIE,
@@ -233,4 +233,20 @@ test('audit QA registra scope/run/target sin passwords, hashes, cookies ni seed 
   assert.doesNotMatch(serialized, /password|passwordHash|recovery|cookie|sessionToken|qa_seed_token/i);
   assert.doesNotMatch(serialized, new RegExp(process.env.QA_SEED_TOKEN.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
   for (const username of USERNAMES) assert.doesNotMatch(serialized, new RegExp(passwordFor(username)));
+});
+
+test('sin QA_SEED_TOKEN qa-seed permanece inerte: 401 y cero escrituras incluso ocultas', async () => {
+  await USERS.setJSON('user/protected-superdev', { id: 'protected-superdev', username: 'superdev', sessionVersion: 1 });
+  await USERS.setJSON('username/superdev', { userId: 'protected-superdev' });
+  await PROGRESS.setJSON('user/protected-superdev', { state: { totalAnswered: 7 }, updatedAt: 1 });
+  const before = __inspectionSnapshot();
+  delete process.env.QA_SEED_TOKEN;
+  __inspectionGuard(true);
+  try {
+    const response = await seedHandler(request('qa-seed', { body: seedBody(), seedToken: 'fictitious-disabled-token' }));
+    assert.equal(response.status, 401);
+    assert.equal(response.headers.get('set-cookie'), null);
+    assert.deepEqual(__inspectionSnapshot(), before);
+    assert.deepEqual(__inspectionAccess().writes, []);
+  } finally { __inspectionGuard(false); }
 });

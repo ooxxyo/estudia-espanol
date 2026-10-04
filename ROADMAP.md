@@ -1,8 +1,8 @@
 # Study Hub Roadmap
 
-3T / 7C, observabilidad de solo lectura: **Testing**, preparada y verificada localmente. Publicación, acceso con sesión privilegiada existente y bootstrap permanecen pendientes de autorización; no se declara QA remoto completado.
+3T — QA / Test Access Foundation: **Completed**, por decisión de cierre con evidencia acumulada y limitaciones remotas documentadas. Bootstrap 7C completado; qa-inspect, QA-session, personas y diagnóstico de reset listos y publicados en QA privado. Evidencia y límites canónicos: `docs/qa-7c-bootstrap.md`.
 
-Panel de personas QA — bloque 7C de 3T: **Testing**. Interfaz de normalización de personas QA preparada y probada localmente; despliegue y bootstrap real pendientes de aprobación. Procedimiento canónico: `docs/qa-7c-bootstrap.md`.
+Playwright remoto a través de Netlify Private SSO: **Deferred / Non-blocking**. Smoke asistido: **Incomplete / Non-blocking** por limitación del navegador/cliente Work; ninguno se declara PASS ni fallo de producto. QA remoto extensivo queda para pre-beta. CI y SSO automatizado permanente no son requisitos del cierre de 3T.
 
 ## Estados
 
@@ -140,7 +140,7 @@ Esta tabla resume hitos existentes y no sustituye la numeración canónica: `3F-
 | Fase 3C | Testing | Shell + Home base; estado actual casi completado. |
 | Fase 3D | Completed | Visual Audit + Foundation Polish: branding, Cuenta/Entrar, motion global, Más, light/dark e inventario legacy. |
 | Fase 3E | Testing | Auth + Account Foundation: Login, Registro, Recuperación, Cuenta y Configuración con P0; Dev Design Lab local aislado mediante fixtures sin autorización real. |
-| Fase 3T | In Progress | QA, Test Access & Automated Testing Foundation. Incluye Context & Integration Discipline como regla transversal; su definición canónica vive en `AGENTS.md`. |
+| Fase 3T | Completed | QA / Test Access Foundation; bootstrap 7C certificado y capacidades QA publicadas. Limitaciones remotas no bloqueantes documentadas en `docs/qa-7c-bootstrap.md`. Context & Integration Discipline sigue definido en `AGENTS.md`. |
 | Fase 4 | Planned | Subjects + Units: Materia, Unidad y Tema. |
 | Fase 5 | Planned | Practice + Exam + Results, integración del Procedure Workspace compartido y motion SUCCESS / MILESTONE. |
 | Fase 6 | Planned | Personal Study Tools: Progreso, Historial, Errores, Guardadas, Favoritos y Buscar. |
@@ -165,4 +165,4 @@ El rebranding futuro será `Estudio Hub` con slug preferido `estudio-hub`. Repos
 
 ## 3T / 7C — desbloqueo de sesión QA
 
-**Testing:** control de logout actual automatizable, exclusivo de QA con flag, reutilizando account y verificando cierre sin sincronizar/borrar progreso. Contrato en `ARCHITECTURE.md`; pruebas en `TESTING.md`. Preparado en copia aislada; pendiente de Approval Gate, publicación QA y verificación remota. Bootstrap parcial conservado; no avanzar a registros/roles/resets por esta preparación.
+**Completed:** QA-session listo y publicado; reutiliza el logout real con verificación de Account sin sincronizar/borrar progreso. Bootstrap 7C cerrado y cinco personas listas. Contrato en `ARCHITECTURE.md`; pruebas en `TESTING.md`; certificaciones y limitaciones en `docs/qa-7c-bootstrap.md`. El cierre no autoriza repetir bootstrap, resets o smoke remoto. 3F-C y la actualización del roadmap canónico FAST-RELEASE requieren un Gate separado.
