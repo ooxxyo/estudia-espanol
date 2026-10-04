@@ -10,3 +10,4 @@ th:nth-child(2), td:nth-child(2) { min-width: 4rem; overflow-wrap: normal; }
 caption { text-align: left; font-weight: bold; margin-bottom: .5rem; }
 :focus-visible { outline: 3px solid Highlight; outline-offset: 3px; }
 #qa-status { min-height: 1.5em; }
+#qa-diagnostic { white-space: pre-wrap; overflow-wrap: anywhere; }

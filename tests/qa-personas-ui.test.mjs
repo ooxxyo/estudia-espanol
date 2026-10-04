@@ -38,12 +38,16 @@ test('UI is absent outside exact QA even with valid Owner session', async () => 
   const token = await createSession(await register('qa-owner'));
   for (const env of ['production', 'local-test', 'staging', 'QA', '', 'unknown']) {
     process.env.STUDY_HUB_ENV = env;
-    assert.equal((await ui(request('qa-personas-ui', token))).status, 404);
+    const denied = await ui(request('qa-personas-ui', token));
+    assert.equal(denied.status, 404);
+    assert.doesNotMatch(await denied.text(), /qa-diagnostic|qa-personas-ui\.mjs/);
   }
   process.env.STUDY_HUB_ENV = 'qa';
   for (const flag of ['false', 'TRUE', '']) {
     process.env.QA_TOOLS_ENABLED = flag;
-    assert.equal((await ui(request('qa-personas-ui', token))).status, 404);
+    const denied = await ui(request('qa-personas-ui', token));
+    assert.equal(denied.status, 404);
+    assert.doesNotMatch(await denied.text(), /qa-diagnostic|qa-personas-ui\.mjs/);
   }
 });
 
@@ -71,6 +75,7 @@ test('Owner page lists only canonical personas, requires confirmation and forbid
   for (const name of names) assert.match(html, new RegExp(`value="${name}"`));
   assert.match(html, /id="qa-reset"/);
   assert.match(html, /id="qa-confirm"/);
+  assert.match(html, /id="qa-diagnostic"[^>]*hidden/);
   assert.doesNotMatch(html, /value="superdev"|value="testmem"|qa-seed|seed-token|reset-all|recoveryCode|passwordHash/);
   assert.equal(response.headers.get('cache-control'), 'no-store');
   assert.match(response.headers.get('content-security-policy'), /frame-ancestors 'none'/);
