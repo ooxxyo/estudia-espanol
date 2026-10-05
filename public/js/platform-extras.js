@@ -23,7 +23,8 @@
   }
 
   function favorites(main, context) {
-    main.innerHTML = `<div class="pagehead"><h1>Favoritos</h1><p>Marcadores personales; tus preguntas Guardadas siguen funcionando por separado.</p></div><section id="favoritesPanel" aria-live="polite"></section>`;
+    main.innerHTML = `<div class="pagehead"><h1>Favoritos</h1><p>Marcadores personales; tus preguntas Guardadas siguen funcionando por separado.</p><div class="btn-row"><button class="icon-btn" id="backToGuardado">Volver a Guardado</button></div></div><section id="favoritesPanel" aria-live="polite"></section>`;
+    main.querySelector('#backToGuardado').addEventListener('click', () => context.goto('guardadas'));
     const panel = main.querySelector('#favoritesPanel');
     const paint = () => {
       const rows = context.favorites();
@@ -35,7 +36,8 @@
   }
 
   async function today(main, context) {
-    main.innerHTML = `<div class="pagehead"><h1>Hoy</h1><p>Clases, pendientes y estudio en un solo lugar.</p></div><section id="todayPanel" aria-live="polite">${loading}</section>`;
+    main.innerHTML = `<div class="pagehead"><h1>Hoy</h1><p>Clases, pendientes y estudio en un solo lugar.</p><div class="btn-row"><button class="icon-btn" id="todayPlan">Qué estudiar hoy</button></div></div><section id="todayPanel" aria-live="polite">${loading}</section>`;
+    main.querySelector('#todayPlan').addEventListener('click', () => context.goto('studyToday'));
     const panel = main.querySelector('#todayPanel');
     const todayDate = day();
     const summaries = context.studyData();
@@ -56,7 +58,8 @@
   }
 
   async function studyToday(main, context) {
-    main.innerHTML = `<div class="pagehead"><h1>Qué estudiar hoy</h1><p>Recomendaciones deterministas basadas en tu progreso, no generadas por IA.</p></div><section id="studyTodayPanel" aria-live="polite"></section>`;
+    main.innerHTML = `<div class="pagehead"><h1>Qué estudiar hoy</h1><p>Recomendaciones deterministas basadas en tu progreso, no generadas por IA.</p><div class="btn-row"><button class="icon-btn" id="backToToday">Volver a Hoy</button></div></div><section id="studyTodayPanel" aria-live="polite"></section>`;
+    main.querySelector('#backToToday').addEventListener('click', () => context.goto('today'));
     const panel = main.querySelector('#studyTodayPanel');
     const data = context.studyData();
     let upcoming = [];

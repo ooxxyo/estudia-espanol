@@ -98,6 +98,7 @@ body[data-shds-shell="p0"] .version-badge {
 }
 
 body[data-shds-shell="p0"] .nav-group {
+  flex-shrink: 0;
   gap: 2px;
   margin-bottom: 12px;
 }
@@ -255,6 +256,13 @@ body[data-shds-shell="p0"] .more-item:hover,
 body[data-shds-shell="p0"] .more-item:focus-visible {
   background: var(--shds-color-action-soft);
   color: var(--shds-color-action);
+}
+
+body[data-shds-shell="p0"] .more-item.active {
+  background: var(--shds-color-action-soft);
+  color: var(--shds-color-action);
+  border-bottom-color: var(--shds-color-action);
+  box-shadow: inset 3px 0 0 var(--shds-color-action);
 }
 
 body[data-shds-shell="p0"] .more-item .ic {

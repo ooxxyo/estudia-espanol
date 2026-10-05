@@ -1290,16 +1290,16 @@ function recordAnswer(q, correct){
 const PRIMARY_NAV_ITEMS=[
   {id:'hub',label:'Hub',icon:'⌂'},
   {id:'repaso',label:'Repasar',icon:'▤'},
+  {id:'more',label:'Más',icon:'⋯'},
   {id:'practica',label:'Practicar',icon:'▶'},
   {id:'cuenta',label:'Cuenta',icon:'●'},
-  {id:'more',label:'Más',icon:'⋯'},
 ];
 const MORE_NAV_ITEMS=[
   {id:'novedades',label:'Novedades',icon:'✦',description:'Cambios del Hub'},
   {id:'today',label:'Hoy',icon:'◷',description:'Resumen de estudio y clases'},
   {id:'examen',label:'Examen',icon:'▦',description:'Haz una prueba completa'},
   {id:'errores',label:'Errores',icon:'✕',description:'Repasa lo que contestaste mal'},
-  {id:'dashboard',label:'Progreso',icon:'📊',description:'Consulta tus estadísticas'},
+  {id:'dashboard',label:'Resumen',icon:'📊',description:'Resumen de la materia activa'},
   {id:'leaderboard',label:'Leaderboard',icon:'🏆',description:'Consulta la clasificación'},
   {id:'community',label:'Comunidad',icon:'♧',description:'Aportes de estudiantes'},
   {id:'groups',label:'Mis grupos',icon:'▣',description:'Clases y años escolares'},
@@ -1308,34 +1308,35 @@ const MORE_NAV_ITEMS=[
   {id:'notifications',label:'Notificaciones',icon:'◉',description:'Avisos privados de tu cuenta'},
   {id:'roadmap',label:'Roadmap',icon:'◇',description:'Próximas funciones del Hub'},
   {id:'search',label:'Buscar',icon:'⌕',description:'Contenido permitido'},
-  {id:'favorites',label:'Favoritos',icon:'♡',description:'Temas y recursos personales'},
-  {id:'studyToday',label:'Qué estudiar hoy',icon:'✧',description:'Plan basado en tu progreso'},
   {id:'ajustes',label:'Configuración',icon:'⚙',description:'Apariencia y preferencias'},
   {id:'admin',label:'Administración',icon:'⚑',description:'Usuarios, sistema y Early Access',adminOnly:true},
-  {id:'guardadas',label:'Guardadas',icon:'★',description:'Preguntas que marcaste para después'},
+  {id:'guardadas',label:'Guardado',icon:'★',description:'Preguntas guardadas y acceso a favoritos'},
   {id:'historial',label:'Historial',icon:'▥',description:'Tus intentos anteriores'},
   {id:'feedback',label:'Feedback',icon:'✉',description:'Reporta problemas o sugerencias'},
   {id:'bugReport',label:'Reportar error',icon:'!',description:'Informa un problema de forma segura'},
 ];
 const DESKTOP_NAV_GROUPS=[
-  {label:'Principal',items:[{id:'hub',label:'Hub',icon:'⌂'}]},
+  {label:'Principal',items:[{id:'hub',label:'Hub',icon:'⌂'},{id:'today',label:'Hoy',icon:'◷'}]},
   {label:'Estudio',items:[{id:'repaso',label:'Repasar',icon:'▤'},{id:'practica',label:'Practicar',icon:'▶'},{id:'examen',label:'Examen',icon:'▦'}]},
-  {label:'Seguimiento',items:[{id:'dashboard',label:'Progreso',icon:'📊'},{id:'historial',label:'Historial',icon:'▥'},{id:'calendar',label:'Calendario',icon:'▣'}]},
-  {label:'Personal',items:[{id:'guardadas',label:'Guardadas',icon:'★'},{id:'cuenta',label:'Cuenta',icon:'●'},{id:'ajustes',label:'Configuración',icon:'⚙'}]},
+  {label:'Tu estudio',items:[{id:'dashboard',label:'Resumen',icon:'📊'},{id:'historial',label:'Historial',icon:'▥'},{id:'errores',label:'Errores',icon:'✕'},{id:'guardadas',label:'Guardado',icon:'★'}]},
+  {label:'Accesos secundarios',items:[{id:'more',label:'Más',icon:'⋯'}]},
+  {label:'Cuenta',items:[{id:'ajustes',label:'Configuración',icon:'⚙'},{id:'cuenta',label:'Cuenta',icon:'●'}]},
 ];
 const MORE_VIEWS=new Set(MORE_NAV_ITEMS.map(item=>item.id));
 const MORE_NAV_GROUPS=[
-  {label:'Planificar',ids:['today','studyToday']},
-  {label:'Estudiar mejor',ids:['errores','search','favorites']},
+  {label:'Planificación',ids:['calendar']},
+  {label:'Estudio',ids:['search']},
   {label:'Comunidad',ids:['community','groups','friends','notifications','leaderboard']},
-  {label:'Ayuda y producto',ids:['novedades','roadmap','feedback','bugReport']},
+  {label:'Producto y ayuda',ids:['novedades','roadmap','feedback','bugReport']},
   {label:'Gestión',ids:['admin']},
 ];
 const MOBILE_MORE_NAV_GROUPS=[
-  {label:'Estudio',ids:['examen']},
-  {label:'Seguimiento',ids:['dashboard','historial','calendar']},
-  {label:'Personal',ids:['guardadas','ajustes']},
-  ...MORE_NAV_GROUPS,
+  {label:'Planificación',ids:['today','calendar']},
+  {label:'Estudio',ids:['examen','search']},
+  {label:'Tu estudio',ids:['dashboard','historial','errores','guardadas']},
+  ...MORE_NAV_GROUPS.filter(group=>['Comunidad','Producto y ayuda'].includes(group.label)),
+  {label:'Preferencias',ids:['ajustes']},
+  {label:'Gestión',ids:['admin']},
 ];
 const DESKTOP_MORE_VIEWS=new Set(MORE_NAV_GROUPS.flatMap(group=>group.ids));
 let moreOpen=false;
@@ -1346,7 +1347,9 @@ function visibleMoreItems(){
 }
 function primaryLabel(item){return item.id==='cuenta'?(accountSession.user?'Cuenta':'Entrar'):item.label;}
 function navLabel(item){if(item.id!=='novedades')return primaryLabel(item);const seen=new Set(state.settings.seenUpdateIds||[]);const count=(window.StudyHubHubUI?.updates||[]).filter(update=>!seen.has(update.updateId)).length;return count?`Novedades · ${count}`:'Novedades';}
-function primaryActive(item){return item.id==='more'?MORE_VIEWS.has(state.view):state.view===item.id;}
+function navigationView(view){view=resolveViewAlias(view);return view==='favorites'?'guardadas':view==='studyToday'?'today':view;}
+function primaryActive(item){const view=navigationView(state.view);return item.id==='more'?MORE_VIEWS.has(view):view===item.id;}
+function desktopActive(item){const view=navigationView(state.view);return item.id==='more'?DESKTOP_MORE_VIEWS.has(view):view===item.id;}
 
 function closeMoreMenu(restoreFocus=true){
   moreOpen=false;
@@ -1365,7 +1368,7 @@ function openMoreMenu(trigger){
   const items=visibleMoreItems();
   const scope=lastMoreTrigger?.dataset.moreScope==='desktop'?'desktop':'mobile';
   const groups=scope==='desktop'?MORE_NAV_GROUPS:MOBILE_MORE_NAV_GROUPS;
-  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop" data-more-scope="${scope}"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><div><p class="more-overline">Navegación</p><h2 id="moreTitle">Más</h2></div><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más"><span class="more-close-glyph" aria-hidden="true"></span></button></div>${groups.map(group=>{const groupItems=group.ids.map(id=>items.find(item=>item.id===id)).filter(Boolean);return groupItems.length?`<section class="more-group"><h3>${group.label}</h3><div class="more-list">${groupItems.map(item=>`<button class="more-item" data-more-view="${item.id}" title="${item.description}"><span class="ic" aria-hidden="true">${item.icon}</span><b>${navLabel(item)}</b></button>`).join('')}</div></section>`:'';}).join('')}<p class="more-product-meta">Study Hub · v${APP_VERSION}</p></section></div>`;
+  root.innerHTML=`<div class="more-backdrop" id="moreBackdrop" data-more-scope="${scope}"><section class="more-panel" id="morePanel" role="dialog" aria-modal="true" aria-labelledby="moreTitle"><div class="more-head"><div><p class="more-overline">Navegación</p><h2 id="moreTitle">Más</h2></div><button class="icon-btn more-close" id="closeMore" aria-label="Cerrar menú Más"><span class="more-close-glyph" aria-hidden="true"></span></button></div>${groups.map(group=>{const groupItems=group.ids.map(id=>items.find(item=>item.id===id)).filter(Boolean);return groupItems.length?`<section class="more-group"><h3>${group.label}</h3><div class="more-list">${groupItems.map(item=>`<button class="more-item ${navigationView(state.view)===item.id?'active':''}" data-more-view="${item.id}" aria-current="${navigationView(state.view)===item.id?'page':'false'}" title="${item.description}"><span class="ic" aria-hidden="true">${item.icon}</span><b>${navLabel(item)}</b></button>`).join('')}</div></section>`:'';}).join('')}<p class="more-product-meta">Study Hub · v${APP_VERSION}</p></section></div>`;
   document.getElementById('closeMore').addEventListener('click',()=>closeMoreMenu());
   document.getElementById('moreBackdrop').addEventListener('click',event=>{if(event.target.id==='moreBackdrop')closeMoreMenu();});
   root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);const transition=navigateFromNav(view);const ready=transition?.updateCallbackDone||Promise.resolve();ready.then(()=>{const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}});}));
@@ -1454,11 +1457,9 @@ function renderNav(){
   const activeSubject=SUBJECT_BY_ID.get(state.activeSubjectId);
   const activeUnit=activeSubject?unitById(activeSubject.id,state.activeUnitId)||currentUnit(activeSubject.id):null;
   const context=shellContextLabel(activeSubject,activeUnit);
-  const role=accountSession.user?.role;
   rail.innerHTML = `
     <div class="rail-brand"><div class="rail-brand-line"><span class="brand-tile" aria-hidden="true">S</span><strong class="brand-name">Study Hub</strong><span class="brand-version">v${APP_VERSION}</span></div><span class="rail-context" title="${escHtml(context)}">${escHtml(context)}</span></div>
-    ${DESKTOP_NAV_GROUPS.map(group=>`<div class="nav-group"><span class="nav-group-title">${group.label}</span>${group.items.map(item=>`<button class="nav-btn ${state.view===item.id?'active':''}" data-nav="${item.id}" aria-current="${state.view===item.id?'page':'false'}"><span class="ic" aria-hidden="true">${item.icon}</span>${navLabel(item)}</button>`).join('')}</div>`).join('')}
-    <button class="nav-btn rail-more-button ${DESKTOP_MORE_VIEWS.has(state.view)?'active':''}" data-open-more data-more-scope="desktop" aria-label="Abrir menú Más" aria-expanded="false" aria-controls="morePanel" aria-current="${DESKTOP_MORE_VIEWS.has(state.view)?'page':'false'}"><span class="ic" aria-hidden="true">⋯</span>Más</button>
+    ${DESKTOP_NAV_GROUPS.map(group=>`<div class="nav-group"><span class="nav-group-title">${group.label}</span>${group.items.map(item=>`<button class="nav-btn ${desktopActive(item)?'active':''}" ${item.id==='more'?'data-open-more data-more-scope="desktop" aria-label="Abrir menú Más" aria-expanded="false" aria-controls="morePanel"':`data-nav="${item.id}"`} aria-current="${desktopActive(item)?'page':'false'}"><span class="ic" aria-hidden="true">${item.icon}</span>${navLabel(item)}</button>`).join('')}</div>`).join('')}
     <div class="rail-foot">
       <button class="theme-toggle" id="themeBtn" aria-pressed="${state.theme==='dark'}">${state.theme==='light'?'🌙 Modo oscuro':'☀️ Modo claro'}</button>
     </div>`;
@@ -1693,7 +1694,7 @@ function renderHub(main){
     ${pending?`<section class="hub-continue-card hub-decision-primary" aria-labelledby="hubContinueTitle"><div class="hub-continue-copy"><p class="hub-overline">Continuar · ${escHtml(pending.subjectName)}</p><h2 id="hubContinueTitle">${escHtml(pending.topic)}</h2><p>Tu procedimiento sigue donde lo dejaste.</p></div><button class="btn" id="resumeFromHub">Continuar práctica</button></section>`:''}
     <section class="hub-section${pending?'':' hub-decision-primary'}" aria-labelledby="hubStudyTitle"><div class="hub-section-head"><h2 id="hubStudyTitle">Estudiar</h2><p>Tu material, en un lugar.</p></div><div class="hub-days">${STUDY_DAYS.map(day=>`<div class="hub-day" aria-labelledby="hub-day-${day.id}"><div class="hub-day-head"><h3 id="hub-day-${day.id}">${day.name}</h3></div><div class="hub-subject-list">${subjectsForDay(day.id).slice().sort((a,b)=>Number(b.available)-Number(a.available)).map(renderHubSubjectRow).join('')}</div></div>`).join('')}</div></section>
     <section class="hub-section" aria-labelledby="hubUpcomingTitle"><div class="hub-section-head"><h2 id="hubUpcomingTitle">Próximamente</h2></div>${upcoming.length?`<div class="hub-upcoming-list">${upcoming.map(({subject,assessment})=>{const parts=academicDateParts(assessment.date);return `<article class="hub-upcoming-item"><time datetime="${escHtml(assessment.date)}"><b>${parts.day}</b><span>${parts.month}</span></time><div class="hub-upcoming-copy"><strong>${escHtml(assessment.label)} de ${escHtml(subject.name)}</strong>${assessment.displayTopic?`<small class="hub-upcoming-topic">${escHtml(assessment.displayTopic)}</small>`:''}<small>${academicDateLabel(assessment.date)} de ${parts.year}</small></div><button class="hub-text-action" data-upcoming-subject="${subject.id}">Ver material <span aria-hidden="true">›</span></button></article>`;}).join('')}</div>`:''}${upcomingDatePending.length?`<div class="hub-upcoming-list hub-upcoming-pending-list" aria-label="Evaluaciones con fecha por confirmar">${upcomingDatePending.map(({subject,assessment})=>`<article class="hub-upcoming-item hub-upcoming-item-pending"><span class="hub-upcoming-when" aria-hidden="true">—</span><div class="hub-upcoming-copy"><strong>${escHtml(assessment.label)} de ${escHtml(subject.name)}</strong><small>${escHtml(assessment.provisionalDateLabel||'Evaluación confirmada')} · Fecha por confirmar</small></div><button class="hub-text-action" data-upcoming-subject="${subject.id}">Ver material <span aria-hidden="true">›</span></button></article>`).join('')}</div>`:''}${!upcoming.length&&!upcomingDatePending.length?'<p class="cloud-note">No hay evaluaciones programadas.</p>':''}</section>
-    <div class="hub-footer-links"><button data-hub-view="progreso">▥ Progreso</button><button data-hub-view="calendar">▣ Calendario</button><button data-hub-view="novedades">✦ Novedades</button></div>
+    <div class="hub-footer-links"><button data-hub-view="progreso">▥ Resumen</button><button data-hub-view="calendar">▣ Calendario</button><button data-hub-view="novedades">✦ Novedades</button></div>
     <section id="hubSignals" aria-live="polite"></section>
   </div>`;
   main.querySelectorAll('[data-open-subject]').forEach(button=>button.addEventListener('click',()=>openSubject(button.dataset.openSubject,'dashboard',true)));
@@ -3803,12 +3804,13 @@ function renderGuardadas(main){
   const subject=activeSubject();
   const ids=subjectSaved(subject.id);
   main.innerHTML = `
-    <div class="pagehead"><h1>Guardadas de ${subject.name}</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p></div>
+    <div class="pagehead"><h1>Guardado de ${subject.name}</h1><p>Preguntas que marcaste con ⭐ para volver a estudiarlas.</p><div class="btn-row"><button class="icon-btn" id="viewFavorites">Ver favoritos</button></div></div>
     ${ids.length? `<div class="btn-row" style="margin-bottom:18px;"><button class="btn" id="practSaved">Practicar guardadas (${ids.length})</button></div>` : ''}
     ${ids.length? ids.map(id=>{ const q=findQuestionById(id); if(!q) return '';
       return `<div class="err-item"><div class="q">${q.prompt}</div><div class="meta">${topicForQuestion(q)?.name||''}</div><label>Categoría<select data-saved-category="${escHtml(id)}">${[['','Sin categoría'],['dificil','Difícil'],['importante','Importante'],['manana','Revisar mañana']].map(([value,label])=>`<option value="${value}" ${state.settings.savedCategories?.[id]===value?'selected':''}>${label}</option>`).join('')}</select></label></div>`;
     }).join('') : `<div class="empty-state"><span class="ic">★</span>No has guardado preguntas todavía. Usa el botón "Guardar" durante la práctica.</div>`}
   `;
+  document.getElementById('viewFavorites').addEventListener('click',()=>goto('favorites'));
   if(ids.length) document.getElementById('practSaved').addEventListener('click', ()=>startSession({mode:'practica', savedOnly:true, countStats:state.settings.practiceCountsByDefault!==false}));
   main.querySelectorAll('[data-saved-category]').forEach(select=>select.addEventListener('change',()=>{
     state.settings.savedCategories ||= {};

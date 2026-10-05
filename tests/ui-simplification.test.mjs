@@ -78,25 +78,34 @@ test('Home conserva Memoir para Inglés y deja Español pendiente de confirmaci�
   assert.doesNotMatch(spanish.currentMaterial, /Vocabulario|Black Beauty|Realismo/i);
 });
 
-test('shell desktop limita la navegación visible y Más conserva los destinos secundarios', () => {
+test('Batch 1 organiza los destinos sin duplicarlos y conserva los permisos de Más', () => {
   const sandbox = { state: { view: 'hub' }, accountSession: { user: null } };
   vm.createContext(sandbox);
   vm.runInContext(html.slice(html.indexOf('const PRIMARY_NAV_ITEMS='), html.indexOf('function primaryLabel(')) + '\nthis.primary=PRIMARY_NAV_ITEMS;this.items=MORE_NAV_ITEMS;this.desktop=DESKTOP_NAV_GROUPS;this.groups=MORE_NAV_GROUPS;this.mobileGroups=MOBILE_MORE_NAV_GROUPS;this.visible=visibleMoreItems;', sandbox);
-  assert.deepEqual(Array.from(sandbox.desktop, group => group.label), ['Principal','Estudio','Seguimiento','Personal']);
+  assert.deepEqual(Array.from(sandbox.desktop, group => group.label), ['Principal','Estudio','Tu estudio','Accesos secundarios','Cuenta']);
   assert.deepEqual(Array.from(sandbox.desktop).flatMap(group => Array.from(group.items, item => item.id)), [
-    'hub','repaso','practica','examen','dashboard','historial','calendar','guardadas','cuenta','ajustes',
+    'hub','today','repaso','practica','examen','dashboard','historial','errores','guardadas','more','ajustes','cuenta',
   ]);
-  assert.deepEqual(Array.from(sandbox.groups, group => group.label), ['Planificar','Estudiar mejor','Comunidad','Ayuda y producto','Gestión']);
+  assert.deepEqual(Array.from(sandbox.groups, group => group.label), ['Planificación','Estudio','Comunidad','Producto y ayuda','Gestión']);
   const desktopMoreIds = Array.from(sandbox.groups).flatMap(group => Array.from(group.ids));
   assert.equal(new Set(desktopMoreIds).size, desktopMoreIds.length);
   assert.deepEqual(desktopMoreIds, [
-    'today','studyToday','errores','search','favorites','community','groups','friends','notifications','leaderboard',
+    'calendar','search','community','groups','friends','notifications','leaderboard',
     'novedades','roadmap','feedback','bugReport','admin',
   ]);
   const mobileIds = Array.from(sandbox.mobileGroups).flatMap(group => Array.from(group.ids));
+  assert.deepEqual(Array.from(sandbox.mobileGroups, group => group.label), ['Planificación','Estudio','Tu estudio','Comunidad','Producto y ayuda','Preferencias','Gestión']);
   assert.equal(new Set(mobileIds).size, mobileIds.length);
   assert.deepEqual(mobileIds.slice().sort(), Array.from(sandbox.items, item => item.id).sort());
-  assert.deepEqual(Array.from(sandbox.primary, item => item.id), ['hub','repaso','practica','cuenta','more']);
+  assert.deepEqual(Array.from(sandbox.primary, item => item.id), ['hub','repaso','more','practica','cuenta']);
+  const directIds=Array.from(sandbox.desktop).flatMap(group=>Array.from(group.items,item=>item.id));
+  assert.equal(new Set(directIds).size,directIds.length);
+  assert.equal(desktopMoreIds.some(id=>directIds.includes(id)),false);
+  assert.equal(mobileIds.includes('cuenta'),false);
+  assert.equal(mobileIds.includes('favorites'),false);
+  assert.equal(mobileIds.includes('studyToday'),false);
+  assert.equal(sandbox.items.find(item=>item.id==='dashboard').label,'Resumen');
+  assert.equal(sandbox.items.find(item=>item.id==='guardadas').label,'Guardado');
   assert.equal(sandbox.visible().some(item => item.id === 'admin'), false);
   for (const role of ['admin','owner','superdev']) {
     sandbox.accountSession.user = { role };
@@ -104,6 +113,27 @@ test('shell desktop limita la navegación visible y Más conserva los destinos s
   }
   sandbox.accountSession.user = { role: 'member' };
   assert.equal(sandbox.visible().some(item => item.id === 'admin'), false);
+});
+
+test('la selección legacy sigue Guardado/Hoy sin reescribir la vista persistida', () => {
+  const sandbox={state:{view:'hub'},accountSession:{user:null}};
+  vm.createContext(sandbox);
+  const source=html.slice(html.indexOf('const PRIMARY_NAV_ITEMS='),html.indexOf('function closeMoreMenu('));
+  const alias=html.match(/function resolveViewAlias\(view\)\{[^}]+\}/)[0];
+  vm.runInContext(`${source}\n${alias}\nthis.mobileActive=primaryActive;this.desktopActive=typeof desktopActive==='function'?desktopActive:null;`,sandbox);
+  assert.ok(sandbox.desktopActive,'la selección desktop debe resolver destinos compatibles');
+  for(const [view,direct] of [['favorites','guardadas'],['studyToday','today'],['progreso','dashboard']]){
+    sandbox.state.view=view;
+    assert.equal(sandbox.desktopActive({id:direct}),true,view);
+    assert.equal(sandbox.desktopActive({id:'more'}),false,view);
+    assert.equal(sandbox.mobileActive({id:'more'}),true,view);
+    assert.equal(sandbox.state.view,view,'seleccionar no migra state.view');
+  }
+  sandbox.state.view='calendar';
+  assert.equal(sandbox.desktopActive({id:'more'}),true);
+  sandbox.state.view='cuenta';
+  assert.equal(sandbox.mobileActive({id:'cuenta'}),true);
+  assert.equal(sandbox.mobileActive({id:'more'}),false);
 });
 
 test('Más desktop tiene activador accesible y restaura el foco al mismo activador', () => {
@@ -266,6 +296,7 @@ test('Home replica la jerarquía editorial aprobada y prioriza una sola continua
   for (const subject of ['Español','Matemáticas','Ciencia','Historia','Inglés','Salud']) assert.match(markup, new RegExp(subject));
   assert.match(markup, /Ciencia[\s\S]*Prueba[\s\S]*miércoles 30 sep/);
   for (const view of ['progreso','calendar','novedades']) assert.match(markup,new RegExp(`data-hub-view="${view}"`));
+  assert.match(markup,/data-hub-view="progreso">▥ Resumen<\/button>/);
   assert.doesNotMatch(markup,/hubSecondaryTitle|También puedes|studyToday|createAccountFromHub|loginFromHub/);
   assert.ok(markup.includes('hubSignals'));
 });
@@ -291,7 +322,7 @@ test('Home no acopla motion a su render y deja la transición al shell', () => {
 
 test('navegación expone la vista activa sin depender solo del color', () => {
   const nav=html.slice(html.indexOf('function renderNav()'),html.indexOf('function setViewContext('));
-  assert.match(nav,/aria-current="\$\{state\.view===item\.id\?'page':'false'\}"/);
+  assert.match(nav,/aria-current="\$\{desktopActive\(item\)\?'page':'false'\}"/);
   assert.match(nav,/aria-current="\$\{primaryActive\(item\)\?'page':'false'\}"/);
 });
 
