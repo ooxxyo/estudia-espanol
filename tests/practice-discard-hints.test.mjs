@@ -108,7 +108,7 @@ test('todas las preguntas disponibles en Practicar tienen una pista valida', () 
   const invalid = questions.filter((question) => !Array.isArray(question.hints)
     || !question.hints.some((hint) => typeof hint === 'string' && hint.trim() && !placeholders.test(hint.trim())));
 
-  assert.equal(questions.length, 461);
+  assert.equal(questions.length, 533);
   assert.deepEqual(invalid.map((question) => question.id), []);
 });
 

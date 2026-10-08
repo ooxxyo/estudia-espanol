@@ -324,28 +324,29 @@ test('contexto de IA conserva materia, unidad, tema y contenido aprobado', () =>
   assert.equal(blocked.message, OTHER_SUBJECT_MESSAGE);
 });
 
-test('Historia está disponible en Día 1 con su unidad Prueba actual', async () => {
+test('Historia está disponible en Día 1 con Europeos actual y Prueba anterior', async () => {
   const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
   assert.match(html, /id:'historia'.*day:1.*status:'Disponible'.*available:true/);
   assert.equal(HISTORY.subjectId, 'historia');
-  assert.equal(HISTORY.unit.name, 'Geografía y grandes civilizaciones');
-  assert.equal(HISTORY.unit.type, 'Prueba');
+  assert.equal(HISTORY.unit.name, 'Europeos');
+  assert.equal(HISTORY.previousUnits[0].name, 'Geografía y grandes civilizaciones');
+  assert.equal(HISTORY.previousUnits[0].type, 'Prueba');
   assert.equal(HISTORY.unit.status, 'current');
 });
 
 test('Historia contiene ocho topics estables y tarjetas para cada tema', () => {
-  assert.deepEqual(Array.from(HISTORY.topics, topic => topic.id), [
+  assert.deepEqual(Array.from(HISTORY.topics.filter(topic=>HISTORY.previousUnits[0].topicIds.includes(topic.id)), topic => topic.id), [
     'geografia', 'civilizaciones', 'mayas', 'aztecas', 'incas', 'religion-inca', 'mapas-localizacion', 'ciclo-naturaleza',
   ]);
-  assert.equal(HISTORY.reviewCards.length, 27);
+  assert.equal(HISTORY.reviewCards.filter(card=>HISTORY.previousUnits[0].topicIds.includes(card.topic)).length, 27);
   assert.equal(HISTORY.reviewCards.every(card => HISTORY.topics.some(topic => topic.id === card.topic)), true);
   assert.equal(HISTORY.topics.every(topic => HISTORY.reviewCards.some(card => card.topic === topic.id)), true);
 });
 
 test('banco de Historia está aislado y balancea respuestas A/B/C/D', () => {
-  assert.equal(HISTORY.questions.length, 82);
-  assert.equal(HISTORY.questions.every(question => question.id.startsWith('hist-') && question.subjectId === 'historia' && question.unitId === HISTORY.unit.id), true);
-  const multipleChoice = HISTORY.questions.filter(question => question.type === 'mc');
+  assert.equal(HISTORY.questions.length, 154);
+  assert.equal(HISTORY.questions.every(question => question.id.startsWith('hist-') && question.subjectId === 'historia' && [HISTORY.unit.id,...HISTORY.previousUnits.map(unit=>unit.id)].includes(question.unitId)), true);
+  const multipleChoice = HISTORY.questions.filter(question => question.type === 'mc' && question.unitId === HISTORY.previousUnits[0].id);
   const trueFalse = HISTORY.questions.filter(question => question.type === 'tf');
   assert.equal(multipleChoice.length, 72);
   assert.equal(trueFalse.length, 10);

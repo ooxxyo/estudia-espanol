@@ -41,7 +41,7 @@ test('Competencia conserva estado urgente pendiente y el ciclo anterior es un so
   assert.match(html,/studyStatus:'pending_review',priority:'urgent',newContent:true/);
   assert.match(html,/Tema pasado · Examen tomado el 14 de septiembre de 2026/);
   assert.match(html,/assessments:\[\{type:'exam',label:'Examen',status:'taken',date:'2026-09-14'\}\]/);
-  assert.match(html,/state\.settings\.topicStudyStatus\[effectiveFilter\]='reviewed'/);
+  assert.match(html,/filterTopics\.forEach\(id=>state\.settings\.topicStudyStatus\[id\]='reviewed'\)/);
   assert.doesNotMatch(html,/seenContentAt[^\n]+topicStudyStatus/);
 });
 
@@ -71,12 +71,13 @@ test('el validador académico real no encuentra referencias ni duplicados estruc
     {id:'gramatica',subjectId:'espanol'},{id:'morfologia',subjectId:'espanol'},{id:'narrativa',subjectId:'espanol'},{id:'cronica',subjectId:'espanol'},{id:'figuras',subjectId:'espanol'}
   ];
   const spanish={id:'espanol',units:[vocabularyData.unit,{id:'espanol-unidad-anterior',subjectId:'espanol',status:'previous'}],topics:[{id:'vocabulario',subjectId:'espanol'},...legacyTopics],reviewCards:[...vocabularyData.entries.map((entry,index)=>({id:`vocab-card-${index}`,topicId:'vocabulario',title:entry.word,def:entry.definition,example:entry.example})),...sandbox.window.STUDY_HUB_LEGACY_REVIEW_CARDS.map((card,index)=>({...card,id:`legacy-card-${index}`,topicId:card.topic}))],questions:[...vocabularyData.questions,...sandbox.window.STUDY_HUB_LEGACY_QUESTIONS]};
-  const history={id:'historia',units:[sandbox.window.HISTORY_CONTENT.unit],topics:sandbox.window.HISTORY_CONTENT.topics.map(topic=>({...topic,subjectId:'historia',unitId:sandbox.window.HISTORY_CONTENT.unit.id})),reviewCards:sandbox.window.HISTORY_CONTENT.reviewCards.map((card,index)=>({...card,id:`history-card-${index}`,topicId:card.topic})),questions:sandbox.window.HISTORY_CONTENT.questions};
+  const historyUnits=[sandbox.window.HISTORY_CONTENT.unit,...sandbox.window.HISTORY_CONTENT.previousUnits];
+  const history={id:'historia',units:historyUnits,topics:sandbox.window.HISTORY_CONTENT.topics.map(topic=>({...topic,subjectId:'historia',unitId:historyUnits.find(unit=>unit.topicIds.includes(topic.id)).id})),reviewCards:sandbox.window.HISTORY_CONTENT.reviewCards.map((card,index)=>({...card,id:`history-card-${index}`,topicId:card.topic})),questions:sandbox.window.HISTORY_CONTENT.questions};
   const report=validateAcademicCatalog([spanish,history]);assert.equal(report.valid,true,report.errors.join('\n'));
 });
 
 test('motion y modales respetan reducción de movimiento y foco',async()=>{
   const [html,hub]=await Promise.all([readFile(new URL('../public/index.html',import.meta.url),'utf8'),readFile(new URL('../public/js/hub-ui.js',import.meta.url),'utf8')]);
   assert.match(hub,/@media\(prefers-reduced-motion:reduce\)/);assert.match(hub,/animation-duration:\.001ms!important/);
-  assert.match(html,/aria-modal="true" aria-labelledby="moreTitle"/);assert.match(html,/event\.key==='Escape'&&moreOpen/);assert.doesNotMatch(html,/pendingPracticeTitle|pendingPracticeReturnFocus/);
+  assert.match(html,/aria-modal="true" aria-labelledby="moreTitle"/);assert.match(html,/event\.key!=='Escape'[\s\S]*if\(moreOpen\)\{event\.preventDefault\(\);closeMoreMenu\(\)/);assert.doesNotMatch(html,/pendingPracticeTitle|pendingPracticeReturnFocus/);
 });

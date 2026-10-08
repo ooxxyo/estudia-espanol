@@ -551,6 +551,58 @@ body[data-shds-shell="p0"] .study-results-grid {
 }
 body[data-shds-shell="p0"] .study-results-detail { margin: 0; }
 
+body[data-shds-shell="p0"] .history-unit-progress h3 { margin: 0; }
+body[data-shds-shell="p0"] .history-unit-progress + .history-unit-progress { margin-top: 12px; }
+body[data-shds-shell="p0"] .history-progress-toggle {
+  width: 100%; min-height: 48px; justify-content: space-between;
+  gap: 12px; text-align: left; white-space: normal;
+}
+body[data-shds-shell="p0"] .history-progress-toggle small {
+  display: block; margin-top: 4px; color: var(--ink-soft); font-weight: 400;
+}
+body[data-shds-shell="p0"] .history-progress-topics { margin-top: 12px; }
+body[data-shds-shell="p0"] .history-map-select { display: grid; gap: 8px; font-weight: 600; }
+body[data-shds-shell="p0"] .history-map-select select { width: 100%; min-height: 48px; background: var(--shds-color-surface); color: var(--ink); border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; }
+body[data-shds-shell="p0"] .history-map-modes { margin: 16px 0; }
+body[data-shds-shell="p0"] .history-map-figure { margin: 20px 0; }
+body[data-shds-shell="p0"] .history-map-zoom { margin-bottom: 12px; align-items: center; }
+body[data-shds-shell="p0"] .history-map-zoom output { min-width: 58px; text-align: center; }
+body[data-shds-shell="p0"] .history-map-viewport { overflow: auto; max-height: 65vh; overscroll-behavior: contain; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
+body[data-shds-shell="p0"] .history-map-stage { position: relative; margin: 0 auto; }
+body[data-shds-shell="p0"] .history-map-stage img { display: block; width: 100%; height: auto; }
+body[data-shds-shell="p0"] .history-map-pin { position: absolute; transform: translate(-50%, -50%); width: 28px; height: 28px; padding: 0; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px #252525; background: #252525; color: #fff; font-size: 14px; font-weight: 700; line-height: 1; cursor: pointer; }
+body[data-shds-shell="p0"] .history-map-pin.selected { background: var(--shds-color-action); color: var(--shds-color-on-action); outline: 3px solid var(--shds-color-action); outline-offset: 2px; }
+body[data-shds-shell="p0"] .history-map-pin:focus-visible { outline: 3px solid #165cca; outline-offset: 3px; }
+body[data-shds-shell="p0"] .history-map-elements { display: flex; flex-wrap: wrap; gap: 8px; }
+body[data-shds-shell="p0"] .history-map-elements .icon-btn { min-height: 44px; white-space: normal; text-align: left; }
+body[data-shds-shell="p0"] .history-map-elements [aria-pressed="true"],
+body[data-shds-shell="p0"] .history-map-modes [aria-pressed="true"] { border-color: var(--shds-color-action); box-shadow: inset 0 0 0 1px var(--shds-color-action); }
+body[data-shds-shell="p0"] .history-map-detail { margin: 16px 0; padding: 16px; border: 1px solid var(--line); border-radius: 10px; }
+body[data-shds-shell="p0"] .history-map-figure figcaption { margin-top: 12px; color: var(--ink-soft); line-height: 1.5; font-size: .9rem; }
+body[data-shds-shell="p0"] .history-map-legend { display: grid; gap: 12px; margin: 0; }
+body[data-shds-shell="p0"] .history-map-legend > div { border-top: 1px solid var(--line); padding-top: 12px; }
+body[data-shds-shell="p0"] .history-map-legend dt { font-weight: 700; }
+body[data-shds-shell="p0"] .history-map-legend dd { margin: 4px 0 0; line-height: 1.5; }
+body[data-shds-shell="p0"] .history-maps .btn:not(.ghost) { background: var(--shds-color-action); color: var(--shds-color-on-action); }
+body[data-shds-shell="p0"] .history-unit-progress .pill-none,
+body[data-shds-shell="p0"] [data-history-overview] .subject-status { color: var(--shds-color-ink); }
+body[data-shds-shell="p0"] .history-unit-progress .pill-progress { color: var(--shds-color-warning); }
+body[data-shds-shell="p0"] #main:has([data-history-overview]) .btn:not(.ghost) {
+  background: var(--shds-color-action); color: var(--shds-color-on-action);
+}
+
+/* Las etiquetas pequeñas y el feedback legacy necesitan contraste también
+   en claro. Reutiliza los colores del sistema sobre las superficies actuales. */
+html[data-theme="light"] body[data-shds-shell="p0"] .study-flow .study-example-label,
+html[data-theme="light"] body[data-shds-shell="p0"] .study-flow .feedback :is(.detail-tip,.learning-label) {
+  color: var(--shds-color-ink);
+}
+html[data-theme="light"] body[data-shds-shell="p0"] .study-flow .feedback.good { color: var(--shds-color-success); }
+html[data-theme="light"] body[data-shds-shell="p0"] .study-flow .feedback.bad { color: var(--shds-color-action); }
+html[data-theme="light"] body[data-shds-shell="p0"] .study-results .pill-progress { color: var(--shds-color-warning); }
+body[data-shds-shell="p0"] .study-flow .feedback .learning-box { color: var(--shds-color-ink); }
+body[data-shds-shell="p0"] .study-flow .feedback b { color: inherit; }
+
 @keyframes study-expand-in {
   from { opacity: 0; transform: translateY(-4px); }
   to { opacity: 1; transform: translateY(0); }

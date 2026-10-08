@@ -1,6 +1,82 @@
 # Guía de pruebas
 
+## Historia — Accesos a mapas
+
+Estado **Testing**, Human PASS confirmado; validación de staging/producción pendiente. Contrato en [Historia — Mapas](docs/history-maps.md#accesos-y-evaluación-cartográfica). Pruebas con cuentas y Blobs ficticios en memoria. Gate B1 prepara el index selectivo y Novedades, sin commit, push, merge ni deploy.
+
+- Panel de Europeos: tres accesos secundarios junto a sus modalidades; cada selector ofrece su entrada correspondiente. Explorar abre Estudiar; Practicar inicia el mapa elegido sin desviar a Repasar; Examen abre una selección independiente.
+- Práctica: pistas manuales, dos intentos, resultados y guardar/reanudar. Volver restaura el foco del acceso o de la acción del atlas. Intercalar otro acceso no sustituye el origen de la sesión. Prácticas antiguas sin metadata de origen siguen regresando al atlas.
+- Examen: recorrer las 32 preguntas de los tres mapas y comprobar SVG neutro, atributos, nombres accesibles, ausencia de pistas, feedback/clases de corrección y resultados previos a entregar. Evaluar selección vacía/parcial, rechazo de abandono, reload antes y después de responder, revisión de pregunta contestada, entrega real y resultado. El examen general sigue con 72 preguntas y sus defaults sin suplementos.
+- Matriz visual 1440×900 / 390×844, Light/Dark: panel, accesos, atlas, práctica con pista, selección y pregunta de examen. Sin overflow ni errores de consola. Capturas completas móviles omiten solo la barra fija durante la captura; las capturas adicionales de viewport conservan la navegación real.
+- Preservación por hashes contra baseline: banco completo, SVG, metadatos/preguntas cartográficas, unidades anteriores, CSS previo y 14 archivos de Batch 2/configuración. Revisión independiente de origen, snapshots y examen; no hallazgos pendientes tras correcciones.
+
+Resultado del 8 oct 2026: **353/353 Node**; matriz amplia **73 Playwright PASS y 1 omisión prevista**; repetición final de mapas/accesos **28/28 PASS**, incluyendo sesiones antiguas. Tras el último guard para prácticas normales, accesos se repite con **10/10 PASS**. No sumar pasadas como casos independientes. JavaScript inline y 29 módulos Netlify válidos; Oxlint focalizado y diff check. Se reprodujeron antes de corregir el acceso ausente, la referencia de sesión indefinida al restaurar una respuesta de examen y el retorno equivocado de una práctica antigua después de visitar Examen de mapas.
+
+Comandos/evidencia: `node --import ./tests/register-blobs.mjs --test tests/*.test.mjs`; Playwright con `.netlify/history-discoverability/playwright.config.mjs` para `history-map-access`, `history-maps`, `history-europeos`, `history-units-navigation`, `study-hub` y `accessibility`; validación `.netlify/history-final/validate.mjs`; preservación `.netlify/history-discoverability/preservation.mjs`. Logs, screenshots e informe en `.netlify/history-discoverability/`. Preview http://127.0.0.1:8765/. Human PASS confirmado; dispositivo físico y release pendientes. B1 autoriza index selectivo; sin commit/push/merge/deploy.
+
+## Historia — Mapas
+
+Alcance académico, fuentes, geometría, compatibilidad y límites canónicos: [Historia — Mapas](docs/history-maps.md). Estado Testing, Human PASS confirmado y promoción pendiente. El harness usa cuentas/Blobs ficticios en memoria, sin contacto con datos reales.
+
+- Tres mapas nativos sin imágenes raster cargadas. Contrastar capas/leyendas/respuestas de Alaska, Brasil, Groenlandia, Trece Colonias, Jamaica y territorios españoles. La Española occidental/oriental tiene paths y preguntas distintos. Guayanas/Antillas se evalúan colectivamente; no hay categorías o preguntas técnicas.
+- Desktop 1440×900 y Mobile 390×844, Light/Dark: selección, tabs, cronología, leyenda, zoom/reset, retorno de foco, Estudiar/Identificar/Practicar, revelado y reload. Teclado y controles táctiles. Sin overflow horizontal; Axe sin violations bloqueantes en mapas y flujos compartidos.
+- Práctica: pistas manuales, dos intentos, explicación, resultados; guardar/reload/reanudar conserva respuesta/pista/mapa. Reiniciar guarda la anterior. Enter en zoom/marcador/opción no responde; iniciar sin selección y rechazar cambios de marcador después de responder. Fallo de carga del módulo de geometría conserva opciones textuales y navegación.
+- Regresión: 154 preguntas anteriores idénticas; todos los temas y geometría aprobada de Tordesillas/Asentamientos intactos; solo una tarjeta colonial corregida. Examen de Europeos conserva sus 72 preguntas. Progreso, Mayas, Guardadas, sesiones, login, roles/Admin, suspensión y accesibilidad se comprueban con el harness. Batch 2/configuración conserva 14 hashes.
+
+Comandos de esta revisión:
+
+```powershell
+node --import ./tests/register-blobs.mjs --test tests/*.test.mjs
+node node_modules/@playwright/test/cli.js test --config .netlify/history-final/playwright.config.mjs tests/e2e/history-maps.spec.mjs tests/e2e/history-europeos.spec.mjs tests/e2e/history-units-navigation.spec.mjs tests/e2e/accessibility.spec.mjs tests/e2e/study-hub.spec.mjs
+node .netlify/history-final/validate.mjs
+node .netlify/history-final/preservation.mjs
+node node_modules/oxlint/bin/oxlint public/js/history-maps.js public/js/history-map-geometry.js public/history-data.js tests/history-maps.test.mjs tests/e2e/history-maps.spec.mjs
+git diff --check
+graphify update .
+```
+
+Resultado del 8 oct 2026: **352/352 Node**. Matriz amplia: **63 Playwright PASS y 1 omisión prevista** del caso exclusivo móvil en desktop (Historia/retorno, accesibilidad, Study Hub y 16 casos de mapas). Tras añadir la resolución Países Bajos (Holanda) → Países Bajos, la repetición final focalizada de Mapas pasa **18/18** e incluye la selección desde SVG y opción textual. No se suman ambas ejecuciones como casos independientes. Un script inline, tres módulos de Historia y los 29 módulos Netlify válidos; Oxlint focalizado y diff check válidos. Graphify actualizado con AST, sin extracción LLM. WebKit táctil 390 px comprueba los tres mapas, leyenda, selección y zoom/reset; no sustituye un dispositivo físico.
+
+Los defectos de selección vacía, cambio de resaltado tras responder y ausencia de Antillas se reprodujeron con tests fallidos antes de corregirse. Revisión independiente final: sin hallazgos pendientes. Una ejecución preliminar compartió carpeta de artefactos entre dos procesos Playwright y produjo ENOENT al cerrar una traza de Cuenta/Login; la ejecución final serial, con salida aislada, pasa ese caso sin cambios de auth.
+
+Evidencia: .netlify/history-final/final-node-tests.log, final-browser-tests.log, final-map-tests.log, preservation.json y visual-review.md. El preview http://127.0.0.1:8765/ es exclusivamente local con datos sintéticos. Safari físico, Human PASS, staging y producción siguen pendientes; no hay stage, commit, push ni deploy.
+
+## Historia — Europeos
+
+Alcance, estructura académica y límites canónicos: [Historia — Europeos](docs/history-europeos.md). Estado Testing, Human PASS confirmado y promoción pendiente. Los tests usan datos sintéticos; no borran cuentas, progreso ni stores reales.
+
+- Banco: IDs únicos, cuatro opciones distintas y una correcta, pistas específicas sin copiar la respuesta, explicaciones, referencias de temas/unidades y asociaciones de clase. Comparar con HEAD los objetos académicos anteriores: deben seguir idénticos.
+- Desktop 1440×900 y móvil táctil 390×844, Light/Dark: Historia → Europeos → uno/varios/todos los temas → Repasar → Practicar conservando contexto → Pista bajo demanda → acierto con explicación → primer fallo/reintento → segundo fallo con solución → siguiente pregunta. Verificar no overflow, controles táctiles y Axe sin violations serious/critical en selección, repaso, examen y resultados.
+- Persistencia: selección vacía sigue vacía tras reload e impide iniciar; preguntas y opciones no cambian al guardar/recargar/reanudar. Empezar otra práctica guarda la anterior y permite recuperarla con respuestas y pistas. Un snapshot antiguo de Mayas conserva unidad, selección, guardadas y progreso. Entrar a Europeos no crea progreso falso.
+- Human Review fix: dashboard con dos unidades y sin etiquetas permanentes; grupos colapsados al entrar, expansión por teclado/toque, `aria-expanded` coherente, 18/8 filas y progreso sintético exacto sin mutar estadísticas. Volver y Escape desde Repasar/Practicar/Examen preservan selección y devuelven foco/origen; Escape cierra Más primero. Reentrar permite iniciar práctica/examen, y Guardar y salir → Volver → reanudar conserva respuestas y pistas.
+- Examen: un tema, conjunto y todos disponibles; sin Pista ni feedback inmediato; cancelar abandono mantiene respuestas; confirmar entrega revela nota, correctas/incorrectas y explicaciones. Resultados → Practicar lo fallado reutiliza el motor. Leaderboard de Español, login/logout, roles, suspensión, administración y presence se comprueban con el harness existente.
+
+Comandos focalizados:
+
+```powershell
+node --import ./tests/register-blobs.mjs --test tests/history-europeos.test.mjs tests/study-continuity.test.mjs tests/practice-discard-hints.test.mjs tests/platform.test.mjs tests/spanish-vocabulary.test.mjs tests/core-study-p0.test.mjs tests/ui-simplification.test.mjs
+npx playwright test tests/e2e/history-europeos.spec.mjs tests/e2e/study-hub.spec.mjs tests/e2e/accessibility.spec.mjs
+git diff --check
+graphify update .
+```
+
+Validar además el script inline de `public/index.html` con `vm.Script`, `node --check` para todos los `.mjs` de `netlify/functions/` y Oxlint focalizado. Conservar evidencia final y logs en `.netlify/history-europeos/`. El preview usa `node --import ./tests/register-blobs.mjs ./tests/browser-server.mjs` con `STUDY_HUB_ENV=local-test` y Blobs en memoria. No se considera prueba física de Safari ni prueba remota de Netlify.
+
+Resultado local del 7 oct 2026: **98/98** checks Node; **14/14** escenarios Historia Playwright; **12/12** checks de accesibilidad general y Axe adicional dentro de los flujos de Historia; **13** regresiones Study Hub pasan y **1** caso solo móvil se omite en desktop por diseño. JavaScript inline, banco, 29 módulos Netlify, Oxlint focalizado y `git diff --check` pasan. La regresión de enlaces de Mayas se reprodujo antes de corregirla y pasa después. Se inspeccionaron capturas de repaso, selección, práctica y resultados; se conservaron 24 capturas Desktop/Mobile y Light/Dark. Comparación con HEAD: objetos académicos anteriores idénticos. Manifiesto de Batch 2/configuración: 14 hashes comprobados, cero cambios. HTTP 200 para `/` y `/history-data.js` en el preview local. Sigue pendiente la revisión académica/manual humana y la prueba física de Safari.
+
+Resultado del Human Review fix, 8 oct 2026: **98/98 Node**; **34/34 Playwright** en la pasada final (8 agrupación/retorno de Historia, 12 navegación y 14 QA tools). La pasada de regresión del mismo fix también validó **14/14 Historia**, **12/12 accesibilidad general** y **13 Study Hub**, con **1** omisión desktop prevista para el caso exclusivo móvil. Los dos fallos iniciales de contraste del dashboard dark se corrigieron y los ocho casos focalizados pasaron después con Axe sin violations serious/critical. Revisión independiente sin hallazgos concretos. Evidencia ANTES/DESPUÉS: 16 pares en `.netlify/history-europeos-fix/visual-review.md`. Banco académico idéntico al snapshot previo del fix; 14 hashes Batch 2/configuración local intactos. Permanece pendiente la aprobación humana y Safari físico.
+
+La última repetición focalizada pasó **8/8** e incluye además iniciar Examen completo tras volver a entrar con los dos temas conservados, comprobar sus ocho preguntas y ausencia de pista, salir con confirmación y comenzar luego una práctica con esos temas. Validación final: un script inline y los 29 módulos Netlify válidos; hashes académicos y 14 hashes de Batch 2 intactos; `git diff --check` pasa y Graphify actualizado sin extracción LLM.
+
+Para reutilizar el preview ya abierto se usó una configuración local ignorada que importa la configuración existente y habilita `webServer.reuseExistingServer`; no se modificó `playwright.config.mjs`:
+
+```powershell
+npx playwright test --config=.netlify/history-europeos-fix/playwright.config.mjs tests/e2e/history-units-navigation.spec.mjs tests/e2e/history-europeos.spec.mjs tests/e2e/study-hub.spec.mjs tests/e2e/accessibility.spec.mjs
+npx playwright test --config=.netlify/history-europeos-fix/playwright.config.mjs tests/e2e/history-units-navigation.spec.mjs tests/e2e/navigation.spec.mjs tests/e2e/qa-tools.spec.mjs
+```
+
 ## Cierre 3T y límites de evidencia remota
+
 
 3T está Completed por decisión de alcance basada en 7C previamente certificado, runtime conservado y validación local. La matriz de personas, integridad protegida y evidencia remota saneada vive en `docs/qa-7c-bootstrap.md`. No repetir bootstrap, resets, 6/6 ni smoke remoto para este cierre.
 
@@ -59,7 +135,7 @@ No uses datos ni stores reales para pruebas destructivas. Los dobles de Netlify 
 - **Materias y unidades:** Hub → Español/Historia/Ciencia/Matemáticas → unidad → tema → herramienta → Hub; Inglés muestra `Memoir` sin habilitar un banco inexistente, Salud sigue `Próximamente` y Español muestra `Pendiente de confirmación` sin inventar tema. Matemáticas contiene solamente Grados decimales a DMS y no recupera temas matemáticos antiguos.
 - **Matemáticas:** comprobar los ejemplos aprobados `89.125° → 89° 7′ 30″` y `23.3486° → 23° 20′ 55″`; pasos A–G, valor posicional, dígitos, alineación, acarreos, productos parciales, suma, colocación manual del punto, conteo decimal, redondeo y respuesta final. Validar Aprender (guiado → ayuda → menos ayuda → independiente), práctica normal, examen de práctica, persistencia de `workspaceByQuestion`, aislamiento por materia y fecha de examen `null`.
 - **Ciencia:** tres bancos base aislados (SI ≥25, Densidad ≥35, Temperatura ≥35) más snapshot separado e intacto de la prueba real del 2026-09-24 con exactamente 20 preguntas y procedencia `teacher_assessment`. La evaluación del 2026-09-30 contiene únicamente Temperatura; SI y Densidad permanecen como material evaluado disponible. Mantener examen mixto únicamente explícito; tres fórmulas de densidad, seis de temperatura, `K` sin grado, procedimiento detallado, tolerancia numérica y unidad obligatoria. En toda pregunta numérica, comprobar Formula Workspace (objetivo, fórmula/regla, sustitución, operación, resultado y unidad), teclado contextual, corrección por pasos y persistencia al navegar; fórmula/ayuda y calculadora permanecen secundarias sin perder respuesta. Mini examen, Examen y Examen mixto muestran “Examen de práctica” y reutilizan el workspace.
-- **Historia:** ocho topics, 27 tarjetas, 82 preguntas (72 selección múltiple y 10 verdadero/falso), respuestas A/B/C/D balanceadas y tercer mundo marcado como información incompleta. La próxima evaluación está confirmada con `date: null`, `dateStatus: pending` y descripción provisional “Próxima semana”; verificar “Fecha por confirmar”, ausencia de viernes o `YYYY-MM-DD` inventado y sustitución futura de la fecha sin cambiar el ID ni el historial.
+- **Historia:** contenido actual y anterior según [Historia — Europeos](docs/history-europeos.md); matriz actual en [Historia — Europeos](#historia--europeos). Mantener el tercer mundo antiguo como información incompleta. La próxima evaluación está confirmada con `date: null`, `dateStatus: pending` y descripción provisional “Próxima semana”; verificar “Fecha por confirmar”, ausencia de viernes o `YYYY-MM-DD` inventado y sustitución futura de la fecha sin cambiar el ID ni el historial.
 - **Contexto:** navegación desktop y móvil conserva materia, unidad, tema, filtros, respuestas y posición al pasar por Hub o Más.
 - **Navegación / 3F-C Batch 1:** validar la IA canónica de `DECISIONS.md`: barra mobile Hub → Repasar → Más → Practicar → Cuenta/Entrar; desktop Principal, Estudio, Tu estudio, Accesos secundarios y Cuenta. Cuenta no se duplica dentro de Más, ni Más desktop repite destinos del rail. Resumen identifica conceptualmente la materia activa; no agrega progreso global. Guardado → Favoritos → Guardado y Hoy → Qué estudiar hoy → Hoy conservan acceso para invitado y sesión ficticia; `favorites`/`studyToday` seleccionan visualmente Guardado/Hoy sin migrar estado. Validar `progreso → dashboard`, Administración condicional, `aria-current`, Escape, inert, trampa/retorno de foco, safe areas, targets y ausencia de overflow. Practicar sigue siendo la acción principal cuando compite con Repasar dentro de una pantalla académica.
 - **Práctica:** rápida (10), intermedia (25), normal, por tema, errores y guardadas.

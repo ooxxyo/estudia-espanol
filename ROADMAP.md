@@ -1,5 +1,9 @@
 # Study Hub Roadmap
 
+Historia — Mapas de Europeos: **Testing**. Human PASS confirmado para los tres mapas, sus accesos y la evaluación cartográfica. Preparación selectiva de release en Gate B1; staging/producción pendientes. Alcance y gates: [Historia — Mapas](docs/history-maps.md); pruebas: [TESTING.md](TESTING.md#historia--mapas). No reanuda 3F-C ni Workflow / Project Memory.
+
+Historia — Europeos: **Testing**. Human PASS confirmado para contenido, unidades y navegación; promoción a staging pendiente. Alcance y hallazgo de iconos diferido a 3F-C Batch 2: [Historia — Europeos](docs/history-europeos.md); verificación: [TESTING.md](TESTING.md#historia--europeos). Este trabajo no reanuda 3F-C Batch 2 ni autoriza publicación.
+
 3T — QA / Test Access Foundation: **Completed**, por decisión de cierre con evidencia acumulada y limitaciones remotas documentadas. Bootstrap 7C completado; qa-inspect, QA-session, personas y diagnóstico de reset listos y publicados en QA privado. Evidencia y límites canónicos: `docs/qa-7c-bootstrap.md`.
 
 Playwright remoto a través de Netlify Private SSO: **Deferred / Non-blocking**. Smoke asistido: **Incomplete / Non-blocking** por limitación del navegador/cliente Work; ninguno se declara PASS ni fallo de producto. QA remoto extensivo queda para pre-beta. CI y SSO automatizado permanente no son requisitos del cierre de 3T.
@@ -333,6 +337,8 @@ La ruta FAST-RELEASE anterior sustituye el orden lineal antiguo. Las referencias
 | Fase 3T | Completed | QA / Test Access Foundation; bootstrap 7C certificado y capacidades QA publicadas. Limitaciones remotas no bloqueantes documentadas en `docs/qa-7c-bootstrap.md`. Context & Integration Discipline sigue definido en `AGENTS.md`. |
 
 Motion por fases anteriores queda referido a la única definición Motion + SFX. Los mínimos del loop ocurren antes de beta; el polish global ampliado de Fase 8 permanece Post-Launch.
+
+Deuda visual confirmada durante la revisión de Historia (**Planned**, sin implementación en el fix de accesos): reestructuración de Resumen/Repasar; jerarquía y distribución del espacio; reducción de densidad; consistencia de títulos, botones y tarjetas; limpieza de iconografía/emojis; migración gradual al Icon System SVG; ajustes responsive y polish transversal. Se integra en las fases visuales ya establecidas, respetando 3F-C Batch 2 y los batches de migración, sin cambiar su orden ni adelantar trabajo.
 
 ## Base Hub existente
 

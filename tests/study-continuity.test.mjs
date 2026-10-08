@@ -76,6 +76,13 @@ function renderExam(settings, subjectId = 'ciencia') {
     })),
     activeSubject: () => subject,
     activeTopics: () => [topic],
+    unitTopics: () => [topic],
+    historyStudyUnit: () => ({id:'history-unit',name:'Unidad actual'}),
+    historySelectorBackHtml: () => '',
+    wireHistorySelectorBack: () => {},
+    historySelectedTopics: () => settings.examTopicsBySubject?.historia || [topic.id],
+    historyTopicPickerHtml: () => '<fieldset>Temas de Historia</fieldset>',
+    bindHistoryTopicPicker: () => {},
     currentUnit: () => ({ name: 'Unidad actual' }),
     document: {
       getElementById(id) {

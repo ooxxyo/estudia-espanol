@@ -2,6 +2,7 @@
   'use strict';
   const api=(path,options={})=>window.StudyHubApi.requestJson(`/.netlify/functions/${path}`,options);
   const updates=Object.freeze([
+    {updateId:'history-europeos-maps',title:'Historia: Europeos y mapas interactivos',summary:'Estudia la exploración y colonización europea de América. Explora los tres mapas de clase, practica sus asociaciones y elige mapas para un examen. La unidad anterior sigue disponible.',category:'Académico',publishedAt:'2026-10-08',target:'historia'},
     {updateId:'math-dms-workspace',title:'Matemáticas: grados decimales a DMS',summary:'Ya puedes repasar y practicar el procedimiento completo con multiplicación por columnas y una libreta interactiva.',category:'Académico',publishedAt:'2026-09-25',target:'matematicas'},
     {updateId:'spanish-vocabulary',title:'Competencia en Español',summary:'El vocabulario ya está listo para estudiar con tarjetas, práctica y examen.',category:'Académico',publishedAt:'2026-09-19',target:'espanol'},
     {updateId:'people-discovery',title:'Personas',summary:'Ahora puedes encontrar estudiantes descubribles y enviar solicitudes.',category:'Nuevo',publishedAt:'2026-09-19',target:'friends'},

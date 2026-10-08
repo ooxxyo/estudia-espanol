@@ -86,8 +86,9 @@ test('una práctica normal conserva la respuesta seleccionada al guardar y reanu
   const main = page.getByRole('main');
   await main.getByRole('button', { name: /^Historia\b/ }).click();
   await expect(main.getByRole('heading', { name: 'Historia' })).toBeVisible();
-  await main.getByRole('button', { name: 'Practicar', exact: true }).click();
-  await main.getByRole('button', { name: /^Geografía\b/ }).click();
+  await main.locator('[data-history-unit="historia-europeos"][data-history-open="practica"]').click();
+  await main.getByRole('button', { name: 'Limpiar selección', exact: true }).click();
+  await main.locator('#historyTopics input[value="euro-vikingos"]').check();
   await main.getByRole('button', { name: 'Practicar', exact: true }).click();
 
   const chosenAnswer = page.locator('#qBody').getByRole('button').first();

@@ -644,6 +644,7 @@ details>summary{list-style:none}details>summary::-webkit-details-marker{display:
 <link rel="stylesheet" href="css/study-hub-shell-p0.css">
 <link rel="stylesheet" href="css/study-hub-account-p0.css">
 <link rel="stylesheet" href="css/study-hub-study-p0.css">
+<link rel="stylesheet" href="css/history-maps.css">
 </head>
 <body data-theme="light" data-shds-shell="p0">
 <aside id="onlineBadge" class="online-badge" aria-label="Usuarios activos en los últimos 90 segundos" title="Usuarios activos en los últimos 90 segundos"><span class="online-dot"></span><span id="onlineCount">… conectados</span></aside>
@@ -668,6 +669,8 @@ details>summary{list-style:none}details>summary::-webkit-details-marker{display:
 <script src="js/platform-ui.js"></script>
 <script src="js/platform-extras.js"></script>
 <script src="history-data.js"></script>
+<script src="js/history-map-geometry.js"></script>
+<script src="js/history-maps.js"></script>
 <script src="js/science-data.js"></script>
 <script src="js/math-workspace.js"></script>
 <script src="js/math-data.js"></script>
@@ -707,14 +710,14 @@ const STUDY_DAYS=Object.freeze([
 const SUBJECT_CATALOG=Object.freeze([
   {id:'ingles',name:'Inglés',emoji:'📘',day:1,status:'Próximamente',available:false,currentMaterial:'Memoir',contentKey:null,units:{current:null,previous:[],completed:[]}},
   {id:'salud',name:'Salud',emoji:'❤️',day:1,status:'Próximamente',available:false,contentKey:null,units:{current:null,previous:[],completed:[]}},
-  {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Disponible',available:true,contentKey:'historia-v1',units:{current:HISTORY_CONTENT.unit,previous:[],completed:[]}},
+  {id:'historia',name:'Historia',emoji:'🏛️',day:1,status:'Disponible',available:true,currentMaterial:'Europeos',contentKey:'historia-v1',units:{current:HISTORY_CONTENT.unit,previous:HISTORY_CONTENT.previousUnits||[],completed:[]}},
   {id:'ciencia',name:'Ciencia',emoji:'🔬',day:2,status:'Prueba 30 sep',available:true,currentMaterial:'Temperatura',contentKey:'science-v1',units:{current:SCIENCE_CONTENT.unit,previous:[],completed:[]}},
   {id:'matematicas',name:'Matemáticas',emoji:'📐',day:2,status:'Tema actual',available:true,contentKey:'math-v1',units:{current:MATH_CONTENT.unit,previous:[],completed:[]}},
   {id:'espanol',name:'Español',emoji:'📚',day:2,status:'Pendiente',available:true,currentMaterial:'Pendiente de confirmación',contentKey:'spanish-v2',units:{current:{...SPANISH_VOCABULARY.unit,topicStatus:'current',studyStatus:'pending_review',priority:'urgent',newContent:true,assessments:[{type:'competition',label:'Competencia',status:'pending',date:null}]},previous:[{id:'espanol-unidad-anterior',subjectId:'espanol',name:'Contenido anterior de Español',displayName:'✅ Tema pasado',type:'Tema pasado',status:'previous',topicStatus:'previous',examTaken:true,examTakenDate:'2026-09-14',date:'2026-09-14',order:1,topicIds:TOPICS.map(t=>t.id),assessments:[{type:'exam',label:'Examen',status:'taken',date:'2026-09-14'}]}],completed:[]}},
 ]);
 const SUBJECT_BY_ID=new Map(SUBJECT_CATALOG.map(subject=>[subject.id,subject]));
 const SUBJECT=SUBJECT_BY_ID.get('espanol');
-const SUBJECT_VIEW_IDS=new Set(['dashboard','repaso','repasoCards','practica','experimental','examen','scienceFormulas','errores','guardadas','historial','session','results']);
+const SUBJECT_VIEW_IDS=new Set(['dashboard','repaso','repasoCards','historyMaps','practica','experimental','examen','scienceFormulas','errores','guardadas','historial','session','results']);
 function subjectsForDay(day){return SUBJECT_CATALOG.filter(subject=>subject.day===day);}
 function subjectUnits(subjectId){
   const subject=SUBJECT_BY_ID.get(subjectId);
@@ -756,7 +759,7 @@ function activeTopics(){return activeContent().topics;}
 function activeReviewCards(){return activeContent().reviewCards;}
 function activeQuestions(){return activeContent().questions;}
 function allTopics(){return [VOCAB_TOPIC,...TOPICS,...HISTORY_CONTENT.topics,...SCIENCE_CONTENT.topics,...MATH_CONTENT.topics];}
-function allQuestions(){return [...SPANISH_VOCABULARY.questions,...Q,...HISTORY_CONTENT.questions,...SCIENCE_CONTENT.questions,...MATH_CONTENT.questions];}
+function allQuestions(){return [...SPANISH_VOCABULARY.questions,...Q,...HISTORY_CONTENT.questions,...(window.StudyHubHistoryMaps?.questions||[]),...SCIENCE_CONTENT.questions,...MATH_CONTENT.questions];}
 function questionSubjectId(question){return question?.subjectId||'espanol';}
 function topicForQuestion(question){return subjectContent(questionSubjectId(question)).topics.find(topic=>topic.id===question?.topic)||null;}
 function approvedAssistantContext(subjectId,unitId,topicId){
@@ -833,6 +836,7 @@ const state = {
     savedCategories:{},
     topicStudyStatus:{vocabulario:'pending_review'},
     practiceTopicBySubject:{},
+    historyMapStudy:null,
     pausedPractices:[],
     discardedSessions:[]
   }
@@ -947,6 +951,8 @@ function applySavedData(d){
     if(incoming.savedCategories&&typeof incoming.savedCategories==='object'&&!Array.isArray(incoming.savedCategories)) state.settings.savedCategories=Object.fromEntries(Object.entries(incoming.savedCategories).slice(0,1000).filter(([id,value])=>typeof id==='string'&&['dificil','importante','manana'].includes(value)));
     if(incoming.topicStudyStatus&&typeof incoming.topicStudyStatus==='object'&&!Array.isArray(incoming.topicStudyStatus)) state.settings.topicStudyStatus=Object.fromEntries(Object.entries(incoming.topicStudyStatus).filter(([id,value])=>allTopics().some(topic=>topic.id===id)&&['pending_review','in_progress','reviewed','mastered'].includes(value)).slice(0,100));
     if(incoming.practiceTopicBySubject&&typeof incoming.practiceTopicBySubject==='object'&&!Array.isArray(incoming.practiceTopicBySubject)) state.settings.practiceTopicBySubject=Object.fromEntries(Object.entries(incoming.practiceTopicBySubject).filter(([subjectId,topicId])=>SUBJECT_BY_ID.get(subjectId)?.available&&allTopics().some(topic=>topic.id===topicId)).slice(0,20));
+    if(incoming.historyMapEntry&&['dashboard','repaso','practica','examen'].includes(incoming.historyMapEntry.view)&&['repaso','practica','examen'].includes(incoming.historyMapEntry.mode)){const entry=incoming.historyMapEntry;state.settings.historyMapEntry={view:entry.view,mode:entry.mode,focusId:`openHistoryMaps-${entry.mode}`};}
+    if(incoming.historyMapStudy&&window.StudyHubHistoryMaps)state.settings.historyMapStudy=window.StudyHubHistoryMaps.normalizeContext(incoming.historyMapStudy);
     if(Array.isArray(incoming.pausedPractices)) state.settings.pausedPractices=incoming.pausedPractices.filter(row=>row&&typeof row==='object'&&typeof row.id==='string'&&typeof row.subjectId==='string'&&Array.isArray(row.queueIds)).slice(-5).map(row=>({...row,queueIds:row.queueIds.filter(id=>typeof id==='string').slice(0,500),answers:Array.isArray(row.answers)?row.answers.filter(a=>a&&typeof a==='object').slice(0,500):[],workspaceByQuestion:row.workspaceByQuestion&&typeof row.workspaceByQuestion==='object'?row.workspaceByQuestion:{}}));
     if(Array.isArray(incoming.discardedSessions)) state.settings.discardedSessions=incoming.discardedSessions.filter(row=>row&&typeof row==='object'&&typeof row.subjectId==='string').slice(-50).map(row=>({subjectId:row.subjectId,unitId:typeof row.unitId==='string'?row.unitId:null,topicId:typeof row.topicId==='string'?row.topicId:null,discardedAt:Math.max(0,Number(row.discardedAt)||0),answered:Math.max(0,Number(row.answered)||0),total:Math.max(0,Number(row.total)||0)}));
   }
@@ -971,6 +977,10 @@ function applySavedData(d){
       const answers=Array.isArray(d.session.answers)?d.session.answers.filter(a=>a&&typeof a==='object').slice(0,queue.length):[];
       const sessionSubjectId=SUBJECT_BY_ID.get(d.session.subjectId)?.available?d.session.subjectId:questionSubjectId(queue[0]);
       state.session={...d.session,subjectId:sessionSubjectId,unitId:unitById(sessionSubjectId,d.session.unitId)?.id||currentUnit(sessionSubjectId)?.id||null,idx,answers,queue,returnView:sessionReturnView(d.session.returnView,d.session.mode)};
+      if(d.view==='session'&&sessionSubjectId==='historia'&&d.session.mode==='examen'&&Array.isArray(d.session.historyMapIds)){
+        state.session.historyMapIds=d.session.historyMapIds.filter(id=>window.StudyHubHistoryMaps.maps.some(map=>map.id===id));
+        if(state.session.historyMapIds.length)state.view='session';
+      }
     }
   }
   lastSaveAt=Number.isFinite(d.savedAt)?d.savedAt:Date.now();
@@ -1347,7 +1357,7 @@ function visibleMoreItems(){
 }
 function primaryLabel(item){return item.id==='cuenta'?(accountSession.user?'Cuenta':'Entrar'):item.label;}
 function navLabel(item){if(item.id!=='novedades')return primaryLabel(item);const seen=new Set(state.settings.seenUpdateIds||[]);const count=(window.StudyHubHubUI?.updates||[]).filter(update=>!seen.has(update.updateId)).length;return count?`Novedades · ${count}`:'Novedades';}
-function navigationView(view){view=resolveViewAlias(view);return view==='favorites'?'guardadas':view==='studyToday'?'today':view;}
+function navigationView(view){view=resolveViewAlias(view);return view==='favorites'?'guardadas':view==='studyToday'?'today':view==='historyMaps'?(state.settings.historyMapEntry?.mode==='examen'?'examen':'repaso'):view;}
 function primaryActive(item){const view=navigationView(state.view);return item.id==='more'?MORE_VIEWS.has(view):view===item.id;}
 function desktopActive(item){const view=navigationView(state.view);return item.id==='more'?DESKTOP_MORE_VIEWS.has(view):view===item.id;}
 
@@ -1374,7 +1384,12 @@ function openMoreMenu(trigger){
   root.querySelectorAll('[data-more-view]').forEach(button=>button.addEventListener('click',()=>{const view=button.dataset.moreView;closeMoreMenu(false);const transition=navigateFromNav(view);const ready=transition?.updateCallbackDone||Promise.resolve();ready.then(()=>{const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}});}));
   document.getElementById('closeMore').focus();
 }
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&moreOpen)closeMoreMenu();});
+document.addEventListener('keydown',event=>{
+  if(event.key!=='Escape')return;
+  if(moreOpen){event.preventDefault();closeMoreMenu();}
+  else if(!event.defaultPrevented&&state.view==='historyMaps'){event.preventDefault();leaveHistoryMaps();}
+  else if(!event.defaultPrevented&&state.activeSubjectId==='historia'&&['repaso','practica','examen'].includes(state.view)){event.preventDefault();leaveHistorySelector();}
+});
 document.addEventListener('keydown',event=>{
   if(!moreOpen||event.key!=='Tab')return;
   const focusable=[...document.querySelectorAll('#morePanel button:not([disabled])')];
@@ -1527,11 +1542,14 @@ function saveAndExitPractice(){
   s.hintLevel=Number.isFinite(s.hintLevel)?s.hintLevel:0;
   s.answered=!!s.answered;
   s.attemptStage=attemptStage;
-  state.view='practica';
+  const mapOrigin=s.historyMapId?historyMapSessionOrigin(s):null;
+  if(mapOrigin)state.settings.historyMapEntry={...mapOrigin};
+  state.view=s.historyMapId?sessionReturnView(s.returnView,s.mode):'practica';
   state.activeTopicId=null;
   saveState();
   render();
   window.scrollTo(0,0);
+  if(s.historyMapId)focusHistoryMapOrigin();
 }
 function resumeSavedPractice(){
   const s=state.session;
@@ -1565,7 +1583,9 @@ function portablePracticeSession(s){
     hintLevel:Number(s.hintLevel)||0, answered:!!s.answered, currentSelection:s.currentSelection??null,
     attemptStage:Number(s.attemptStage)||0, startedAt:Number(s.startedAt)||Date.now(), pausedAt:Date.now(),
     countStats:s.countStats!==false, returnView:sessionReturnView(s.returnView,s.mode), practiceToolsEnabled:true,
-    workspaceByQuestion:s.workspaceByQuestion&&typeof s.workspaceByQuestion==='object'?s.workspaceByQuestion:{}
+    workspaceByQuestion:s.workspaceByQuestion&&typeof s.workspaceByQuestion==='object'?s.workspaceByQuestion:{},
+    optionOrderByQuestion:s.optionOrderByQuestion||{},historyMapId:s.historyMapId||null,
+    ...(s.historyMapEntry?{historyMapEntry:{...s.historyMapEntry}}:{})
   };
 }
 function stashCurrentPractice(){
@@ -1594,7 +1614,25 @@ function clearShellNavigationMotion(){
   delete document.documentElement.dataset.navigationDirection;
   document.getElementById('main')?.classList.remove('shell-navigation-enter');
 }
-function goto(view){view=resolveViewAlias(view);setViewContext(view);saveState();render();window.scrollTo(0,0);}
+let historySelectorOrigin=null;
+function historySelectorFocusSelector(element){
+  if(!element)return null;
+  if(element.matches('[data-history-open]'))return `[data-history-unit="${CSS.escape(element.dataset.historyUnit)}"][data-history-open="${CSS.escape(element.dataset.historyOpen)}"]`;
+  if(element.id)return `#${CSS.escape(element.id)}`;
+  for(const attribute of ['data-study-unit','data-nav','data-navm'])if(element.hasAttribute(attribute))return `[${attribute}="${CSS.escape(element.getAttribute(attribute))}"]`;
+  return null;
+}
+function goto(view){
+  view=resolveViewAlias(view);
+  const previousView=state.view,previousUnit=state.activeUnitId,trigger=document.activeElement;
+  setViewContext(view);
+  if(state.activeSubjectId==='historia'&&['repaso','practica','examen'].includes(view)&&!['repaso','practica','examen','historyMaps'].includes(previousView)){
+    // Guardar y salir vuelve al selector existente, sin convertir Volver en
+    // una reanudación involuntaria de la sesión que se acaba de guardar.
+    if(previousView!=='session'||!historySelectorOrigin)historySelectorOrigin={view:previousView==='session'?'dashboard':previousView,unitId:previousUnit,focusSelector:historySelectorFocusSelector(trigger)};
+  }
+  saveState();render();window.scrollTo(0,0);
+}
 function navigateWithShellMotion(view){
   view=resolveViewAlias(view);
   if(state.view===view){goto(view);return null;}
@@ -1615,6 +1653,13 @@ function navigateWithShellMotion(view){
   window.setTimeout(clearShellNavigationMotion,300);
   return null;
 }
+function setReviewTopicContext(subjectId,topicId){
+  state.activeTopicId=topicId;state.lastVisitedTopicBySubject[subjectId]=topicId;
+  const units=subjectUnits(subjectId);
+  const unit=[units.current,...units.previous,...units.completed].filter(Boolean).find(item=>item.topicIds?.includes(topicId));
+  if(unit)state.activeUnitId=unit.id;
+  if(subjectId==='historia'){state.settings.examTopicsBySubject ||= {};state.settings.examTopicsBySubject.historia=[topicId];}
+}
 function platformUiContext(){return{user:accountSession.user,escape:escHtml,subjects:SUBJECT_CATALOG,subjectName:id=>escHtml(SUBJECT_BY_ID.get(id)?.name||id),goto,openSubject,toast:showToast,
   updatesSeen:()=>state.settings.seenUpdateIds||[],markUpdatesSeen:ids=>{state.settings.seenUpdateIds=[...new Set([...(state.settings.seenUpdateIds||[]),...ids])].slice(-100);saveState();renderNav();},
   calendarSeen:()=>state.settings.seenCalendarIds||[],markCalendarSeen:ids=>{state.settings.seenCalendarIds=[...new Set([...(state.settings.seenCalendarIds||[]),...ids])].slice(-500);saveState();},
@@ -1622,8 +1667,8 @@ function platformUiContext(){return{user:accountSession.user,escape:escHtml,subj
   academicEntries:()=>SUBJECT_CATALOG.filter(subject=>subject.available).flatMap(subject=>{const content=subjectContent(subject.id);return [{type:'subject',id:subject.id,subjectId:subject.id,title:subject.name},...[content.units.current,...content.units.previous,...content.units.completed].filter(Boolean).map(unit=>({type:'unit',id:unit.id,subjectId:subject.id,title:unit.name})),...content.topics.map(topic=>({type:'topic',id:topic.id,subjectId:subject.id,title:topic.name}))];}),
   studyData:()=>SUBJECT_CATALOG.filter(subject=>subject.available).map(subject=>({subjectId:subject.id,subjectName:subject.name,topics:subjectContent(subject.id).topics.map(topic=>({id:topic.id,name:topic.name,attempts:state.stats[topic.id]?.attempts||0,correct:state.stats[topic.id]?.correct||0,studyStatus:state.settings.topicStudyStatus?.[topic.id]||topic.studyStatus||'',priority:topic.priority||''})),errors:subjectErrors(subject.id).length,lastPractice:subjectHistory(subject.id).at(-1)?.date||''})),
   practiceWeak:subjectId=>{if(openSubject(subjectId,'practica'))startSession({mode:'practica',special:'debiles'});},prepareTest:(subjectId,minutes)=>{if(openSubject(subjectId,'practica')){const plan=window.StudyHubPlanner.prepareTest(activeTopics(),state.stats,minutes);startSession({mode:'practica',topics:plan.topicIds,limit:plan.questionTarget});}},
-  reviewTopic:(subjectId,topicId)=>{if(openSubject(subjectId,'repaso')){repasoFilter=topicId;repasoIndex=0;state.activeTopicId=topicId;state.lastVisitedTopicBySubject[subjectId]=topicId;goto('repasoCards');}},
-  reviewCard:(subjectId,cardId)=>{if(openSubject(subjectId,'repaso')){const [,topic,title]=cardId.split('|');repasoFilter=topic;repasoIndex=Math.max(0,activeReviewCards().filter(card=>card.topic===topic).findIndex(card=>card.title===title));state.activeTopicId=topic;state.lastVisitedTopicBySubject[subjectId]=topic;goto('repasoCards');}}};}
+  reviewTopic:(subjectId,topicId)=>{if(openSubject(subjectId,'repaso')){repasoFilter=topicId;repasoIndex=0;setReviewTopicContext(subjectId,topicId);goto('repasoCards');}},
+  reviewCard:(subjectId,cardId)=>{if(openSubject(subjectId,'repaso')){const [,topic,title]=cardId.split('|');repasoFilter=topic;repasoIndex=Math.max(0,activeReviewCards().filter(card=>card.topic===topic).findIndex(card=>card.title===title));setReviewTopicContext(subjectId,topic);goto('repasoCards');}}};}
 function render(){
   state.view=resolveViewAlias(state.view);
   if(state.view!=='admin'){clearInterval(adminRefreshTimer);adminRefreshTimer=null;}
@@ -1642,7 +1687,7 @@ function render(){
     dashboard: renderDashboard, cuenta: renderCuenta, repaso: renderRepasoHome, practica: renderPracticaHome,
     experimental: renderExperimentalHome, examen: renderExamenHome, errores: renderErrores, guardadas: renderGuardadas,
     historial: renderHistorial, feedback:renderFeedback, leaderboard: renderLeaderboard, admin: renderAdmin, novedades: renderNovedades, ajustes: renderAjustes,
-    session: renderSession, results: renderResults, repasoCards: renderRepasoCards, scienceFormulas:renderScienceFormulas,
+    session: renderSession, results: renderResults, repasoCards: renderRepasoCards, historyMaps:renderHistoryMaps, scienceFormulas:renderScienceFormulas,
   };
   (renderers[state.view]||renderHub)(main);
 }
@@ -1736,6 +1781,12 @@ function assessmentStatusBadge(assessment){
   if(assessment.status==='taken') return '<span class="status-badge">TOMADA</span>';
   return `<span class="status-badge">${escHtml(String(assessment.status||'').toUpperCase())}</span>`;
 }
+function historyUnitOverviewHtml(units){
+  return `<div class="subject-columns" data-history-overview style="margin-top:14px;">${[units.current,...units.previous,...units.completed].filter(Boolean).map(unit=>`<section class="subject-block"><div class="system-row"><h3 style="margin:0;"><button class="icon-btn" data-study-unit="${unit.id}">${escHtml(unit.name)}</button></h3><span class="subject-status">${unit.status==='current'?'Unidad actual':'Unidad anterior'}</span></div>${unit.description?`<p class="cloud-note">${escHtml(unit.description)}</p>`:''}<p class="cloud-note">${unit.topicIds.length} temas disponibles.</p><div class="btn-row history-mode-accesses" style="margin-top:12px;">${[["practica","Practicar"],["repaso","Repasar"],["examen","Examen"]].map(([mode,label],index)=>`<div class="history-mode-access"><button class="btn${index?" ghost":""}" data-history-unit="${unit.id}" data-history-open="${mode}">${label}</button>${unit.id==='historia-europeos'?historyMapAccessHtml(mode):''}</div>`).join('')}</div>${unit.id==='historia-europeos'?historyMapReferenceHtml():''}</section>`).join('')}</div>`;
+}
+function historyUnitProgressHtml(units){
+  return [units.current,...units.previous,...units.completed].filter(Boolean).map(unit=>`<section class="history-unit-progress"><h3><button type="button" class="icon-btn history-progress-toggle" data-history-progress="${unit.id}" aria-label="Progreso de ${escHtml(unit.name)}" aria-expanded="false" aria-controls="progress-${unit.id}"><span><strong>${escHtml(unit.name)}</strong><small>${unit.status==='current'?'Unidad actual':'Unidad anterior'} · ${unit.topicIds.length} temas</small></span><span data-progress-label>Mostrar</span></button></h3><div class="history-progress-topics" id="progress-${unit.id}" hidden>${unitTopics(unit.id).map(topic=>{const m=computeMastery(topic.id);return `<div class="topic-row" data-topic-progress="${topic.id}"><div class="tname">${topic.icon} ${escHtml(topic.name)}</div><div class="bar-track"><div class="bar-fill" style="width:${m.pct}%"></div></div><span class="pill ${statusPillClass(m.status)}">${statusLabel(m.status)}</span></div>`;}).join('')}</div></section>`).join('');
+}
 function renderDashboard(main){
   const subject=activeSubject(),content=activeContent(),topics=content.topics;
   const units=subjectUnits(subject.id),activeUnit=unitById(subject.id,state.activeUnitId)||units.current;
@@ -1769,9 +1820,10 @@ function renderDashboard(main){
           <p style="margin:0;color:var(--ink-soft);font-size:.84rem;">Materia disponible del Study Hub.</p>
         </div>
       </div>
-      <div class="subject-columns" style="margin-top:14px;">
+      ${subject.id==='historia'?historyUnitOverviewHtml(units):`<div class="subject-columns" style="margin-top:14px;">
         <div class="subject-block">
-          <div class="system-row"><h3 style="margin:0;">${escHtml(activeUnit?.name||'Unidad actual')}</h3><span class="subject-status">${activeUnit?.status==='completed'?'Completada':'Actual'}</span></div>
+          <div class="system-row"><h3 style="margin:0;">${subject.id==='historia'?`<button class="icon-btn" data-study-unit="${activeUnit.id}">${escHtml(activeUnit.name)}</button>`:escHtml(activeUnit?.name||'Unidad actual')}</h3><span class="subject-status">${activeUnit?.status==='completed'?'Completada':activeUnit?.status==='previous'?'Anterior':'Actual'}</span></div>
+          ${activeUnit?.description?`<p class="cloud-note">${escHtml(activeUnit.description)}</p>`:''}
           ${activeUnit?.type?`<p class="subject-empty" style="margin-top:7px;">${escHtml(activeUnit.type)}</p>`:''}
           ${activeUnit?.topicStatus?`<p class="cloud-note">${activeUnit.topicStatus==='in_progress'?'📌 Tema en progreso':activeUnit.topicStatus==='current'?'Tema actual':escHtml(activeUnit.topicStatus)}${activeUnit.canGrow?' · Se seguirá añadiendo contenido aprobado.':''}</p>`:''}
           ${subject.id==='espanol'?`<p class="cloud-note">${(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='pending_review'?'Pendiente de repasar para Competencia':(state.settings.topicStudyStatus?.vocabulario||'pending_review')==='in_progress'?'Repaso en progreso':'Repasado'}</p>`:''}
@@ -1782,15 +1834,15 @@ function renderDashboard(main){
         <div class="subject-block">
           <h3>Unidades anteriores</h3>
           ${[...units.previous,...units.completed].length
-            ? `<div class="subject-tags">${[...units.previous,...units.completed].sort((a,b)=>(a.order||0)-(b.order||0)).map(unit=>`<span class="subject-tag">${escHtml(unit.displayName||unit.name)}${unit.assessments?.length?` · ${unit.assessments.map(assessmentStatusLabel).map(escHtml).join(' · ')}`:unit.examTaken?` · Examen ya tomado · ${new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${unit.examTakenDate}T00:00:00Z`))}`:''}</span>`).join('')}</div>`
+            ? `<div class="subject-tags">${[...units.previous,...units.completed].sort((a,b)=>(a.order||0)-(b.order||0)).map(unit=>subject.id==='historia'?`<button class="icon-btn" data-study-unit="${unit.id}">${escHtml(unit.name)}</button>`:`<span class="subject-tag">${escHtml(unit.displayName||unit.name)}${unit.assessments?.length?` · ${unit.assessments.map(assessmentStatusLabel).map(escHtml).join(' · ')}`:unit.examTaken?` · Examen ya tomado · ${new Intl.DateTimeFormat('es-ES',{day:'numeric',month:'long',year:'numeric',timeZone:'UTC'}).format(new Date(`${unit.examTakenDate}T00:00:00Z`))}`:''}</span>`).join('')}</div>`
             : `<p class="subject-empty">Todavía no hay unidades anteriores. El contenido actual seguirá accesible cuando se añada material nuevo.</p>`}
         </div>
-      </div>
+      </div>`}
     </div>
     <div class="grid grid-2" style="align-items:start;margin-top:20px;">
       <div class="card">
         <p class="section-title">Progreso por tema</p>
-        ${topics.map(t=>{ const m=computeMastery(t.id);
+        ${subject.id==='historia'?historyUnitProgressHtml(units):topics.map(t=>{ const m=computeMastery(t.id);
           return `<div class="topic-row"><div class="tname">${t.icon} ${t.name}</div>
           <div class="bar-track"><div class="bar-fill" style="width:${m.pct}%"></div></div>
           <span class="pill ${statusPillClass(m.status)}">${statusLabel(m.status)}</span></div>`; }).join('')}
@@ -1807,8 +1859,15 @@ function renderDashboard(main){
     </div>
   `;
   document.getElementById('backToHub').addEventListener('click',()=>navigateWithShellMotion('hub'));
-  document.getElementById('openSubjectReview').addEventListener('click',()=>goto('repaso'));
-  document.getElementById('openSubjectPractice').addEventListener('click',()=>goto('practica'));
+  document.getElementById('openSubjectReview')?.addEventListener('click',()=>goto('repaso'));
+  document.getElementById('openSubjectPractice')?.addEventListener('click',()=>goto('practica'));
+  wireHistoryMapAccess(main);
+  main.querySelectorAll('[data-history-open]').forEach(button=>button.addEventListener('click',()=>{state.activeUnitId=button.dataset.historyUnit;state.activeTopicId=null;goto(button.dataset.historyOpen);}));
+  main.querySelectorAll('[data-history-progress]').forEach(button=>button.addEventListener('click',()=>{
+    const panel=document.getElementById(button.getAttribute('aria-controls')),expanded=button.getAttribute('aria-expanded')==='true';
+    button.setAttribute('aria-expanded',String(!expanded));panel.hidden=expanded;button.querySelector('[data-progress-label]').textContent=expanded?'Mostrar':'Ocultar';
+  }));
+  main.querySelectorAll('[data-study-unit]').forEach(button=>button.addEventListener('click',()=>{state.activeUnitId=button.dataset.studyUnit;state.activeTopicId=null;goto('practica');}));
   if(weak) document.getElementById('goWeak').addEventListener('click', ()=> startSession({mode:'practica', topic:weak.id}));
   const ga=document.getElementById('goAccount'); if(ga) ga.addEventListener('click',()=>goto('cuenta')); 
   const resumeFromDash=document.getElementById('resumeFromDash');
@@ -1979,7 +2038,113 @@ function renderReviewExample(c){
 
 let repasoIndex = 0, repasoFilter=null;
 
+function historyStudyUnit(){return unitById('historia',state.activeUnitId)||currentUnit('historia');}
+function historySelectorBackHtml(){return '<div class="study-toolbar"><button class="icon-btn" id="historySelectorBack" type="button">Volver</button></div>';}
+function leaveHistorySelector(){
+  const origin=historySelectorOrigin||{view:'dashboard',unitId:state.activeUnitId};
+  state.activeUnitId=origin.unitId||state.activeUnitId;
+  goto(origin.view);
+  const trigger=origin.focusSelector?document.querySelector(origin.focusSelector):null;
+  if(trigger)trigger.focus();
+  else {const heading=document.querySelector('main h1');if(heading){heading.setAttribute('tabindex','-1');heading.focus();}}
+}
+function wireHistorySelectorBack(){document.getElementById('historySelectorBack')?.addEventListener('click',leaveHistorySelector);}
+function historyMapAccessHtml(mode){
+  const label={repaso:'Explorar mapas',practica:'Practicar mapas',examen:'Examen de mapas'}[mode];
+  return `<button class="icon-btn history-map-access" id="openHistoryMaps-${mode}" data-history-map-open="${mode}" type="button">${label}</button>`;
+}
+function historyMapReferenceHtml(){return '<p class="cloud-note history-map-reference">Mapas: América colonial · Tordesillas · Primeros asentamientos.</p>';}
+function focusHistoryMapOrigin(){
+  const id=state.view==='historyMaps'?(state.settings.historyMapEntry?.mode==='examen'?'startHistoryMapExam':'mapPractice'):state.settings.historyMapEntry?.focusId;
+  document.getElementById(id)?.focus();
+}
+function historyMapSessionOrigin(session){
+  return session.historyMapEntry||(session.historyMapId?{view:'repaso',mode:'repaso',focusId:'openHistoryMaps-repaso'}:null);
+}
+function wireHistoryMapAccess(main){
+  main.querySelectorAll('[data-history-map-open]').forEach(button=>button.addEventListener('click',()=>{
+    const mode=button.dataset.historyMapOpen;
+    state.settings.historyMapEntry={view:state.view,mode,focusId:button.id};
+    state.activeUnitId='historia-europeos';state.activeTopicId=null;
+    const api=window.StudyHubHistoryMaps,context=api.normalizeContext(state.settings.historyMapStudy);
+    if(mode==='practica'){
+      state.settings.historyMapStudy=context;
+      startSession({mode:'practica',questionIds:api.questionIdsForMap(context.mapId,context.mode==='identify'),historyMapId:context.mapId,returnView:state.view,countStats:state.settings.practiceCountsByDefault!==false});
+      return;
+    }
+    if(mode==='repaso')state.settings.historyMapStudy=api.normalizeContext({...context,mode:'study'});
+    goto('historyMaps');
+  }));
+}
+function leaveHistoryMaps(){goto(state.settings.historyMapEntry?.view||'repaso');focusHistoryMapOrigin();}
+function renderHistoryMaps(main){
+  if(state.activeSubjectId!=='historia'||state.activeUnitId!=='historia-europeos'){goto('repaso');return;}
+  const api=window.StudyHubHistoryMaps;
+  const backLabel={dashboard:'Volver a Historia',repaso:'Volver a Repasar',practica:'Volver a Practicar',examen:'Volver a Examen'}[state.settings.historyMapEntry?.view]||'Volver a Repasar';
+  if(state.settings.historyMapEntry?.mode==='examen'){
+    api.renderExamSetup(main,{back:leaveHistoryMaps,backLabel,start:mapIds=>startSession({mode:'examen',questionIds:mapIds.flatMap(id=>api.questionIdsForMap(id,false,true)),historyMapIds:mapIds,returnView:'historyMaps',fullExam:false})});
+    return;
+  }
+  api.render(main,{
+    context:state.settings.historyMapStudy,backLabel,
+    setContext:context=>{state.settings.historyMapStudy=context;saveState();},
+    back:leaveHistoryMaps,
+    canResume:hasResumablePractice()&&state.session.historyMapId,
+    resume:resumeSavedPractice,
+    startPractice:(mapId,questionIds)=>startSession({mode:'practica',questionIds,historyMapId:mapId,returnView:'historyMaps',countStats:state.settings.practiceCountsByDefault!==false})
+  });
+}
+function historySelectedTopics(){
+  const ids=historyStudyUnit().topicIds;
+  const saved=state.settings.examTopicsBySubject?.historia;
+  // Un snapshot antiguo puede seleccionar solo Civilizaciones. No mezcla
+  // esa selección con la unidad nueva; una selección vacía sí se conserva.
+  if(state.activeTopicId&&ids.includes(state.activeTopicId))return [state.activeTopicId];
+  if(Array.isArray(saved)&&(!saved.length||saved.some(id=>ids.includes(id))))return saved.filter(id=>ids.includes(id));
+  return ids.slice();
+}
+function historyTopicPickerHtml(topics,selected,id){
+  return `<fieldset class="study-fieldset"><legend>Temas que quieres incluir</legend><div class="btn-row"><button class="icon-btn" type="button" data-history-select="all">Seleccionar todos</button><button class="icon-btn" type="button" data-history-select="none">Limpiar selección</button></div><div class="check-list study-check-list" id="${id}">${topics.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${selected.includes(t.id)?'checked':''}> ${escHtml(t.name)}</label>`).join('')}</div></fieldset>`;
+}
+function bindHistoryTopicPicker(main,id,onChange){
+  const inputs=[...main.querySelectorAll(`#${id} input`)];
+  const changed=()=>{
+    const selected=inputs.filter(input=>input.checked).map(input=>input.value);
+    state.settings.examTopicsBySubject ||= {};
+    state.settings.examTopicsBySubject.historia=selected;
+    state.activeTopicId=selected.length===1?selected[0]:null;
+    saveState();onChange(selected);
+  };
+  inputs.forEach(input=>input.addEventListener('change',changed));
+  main.querySelectorAll('[data-history-select]').forEach(button=>button.addEventListener('click',()=>{inputs.forEach(input=>input.checked=button.dataset.historySelect==='all');changed();}));
+}
+function renderHistoryStudyHome(main,mode){
+  const unit=historyStudyUnit(),topics=unitTopics(unit.id),selected=historySelectedTopics();
+  const actions=mode==='practica'?[['practica','Practicar'],['repaso','Repasar']]:[['repaso','Repasar'],['practica','Practicar']];
+  main.innerHTML=`<section class="study-flow study-flow--setup" data-study-surface="${mode==='practica'?'practice':'review'}">${historySelectorBackHtml()}<header class="pagehead study-flow-head"><p class="study-overline">Historia · ${escHtml(unit.name)}</p><h1>${mode==='practica'?'Práctica':'Repaso'} de Historia</h1><p>${escHtml(unit.description||unit.name)}</p></header>
+    ${hasResumablePractice()&&state.session.subjectId==='historia'?`<section class="card resume-card study-panel study-resume"><h2>Continúa donde la dejaste</h2><p class="cloud-note">Pregunta ${resumablePracticeProgress().current} / ${resumablePracticeProgress().total}</p><button class="btn" id="resumePractice">Continuar</button></section>`:''}
+    <section class="study-panel study-topic-picker">${historyTopicPickerHtml(topics,selected,'historyTopics')}<p class="cloud-note" id="historySelectionNote" aria-live="polite"></p><div class="btn-row study-actions">${actions.map(([action,label],index)=>`<button class="btn${index?' ghost':''}" data-history-mode="${action}">${label}</button>`).join('')}<button class="btn ghost" data-history-mode="examen">Examen</button></div></section>
+    ${unit.id==='historia-europeos'?`<section class="study-panel history-map-resources">${historyMapAccessHtml(mode)}${historyMapReferenceHtml()}</section>`:''}
+    ${(state.settings.pausedPractices||[]).some(row=>row.subjectId==='historia')?`<section class="study-panel"><h2>Prácticas guardadas</h2>${state.settings.pausedPractices.filter(row=>row.subjectId==='historia').slice(-3).reverse().map(row=>`<div class="study-secondary-row"><span>${row.answers?.length||0} contestadas · ${row.queueIds?.length||0} preguntas</span><button class="icon-btn" data-resume-paused="${escHtml(row.id)}">Continuar</button></div>`).join('')}</section>`:''}
+    </section>`;
+  let selection=selected;
+  const update=ids=>{selection=ids;main.querySelectorAll('[data-history-mode]').forEach(button=>button.disabled=!ids.length);main.querySelector('#historySelectionNote').textContent=ids.length?`${ids.length} ${ids.length===1?'tema seleccionado':'temas seleccionados'}`:'Selecciona al menos un tema.';};
+  update(selected);bindHistoryTopicPicker(main,'historyTopics',update);wireHistorySelectorBack();
+  wireHistoryMapAccess(main);
+  main.querySelector('#resumePractice')?.addEventListener('click',resumeSavedPractice);
+  main.querySelectorAll('[data-resume-paused]').forEach(button=>button.addEventListener('click',()=>resumePausedPracticeById(button.dataset.resumePaused)));
+  main.querySelectorAll('[data-history-mode]').forEach(button=>button.addEventListener('click',()=>{
+    if(!selection.length)return;
+    state.settings.examTopicsBySubject ||= {};state.settings.examTopicsBySubject.historia=selection.slice();
+    const action=button.dataset.historyMode;
+    if(action==='examen'){goto('examen');return;}
+    if(action==='practica'){startSession({mode:'practica',topics:selection,countStats:state.settings.practiceCountsByDefault!==false});return;}
+    repasoFilter=selection.slice();repasoIndex=0;state.activeTopicId=selection.length===1?selection[0]:null;goto('repasoCards');
+  }));
+}
+
 function renderRepasoHome(main){
+  if(activeSubject().id==='historia'){renderHistoryStudyHome(main,'repaso');return;}
   const subject=activeSubject(),topics=activeTopics(),cards=activeReviewCards();
   if(!topics.length){main.innerHTML=`<section class="study-flow study-flow--setup" data-study-surface="review"><header class="pagehead study-flow-head"><p class="study-overline">Repasar</p><h1>Repaso de ${subject.name}</h1><p>La materia está activa y lista para recibir contenido aprobado.</p></header><div class="empty-state study-empty"><span class="ic">○</span>Selecciona otra materia mientras se incorpora material real.</div></section>`;return;}
   const visibleTopics=subject.id==='espanol'?[VOCAB_TOPIC]:topics;
@@ -2007,7 +2172,11 @@ function renderRepasoCards(main){
   const reviewCards=activeReviewCards(),topics=activeTopics();
   const effectiveFilter=repasoFilter||state.activeTopicId||null;
   if(!repasoFilter&&effectiveFilter)repasoFilter=effectiveFilter;
-  const cards = effectiveFilter? reviewCards.filter(c=>c.topic===effectiveFilter) : reviewCards;
+  const selectedTopics=activeSubject().id==='historia'?historySelectedTopics():null;
+  const filterTopics=selectedTopics||(Array.isArray(effectiveFilter)?effectiveFilter:effectiveFilter?[effectiveFilter]:null);
+  const cards = filterTopics? reviewCards.filter(c=>filterTopics.includes(c.topic)) : reviewCards;
+  if(!cards.length){goto('repaso');return;}
+  repasoIndex=Math.min(repasoIndex,cards.length-1);
   const c = cards[repasoIndex];
   const cardId=`${activeSubject().id}|${c.topic}|${c.title}`;
   const cardProgress=state.settings.flashcards?.[cardId];
@@ -2036,9 +2205,10 @@ function renderRepasoCards(main){
   document.getElementById('exitTopic').addEventListener('click',()=>{state.activeTopicId=null;repasoFilter=null;saveState();goto('repaso');});
   document.getElementById('prevRep').addEventListener('click', ()=>{ repasoIndex=Math.max(0,repasoIndex-1); render(); });
   document.getElementById('nextRep').addEventListener('click', ()=>{
-    if(repasoIndex<cards.length-1){ repasoIndex++; render(); } else {if(effectiveFilter)state.settings.topicStudyStatus[effectiveFilter]='reviewed';saveState();goto('repaso');}
+    if(repasoIndex<cards.length-1){ repasoIndex++; render(); } else {if(filterTopics)filterTopics.forEach(id=>state.settings.topicStudyStatus[id]='reviewed');saveState();goto('repaso');}
   });
-  document.getElementById('practThis').addEventListener('click', ()=> startSession({mode:'practica', topic:c.topic, countStats:state.settings.practiceCountsByDefault!==false}));
+  if(selectedTopics)document.getElementById('practThis').textContent=selectedTopics.length===1?'Practicar este tema':'Practicar estos temas';
+  document.getElementById('practThis').addEventListener('click', ()=> startSession({mode:'practica', ...(selectedTopics?{topics:selectedTopics}:{topic:c.topic}), countStats:state.settings.practiceCountsByDefault!==false}));
   for(const [buttonId,status] of [['cardKnown','known'],['cardUnknown','unknown']]) document.getElementById(buttonId).addEventListener('click',()=>{
     state.settings.flashcards ||= {};
     const previous=state.settings.flashcards[cardId]||{};
@@ -2059,6 +2229,7 @@ function renderRepasoCards(main){
    PRÁCTICA HOME
 ========================================================= */
 function renderPracticaHome(main){
+  if(activeSubject().id==='historia'){renderHistoryStudyHome(main,'practica');return;}
   const subject=activeSubject(),topics=activeTopics(),questions=activeQuestions(),isSpanish=subject.id==='espanol';
   const configuredTopicId=state.activeTopicId||state.settings.practiceTopicBySubject?.[subject.id]||null;
   const selectedTopic=topics.find(topic=>topic.id===configuredTopicId);
@@ -2275,32 +2446,35 @@ function renderExperimentalHome(main){
    EXAMEN HOME
 ========================================================= */
 function renderExamenHome(main){
-  const subject=activeSubject(),topics=activeTopics();
+  const subject=activeSubject(),topics=subject.id==='historia'?unitTopics(historyStudyUnit().id):activeTopics();
   const questions=subject.id==='matematicas'?MATH_CONTENT.questionsForMode('practice'):activeQuestions();
   if(!questions.length){main.innerHTML=`<section class="study-flow study-flow--exam-setup" data-study-surface="exam"><header class="pagehead study-flow-head"><p class="study-overline">Examen</p><h1>Examen de ${subject.name}</h1><p>Todavía no existe un banco académico aprobado para esta materia.</p></header><div class="empty-state study-empty"><span class="ic">○</span>No se inventaron unidades, temas ni preguntas.</div></section>`;return;}
   const savedDefaults=subject.id==='espanol'?state.settings.examTopics:state.settings.examTopicsBySubject?.[subject.id];
-  const defaults = new Set(savedDefaults?.length?savedDefaults:topics.map(t=>t.id));
+  const defaults = new Set(subject.id==='historia'?historySelectedTopics():savedDefaults?.length?savedDefaults:topics.map(t=>t.id));
   const sizeOptions=subject.id==='espanol'&&topics.some(topic=>topic.id==='vocabulario')?[5,10,15,20]:subject.id==='matematicas'?[MATH_CONTENT.questionsForMode('practice').length]:[10,20,25,30,50];
   const validSizes=new Set([...sizeOptions.map(String),'all']);
   const savedSize=state.settings.examSizeBySubject?.[subject.id];
   let chosen=validSizes.has(String(savedSize))?String(savedSize):null;
   main.innerHTML = `
     <section class="study-flow study-flow--exam-setup" data-study-surface="exam">
-    <header class="pagehead study-flow-head"><p class="study-overline">Examen</p><h1>Examen de ${subject.name}</h1><p>${subject.name} · ${escHtml(currentUnit(subject.id)?.name||'Unidad actual')}. Las respuestas se revelan solo al terminar.</p></header>
+    ${subject.id==='historia'?historySelectorBackHtml():''}
+    <header class="pagehead study-flow-head"><p class="study-overline">Examen</p><h1>Examen de ${subject.name}</h1><p>${subject.name} · ${escHtml((subject.id==='historia'?historyStudyUnit():currentUnit(subject.id))?.name||'Unidad actual')}. Las respuestas se revelan solo al terminar.</p></header>
+    ${subject.id==='historia'&&historyStudyUnit().id==='historia-europeos'?`<section class="study-panel history-map-resources">${historyMapAccessHtml('examen')}${historyMapReferenceHtml()}</section>`:''}
     <section class="study-panel study-exam-setup">
-      <fieldset class="study-fieldset"><legend>Temas que quieres incluir</legend>
+      ${subject.id==='historia'?historyTopicPickerHtml(topics,[...defaults],'examTopics'):`<fieldset class="study-fieldset"><legend>Temas que quieres incluir</legend>
       <div class="check-list study-check-list" id="examTopics">
         ${topics.map(t=>`<label class="check-line"><input type="checkbox" value="${t.id}" ${defaults.has(t.id)?'checked':''}> ${t.icon} ${t.name}</label>`).join('')}
       </div>
-      </fieldset>
+      </fieldset>`}
       <fieldset class="study-fieldset"><legend>Número de preguntas</legend>
       <div class="btn-row study-size-options" id="examSize">
         ${sizeOptions.map(n=>`<button type="button" class="chip ${chosen===String(n)?'active':''}" data-n="${n}" aria-pressed="${chosen===String(n)}">${n} preguntas</button>`).join('')}
         <button type="button" class="chip ${chosen==='all'?'active':''}" data-n="all" aria-pressed="${chosen==='all'}">Examen completo</button>
       </div>
       </fieldset>
-      <div class="btn-row study-actions"><button class="btn" id="startExam" disabled>Selecciona un número de preguntas</button><button class="btn ghost" id="clearExamSelection" type="button">Limpiar selección</button></div>
+      <div class="btn-row study-actions"><button class="btn" id="startExam" disabled>Selecciona un número de preguntas</button>${subject.id==='historia'?'':'<button class="btn ghost" id="clearExamSelection" type="button">Limpiar selección</button>'}</div>
     </section></section>`;
+  if(subject.id==='historia'&&historyStudyUnit().id==='historia-europeos')wireHistoryMapAccess(main);
   function selectedTopics(){ return [...main.querySelectorAll('#examTopics input:checked')].map(x=>x.value); }
   function updateStart(){
     const btn=document.getElementById('startExam'), topics=selectedTopics();
@@ -2308,7 +2482,8 @@ function renderExamenHome(main){
     btn.textContent=topics.length===0?'Selecciona al menos un tema':(!chosen?'Selecciona un número de preguntas':'Comenzar examen');
   }
   function saveExamTopicSelection(){const selected=selectedTopics();if(subject.id==='espanol')state.settings.examTopics=selected;else{state.settings.examTopicsBySubject ||= {};state.settings.examTopicsBySubject[subject.id]=selected;}saveState();}
-  main.querySelectorAll('#examTopics input').forEach(x=>x.addEventListener('change',()=>{saveExamTopicSelection();updateStart();}));
+  if(subject.id==='historia'){bindHistoryTopicPicker(main,'examTopics',updateStart);wireHistorySelectorBack();}
+  else main.querySelectorAll('#examTopics input').forEach(x=>x.addEventListener('change',()=>{saveExamTopicSelection();updateStart();}));
   main.querySelectorAll('#examSize .chip').forEach(c=>{const selected=c.dataset.n===chosen;c.classList.toggle('active',selected);if(c.setAttribute)c.setAttribute('aria-pressed',String(selected));});
   main.querySelectorAll('#examSize .chip').forEach(c=>c.addEventListener('click', ()=>{
     main.querySelectorAll('#examSize .chip').forEach(x=>{x.classList.remove('active');if(x.setAttribute)x.setAttribute('aria-pressed','false');});
@@ -2317,7 +2492,7 @@ function renderExamenHome(main){
     state.settings.examSizeBySubject[subject.id]=chosen;
     saveState();updateStart();
   }));
-  document.getElementById('clearExamSelection').addEventListener('click',()=>{main.querySelectorAll('#examTopics input').forEach(x=>x.checked=false);saveExamTopicSelection();updateStart();});
+  document.getElementById('clearExamSelection')?.addEventListener('click',()=>{main.querySelectorAll('#examTopics input').forEach(x=>x.checked=false);saveExamTopicSelection();updateStart();});
   document.getElementById('startExam').addEventListener('click', ()=>{
     const topics=selectedTopics(); if(!chosen || !topics.length) return;
     const available=questions.filter(q=>topics.includes(q.topic)).length;
@@ -2333,11 +2508,16 @@ function renderExamenHome(main){
 function shuffle(arr){ return arr.map(a=>[Math.random(),a]).sort((a,b)=>a[0]-b[0]).map(a=>a[1]); }
 
 function startSession(opts){
+  if(Array.isArray(opts.topics)&&!opts.topics.length){showToast('Selecciona al menos un tema.',true);return;}
   const subject=activeSubject(),content=activeContent(),topics=content.topics;
   const returnView=sessionReturnView(opts.returnView||state.view,opts.mode);
-  const questions=subject.id==='matematicas'
+  let questions=subject.id==='matematicas'
     ? MATH_CONTENT.questionsForMode(opts.mathLearning?'learning':'practice')
     : content.questions;
+  const historyMap=subject.id==='historia'&&opts.mode==='practica'?window.StudyHubHistoryMaps?.maps.find(map=>map.id===opts.historyMapId):null;
+  const historyMapIds=subject.id==='historia'&&opts.mode==='examen'&&Array.isArray(opts.historyMapIds)?opts.historyMapIds.filter(id=>window.StudyHubHistoryMaps.maps.some(map=>map.id===id)):[];
+  if(historyMap||historyMapIds.length)questions=[...questions,...window.StudyHubHistoryMaps.questions];
+  if(subject.id==='historia'&&opts.topics?.length){state.settings.examTopicsBySubject ||= {};state.settings.examTopicsBySubject.historia=opts.topics.slice();}
   if(hasResumablePractice() && state.view!=='session' && !opts.forceNew){
     if(stashCurrentPractice()) showToast('Práctica anterior guardada');
   }
@@ -2384,7 +2564,7 @@ function startSession(opts){
   state.session = {
     mode: opts.mode, // 'practica' | 'examen'
     subjectId:subject.id,
-    unitId:currentUnit(subject.id)?.id||null,
+    unitId:subject.id==='historia'?(unitById(subject.id,pool[0]?.unitId)||historyStudyUnit()).id:currentUnit(subject.id)?.id||null,
     queue: pool,
     idx: 0,
     answers: [], // {qid, correct, userAnswer, usedHint}
@@ -2400,9 +2580,13 @@ function startSession(opts){
     examTopics: opts.mode==='examen' ? (opts.topics||[]).slice() : [],
     examFull: opts.mode==='examen' ? !!opts.fullExam : false,
     practiceToolsEnabled:true,
+    ...(historyMap?{historyMapId:historyMap.id}:{}),
+    ...(historyMapIds.length?{historyMapIds}:{}),
+    ...((historyMap||historyMapIds.length)&&state.settings.historyMapEntry?{historyMapEntry:{...state.settings.historyMapEntry}}:{}),
     workspaceByQuestion:{},
   };
   state.activeTopicId=opts.topic||((opts.topics||[]).length===1?opts.topics[0]:null);
+  if(subject.id==='historia')state.activeUnitId=state.session.unitId;
   if(state.activeTopicId){state.lastVisitedTopicBySubject[subject.id]=state.activeTopicId;state.settings.topicStudyStatus[state.activeTopicId]='in_progress';}
   saveState();
   goto('session');
@@ -2592,6 +2776,10 @@ function wireQaToolsPanel(question){
 function renderSession(main){
   const s = state.session;
   if(!s){ goto('dashboard'); return; }
+  if(s.historyMapId&&state.settings.historyMapStudy?.mapId!==s.historyMapId){
+    state.settings.historyMapStudy=window.StudyHubHistoryMaps.normalizeContext({mapId:s.historyMapId,mode:s.queue[0]?.mapElementId?'identify':'study'});
+    saveState();
+  }
   attemptStage=Number.isFinite(s.attemptStage)?s.attemptStage:0;
   const q = currentQ();
   const total = s.queue.length;
@@ -3139,8 +3327,16 @@ function renderQuestionBody(q, isExam){
   sessionSelection = savedSelection;
   const box = document.getElementById('qBody');
   if(q.type==='mc'){
+    let optionOrder=q.options.map((_,index)=>index);
+    if(q.unitId==='historia-europeos'){
+      state.session.optionOrderByQuestion ||= {};
+      const savedOrder=state.session.optionOrderByQuestion[q.id];
+      const valid=Array.isArray(savedOrder)&&savedOrder.length===optionOrder.length&&new Set(savedOrder).size===optionOrder.length&&savedOrder.every(index=>Number.isInteger(index)&&index>=0&&index<optionOrder.length);
+      if(valid)optionOrder=savedOrder;
+      else {optionOrder=shuffle(optionOrder);state.session.optionOrderByQuestion[q.id]=optionOrder;saveState();}
+    }
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="opt-list">
-      ${q.options.map((o,i)=>`<button type="button" class="opt" data-i="${i}"><span class="opt-letter">${String.fromCharCode(65+i)}</span><span>${o}</span></button>`).join('')}
+      ${optionOrder.map((i,position)=>`<button type="button" class="opt" data-i="${i}"><span class="opt-letter">${String.fromCharCode(65+position)}</span><span>${q.options[i]}</span></button>`).join('')}
     </div>`;
     box.querySelectorAll('.opt').forEach(o=>o.addEventListener('click', ()=>{
       box.querySelectorAll('.opt').forEach(x=>x.classList.remove('selected'));
@@ -3150,6 +3346,14 @@ function renderQuestionBody(q, isExam){
       enableSubmit();
     }));
     if(Number.isInteger(savedSelection)) box.querySelector(`[data-i="${savedSelection}"]`)?.classList.add('selected');
+    if(!isExam&&(state.session.historyMapId||q.mapId)){
+      window.StudyHubHistoryMaps.renderSessionMap(box,state.session.historyMapId||q.mapId,q,savedSelection,index=>{
+        if(!state.session.answered&&!sessionAnswerAt(state.session,state.session.idx))box.querySelector(`.opt[data-i="${index}"]`)?.click();
+      });
+      box.querySelectorAll('.opt').forEach(option=>option.addEventListener('click',()=>{
+        box.querySelectorAll('[data-map-answer]').forEach(pin=>{const item=window.StudyHubHistoryMaps.maps.find(map=>map.id===q.mapId)?.elements.find(item=>item.id===pin.dataset.mapAnswer);const selected=window.StudyHubHistoryMaps.optionIndex(q,item)===sessionSelection;pin.classList.toggle('selected',selected);pin.setAttribute('aria-pressed',String(selected));});
+      }));
+    }
   } else if(q.type==='tf'){
     box.innerHTML = `<p class="q-prompt">${q.prompt}</p><div class="tf-row">
       <button type="button" class="opt" data-v="true"><span>Verdadero</span></button>
@@ -3226,6 +3430,11 @@ function renderQuestionBody(q, isExam){
       saveState();
       enableSubmit(pickedSentence!==null && pickedFollow!==null);
     }));
+  }
+  if(isExam&&state.session.historyMapIds?.length){
+    const mapsApi=window.StudyHubHistoryMaps;
+    const map=mapsApi.maps.find(map=>state.session.historyMapIds.includes(map.id)&&(q.mapId===map.id||map.questionIds.includes(q.id)));
+    if(map)mapsApi.renderExamMap(box,map.id);
   }
   document.getElementById('feedbackZone').innerHTML='';
   const availableHints=isExam?[]:availablePracticeHints(q);
@@ -3564,6 +3773,7 @@ function reenableInputs(q){
   sessionSelection=null;
   state.session.currentSelection=null;
   box.querySelectorAll('.opt').forEach(o=>{ o.classList.remove('selected','correct','incorrect'); o.style.pointerEvents='auto'; });
+  box.querySelectorAll('[data-map-answer]').forEach(pin=>{pin.classList.remove('selected');pin.setAttribute('aria-pressed','false');});
   box.querySelectorAll('select').forEach(s=>{ s.disabled=false; s.classList.remove('correct','incorrect'); s.value=''; });
   const fillEl = document.getElementById('fillInput'); if(fillEl){ fillEl.disabled=false; fillEl.classList.remove('correct','incorrect'); fillEl.value=''; }
   for(const id of ['numericValue','numericUnit']){const el=document.getElementById(id);if(el){el.disabled=false;el.classList.remove('correct','incorrect');el.value='';}}
@@ -3572,6 +3782,7 @@ function reenableInputs(q){
   document.getElementById('submitBtn').disabled=true;
 }
 function restoreFinalizedQuestion(q,isExam,answer){
+  const s=state.session;
   sessionSelection=answer.userAnswer??null;
   state.session.currentSelection=sessionSelection;
   state.session.answered=true;
@@ -3592,7 +3803,8 @@ function restoreFinalizedQuestion(q,isExam,answer){
 function markAnswerVisual(q, ans, correct){
   const box=document.getElementById('qBody');
   if(q.type==='mc'){
-    box.querySelectorAll('.opt').forEach((o,i)=>{
+    box.querySelectorAll('.opt').forEach(o=>{
+      const i=Number(o.dataset.i);
       o.style.pointerEvents='none';
       if(i===q.correct) o.classList.add('correct');
       else if(i===ans) o.classList.add('incorrect');
@@ -3702,6 +3914,8 @@ function finishSession(){
   });
 
   state.lastResult = {subjectId:s.subjectId||'espanol',unitId:s.unitId||currentUnit(s.subjectId||'espanol')?.id||null,total, correctCount, pct, elapsed, byTopic, answers:s.answers, mode:s.mode, returnView:sessionReturnView(s.returnView,s.mode), countsTowardProgress, examTopics:s.examTopics||[], examFull:!!s.examFull, experimental:!!s.experimental};
+  const mapOrigin=(s.historyMapId||s.historyMapIds?.length)?historyMapSessionOrigin(s):null;
+  if(mapOrigin)state.lastResult.historyMapEntry={...mapOrigin};
   const completedResult=state.lastResult;
   state.session=null;
   saveState();
@@ -3715,9 +3929,9 @@ function finishSession(){
 function renderResults(main){
   const r = state.lastResult;
   if(!r){ goto('dashboard'); return; }
-  const allowedReturnViews=['dashboard','repaso','repasoCards','practica','experimental','examen','scienceFormulas','errores','guardadas','historial'];
+  const allowedReturnViews=['dashboard','repaso','repasoCards','historyMaps','practica','experimental','examen','scienceFormulas','errores','guardadas','historial'];
   const returnView=allowedReturnViews.includes(r.returnView)?r.returnView:(r.mode==='examen'?'examen':'practica');
-  const returnLabels={dashboard:'Volver a la materia',repaso:'Volver a repasar',repasoCards:'Volver al repaso',practica:'Volver a practicar',experimental:'Volver al laboratorio',examen:'Volver al examen',scienceFormulas:'Volver a fórmulas',errores:'Volver a errores',guardadas:'Volver a guardadas',historial:'Volver al historial'};
+  const returnLabels={dashboard:'Volver a la materia',repaso:'Volver a repasar',repasoCards:'Volver al repaso',historyMaps:'Volver a Mapas',practica:'Volver a practicar',experimental:'Volver al laboratorio',examen:'Volver al examen',scienceFormulas:'Volver a fórmulas',errores:'Volver a errores',guardadas:'Volver a guardadas',historial:'Volver al historial'};
   const wrong = r.answers.filter(a=>!a.correct).map(a=>findQuestionById(a.qid)).filter(Boolean);
   const subject=SUBJECT_BY_ID.get(r.subjectId||'espanol')||SUBJECT;
   const topicNames = Object.keys(r.byTopic);
@@ -3764,7 +3978,10 @@ function renderResults(main){
     </section>`:''}
     </section>
   `;
-  document.getElementById('backDash').addEventListener('click', ()=>goto(returnView));
+  document.getElementById('backDash').addEventListener('click', ()=>{
+    if(r.historyMapEntry)state.settings.historyMapEntry={...r.historyMapEntry};
+    goto(returnView);if(r.historyMapEntry)focusHistoryMapOrigin();
+  });
   const newExperimental=document.getElementById('newExperimental');
   if(newExperimental) newExperimental.addEventListener('click', ()=>goto('experimental'));
   const retryWrong=document.getElementById('retryWrong');
@@ -4296,7 +4513,7 @@ function renderAjustes(main){
    TECLADO
 ========================================================= */
 document.addEventListener('keydown', e=>{
-  if(e.key==='Enter'){
+  if(e.key==='Enter'&&!e.defaultPrevented&&!e.target?.closest?.('button,select,a,summary')){
     const btn=document.getElementById('submitBtn');
     if(btn && !btn.disabled) btn.click();
   }

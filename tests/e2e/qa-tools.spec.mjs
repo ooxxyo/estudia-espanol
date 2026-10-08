@@ -34,8 +34,9 @@ async function startHistoryPractice(page) {
   await page.locator('#rail:visible, #mobileNav:visible').getByRole('button', { name: 'Hub', exact: true }).click();
   const main = page.getByRole('main');
   await main.getByRole('button', { name: /^Historia\b/ }).click();
-  await main.getByRole('button', { name: 'Practicar', exact: true }).click();
-  await main.getByRole('button', { name: /^Geografía\b/ }).click();
+  await main.locator('[data-history-unit="historia-europeos"][data-history-open="practica"]').click();
+  await main.getByRole('button', { name: 'Limpiar selección', exact: true }).click();
+  await main.locator('#historyTopics input[value="euro-vikingos"]').check();
   await main.getByRole('button', { name: 'Practicar', exact: true }).click();
   await expect(page.locator('#qBody')).toBeVisible();
 }

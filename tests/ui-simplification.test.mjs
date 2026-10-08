@@ -212,16 +212,16 @@ test('tema español conserva todos los modos, agrupados sin duplicar repasar/pra
   assert.doesNotMatch(markup, /data-vocab-mode="(?:study|general)"/);
 });
 
-test('tema Historia no ofrece modos de Español', async () => {
-  const { markup } = await practice('historia', 'geografia');
+test('otra materia no ofrece modos de Español', async () => {
+  const { markup } = await practice('ciencia', 'geografia');
   assert.match(markup, /data-topic="geografia">Practicar/);
   assert.doesNotMatch(markup, /data-vocab-mode=/);
 });
 
 test('Repasar desde un tema elegido abre ese tema directamente', async () => {
-  const result = await practice('historia', 'geografia');
+  const result = await practice('ciencia', 'geografia');
   result.triggerReview();
-  assert.deepEqual(result.reviewCalls, [['historia', 'geografia']]);
+  assert.deepEqual(result.reviewCalls, [['ciencia', 'geografia']]);
 });
 
 function renderHubFixture(pending = null, navigationEnter = false, user = null) {
@@ -438,8 +438,8 @@ function renderReviewHomeFixture(rememberedTopicId = 'geografia') {
   const continueButton={addEventListener(type,handler){handlers.set(type,handler);}};
   const main={innerHTML:'',querySelectorAll:()=>[],querySelector:selector=>selector==='#continuePreviousReview'?continueButton:null};
   const sandbox={
-    main,state:{lastVisitedTopicBySubject:{historia:rememberedTopicId}},
-    activeSubject:()=>({id:'historia',name:'Historia'}),activeTopics:()=>[topic],
+    main,state:{lastVisitedTopicBySubject:{ciencia:rememberedTopicId}},
+    activeSubject:()=>({id:'ciencia',name:'Ciencia'}),activeTopics:()=>[topic],
     activeReviewCards:()=>[{topic:'geografia'}],VOCAB_TOPIC:topic,TOPICS:[],
     platformUiContext:()=>({reviewTopic:(...args)=>calls.push(args)}),
   };
@@ -455,7 +455,7 @@ test('Repasar ofrece el tema anterior como acción secundaria sin interceptar la
   assert.match(result.markup,/Continuar repaso anterior/);
   assert.doesNotMatch(result.markup,/Tu último repaso/);
   result.continueReview();
-  assert.deepEqual(result.calls,[['historia','geografia']]);
+  assert.deepEqual(result.calls,[['ciencia','geografia']]);
 });
 
 test('Repasar no muestra continuación anterior si no existe un tema recuperable', () => {
