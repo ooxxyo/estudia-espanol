@@ -6,9 +6,9 @@ import vm from 'node:vm';
 const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
 const historySource = await readFile(new URL('../public/history-data.js', import.meta.url), 'utf8');
 
-test('la identidad visible usa Study Hub 0.8.0 y presenta superdev como Owner sin cambiar el contrato', () => {
+test('la identidad visible usa Study Hub 2.0 y presenta superdev como Owner sin cambiar el contrato', () => {
   const version = html.match(/const APP_VERSION = '([^']+)'/)?.[1];
-  assert.equal(version, '0.8.0');
+  assert.equal(version, '2.0');
   const roleSource = html.match(/function roleLabel\(role\)\{[^}]+\}/)?.[0];
   assert.ok(roleSource);
   const sandbox = {};
